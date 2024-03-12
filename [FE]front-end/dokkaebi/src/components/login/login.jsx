@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import styles from './login.module.css'
-
 import Login from '../../images/login/login.gif';
 import With from '../../images/login/with.png';
 import Kakao from '../../images/login/kakao.png';
@@ -11,6 +10,12 @@ import orange from '../../images/login/orange.gif';
 
 export default function LoginComponent() {
   const navigate = useNavigate();
+
+  // const KAKAO_AUTH_URL = '';
+  const handleLogin = () => {
+    navigate('/kakaoLogin')
+    // window.location.href = KAKAO_AUTH_URL;
+  };
 
   return (
     <div className="flex flex-col">
@@ -36,8 +41,8 @@ export default function LoginComponent() {
         <img
           src={Login}
           alt="카카오 로그인"
-          className='w-1/2'
-          onClick={}
+          className={`${styles.clickCursor} w-1/2`}
+          onClick={handleLogin}
         />
         <div className='w-1/4 flex justify-center'>
           <img src={With} alt="카카오 로그인" />

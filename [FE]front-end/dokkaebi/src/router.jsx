@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Main from './pages/main/index.jsx';
 import Hub from './pages/hub/index.jsx';
 import Login from './pages/login/index.jsx';
-import KakaoLogin from './components/login/kakaoLogin.jsx';
+import KakaoLogin from "./pages/signUp/index.jsx";
 
 export default function Router() {
   return (
