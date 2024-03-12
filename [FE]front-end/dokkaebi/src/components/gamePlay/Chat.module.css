@@ -1,0 +1,33 @@
+.chatComponents{
+  background: white;
+  opacity: 80%;
+  width: 680px;
+  height: 120px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.chatArea{
+  width: 100%;
+  display: flex;
+  direction: row;
+  background-color: white;
+  position: absolute;
+  opacity: 100%;
+  bottom: 12px;
+}
+
+.chattingSelector {
+  width: 100px;
+  background-color: black;
+  color:white;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+.chatInput {
+  width: 550px;
+  position: absolute;
+  left: 100px;
+  background-color: white;
+}
