@@ -12,10 +12,6 @@ import orange from '../../images/login/orange.gif';
 export default function LoginComponent() {
   const navigate = useNavigate();
 
-  const kakaoHandler = {
-    
-  }
-
   return (
     <div className="flex flex-col">
       {/* 뒤로가기 */}
