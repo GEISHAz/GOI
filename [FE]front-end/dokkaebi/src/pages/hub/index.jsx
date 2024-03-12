@@ -1,7 +1,7 @@
 export default function Hub() {
   return (
     <div>
-      <h1>더미데이터</h1>
+      <h1>허브 채널이에오</h1>
     </div>
   );
 }

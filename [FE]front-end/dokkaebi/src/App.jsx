@@ -5,7 +5,7 @@ import './App.css';
 function App() {
 
   return (
-    <div>
+    <div className='font-Galmuri11'>
       <Router />
     </div>
   )

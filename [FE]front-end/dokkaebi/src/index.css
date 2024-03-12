@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 #root {
-  min-height: 100%;
+  min-height: 705px ;
   margin: 0px;
 }
 
@@ -11,5 +11,14 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100%;
+  min-height: 705px;
+}
+
+@font-face{
+  font-family : "Galmuri11";
+  src : url('./fonts/Galmuri11.ttf');
+}
+
+.font-Galmuri11 {
+  font-family: 'Galmuri11', sans-serif;
 }
