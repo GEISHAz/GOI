@@ -18,6 +18,14 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  // 비직렬화 가능한 값 경고를 무시하고 싶은 액션 타입 지정할 수 있음
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    }),
 });
+
 
 export const persistor = persistStore(store);
