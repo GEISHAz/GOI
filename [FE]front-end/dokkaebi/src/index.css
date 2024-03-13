@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  min-height: 705px ;
+  margin: 0px;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* min-height: 705px; */
+  overflow: hidden;
+}
+
+@font-face{
+  font-family : "Galmuri11";
+  src : url('./fonts/Galmuri11.ttf');
+}
+
+@font-face{
+  font-family : "DNFBitBitv2";
+  src : url('./fonts/DNFBitBitv2.ttf');
+}
+
+.font-Galmuri11 {
+  font-family: 'Galmuri11', sans-serif;
+}
