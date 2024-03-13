@@ -1,0 +1,83 @@
+.kakaoLoginBG {
+  min-height: 400px;
+  max-height: 500px;
+}
+
+.inputBackground {
+  background-image: url('../../images/signUp/input.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.1); /* 검은색 배경에 불투명도 10% */
+  border: none;
+  height: 2.5em;
+  width: 100%;
+  padding: 0 5px;
+  color: #000;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.buttonBackground {
+  background-image: url('../../images/signUp/button.gif');
+  background-size: cover; 
+  /* background-repeat: no-repeat; */
+  background-color: rgba(0, 0, 0, 0.1); /* 검은색 배경에 불투명도 10% */
+  border: none;
+  height: 40px;
+  padding: 0 10px; 
+  color: #000;
+}
+
+.clickCursor {
+  cursor: pointer;
+}
+
+.nicknameLabel {
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  background-color: transparent;
+}
+
+.inputField {
+  background-color: white;
+  color: black;
+}
+
+.checkButton {
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profileLabel {
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  background-color: transparent;
+}
+
+.previewBox {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previewBoxModal {
+  width: 160px;
+  height: 160px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
