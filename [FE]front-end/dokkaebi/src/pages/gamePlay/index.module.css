@@ -17,8 +17,7 @@
 .player1 {
     width: 345px;
     height: 120px;
-    background-color: white;
-    opacity: 80%;
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10;
     border-bottom-right-radius: 20px;
     position: absolute;
@@ -29,8 +28,7 @@
 .player2 {
     width: 345px;
     height: 120px;
-    background-color: white;
-    opacity: 80%;
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10;
     border-top-right-radius: 20px;
     position: absolute;
@@ -41,8 +39,7 @@
 .player3 {
     width: 345px;
     height: 120px;
-    background-color: white;
-    opacity: 80%;
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10;
     border-bottom-left-radius: 20px;
     position: absolute;
@@ -53,8 +50,7 @@
 .player4 {
     width: 345px;
     height: 120px;
-    background-color: white;
-    opacity: 80%;
+    background-color: rgba(255, 255, 255, 0.6);
     z-index: 10;
     border-top-left-radius: 20px;
     position: absolute;
@@ -67,8 +63,7 @@
     height: 120px;
     /* justify-self: center; */
     z-index: 10;
-    background: white;
-    opacity: 80%;
+    background-color: rgba(255, 255, 255, 0.6);
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     display: flex;
@@ -107,4 +102,16 @@
     z-index: 10;
     position: absolute;
     bottom: 0px;
+}
+
+.investment {
+    z-index: 10;
+    width: 880px;
+    height: 475px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

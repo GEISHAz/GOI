@@ -19,10 +19,10 @@ export default function Chat() {
 
   return (
     <div className={styles.container} onBlur={handleBlurContainer}>
-      <label onClick={handleClickContainer}>
-        <button>전체 채팅{isDropdownView ? '▲' : '▼'}</button>
-      </label>
       {isDropdownView && <ChattingSelectorList /> }
+      <label onClick={handleClickContainer}>
+        <button>전체 채팅{isDropdownView ?  '▼':'▲'}</button>
+      </label>
     </div>
   )
 }

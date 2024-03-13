@@ -1,0 +1,64 @@
+.investmentInfo {
+  display: flex;
+  direction: row;
+  width: ;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+  margin: 6px auto;
+}
+
+.bunya {
+  width: 180px;
+  height: 40px;
+  background: black;
+  color: white;
+  font-family: DNFBitBitv2;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.upDownPercent {
+  font-family: DNFBitBitv2;
+}
+
+.buttons {
+  display: flex;
+  direction: row;
+  align-items: center;
+  width: 150px;
+}
+
+hr{
+  height: 12px;
+  width: 4px;
+  border-width:0;
+  color:#000;
+  background-color: gray;
+  border-radius: 10px;
+}
+
+button {
+  width: 60px;
+  text-align: center;
+  border-radius: 5px;
+  font-family: DNFBitBitv2;
+  color: white;
+  margin: auto 12px;
+}
+
+.buyButtons {
+  background: #FF6E6E;
+}
+
+.sellButtons {
+  background: #4E95FF;
+}

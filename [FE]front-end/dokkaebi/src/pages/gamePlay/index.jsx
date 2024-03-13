@@ -3,6 +3,7 @@ import styles from './index.module.css'
 import Players from '../../components/gamePlay/Players';
 import Timer from '../../components/gamePlay/Timer'
 import Chat from '../../components/gamePlay/Chat'
+import Investment from '../../components/gamePlay/Investment';
 
 export default function GamePlay() {
 
@@ -23,6 +24,9 @@ export default function GamePlay() {
       </div>
       <div className={styles.chat}>
         <Chat />
+      </div>
+      <div className={styles.investment}>
+        <Investment />
       </div>
     </div>
   );
