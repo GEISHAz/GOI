@@ -1,0 +1,33 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: hsla(0, 0%, 0%, 0.8);
+  width: 100%;
+  height: 350px;
+  padding: 0 2rem 2rem 2rem;
+  border-radius: 20px;
+}
+
+.cardHeader {
+  color: white;
+  font-size: 100px;
+  text-align: center;
+  align-items: center;
+}
+
+.unactivate {
+  /* 중앙 슬라이드 기준 양쪽 슬라이드에 적용될 스타일 */
+  opacity: 0.3;
+  transform: scale(0.8);
+  z-index: 0;
+}
+
+.active {
+  /* 중앙 슬라이드에 적용될 스타일 */
+  opacity: 1;
+  transform: scale(1.5);
+  z-index: 1;
+  cursor: pointer;
+}
+
