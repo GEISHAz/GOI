@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import Background from '../../images/main/background.gif';
 import MainComponents from '../../components/main/main.jsx';
 
@@ -7,10 +7,10 @@ export default function Main() {
   const backgroundStyle = {
     backgroundImage: `url(${Background})`,
     backgroundSize: 'cover',
-    // backgroundPosition: 'center',
+    backgroundPosition: 'center',
     width: '100%',
     height: '100%',
-    // position: 'fixed',
+    position: 'fixed',
     top: 0,
     left: 0,
   };
