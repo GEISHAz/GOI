@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:10.11.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "0722"
+      MYSQL_DATABASE: "toogui"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "0722"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+  backend:
+    build: ./[BE]GeniusOfInvestment # 여기에 Dockerfile이 위치한 디렉토리를 지정
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/toogui
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=0722
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080" # 애플리케이션이 사용할 포트를 지정
+
+volumes:
+  mariadb-data:
+    driver: local
