@@ -1,0 +1,43 @@
+.playerComponents {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  direction: row;
+  align-items: center;
+}
+
+.playerComponents > img {
+  width: 100px;
+  height: 100px;
+  margin: auto 16px auto 24px
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  margin: auto 8px;
+}
+
+.player {
+  display: flex;
+  flex-direction: row;
+}
+
+.playerNickName {
+  font-family: Galmuri11;
+  font-size: 24px;
+}
+
+.playerReady {
+  font-family: DNFBitBitv2;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  color: gray;
+}
+
+.playerTotalMoney {
+  font-family: Galmuri11;
+  font-size: 24px;
+}

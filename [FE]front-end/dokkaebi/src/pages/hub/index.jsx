@@ -1,4 +1,4 @@
-import Background from '../../images/main/background.gif';
+import Background from '../../images/hub/background4.gif';
 import HubTop from '../../components/hub/hubTop.jsx';
 import HubBottom from '../../components/hub/hubBottom.jsx';
 

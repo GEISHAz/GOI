@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import ChoiceModal from './choiceModal.jsx';
 import { useSelector } from 'react-redux';
-
-
 import styles from './kakaoLogin.module.css'
 import signUp from '../../images/signUp/signUp.gif';
 import blue from '../../images/signUp/blue.gif';
 import brown from '../../images/signUp/brown.gif';
 import green from '../../images/signUp/green.gif';
-// import inputGIF from '../../images/signUp/inputGIF';
-// import buttonGIF from '../../images/signUp/buttonGIF';
 
 export default function KakaoLogin() {
   const navigate = useNavigate();
@@ -47,16 +43,16 @@ export default function KakaoLogin() {
         {/* 중앙 오른쪽 */}
         <div className={`${styles.loginBG} flex flex-col justify-center w-1/3 bg-black/70 rounded-3xl p-10 mt-10`}>
           <h1 className='font-bold text-white text-left text-3xl mb-5'>닉 네 임</h1>
-          <div className="flex w-full justify-between items-center mb-5">
+          <div className="flex w-full justify-start items-center mb-5">
             <input
               type="text"
-              className='text-center w-full'
+              className={`text-center bg-white ${styles.inputBackground}`}
               onChange={(e) => setNickname(e.target.value)}
             />
           </div>
           <div className='w-full flex justify-end mb-10'>
             <button
-              className='flex items-end justify-end bg-white text-black font-bold py-2 px-4 rounded'
+              className={`flex items-end justify-end text-black font-bold py-2 px-4 rounded ${styles.buttonBackground}`}
               onClick={handleCheckNickname}
             >
               중복검사
@@ -64,7 +60,7 @@ export default function KakaoLogin() {
           </div>
           <h1 className='font-bold text-white text-3xl mb-5'>프로필 설정</h1>
           <div className="text-center mb-4">
-            <button onClick={openModal} className="bg-white text-black font-bold py-2 px-4 rounded">
+            <button onClick={openModal} className={`text-black font-bold py-2 px-4 rounded ${styles.buttonBackground}`}>
               변경하기
             </button>
           </div>
