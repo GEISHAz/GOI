@@ -7,6 +7,6 @@ ENV JASYPT_KEY=$JASYPT_KEY
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
 
-
+EXPOSE 8080
 # 실행 명령어
 ENTRYPOINT ["java", "-jar", "app.jar"]
