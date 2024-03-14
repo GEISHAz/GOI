@@ -32,6 +32,11 @@
 // }
 pipeline {
     agent any
+
+    environment {
+        JASYPT_KEY = credentials('JASYPT_KEY')
+    }
+
     stages {
         stage('Gradle build') {
             steps {

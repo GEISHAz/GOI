@@ -14,10 +14,12 @@ services:
 
   backend:
     build: ../[BE]GeniusOfInvestment # 여기에 Dockerfile이 위치한 디렉토리를 지정
+
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3307/toogui
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=0722
+      - JASYPT_KEY=${JASYPT_KEY}
     depends_on:
       - mariadb
     ports:
