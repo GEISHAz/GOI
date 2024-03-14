@@ -42,7 +42,7 @@ pipeline {
             steps {
                 dir('[BE]GeniusOfInvestment') {
                     sh 'chmod +x ./gradlew'
-                    sh './gradlew clean build'
+                    sh './gradlew clean build -PJASYPT_KEY=$JASYPT_KEY'
                 }
             }
         }
