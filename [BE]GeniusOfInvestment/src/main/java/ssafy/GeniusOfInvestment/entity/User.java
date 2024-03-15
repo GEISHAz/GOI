@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ssafy.GeniusOfInvestment.utils.UserRole;
+import ssafy.GeniusOfInvestment.common.utils.UserRole;
 
 import java.util.*;
 

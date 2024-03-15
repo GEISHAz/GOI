@@ -1,6 +1,6 @@
-package ssafy.GeniusOfInvestment.handler;
+package ssafy.GeniusOfInvestment.common.handler;
 
-import ssafy.GeniusOfInvestment.utils.ErrorResponse;
+import ssafy.GeniusOfInvestment.common.utils.ErrorResponse;
 
 import java.util.Arrays;
 import java.util.List;
