@@ -1,0 +1,32 @@
+.profileContainer {
+  width: 70%;
+  padding: 5%;
+  margin-top: 5%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 20px; 
+}
+
+.previewBox {
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputBackground {
+  background-image: url('../../images/signUp/input.gif');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.1); /* 검은색 배경에 불투명도 10% */
+  border: none;
+  height: 2.5em;
+  width: 100%;
+  padding: 0 5px;
+  color: #000;
+  box-sizing: border-box;
+  border-radius: 10px;
+}

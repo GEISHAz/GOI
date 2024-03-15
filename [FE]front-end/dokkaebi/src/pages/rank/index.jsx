@@ -1,7 +1,7 @@
 export default function Rank() {
   return (
     <div>
-      <h1>더미데이터</h1>
+      <h1>랭크 페이지에오</h1>
     </div>
   );
 }
