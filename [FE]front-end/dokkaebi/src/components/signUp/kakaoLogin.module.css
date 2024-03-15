@@ -18,12 +18,13 @@
 }
 
 .buttonBackground {
-  background-image: url('../../images/signUp/button.gif');
+  /* background-image: url('../../images/signUp/button.gif'); */
   background-size: cover; 
   /* background-repeat: no-repeat; */
   background-color: rgba(0, 0, 0, 0.1); /* 검은색 배경에 불투명도 10% */
   border: none;
-  height: 40px;
+  height: 100%;
+  width: 25%;
   padding: 0 10px; 
   color: #000;
 }
