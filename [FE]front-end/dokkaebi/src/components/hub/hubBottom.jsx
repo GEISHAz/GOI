@@ -2,21 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Styles from "./carousel.module.css";
 import { motion, AnimatePresence } from 'framer-motion';
-// import leftA from '../../images/hub/leftA.png';
-// import leftB from '../../images/hub/left.png';
-// import rightA from '../../images/hub/rightA.png';
-// import rightB from '../../images/hub/rightB.png';
+import LeftA from '../../images/hub/leftA.png';
+import LeftB from '../../images/hub/leftB.png';
+import RightA from '../../images/hub/rightA.png';
+import RightB from '../../images/hub/rightB.png';
+import GameIMG from '../../images/hub/game.png';
+import ProfileIMG from '../../images/hub/profile.png';
+import RankIMG from '../../images/hub/rank.png';
 
 export default function hubBottom() {
   const navigate = useNavigate();
-  const initialSlides = ["Profile", "Game", "Rank"];
+  const initialSlides = [
+    { name: "Profile", image: ProfileIMG },
+    { name: "Game", image: GameIMG },
+    { name: "Rank", image: RankIMG },
+  ];
   const [slides, setSlides] = useState(initialSlides);
   const [currentSlide, setCurrentSlide] = useState(slides[1]);
-
+  const [prevButtonImage, setPrevButtonImage] = useState(LeftB);
+  const [nextButtonImage, setNextButtonImage] = useState(RightB);
   // 마우스 클릭 이벤트 핸들러
   const handleSlideClick = (slide) => {
     if (slide === currentSlide) {
-      navigateToSlide(slide);
+      navigateToSlide(slide.name);
     } else {
       // 슬라이드 배열을 조정하여 클릭된 슬라이드가 중앙에 오도록 계산
       let newSlides = [...slides];
@@ -84,27 +92,47 @@ export default function hubBottom() {
   }, [slides]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full mx-auto flex justify-between items-center">
-        <button onClick={prevSlide}>{'<'}</button>
+    <div className={Styles.carouselContainer}>
+      <div className="w-full mx-auto flex justify-between items-center">        
+        {/* 캐러셀 */}
         <div className="flex justify-center items-center w-full gap-4">
           <AnimatePresence>
             {slides.map((slide, index) => (
               <motion.div
-                key={slide}
+                key={slide.name}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: slide === currentSlide ? 1 : 0.3 }}
+                animate={{ opacity: slide === currentSlide ? 1 : 0.4 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: "linear" }}
+                transition={{ duration: 1.35, ease: "linear" }}
                 className={`${Styles.card} ${slide === currentSlide ? Styles.active : Styles.unactivate}`}
                 onClick={() => handleSlideClick(slide)}
               >
-                <h1 className={Styles.cardHeader}>{slide}</h1>
+                <h1 className={Styles.cardHeader}>{slide.name}</h1>
+                <img src={slide.image} alt={slide.name} className={`${Styles.cardImage}`} />
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
-        <button onClick={nextSlide}>{'>'}</button>
+        </div> 
+      </div >
+      <div className={Styles.buttonContainer}>
+        {/* 이전 슬라이드 버튼 */}
+        <button
+          onClick={prevSlide}
+          onMouseEnter={() => setPrevButtonImage(LeftA)}
+          onMouseLeave={() => setPrevButtonImage(LeftB)}
+          className={Styles.buttonStyle}
+          style={{ backgroundImage: `url(${prevButtonImage})` }}
+        >
+        </button>
+        {/* 다음 슬라이드 버튼 */}
+        <button
+          onClick={nextSlide}
+          onMouseEnter={() => setNextButtonImage(RightA)}
+          onMouseLeave={() => setNextButtonImage(RightB)}
+          className={Styles.buttonStyle}
+          style={{ backgroundImage: `url(${nextButtonImage})` }}
+        >
+        </button>
       </div>
     </div>
   );
