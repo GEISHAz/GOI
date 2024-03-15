@@ -64,5 +64,6 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.named('test') {
+	systemProperty "JASYPT_KEY", System.getProperty("JASYPT_KEY")
 	useJUnitPlatform()
 }
