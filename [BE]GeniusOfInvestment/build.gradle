@@ -49,6 +49,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// set test db
+	testImplementation 'com.h2database:h2'
 }
 
 def querydslSrcDir = 'src/main/generated'
