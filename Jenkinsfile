@@ -1,35 +1,3 @@
-// pipeline {
-//     agent any
-//     stages {
-//         stage('Gradle build'){
-//             steps{
-//                 dir('[BE]GeniusOfInvestment') {
-//                     sh 'chmod +x ./gradlew'
-//                     sh './gradlew clean build'
-//                 }
-//             }
-//         }
-//         stage('Docker build') {
-//             steps {
-//                 script {
-//                     def jasyptKey = env.JASYPT_KEY
-//                     sh "docker build --build-arg JASYPT_KEY=${jasyptKey} -t investment-backend:latest ./[BE]GeniusOfInvestment"
-//                 }
-//             }
-//         }
-//         stage('Docker run') {
-//             steps {
-//                 sh 'docker run -d --name investment-backend -p 8090:8090 investment-backend:latest'
-//             }
-//         }
-//         stage('Remove Images'){
-//             steps {
-//                 sh 'docker container prune -f'
-//                 sh 'docker image prune -f'
-//             }
-//         }
-//     }
-// }
 pipeline {
     agent any
 
