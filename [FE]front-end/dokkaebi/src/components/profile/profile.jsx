@@ -30,12 +30,16 @@ export default function Profile() {
         </button>
       </div>
 
-      {/* 프로필 변경 */}
+      {/* 프로필 변경 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow mb-20 ${styles.profileContainer}`}>
+        {/* 헤더 */}
+        <div className='text-white font-bold text-3xl mb-5'>
+          <h1>도깨비 신상을 바꾸어보세요 ! </h1>
+        </div>
         <div className='flex flex-row w-full'>
           {/* 왼쪽 미리보기 영역 */}
           <div className="flex flex-col items-center justify-center w-1/2 ">
-            <p className="text-white mb-4 font-bold text-2xl">현재 도깨비</p>
+            <h1 className="text-white mb-4 font-bold text-2xl">현재 도깨비</h1>
             <div className={`${styles.previewBox} rounded-lg flex justify-center items-center`}>
               <img
                 src={userProfileImage}
@@ -62,7 +66,7 @@ export default function Profile() {
               className={`${styles.inputBackground} text-center bg-white`}
               onChange={(e) => setNickname(e.target.value)}
             />
-            <div className='w-full flex justify-end mb-10'>
+            <div className='w-full flex justify-end'>
               <button className="mt-5 bg-white text-black font-bold p-2 rounded-lg w-20">
                 변 경
               </button>
@@ -71,7 +75,7 @@ export default function Profile() {
         </div>
         
         {/* 저장하기 영역 */}
-        <div className='felx justify-center mt-20'>
+        <div className='felx justify-center mt-10'>
           <button className="bg-white text-black font-bold p-2 rounded-lg w-20">
             저 장
           </button>
