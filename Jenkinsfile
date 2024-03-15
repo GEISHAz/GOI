@@ -1,13 +1,17 @@
 pipeline {
     agent any
 
+    environment {
+        JASYPT_KEY = credentials('JASYPT_KEY_CREDENTIAL_ID')
+    }
+
     stages {
         stage('Gradle build') {
             steps {
                 dir('[BE]GeniusOfInvestment') {
                     sh 'chmod +x ./gradlew'
                     // 환경 변수 JASYPT_KEY 값을 직접 사용
-                    sh './gradlew clean build -DJASYPT_KEY=$JASYPT_KEY'
+                    sh './gradlew clean build -DJASYPT_KEY=${JASYPT_KEY}'
                 }
             }
         }
