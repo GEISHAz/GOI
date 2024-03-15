@@ -5,6 +5,8 @@ import Login from './pages/login/index.jsx';
 import KakaoLogin from './pages/signUp/index.jsx';
 import Profile from './pages/profile/index.jsx';
 import GamePlay from './pages/gamePlay/index.jsx';
+import Channel from './pages/channel/index.jsx';
+import Rank from './pages/rank/index.jsx';
 
 export default function Router() {
   return (
@@ -15,6 +17,8 @@ export default function Router() {
       <Route path="/kakaoLogin" element={<KakaoLogin />} />
       <Route path="/profile/:nickname" element={<Profile />} />
       <Route path="/gamePlay" element={<GamePlay />} />
+      <Route path="/channel/:id" element={<Channel />} />
+      <Route path="/rank" element={<Rank />} />
     </Routes>
   );
 }
