@@ -11,7 +11,7 @@ pipeline {
                 dir('[BE]GeniusOfInvestment') {
                     sh 'chmod +x ./gradlew'
 					sh 'cat ./[BE]GeniusOfInvestment/src/main/resources/application.yml'
-					sh 'sed -i 's/\${JASYPT_KEY}/${JASYPT_KEY}/' ./[BE]GeniusOfInvestment/src/main/resources/application.yml'
+					sh "sed -i 's/\${JASYPT_KEY}/${JASYPT_KEY}/' ./[BE]GeniusOfInvestment/src/main/resources/application.yml"
 					sh 'cat ./[BE]GeniusOfInvestment/src/main/resources/application.yml'
                 }
             }
