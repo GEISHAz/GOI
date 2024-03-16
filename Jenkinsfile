@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        JASYPT_KEY = credentials('JASYPT_KEY_CREDENTIAL_ID')
+        JASYPT_KEY = credentials('JASYPT_KEY')
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
 		stage('Docker image build') {
             steps {
                 dir('[BE]GeniusOfInvestment') {
-					sh 'docker build -t backend .'
+					sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
                 }
             }
         }
@@ -26,6 +26,7 @@ pipeline {
 		stage('Docker container run') {
             steps {
                 dir('[BE]GeniusOfInvestment') {
+				    sh 'docker rm -f backend'
 					sh 'docker run -it -d -p 8080:8080 --name backend backend'
                 }
             }
