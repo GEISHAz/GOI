@@ -10,8 +10,15 @@ pipeline {
             steps {
                 dir('[BE]GeniusOfInvestment') {
                     sh 'chmod +x ./gradlew'
-					sh 'ls -al'
 					sh './gradlew clean build'
+                }
+            }
+        }
+		
+		stage('Docker image build') {
+            steps {
+                dir('[BE]GeniusOfInvestment') {
+					sh 'docker build'
                 }
             }
         }
