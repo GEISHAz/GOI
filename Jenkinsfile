@@ -18,7 +18,7 @@ pipeline {
 		stage('Docker image build') {
             steps {
                 dir('[BE]GeniusOfInvestment') {
-					sh 'ls -al'
+					sh 'docker build -t backend .'
                 }
             }
         }
