@@ -64,7 +64,3 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
-tasks.named('test') {
-	systemProperty 'JASYPT_KEY', System.getenv('JASYPT_KEY')
-	useJUnitPlatform()
-}
