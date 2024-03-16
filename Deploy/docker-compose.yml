@@ -1,17 +1,5 @@
 version: '3.8'
 services:
-  mariadb:
-    image: mariadb:10.11.7
-    environment:
-      MYSQL_ROOT_PASSWORD: "0722"
-      MYSQL_DATABASE: "toogui"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "0722"
-    ports:
-      - "3307:3307"
-    volumes:
-      - mariadb-data:/var/lib/mysql
-
   backend:
     build: ../[BE]GeniusOfInvestment # 여기에 Dockerfile이 위치한 디렉토리를 지정
 

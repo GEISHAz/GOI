@@ -9,4 +9,4 @@ COPY ${JAR_FILE} app.jar
 
 EXPOSE 8080
 # 실행 명령어
-ENTRYPOINT ["java", "-DJASYPT_KEY=${JASYPT_KEY}", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-DJASYPT_KEY=${JASYPT_KEY}", "-jar", "app.jar"]

@@ -1,0 +1,11 @@
+spring:
+#        =========================================================
+#    redis:
+#        host: localhost
+#      port: 6379
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ENC(KCZ20q5CS7aFRL3uIPCva9Y3cAalqDzG)
+    password: ENC(ve+zKwFWkrgB0Hm3pJY6ftlqY9UHqLS0)
+    url: ENC(Ev7wdRYBJa9hkeHCf0vRyV8xFNA2AAzpWMfu6HYe7Z2nGBaBexeol/G3CsZ5moqxHPz+Top7hkG8Tf2nNm5TttGJ9A9IU5etzV70G1MtbFkJCErRAPnz3zDr61jnZBFhrAWjBfcZHXttF5gdwBMl4Q==)
