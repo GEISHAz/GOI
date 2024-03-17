@@ -52,7 +52,7 @@ export default function KakaoLogin() {
           </div>
           <div className='w-full flex justify-end mb-10'>
             <button
-              className={`flex items-end justify-end text-black font-bold py-2 px-4 rounded ${styles.buttonBackground}`}
+              className={`text-black bg-white font-bold py-2 px-4 rounded ${styles.buttonBackground}`}
               onClick={handleCheckNickname}
             >
               중복검사
@@ -60,7 +60,7 @@ export default function KakaoLogin() {
           </div>
           <h1 className='font-bold text-white text-3xl mb-5'>프로필 설정</h1>
           <div className="text-center mb-4">
-            <button onClick={openModal} className={`text-black font-bold py-2 px-4 rounded ${styles.buttonBackground}`}>
+            <button onClick={openModal} className={`text-black bg-white font-bold py-2 px-4 rounded ${styles.buttonBackground}`}>
               변경하기
             </button>
           </div>

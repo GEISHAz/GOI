@@ -9,5 +9,25 @@
   display: flex;
   direction: row;
   width: 90%;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  font-family: DNFBitBitv2;
+}
+
+.investmentInfoArea {
+  width: 90%;
+}
+
+.juGa {
+  position: relative;
+  left: 57px;
+}
+
+.gap {
+  position: relative;
+  left: 57px;
+}
+
+.sudo {
+  position: relative;
+  left: 40px;
 }
