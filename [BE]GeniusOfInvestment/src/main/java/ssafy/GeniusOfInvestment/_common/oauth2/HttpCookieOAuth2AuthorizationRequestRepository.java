@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import ssafy.GeniusOfInvestment._common.util.CookieUtils;
+import ssafy.GeniusOfInvestment._common.utils.CookieUtils;
 
 @RequiredArgsConstructor
 @Component

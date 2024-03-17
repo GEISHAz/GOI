@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import ssafy.GeniusOfInvestment._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import ssafy.GeniusOfInvestment._common.util.CookieUtils;
+import ssafy.GeniusOfInvestment._common.utils.CookieUtils;
 
 import java.io.IOException;
 
