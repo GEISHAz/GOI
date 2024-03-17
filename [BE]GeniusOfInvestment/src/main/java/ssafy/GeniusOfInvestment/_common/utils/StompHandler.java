@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.common.utils;
+package ssafy.GeniusOfInvestment._common.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;

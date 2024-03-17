@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.common.config;
+package ssafy.GeniusOfInvestment._common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

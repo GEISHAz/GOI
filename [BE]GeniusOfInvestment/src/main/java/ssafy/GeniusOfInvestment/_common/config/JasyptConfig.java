@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.common.config;
+package ssafy.GeniusOfInvestment._common.config;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.jasypt.encryption.StringEncryptor;

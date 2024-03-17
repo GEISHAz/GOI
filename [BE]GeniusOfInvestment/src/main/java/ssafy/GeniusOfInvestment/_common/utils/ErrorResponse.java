@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.common.utils;
+package ssafy.GeniusOfInvestment._common.utils;
 
 import lombok.Builder;
 import lombok.Getter;

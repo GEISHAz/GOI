@@ -1,19 +1,19 @@
 package ssafy.GeniusOfInvestment.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import ssafy.GeniusOfInvestment.common.utils.UserRole;
 
 import java.util.*;
 
 @Entity
 @Getter
 @Setter
-public class User implements UserDetails {
+@NoArgsConstructor
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", columnDefinition = "INT UNSIGNED")
@@ -22,16 +22,13 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String socialId;
 
-//    @Column(nullable = false, unique = true)
-//    private String name;
-
     @ColumnDefault("0")
     private Long exp;
 
     @ColumnDefault("0")
     private int imageId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String nickName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +48,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
     private List<Friend> friendList = new ArrayList<>();
+
     public void addFriend(User toUser){ //친구 요청을 추가하는 메소드
         Friend friend = new Friend();
         friend.setFriend(toUser);
@@ -58,42 +56,28 @@ public class User implements UserDetails {
         friendList.add(friend);
     }
 
-    //----------------------------------------------------------------------
-    @Transient
-    private Set<UserRole> roles = new HashSet<>(Arrays.asList(UserRole.USER)); //user권한으로 초기값 지정
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    @Builder
+    public User(String socialId, Long exp, int imageId, String nickName) {
+        this.socialId = socialId;
+        this.exp = exp;
+        this.imageId = imageId;
+        this.nickName = nickName;
     }
 
-    @Override
-    public String getPassword() {
-        return null;
+    public static User of(String socialId, Long exp, int imageId, String nickName) {
+        return builder()
+                .socialId(socialId)
+                .exp(exp)
+                .imageId(imageId)
+                .nickName(nickName)
+                .build();
     }
 
-    @Override
-    public String getUsername() {
-        return null;
+    public void updateImageId(Integer imageId) {
+        this.imageId = imageId;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public void updateNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

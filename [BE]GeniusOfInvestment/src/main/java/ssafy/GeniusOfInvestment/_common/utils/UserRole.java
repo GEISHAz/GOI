@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.common.utils;
+package ssafy.GeniusOfInvestment._common.utils;
 
 import org.springframework.security.core.GrantedAuthority;
 
