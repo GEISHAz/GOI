@@ -47,8 +47,12 @@ dependencies {
 	//runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// set test db
+	testImplementation 'com.h2database:h2'
 }
 
 def querydslSrcDir = 'src/main/generated'
@@ -61,5 +65,6 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.named('test') {
+//	systemProperty "JASYPT_KEY", System.getProperty("JASYPT_KEY")
 	useJUnitPlatform()
 }
