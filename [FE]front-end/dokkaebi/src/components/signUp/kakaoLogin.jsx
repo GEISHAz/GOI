@@ -23,7 +23,7 @@ export default function KakaoLogin() {
   const handleCheckNickname = () => {
     // 입력 필드가 비어 있는지 검사
     if (!nickname.trim()) {
-    setIsNicknameEmpty(true);
+    setIsNicknameEmpty(true); // 비어있음을 true로 표시
     alert("닉네임이 입력되지 않았어요!");
     setIsNicknameChecked(false); // 중복 검사를 통과하지 않았음
     return; // 함수 실행 중단
