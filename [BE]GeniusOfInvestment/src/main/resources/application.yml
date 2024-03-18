@@ -20,8 +20,10 @@ spring:
             pageable:
                 one-indexed-parameters: true
         redis:
-            host: localhost
+            host: ENC(NlaOnFEohOhLwfm3BQKYzQxJYtI72xNO)
             port: 6379
+            password: ENC(cAV37F+FL3IUpEFNaq367sJN+c36j4oB)
+
 
     datasource:
         driver-class-name: org.mariadb.jdbc.Driver
