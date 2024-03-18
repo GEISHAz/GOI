@@ -17,15 +17,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 public class RedisConfig {
 
-    @Value(value = "${redis.host}")
-    private String host;
-
-    @Value(value = "${redis.port}")
-    private int port;
-
-    @Value(value = "${redis.password}")
-    private String password;
-
     private final RedisProperties redisProperties;
 
     @Bean

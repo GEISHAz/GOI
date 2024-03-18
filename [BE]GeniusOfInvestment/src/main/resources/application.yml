@@ -77,4 +77,3 @@ jasypt:
 jwt:
     secret: ENC(8bL40g574ZUX0POwuNMfP6P/q+pwKcMrJRktF3mOetHNovtdUcYS9zbDAswxsVs5C67EJXjp55hjtv2NDMRTw6EUAdTJ2eO3/wQvit4WSsalh556Kc+n+0PLas8KTi3vEDfp2VB1PN+qTr8rr2p4kg==)
 
-
