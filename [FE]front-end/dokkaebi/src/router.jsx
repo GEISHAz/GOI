@@ -17,7 +17,7 @@ export default function Router() {
       <Route path="/kakaoLogin" element={<KakaoLogin />} />
       <Route path="/profile/:nickname" element={<Profile />} />
       <Route path="/gamePlay" element={<GamePlay />} />
-      <Route path="/channel/:id" element={<Channel />} />
+      <Route path="/channel" element={<Channel />} />
       <Route path="/rank" element={<Rank />} />
     </Routes>
   );
