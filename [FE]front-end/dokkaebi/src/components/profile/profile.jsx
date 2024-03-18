@@ -46,18 +46,15 @@ export default function Profile() {
     }
   };
 
-
   // 정규식 조건을 만족하는지 확인
   const checkNicknameValidity = async (nickname) => {
     const regex = /^[가-힣a-zA-Z0-9]{2,10}$/;
 
     if (!regex.test(nickname)) {
-      alert("닉네임은 2자 이상 10자 이하의 한글, 영어, 숫자만 사용할 수 있어요!");
+      alert("이름은 2자 이상 10자 이하의 한글, 영어, 숫자만 사용할 수 있어요!");
       return false;
     }
-
-    // 예시로, 모든 닉네임을 유효하다고 가정
-    // 실제로는 서버로부터 응답을 받아 중복 여부를 검사 (백 API요청 로직 필요)
+    // 서버로부터 응답을 받아 중복 여부를 검사할 위치 (백 API요청 로직 필요)
     return true;
   };
 
@@ -76,7 +73,7 @@ export default function Profile() {
       {/* 프로필 변경 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow mb-20 ${styles.profileContainer}`}>
         {/* 헤더 */}
-        <div className='text-white font-bold text-3xl mb-5'>
+        <div className='text-white font-bold text-3xl mb-10'>
           <h1>도깨비 신상을 바꾸어보세요 ! </h1>
         </div>
         <div className='flex flex-row w-full'>
@@ -109,7 +106,8 @@ export default function Profile() {
               type="text"
               placeholder="닉네임 입력"
               value={nickname}
-              className={`${styles.inputBackground} text-center bg-white`}
+              maxLength={10}
+              className={`${styles.inputBackground} mx-auto text-center bg-white`}
               onChange={(e) => setNickname(e.target.value)}
             />
             <div className='w-full flex justify-end mt-5'>

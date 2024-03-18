@@ -9,6 +9,7 @@ import signUp from '../../images/signUp/signUp.gif';
 import blue from '../../images/signUp/blue.gif';
 import brown from '../../images/signUp/brown.gif';
 import green from '../../images/signUp/green.gif';
+import axios from 'axios';
 
 export default function KakaoLogin() {
   const dispatch = useDispatch();
@@ -16,12 +17,12 @@ export default function KakaoLogin() {
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 모달에서 선택된 사진 불러오기
   const [nickname, setNickname] = useState('');
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
-  const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태  n관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+ 
   // 닉네임 중복검사 로직 (백에서 유효성검사 로직 다 되면 작성 예정)
-  const handleCheckNickname = () => {
+  const handleCheckNickname = async () => {
     // 입력 필드가 비어 있는지 검사
     if (!nickname.trim()) {
     setIsNicknameEmpty(true);
@@ -42,16 +43,33 @@ export default function KakaoLogin() {
       setIsNicknameValid(true); // 닉네임이 유효함
     } else {
       // 조건을 만족하지 않으면 경고 메시지 표시
-      alert("닉네임은 2자 이상 10자 이하의 한글, 영어, 숫자만 사용할 수 있어요 !");
+      alert("이름은 2자 이상 10자 이하의 한글, 영어, 숫자만 사용할 수 있어요 !");
       setIsNicknameChecked(false); // 형식이 맞지 않으므로 중복 검사를 통과하지 않음
       setIsNicknameValid(false); // 닉네임이 유효하지 않음
       return; // 함수 실행 중단
     }
 
-    // 중복검사 로직 진행
-    console.log(nickname);
-    setIsNicknameChecked(true);
-    setIsNicknameEmpty(false);
+    // 백으로 api 요청
+    try {
+      // API 요청: 닉네임 중복 검사 및 업데이트
+      const response = await axios.put('https://j10d202.p.ssafy.io:8080//api/users/1/nick-name', {
+        nickname: nickname,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+  
+      console.log("데이터 받음 :", response.data);
+      setIsNicknameChecked(true);
+      setIsNicknameEmpty(false);
+      setIsNicknameValid(true); // 닉네임이 유효함
+      alert("닉네임 설정 완료 :" + response.data.msg);
+    } catch (err) {
+      console.log("닉네임 설정 실패 :", err);
+      alert("닉네임 설정 실패");
+      // 여기에서는 에러에 따른 적절한 처리를 해야 합니다. 예를 들어, 중복된 닉네임이라는 응답이 오면 사용자에게 알림 등
+    }
   };
 
   // 닉네임 입력 여부 업데이트
@@ -91,6 +109,7 @@ export default function KakaoLogin() {
     if (nickname && userProfileImage) {
       // 닉네임 스토어에 저장, 첫 도깨비 이미지는 choiceModal에서 스토어에 저장함
       dispatch(setUserNickname(nickname));
+
       // 추가적으로 회원가입 로직 실행 가능, 예: API 호출
     } else {
       // 오류 처리, 예: 닉네임 또는 이미지 미설정 경고
