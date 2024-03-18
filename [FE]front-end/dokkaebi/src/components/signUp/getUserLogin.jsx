@@ -39,7 +39,7 @@ export default function KakaoLogin() {
     // 입력 값이 정규식 조건을 만족하는지 확인
     if (regex.test(nickname) && nickname.length >= 2 && nickname.length <= 10) {
       // 조건을 만족하면 중복검사 로직 진행
-      console.log(nickname);
+      // console.log(nickname);
       setIsNicknameChecked(true);
       setIsNicknameEmpty(false);
       setIsNicknameValid(true); // 닉네임이 유효함
@@ -54,22 +54,23 @@ export default function KakaoLogin() {
     // 백엔드으로 중복검사 api 요청
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
-      const response = await axios.put(`{http://localhost:8080//api/users/${userId}/nick-name}`, {
-        nickname: nickname,
+      console.log("여기 닉네임 :", nickname)
+      const response = await axios.put(`http://localhost:8080/api/users/${userId}/nick-name`, {
+        nickName: nickname,
       }, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
   
-      console.log("데이터 받음 :", response.data);
+      console.log("성공 데이터 받음 :", response.data);
       setIsNicknameChecked(true);
       setIsNicknameEmpty(false);
       setIsNicknameValid(true); // 닉네임이 유효함
-      alert("닉네임 설정 완료 :" + response.data.msg);
+      alert("도깨비 이름이 설정되었어요 !");
     } catch (err) {
       console.log("닉네임 설정 실패 :", err);
-      alert("닉네임 설정 실패");
+      alert("이름 설정을 실패했어요..");
       // 여기에서는 에러에 따른 적절한 처리를 해야 합니다. 예를 들어, 중복된 닉네임이라는 응답이 오면 사용자에게 알림 등
     }
   };
@@ -111,7 +112,7 @@ export default function KakaoLogin() {
     if (nickname && userProfileImage) {
       // 닉네임 스토어에 저장, 첫 도깨비 이미지는 choiceModal에서 스토어에 저장함
       dispatch(setUserNickname(nickname));
-
+      navigate("/hub")
       // 추가적으로 회원가입 로직 실행 가능, 예: API 호출
     } else {
       // 오류 처리, 예: 닉네임 또는 이미지 미설정 경고

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUserProfileImage } from '../../features/login/authSlice';
+// import { useDispatch } from 'react-redux';
+// import { setUserProfileImage } from '../../features/login/authSlice';
 import blue from '../../images/signUp/blue.gif';
 import brown from '../../images/signUp/brown.gif';
 import green from '../../images/signUp/green.gif';
@@ -9,15 +9,15 @@ import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
 import styles from './changeModal.module.css';
 
-export default function ChangeModal({ onClose }) {
-  const dispatch = useDispatch();
+export default function ChangeModal({ onClose, onSelectImage }) {
+  // const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState('');
 
   // 이미지 선택 핸들러
   const handleImageSelect = (image) => {
     setSelectedImage(image);
     // 업데이트한 이미지를 스토어에 새로 업데이트
-    dispatch(setUserProfileImage(image));
+    onSelectImage(image)
   };
 
   return (

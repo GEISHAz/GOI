@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css'
 import ChangeModal from './changeModal.jsx';
 import { setUserNickname, setUserProfileImage } from '../../features/login/authSlice';
+import axios from 'axios';
 
 export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
+  const [selectedImage, setSelectedImage] = useState(userProfileImage); // 초기값을 현재 프로필 이미지로 설정
   const [nickname, setNickname] = useState(userNickname); // 현재 닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 이전 닉네임
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
@@ -21,6 +23,9 @@ export default function Profile() {
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleNicknameChange = async () => {
+    const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
+    const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
+
     if (nickname.trim().length === 0) {
       setIsNicknameEmpty(true);
       setIsNicknameValid(true); // 공백 상태로 받았을 때 정규식 메세지 받지 않기 위해 true로 설정
@@ -37,14 +42,25 @@ export default function Profile() {
       setIsNicknameValid(false); // 닉네임이 유효하지 않음
       setIsNicknameChecked(false); // 닉네임이 유효하지 않으면 중복 검사도 통과하지 않았다고 설정
       return; // 유효하지 않으면 함수 중단
-    } else {
-      setIsNicknameValid(true); // 유효성 검사 통과
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:8080/api/users/${userId}/nick-name`, { nickName: nickname }, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // console.log("이름 변경 성공 ", response.data);
+      alert("도깨비 이름이 변경되었어요 !");
       setIsNicknameChecked(true); // 닉네임 검사 통과
 
-      localStorage.setItem('previousNickname', userNickname); // 이전 닉네임을 로컬 스토리지에 따로 저장
-      setPreviousNickname(userNickname); // 이전 닉네임 div 업데이트
-      dispatch(setUserNickname(nickname)); // 업데이트한 닉네임을 스토어에 새로 업데이트, 이미지는 changeModal에서 업데이트
-      alert("도깨비 이름이 변경되었어요 !");
+      localStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
+      setPreviousNickname(userNickname); // 이전 닉네임 상태 업데이트
+
+    } catch (error) {
+      console.error("이름 변경 에러", error);
+      alert("이름을 변경하지 못했어요..");
     }
   };
 
@@ -56,11 +72,22 @@ export default function Profile() {
       alert("이름은 2자 이상 10자 이하의 한글, 영어, 숫자만 사용할 수 있어요!");
       return false;
     }
-    // 서버로부터 응답을 받아 중복 여부를 검사할 위치 (백 API요청 로직 필요)
+    
     return true;
   };
 
-  // 로컬 스토리지에서 이전 닉네임 불러오기
+  // "저장" 버튼을 통해 닉네임과 이미지를 리덕스 스토어에 저장
+  const handleSaveProfile = () => {
+    // console.log("변경한 이미지 :", selectedImage)
+    // console.log("변경한 닉네임 :", nickname)
+    dispatch(setUserProfileImage(selectedImage));
+    dispatch(setUserNickname(nickname));
+
+    alert("도깨비 정보가 성공적으로 저장되었어요 !");
+    navigate("/hub")
+  };
+
+  // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기
   useEffect(() => {
     const storedPreviousNickname = localStorage.getItem('previousNickname');
     if (storedPreviousNickname) {
@@ -101,7 +128,7 @@ export default function Profile() {
               className="mt-5 bg-white text-black font-bold p-2 rounded-lg w-1/3">
               도깨비 변경
             </button>
-            {isModalOpen && <ChangeModal onClose={handleCloseModal} />}
+            {isModalOpen && <ChangeModal onClose={handleCloseModal} onSelectImage={(image) => setSelectedImage(image)}/>}
           </div>
           
           {/* 오른쪽 닉네임 변경 영역 */}
@@ -145,7 +172,10 @@ export default function Profile() {
         
         {/* 저장하기 영역 */}
         <div className='felx justify-center mt-10'>
-          <button className="bg-white text-black font-bold p-2 rounded-lg w-20">
+          <button
+            onClick={handleSaveProfile}
+            className="bg-white text-black font-bold p-2 rounded-lg w-20"
+          >
             저 장
           </button>
         </div>
