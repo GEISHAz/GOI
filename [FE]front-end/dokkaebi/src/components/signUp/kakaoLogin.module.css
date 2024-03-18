@@ -90,8 +90,15 @@
   font-weight: bold;
 }
 
+.nicknameOkay {
+  color: #4CAF50;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}
+
 .nicknameValid {
-  color: #4CAF50; /* 밝은 초록색 */
+  color: #FFC0CB;
   margin-right: 10px;
   align-self: center;
   font-weight: bold;
