@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./InvestmentInfo.module.css";
+import StockExchange from "../../components/gamePlay/StockExchange";
 
 export default function InvestmentInfo(props) {
   const [colorClass, setColorClass] = useState("");
+  const [stockExchangeModal, setStockExchangeModal] = useState(false);
+
+  const stockExchangeModalOpen = () => {
+    setStockExchangeModal(true);
+  };
 
   useEffect(() => {
     const percent = props.percent;
@@ -29,10 +35,15 @@ export default function InvestmentInfo(props) {
         <p>{props.percent}%</p>
       </div>
       <div className={styles.buttons}>
-        <button className={styles.buyButtons}>매수</button>
+        <button className={styles.buyButtons} onClick={stockExchangeModalOpen}>
+          매수
+        </button>
         <hr />
         <button className={styles.sellButtons}>매도</button>
       </div>
+      {stockExchangeModal && (
+        <StockExchange setStockExchangeModal={setStockExchangeModal} />
+      )}
     </div>
   );
 }
