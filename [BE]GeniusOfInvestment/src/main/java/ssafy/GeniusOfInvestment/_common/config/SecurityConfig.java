@@ -11,12 +11,17 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ssafy.GeniusOfInvestment._common.jwt.JwtAuthorizationFilter;
 import ssafy.GeniusOfInvestment._common.jwt.JwtExceptionFilter;
 import ssafy.GeniusOfInvestment._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import ssafy.GeniusOfInvestment._common.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import ssafy.GeniusOfInvestment._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import ssafy.GeniusOfInvestment._common.oauth2.service.CustomOAuth2UserService;
+
+import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,9 +39,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/api/members/**").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
@@ -51,8 +58,24 @@ public class SecurityConfig {
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class);
+                .addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class)
+                .build();
+    }
 
-        return http.build();
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:8080",
+                "http://127.0.0.1:5500", "http://localhost:5173", "http://127.0.0.1:5173",
+                "https://i10d207.p.ssafy.io:8443/" , "https://i10d207.p.ssafy.io:8443/api"
+        ));
+
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

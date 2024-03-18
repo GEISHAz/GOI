@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/*SNAPSHOT.jar
 ARG JASYPT_KEY
 
 ENV JASYPT_KEY=$JASYPT_KEY
@@ -9,4 +9,4 @@ COPY ${JAR_FILE} app.jar
 
 EXPOSE 8080
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-DJASYPT_KEY=${JASYPT_KEY}", "-jar", "app.jar"]

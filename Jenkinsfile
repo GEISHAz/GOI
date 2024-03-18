@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        JASYPT_KEY = credentials('JASYPT_KEY_CREDENTIAL_ID')
+        JASYPT_KEY = credentials('JASYPT_KEY')
     }
 
     stages {
@@ -10,23 +10,24 @@ pipeline {
             steps {
                 dir('[BE]GeniusOfInvestment') {
                     sh 'chmod +x ./gradlew'
-                    // 환경 변수 JASYPT_KEY 값을 직접 사용
-                    sh './gradlew clean build -DJASYPT_KEY=${JASYPT_KEY}'
+					sh './gradlew clean build'
                 }
             }
         }
-        stage('Docker Compose build') {
+		
+		stage('Docker image build') {
             steps {
-                script {
-                    // Docker Compose를 사용하여 서비스 빌드 및 실행
-                    sh 'Deploy/docker-compose up -d'
+                dir('[BE]GeniusOfInvestment') {
+					sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
                 }
             }
         }
-        stage('Remove Images') {
+		
+		stage('Docker container run') {
             steps {
-                script {
-                    sh 'docker image prune -f'
+                dir('[BE]GeniusOfInvestment') {
+				    sh 'docker rm -f backend'
+					sh 'docker run -it -d -p 8080:8080 --name backend backend'
                 }
             }
         }

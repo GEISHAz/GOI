@@ -88,4 +88,7 @@ public class UserService {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
         }
     }
+
+    public void joinChannel(Long userId) {
+    }
 }
