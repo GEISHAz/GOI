@@ -115,3 +115,22 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.myMenu {
+    z-index: 15;
+    height: 110px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 132px;
+    left: 8px;
+}
+
+.myMenu > button {
+    width: 192px;
+    height: 44px;
+    background: black;
+    color: white;
+    margin-bottom: 12px;
+    font-size: 24px;
+}
