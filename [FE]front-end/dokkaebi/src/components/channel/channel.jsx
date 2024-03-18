@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styles from './channel.module.css';
 
 export default function Channel() {
@@ -33,14 +33,14 @@ export default function Channel() {
       {/* 채널 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}>
         <h1 className="text-white font-Bit text-5xl mb-4">채널 선택</h1>
-        <div className="grid grid-cols-2 gap-4 w-full m-4"> {/* 컬럼 2개짜리 그리드 */}
-          {channels.map(channel => (
-            <div key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
+        <div className="grid grid-cols-2 gap-4 w-full m-4">
+          {channels.map((channel, index) => (
+            <Link to={`/channel/${index}`} key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
               <div className="py-2 px-4 w-full flex flex-row justify-between items-center">
                 <h2 className="text-black font-Bit text-3xl">{channel.name}</h2>
                 <span className="text-blue-500 text-bold text-2xl">{channel.count}/100</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

@@ -1,0 +1,13 @@
+.squareContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .mainContent {
+    display: flex;
+    flex: 1;
+  }
+  
+  /* TopButtons, UserList, RoomList, ChatContainer 스타일 추가 */
+  

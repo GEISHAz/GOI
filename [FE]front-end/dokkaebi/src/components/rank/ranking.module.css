@@ -1,0 +1,24 @@
+.rankContainer {
+    width: 70%;
+    padding: 4% 5%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 20px; 
+  }
+
+.rankBox {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 3%;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.myrankBox {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 3%;
+  margin-left: 4px;
+  margin-right: 4px;
+}
