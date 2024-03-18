@@ -20,7 +20,8 @@ public enum ErrorType {
 
 
     //****************************Game****************************//
-
+    IS_NOT_MANAGER(HttpStatus.UNAUTHORIZED, "방장만이 요청을 할 수 있습니다."),
+    NOT_YET_READY(HttpStatus.FORBIDDEN, "모든 사용자가 레디를 해야됩니다.")
     ;
 
 

@@ -2,9 +2,8 @@ package ssafy.GeniusOfInvestment.game;
 
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import ssafy.GeniusOfInvestment.entity.redis.GameRoom;
+import ssafy.GeniusOfInvestment.redis.GameRoom;
 
 import java.util.Map;
 

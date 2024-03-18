@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity.redis;
+package ssafy.GeniusOfInvestment.redis;
 
 import lombok.*;
 
