@@ -7,7 +7,7 @@ import green from '../../images/signUp/green.gif';
 import yellow from '../../images/signUp/yellow.gif';
 import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
-import styles from './kakaoLogin.module.css'
+import styles from './getUserLogin.module.css';
 
 export default function choiceModal({ onClose }) {
   const [selectedImage, setSelectedImage] = useState('');

@@ -25,7 +25,7 @@ export default function LoginCallback() {
         if (nextPage === "main") {
           return navigate("/")
         } else {
-          return navigate("/kakaoLogin")
+          return navigate("/getUserLogin")
         }
       } else {
         return navigate("/")
