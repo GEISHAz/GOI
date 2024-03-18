@@ -6,9 +6,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 import ssafy.GeniusOfInvestment.entity.redis.GameRoom;
 
+import java.util.Map;
+
 @Repository
 public class GameRepository {
-    private final String hashReference = "GameRoom";
+    private final String hashReference = "GameRoom"; //DB의 테이블 역할
     @Resource(name = "redisTemplate") // 빨간 줄 무시
     private HashOperations<String, Long, GameRoom> hashOperations;
 
@@ -22,5 +24,13 @@ public class GameRepository {
 
     public void updateGameRoom(GameRoom room){
         hashOperations.put(hashReference, room.getId(), room);
+    }
+
+    public Map<Long, GameRoom> getAllGameRooms(){
+        return hashOperations.entries(hashReference);
+    }
+
+    public void deleteGameRoom(Long id){
+        hashOperations.delete(hashReference, id);
     }
 }

@@ -15,5 +15,5 @@ public class MyTradingInfo implements Serializable {
     private Long marketVal;
     private Long investVal;
     private Long yoy; //작년 대비 값(-가능) ex)-27000(원)
-    private List<BreakDown> breakDowns;
+    private List<BreakDown> breakDowns; //나의 종목별 거래내역
 }
