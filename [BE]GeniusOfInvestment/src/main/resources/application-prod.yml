@@ -1,0 +1,15 @@
+spring:
+
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+    redis:
+      host: localhost
+      port: 6379
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: gumid202
+    password: gumid202
+    url: ENC(DJe1+vNLc9cScQ5N4JKow1YRNV/jDA/n5UZ0fg+Ec/2YRk5lUe1s3wOM0fnw9vIxl213L6O/kkSaECq4uBBrNG7j7zrgaE1qbmK3JH0rChc0H5HruwUkvOoUfbVWtWfQulIpRkHtU4/6nMCd5e7Hjw==)
