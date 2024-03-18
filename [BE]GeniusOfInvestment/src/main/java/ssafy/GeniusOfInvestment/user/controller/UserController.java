@@ -54,6 +54,7 @@ public class UserController {
 
     @GetMapping("/{id}/joinChannel")
     public SuccessResponse<UserRankResponseDto> joinChannel(@PathVariable(value = "id") Long userId) {
+        userService.joinChannel(userId);
         return SuccessResponse.of(SuccessType.GET_USER_RANK_SUCCESSFULLY, userService.getUserRank(userId));
     }
 }
