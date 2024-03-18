@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './profile.module.css'
@@ -40,7 +40,9 @@ export default function Profile() {
     } else {
       setIsNicknameValid(true); // 유효성 검사 통과
       setIsNicknameChecked(true); // 닉네임 검사 통과
-      setPreviousNickname(userNickname); // 변경하기 전 닉네임을 한번 저장
+
+      localStorage.setItem('previousNickname', userNickname); // 이전 닉네임을 로컬 스토리지에 따로 저장
+      setPreviousNickname(userNickname); // 이전 닉네임 div 업데이트
       dispatch(setUserNickname(nickname)); // 업데이트한 닉네임을 스토어에 새로 업데이트, 이미지는 changeModal에서 업데이트
       alert("도깨비 이름이 변경되었어요 !");
     }
@@ -57,6 +59,14 @@ export default function Profile() {
     // 서버로부터 응답을 받아 중복 여부를 검사할 위치 (백 API요청 로직 필요)
     return true;
   };
+
+  // 로컬 스토리지에서 이전 닉네임 불러오기
+  useEffect(() => {
+    const storedPreviousNickname = localStorage.getItem('previousNickname');
+    if (storedPreviousNickname) {
+      setPreviousNickname(storedPreviousNickname);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
@@ -98,30 +108,38 @@ export default function Profile() {
           <div className="flex flex-col items-stretch p-5 w-1/2">
             <div className='flex flex-row justify-between mb-5'>
               <h1 className='font-bold text-white text-2xl'>도깨비 이름</h1>
-              <h1 className='font-bold text-white text-xl'>
+              <h1 className='font-bold text-white text-xl my-auto'>
                 {previousNickname ? `Prev. ${previousNickname}` : "이전 도깨비 이름"}
               </h1>
             </div>
-            <input
-              type="text"
-              placeholder="닉네임 입력"
-              value={nickname}
-              maxLength={10}
-              className={`${styles.inputBackground} mx-auto text-center bg-white`}
-              onChange={(e) => setNickname(e.target.value)}
-            />
-            <div className='w-full flex justify-end mt-5'>
-              <div className='flex justify-center items-center mr-2'>
+            <div className='flex flex-row justify-between mb-5'>
+              <input
+                type="text"
+                placeholder="닉네임 입력"
+                value={nickname}
+                maxLength={10}
+                className={`${styles.inputBackground} text-center bg-white`}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+              <button
+                onClick={handleNicknameChange}
+                className="bg-white text-black font-bold p-2 rounded-lg w-20 mr-2">
+                변 경
+              </button>
+            </div>
+            {/* <h1 className='font-bold text-white text-xl'>Curr. {nickname}</h1> */}
+            <div className='w-full flex justify-end'>
+              <div className='flex justify-center items-center'>
                 {isNicknameEmpty && <span className={`${styles.nicknameWarning}`}>이름이 입력되지 않았어요 !</span>}
                 {!isNicknameEmpty && isNicknameChecked && <span className={`${styles.nicknameOkay}`}>도깨비 이름을 변경했어요 !</span>}
                 {!isNicknameValid && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}
               </div>
-              <button
-                onClick={handleNicknameChange}
-                className="bg-white text-black font-bold p-2 rounded-lg w-20">
-                변 경
-              </button>
             </div>
+            <h1 className='font-bold text-white text-xl flex justify-center my-auto'>
+              반가워요
+              <span className='font-bold text-pink-300'>&nbsp;{nickname}&nbsp;</span>
+              도깨비님 !
+            </h1>
           </div>
         </div>
         

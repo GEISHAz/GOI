@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { setUserNickname } from '../../features/login/authSlice';
 import ChoiceModal from './choiceModal.jsx';
-import styles from './kakaoLogin.module.css'
+import styles from './getUserLogin.module.css'
 import signUp from '../../images/signUp/signUp.gif';
 import blue from '../../images/signUp/blue.gif';
 import brown from '../../images/signUp/brown.gif';
@@ -51,7 +51,7 @@ export default function KakaoLogin() {
       return; // 함수 실행 중단
     }
 
-    // 백으로 api 요청
+    // 백엔드으로 중복검사 api 요청
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
       const response = await axios.put(`{http://localhost:8080//api/users/${userId}/nick-name}`, {
