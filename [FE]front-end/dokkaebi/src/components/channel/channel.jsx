@@ -35,7 +35,7 @@ export default function Channel() {
         <h1 className="text-white font-Bit text-5xl mb-4">채널 선택</h1>
         <div className="grid grid-cols-2 gap-4 w-full m-4">
           {channels.map((channel, index) => (
-            <Link to={`/channel/${index}`} key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
+            <Link to={`/channel/${index + 1}`} key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
               <div className="py-2 px-4 w-full flex flex-row justify-between items-center">
                 <h2 className="text-black font-Bit text-3xl">{channel.name}</h2>
                 <span className="text-blue-500 text-bold text-2xl">{channel.count}/100</span>

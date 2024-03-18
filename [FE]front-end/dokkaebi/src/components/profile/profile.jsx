@@ -71,7 +71,7 @@ export default function Profile() {
         </div>
         
         {/* 저장하기 영역 */}
-        <div className='felx justify-center mt-20'>
+        <div className='flex justify-center mt-20'>
           <button className="bg-white text-black font-bold p-2 rounded-lg w-20">
             저 장
           </button>
