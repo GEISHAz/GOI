@@ -11,10 +11,9 @@ import orange from '../../images/login/orange.gif';
 export default function LoginComponent() {
   const navigate = useNavigate();
 
-  // const KAKAO_AUTH_URL = '';
+  const KAKAO_AUTH_URL = 'http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/loginCallback&mode=login';
   const handleLogin = () => {
-    navigate('/kakaoLogin')
-    // window.location.href = KAKAO_AUTH_URL;
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (

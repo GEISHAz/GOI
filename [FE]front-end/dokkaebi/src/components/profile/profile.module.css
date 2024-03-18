@@ -30,3 +30,24 @@
   box-sizing: border-box;
   border-radius: 10px;
 }
+
+.nicknameWarning {
+  color: #D32F2F;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}
+
+.nicknameOkay {
+  color: #4CAF50;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}
+
+.nicknameValid {
+  color: #FFC0CB;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}

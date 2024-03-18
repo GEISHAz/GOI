@@ -103,7 +103,7 @@ export default function hubBottom() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: slide === currentSlide ? 1 : 0.4 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.35, ease: "linear" }}
+                transition={{ duration: 1.15, ease: "easeOut" }}
                 className={`${Styles.card} ${slide === currentSlide ? Styles.active : Styles.unactivate}`}
                 onClick={() => handleSlideClick(slide)}
               >
