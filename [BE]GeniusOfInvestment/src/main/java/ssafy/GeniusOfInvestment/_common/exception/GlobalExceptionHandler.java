@@ -40,24 +40,10 @@ public class GlobalExceptionHandler {
         return ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(RuntimeException.class)
-    public ErrorResponse handleRuntimeException(Exception e) {
-        log.error("[RuntimeException]", e);
-        return ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomBadRequestException.class)
     protected ErrorResponse handleCustomBadRequestException(CustomBadRequestException e) {
         log.error("[CustomBadRequestException]");
-        return ErrorResponse.from(e.getErrorType());
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(CustomServerErrorException.class)
-    public ErrorResponse handleCustomServerErrorException(CustomServerErrorException e) {
-        log.error("[CustomServerErrorException]", e);
         return ErrorResponse.from(e.getErrorType());
     }
 
