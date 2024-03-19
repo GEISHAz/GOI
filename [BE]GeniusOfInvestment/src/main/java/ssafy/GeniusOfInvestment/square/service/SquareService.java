@@ -49,7 +49,7 @@ public class SquareService {
         list.add(GameUser
                 .builder()
                 .userId(user.getId())
-                .isSkip(false)
+                .isReady(false)
                 .isManager(true)
                 .build());
 
