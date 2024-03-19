@@ -10,6 +10,104 @@
 
 .container {
   width: 880px;
-  height: 520px;
+  height: 400px;
   background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.companyInfoArea {
+  width: 440px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 24px
+}
+
+.chartImg {
+  height: 300px;
+  width: 400px;
+}
+
+.myStockInfo {
+  width: 440px;
+  height: 90%;
+  padding: 50px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.companyName {
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+}
+
+.displayInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.boldText {
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+  width: 100px;
+}
+
+.text > p {
+  font-family: Galmuri11;
+  display: inline-block;
+  width: 125px;
+  text-align: center;
+}
+
+.buyAndSellButton {
+  margin: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputSelectorArea{
+  display: flex;
+  flex-direction: row;
+  padding: auto 12px;
+}
+
+.inputNumber{
+  text-align: center;
+  width: 240px;
+  border-top-left-radius: 10px;
+}
+
+.ju {
+  background: black;
+  color: white;
+  width: 60px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 10px;
+}
+
+.maesuButton{
+  width: 300px;
+  height: 44px;
+  background: #FF6E6E;
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+  color: white;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
 }

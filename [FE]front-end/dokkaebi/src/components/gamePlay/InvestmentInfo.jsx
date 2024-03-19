@@ -42,7 +42,7 @@ export default function InvestmentInfo(props) {
         <button className={styles.sellButtons}>매도</button>
       </div>
       {stockExchangeModal && (
-        <StockExchange setStockExchangeModal={setStockExchangeModal} />
+        <StockExchange setStockExchangeModal={setStockExchangeModal} company={props.company} price={props.price} percent={props.percent} />
       )}
     </div>
   );

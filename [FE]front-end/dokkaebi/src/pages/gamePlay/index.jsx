@@ -6,12 +6,14 @@ import Chat from "../../components/gamePlay/Chat";
 import Investment from "../../components/gamePlay/Investment";
 import InfoStore from "../../components/gamePlay/InfoStore";
 import MyStock from "../../components/gamePlay/MyStock";
+import MyInfo from "../../components/gamePlay/MyInfo";
 import { useState } from "react";
 
 export default function GamePlay() {
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
+  const [myInfoModal, setMyInfoModal] = useState(false);
 
   const openInfoStoreModal = () => {
     setInfoStoreModalOpen(true);
@@ -20,6 +22,10 @@ export default function GamePlay() {
   const openMyStockModal = () => {
     setMyStockModal(true);
   };
+
+  const openMyInfoModal = () => {
+    setMyInfoModal(true);
+  }
 
   return (
     <div className={styles.views}>
@@ -54,7 +60,7 @@ export default function GamePlay() {
       </div>
       <div className={styles.myMenu}>
         <button onClick={openMyStockModal}>내 주식 확인</button>
-        <button>구매 정보 확인</button>
+        <button onClick={openMyInfoModal}>구매 정보 확인</button>
       </div>
 
       {infoStoreModalOpen && (
@@ -62,6 +68,8 @@ export default function GamePlay() {
       )}
 
       {myStockModal && <MyStock setMyStockModal={setMyStockModal} />}
+
+      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal}/>}
     </div>
   );
 }
