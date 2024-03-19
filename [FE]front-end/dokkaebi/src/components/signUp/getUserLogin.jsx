@@ -179,10 +179,10 @@ export default function getUserLogin() {
             />
           </div>
           <div className='w-full flex justify-end mb-10'>
-          {isNicknameEmpty && <span className={`${styles.nicknameWarning}`}>이름이 입력되지 않았어요!</span>}
-          {!isNicknameEmpty && isNicknameChecked && !nicknameDuplicateError && <span className={`${styles.nicknameOkay}`}>사용 가능한 도깨비 이름이에요!</span>}
-          {!isNicknameValid && !nicknameDuplicateError && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
-          {nicknameDuplicateError && <span className={`${styles.nicknameWarning}`}>이름이 이미 있어요 !</span>}  
+          {isNicknameEmpty && <span className={`${styles.nicknameWarning} text-md`}>이름이 입력되지 않았어요!</span>}
+          {!isNicknameEmpty && isNicknameChecked && !nicknameDuplicateError && <span className={`${styles.nicknameOkay} text-md`}>사용 가능한 도깨비 이름이에요!</span>}
+          {!isNicknameValid && !nicknameDuplicateError && <span className={`${styles.nicknameValid} text-sm`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
+          {nicknameDuplicateError && <span className={`${styles.nicknameWarning} text-md`}>이름이 이미 있어요 !</span>}  
             <button
               className={`text-black bg-white font-bold py-2 px-4 ${styles.buttonBackground}`}
               onClick={handleCheckNickname}
