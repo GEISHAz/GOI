@@ -10,12 +10,24 @@
 }
 
 .container {
-  width: 880px;
-  height: 400px;
+  width: 480px;
+  height: 675px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.title {
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+}
+
+.myInfoListArea {
+  width: 90%;
+  height: 600px;
+  padding: 12px;
+  overflow-y: auto;
 }

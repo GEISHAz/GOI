@@ -1,13 +1,14 @@
-import React from 'react'
-import styles from './MyInfo.module.css'
-import { useRef } from 'react';
+import React from "react";
+import styles from "./MyInfo.module.css";
+import { useRef } from "react";
+import MyInfoList from "./MyInfoList";
 
 export default function MyInfo(props) {
   const myStockBackground = useRef();
 
   return (
     <div
-    className={styles.background}
+      className={styles.background}
       ref={myStockBackground}
       onClick={(e) => {
         if (e.target === myStockBackground.current) {
@@ -16,8 +17,16 @@ export default function MyInfo(props) {
       }}
     >
       <div className={styles.container}>
-        zz
+        <h1 className={styles.title}>구매 정보 내역</h1>
+        <div className={styles.myInfoListArea}>
+          <MyInfoList />
+          <MyInfoList />
+          <MyInfoList />
+          <MyInfoList />
+          <MyInfoList />
+          <MyInfoList />
+        </div>
       </div>
     </div>
-  )
+  );
 }
