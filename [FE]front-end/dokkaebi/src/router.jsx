@@ -21,6 +21,7 @@ export default function Router() {
       <Route path="/profile/:nickName" element={<Profile />} />
       <Route path="/gamePlay" element={<GamePlay />} />
       <Route path="/channel" element={<Channel />} />
+      <Route path="/square/:id" element={<Square />} />
       <Route path="/rank" element={<Rank />} />
     </Routes>
   );
