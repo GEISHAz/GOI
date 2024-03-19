@@ -109,7 +109,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 //TODO: 회원가입 페이지(닉네임)로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
                         .queryParam("access-token", token.getAccessToken())
-                        .queryParam("member-id", memberId)
+                        .queryParam("user-id", memberId)
                         .queryParam("next", "kakaoLogin")
                         .build().toUriString();
             }else {
@@ -119,7 +119,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 //TODO: 로그인 후 페이지로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
                         .queryParam("access-token", token.getAccessToken())
-                        .queryParam("member-id", findUser.get().getId())
+                        .queryParam("user-id", findUser.get().getId())
                         .queryParam("next", "main")
                         .build().toUriString();
             }
