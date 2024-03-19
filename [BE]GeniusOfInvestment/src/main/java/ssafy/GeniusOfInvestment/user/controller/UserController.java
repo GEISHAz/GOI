@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
+import ssafy.GeniusOfInvestment.user.dto.request.ExistNickNameRequestDto;
+import ssafy.GeniusOfInvestment.user.dto.request.UpdateUserInfoRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.response.RankInfoResponseDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateImageIdRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateNickNameRequestDto;
@@ -30,7 +32,6 @@ public class UserController {
     @PutMapping("/{id}/image-id")
     public SuccessResponse<Void> updateUserImageId(@PathVariable(value = "id") Long userId,
             @RequestBody UpdateImageIdRequestDto updateImageIdRequestDto) {
-        log.info(updateImageIdRequestDto.getImageId() + "controller");
         userService.updateUserImageId(userId, updateImageIdRequestDto);
         return SuccessResponse.from(SuccessType.UPDATE_USER_IMAGE_SUCCESSFULLY);
     }
@@ -41,6 +42,21 @@ public class UserController {
         userService.updateUserNickName(userId, updateNickNameRequestDto);
         return SuccessResponse.from(SuccessType.UPDATE_USER_NICKNAME_SUCCESSFULLY);
     }
+
+    @PutMapping("/{id}/info")
+    public SuccessResponse<Void> updateUserInfo(@PathVariable(value = "id") Long userId,
+            @RequestBody UpdateUserInfoRequestDto updateNickNameRequestDto) {
+        userService.updateUserInfo(userId, updateNickNameRequestDto);
+        return SuccessResponse.from(SuccessType.UPDATE_USER_INFO_SUCCESSFULLY);
+    }
+
+    @GetMapping("/exist/nick-name")
+    public SuccessResponse<Void> existNickName(@RequestBody ExistNickNameRequestDto existNickNameRequestDto){
+        userService.checkNickName(existNickNameRequestDto);
+        return SuccessResponse.from(SuccessType.CHECK_USER_NICKNAME_SUCCESSFULLY);
+    }
+
+
 
     @GetMapping("/rank")
     public SuccessResponse<List<RankInfoResponseDto>> getRankInfo() {

@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment.user.dto.request.ExistNickNameRequestDto;
+import ssafy.GeniusOfInvestment.user.dto.request.UpdateUserInfoRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.response.RankInfoResponseDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateImageIdRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateNickNameRequestDto;
@@ -60,6 +62,15 @@ public class UserService {
         user.updateNickName(updateNickNameRequestDto.getNickName());
     }
 
+    @Transactional
+    public void updateUserInfo(Long userId, UpdateUserInfoRequestDto updateNickNameRequestDto) {
+        User user = findUser(userId);
+        String nickname = updateNickNameRequestDto.getNickName();
+        validateDuplicatedNickname(nickname);
+        user.updateNickName(updateNickNameRequestDto.getNickName());
+        user.updateImageId(updateNickNameRequestDto.getImageId());
+    }
+
     public List<RankInfoResponseDto> getRankInfo() {
         return userRepository.findAllByOrderByExpDesc().stream().map(RankInfoResponseDto::from).collect(Collectors.toList());
     }
@@ -72,7 +83,9 @@ public class UserService {
     public User getAuthenticationUser(String userId) {
         return findUser(Long.parseLong(userId));
     }
-
+    public void checkNickName(ExistNickNameRequestDto existNickNameRequestDto) {
+        validateDuplicatedNickname(existNickNameRequestDto.getNickName());
+    }
 
     private User findUser(Long userId){
         return findById(userId)
@@ -85,10 +98,13 @@ public class UserService {
 
     private void validateDuplicatedNickname(String nickname) {
         if (userRepository.existsByNickName(nickname)) {
-            throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
+            throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
         }
     }
 
     public void joinChannel(Long userId) {
     }
+
+
+
 }
