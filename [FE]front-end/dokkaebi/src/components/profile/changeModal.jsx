@@ -8,16 +8,35 @@ import yellow from '../../images/signUp/yellow.gif';
 import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
 import styles from './changeModal.module.css';
+import axios from 'axios';
 
 export default function ChangeModal({ onClose, onSelectImage }) {
   // const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState('');
+  const userId = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("accessToken");
 
   // 이미지 선택 핸들러
-  const handleImageSelect = (image) => {
+  const handleImageSelect = async (image) => {
     setSelectedImage(image);
     // 업데이트한 이미지를 스토어에 새로 업데이트
     onSelectImage(image)
+
+    try {
+      console.log("userId 확인 :", userId)
+      console.log("accessToken 확인 :", accessToken)
+      const response = await axios.put(`http://localhost:8080/api/users/${userId}/image-id`, {
+        userProfileImage: image
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      console.log('프로필 이미지 선택 완료', response.data);
+    } catch (error) {
+      console.error('프로필 이미지 변경 실패:', error);
+      alert("프로필 이미지 변경에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
