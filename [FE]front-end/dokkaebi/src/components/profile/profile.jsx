@@ -216,7 +216,7 @@ export default function Profile() {
         </div>
         
         {/* 저장하기 영역 */}
-        <div className='felx justify-center mt-10'>
+        <div className='flex justify-center mt-10'>
           <button
             onClick={handleSaveProfile}
             className="bg-white text-black font-bold p-2 rounded-lg w-20"

@@ -7,6 +7,7 @@ import LoginCallback from './components/login/loginCallback.jsx';
 import Profile from './pages/profile/index.jsx';
 import GamePlay from './pages/gamePlay/index.jsx';
 import Channel from './pages/channel/index.jsx';
+import Square from './pages/square/index.jsx';
 import Rank from './pages/rank/index.jsx';
 
 export default function Router() {
