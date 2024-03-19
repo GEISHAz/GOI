@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import ssafy.GeniusOfInvestment._common.entity.Alram;
 
 
 /**
@@ -17,7 +16,7 @@ import ssafy.GeniusOfInvestment._common.entity.Alram;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAlram extends EntityPathBase<Alram> {
 
-    private static final long serialVersionUID = -775307685L;
+    private static final long serialVersionUID = 1634541503L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

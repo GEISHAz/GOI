@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
 
 
 /**
@@ -17,7 +16,7 @@ import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QChatRecord extends EntityPathBase<ChatRecord> {
 
-    private static final long serialVersionUID = 775204993L;
+    private static final long serialVersionUID = 489328029L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

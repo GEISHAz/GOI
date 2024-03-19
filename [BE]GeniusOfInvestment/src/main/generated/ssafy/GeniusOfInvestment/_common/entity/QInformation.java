@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import ssafy.GeniusOfInvestment._common.entity.Information;
 
 
 /**
@@ -16,7 +15,7 @@ import ssafy.GeniusOfInvestment._common.entity.Information;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QInformation extends EntityPathBase<Information> {
 
-    private static final long serialVersionUID = 1471849844L;
+    private static final long serialVersionUID = 1199598552L;
 
     public static final QInformation information = new QInformation("information");
 

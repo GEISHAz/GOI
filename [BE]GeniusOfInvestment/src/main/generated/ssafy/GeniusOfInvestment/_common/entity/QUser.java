@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,9 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import ssafy.GeniusOfInvestment._common.entity.Alram;
-import ssafy.GeniusOfInvestment._common.entity.Friend;
-import ssafy.GeniusOfInvestment._common.entity.User;
 
 
 /**
@@ -19,7 +16,7 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QUser extends EntityPathBase<User> {
 
-    private static final long serialVersionUID = -1271333757L;
+    private static final long serialVersionUID = 330423967L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
