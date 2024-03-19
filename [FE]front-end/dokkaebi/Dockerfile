@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN npm installq
+RUN npm install
 COPY . .
 
 # 5173번 포트 노출
