@@ -2,8 +2,7 @@ package ssafy.GeniusOfInvestment.square.repository;
 
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.HashOperations;
-import ssafy.GeniusOfInvestment.entity.User;
-import ssafy.GeniusOfInvestment.redis.RedisUser;
+import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 
 public class RedisUserRepository {
 

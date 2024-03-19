@@ -45,7 +45,7 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/users/exist/nick-name`, {
+      const response = await axios.post(`http://localhost:8080/api/users/${userId}/exist/nick-name`, {
         nickName: nickname
       }, {
         headers: {

@@ -1,9 +1,12 @@
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
+import { useDispatch } from "react-redux";
+import { setIsLogin } from "../../features/login/authSlice";
 
 export default function LoginCallback() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getTokens = async() => {
@@ -19,6 +22,7 @@ export default function LoginCallback() {
       if (accessToken !== null) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("userId", userId);
+        dispatch(setIsLogin(true));
       }
 
       if (localStorage.getItem("accessToken")) {

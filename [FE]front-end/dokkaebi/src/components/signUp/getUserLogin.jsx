@@ -56,8 +56,8 @@ export default function getUserLogin() {
     // 백엔드으로 중복검사 api 요청
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
-      console.log("여기 닉네임 :", nickname)
-      const response = await axios.post(`http://localhost:8080/api/users/exist/nick-name`, {
+      console.log("설정한 닉네임 :", nickname)
+      const response = await axios.post(`http://localhost:8080/api/users/${userId}/exist/nick-name`, {
         nickName: nickname,
       }, {
         headers: {
@@ -179,10 +179,10 @@ export default function getUserLogin() {
             />
           </div>
           <div className='w-full flex justify-end mb-10'>
-          {isNicknameEmpty && <span className={`${styles.nicknameWarning}`}>이름이 입력되지 않았어요!</span>}
-          {!isNicknameEmpty && isNicknameChecked && !nicknameDuplicateError && <span className={`${styles.nicknameOkay}`}>사용 가능한 도깨비 이름이에요!</span>}
-          {!isNicknameValid && !nicknameDuplicateError && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
-          {nicknameDuplicateError && <span className={`${styles.nicknameWarning}`}>이름이 이미 있어요 !</span>}  
+          {isNicknameEmpty && <span className={`${styles.nicknameWarning} text-md`}>이름이 입력되지 않았어요!</span>}
+          {!isNicknameEmpty && isNicknameChecked && !nicknameDuplicateError && <span className={`${styles.nicknameOkay} text-md`}>사용 가능한 도깨비 이름이에요!</span>}
+          {!isNicknameValid && !nicknameDuplicateError && <span className={`${styles.nicknameValid} text-sm`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
+          {nicknameDuplicateError && <span className={`${styles.nicknameWarning} text-md`}>이름이 이미 있어요 !</span>}  
             <button
               className={`text-black bg-white font-bold py-2 px-4 ${styles.buttonBackground}`}
               onClick={handleCheckNickname}

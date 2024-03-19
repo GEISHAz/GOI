@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QRoom extends EntityPathBase<Room> {
 
-    private static final long serialVersionUID = -1271426669L;
+    private static final long serialVersionUID = 330331055L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

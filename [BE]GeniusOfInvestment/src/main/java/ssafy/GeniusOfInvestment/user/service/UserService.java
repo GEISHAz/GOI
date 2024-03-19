@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.user.dto.request.ExistNickNameRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateUserInfoRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.response.RankInfoResponseDto;
@@ -66,7 +66,7 @@ public class UserService {
     public void updateUserInfo(Long userId, UpdateUserInfoRequestDto updateNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = updateNickNameRequestDto.getNickName();
-        if(!user.getNickName().equals(nickname)){
+        if(user.getNickName()==null || !user.getNickName().equals(nickname)){
             validateDuplicatedNickname(nickname);
             user.updateNickName(updateNickNameRequestDto.getNickName());
         }
@@ -88,7 +88,7 @@ public class UserService {
     public void checkNickName(Long userId, ExistNickNameRequestDto existNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = existNickNameRequestDto.getNickName();
-        if(user.getNickName().equals(nickname)){
+        if(user.getNickName()!=null && user.getNickName().equals(nickname)){
             throw new CustomBadRequestException(ErrorType.NOT_VALID_USER_NICKNAME);
         }
         validateDuplicatedNickname(existNickNameRequestDto.getNickName());
