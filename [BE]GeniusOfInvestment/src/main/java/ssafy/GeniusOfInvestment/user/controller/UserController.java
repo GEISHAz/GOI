@@ -50,9 +50,9 @@ public class UserController {
         return SuccessResponse.from(SuccessType.UPDATE_USER_INFO_SUCCESSFULLY);
     }
 
-    @PostMapping("/exist/nick-name")
-    public SuccessResponse<Void> existNickName(@RequestBody ExistNickNameRequestDto existNickNameRequestDto){
-        userService.checkNickName(existNickNameRequestDto);
+    @PostMapping("/{id}/exist/nick-name")
+    public SuccessResponse<Void> existNickName(@PathVariable(value = "id") Long userId, @RequestBody ExistNickNameRequestDto existNickNameRequestDto){
+        userService.checkNickName(userId,existNickNameRequestDto);
         return SuccessResponse.from(SuccessType.CHECK_USER_NICKNAME_SUCCESSFULLY);
     }
 

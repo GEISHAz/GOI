@@ -66,8 +66,10 @@ public class UserService {
     public void updateUserInfo(Long userId, UpdateUserInfoRequestDto updateNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = updateNickNameRequestDto.getNickName();
-        validateDuplicatedNickname(nickname);
-        user.updateNickName(updateNickNameRequestDto.getNickName());
+        if(!user.getNickName().equals(nickname)){
+            validateDuplicatedNickname(nickname);
+            user.updateNickName(updateNickNameRequestDto.getNickName());
+        }
         user.updateImageId(updateNickNameRequestDto.getImageId());
     }
 
@@ -83,7 +85,12 @@ public class UserService {
     public User getAuthenticationUser(String userId) {
         return findUser(Long.parseLong(userId));
     }
-    public void checkNickName(ExistNickNameRequestDto existNickNameRequestDto) {
+    public void checkNickName(Long userId, ExistNickNameRequestDto existNickNameRequestDto) {
+        User user = findUser(userId);
+        String nickname = existNickNameRequestDto.getNickName();
+        if(user.getNickName().equals(nickname)){
+            throw new CustomBadRequestException(ErrorType.NOT_VALID_USER_NICKNAME);
+        }
         validateDuplicatedNickname(existNickNameRequestDto.getNickName());
     }
 
