@@ -1,0 +1,33 @@
+.myInfoListBackground {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 15px;
+  margin: 12px;
+}
+
+.infoListTitleArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.infoListTitleArea > h1 {
+  font-family: DNFBitBitv2;
+}
+
+.infoListTitleArea > p {
+  font-family: Galmuri11;
+}
+
+.infoListMainArea {
+  word-break: break-word;
+}
+
+.infoListMainArea > p {
+  text-align: center;
+  font-family: Galmuri11;
+}

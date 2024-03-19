@@ -7,16 +7,53 @@ import green from '../../images/signUp/green.gif';
 import yellow from '../../images/signUp/yellow.gif';
 import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
-import styles from './kakaoLogin.module.css'
+import styles from './getUserLogin.module.css';
+import axios from 'axios';
 
 export default function choiceModal({ onClose }) {
   const [selectedImage, setSelectedImage] = useState('');
   const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("accessToken");
+
+  // 이미지들에게 번호 부여
+  const images = [
+    { id: 1, src: blue, alt: "파랑도깨비" },
+    { id: 2, src: brown, alt: "밤색도깨비" },
+    { id: 3, src: yellow, alt: "노랑도깨비" },
+    { id: 4, src: pink, alt: "핑크도깨비" },
+    { id: 5, src: orange, alt: "오렌지도깨비" },
+    { id: 6, src: green, alt: "초록도깨비" },
+  ];
 
   // 선택된 사진 -> dispatch하여 store에 저장
-  const handleImageSelect = (image) => {
-    setSelectedImage(image);
-    dispatch(setUserProfileImage(image));
+  const handleImageSelect = async (selectedSrc) => {
+    const selectedImageObj = images.find(image => image.src === selectedSrc);
+  
+    if (!selectedImageObj) {
+      console.error('선택된 이미지를 찾을 수 없습니다.');
+      return;
+    }
+
+    setSelectedImage(selectedSrc);
+    dispatch(setUserProfileImage(selectedImageObj));
+
+    try {
+      // console.log("userId 확인 :", userId)
+      // console.log("accessToken 확인 :", accessToken)
+      const response = await axios.put(`http://localhost:8080/api/users/${userId}/image-id`, {
+        imageId: selectedImageObj.id
+      }, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      console.log("보낸 이미지 id 확인 :", selectedImageObj.id)
+      console.log('프로필 이미지 선택 완료', response.data);
+    } catch (error) {
+      console.error('프로필 이미지 변경 실패:', error);
+      alert("프로필 이미지 변경에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (

@@ -1,14 +1,14 @@
+p {
+  font-family: DNFBitBitv2;
+}
+
 .investmentInfo {
   display: flex;
   direction: row;
-  width: ;
   justify-content: space-between;
   align-items: center;
   background: white;
-  border-bottom-left-radius: 8px;
-  border-top-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 8px;
   margin: 6px auto;
 }
 
@@ -17,7 +17,6 @@
   height: 40px;
   background: black;
   color: white;
-  font-family: DNFBitBitv2;
   border-bottom-left-radius: 8px;
   border-top-left-radius: 8px;
   display: flex;
@@ -26,22 +25,31 @@
   align-items: center;
 }
 
-.upDownPercent {
-  font-family: DNFBitBitv2;
+.jusu {
+  width: 160px;
+  text-align: center;
+}
+
+.upDown {
+  width: 90px;
+  text-align: center;
 }
 
 .buttons {
   display: flex;
   direction: row;
+  justify-content: center;
   align-items: center;
   width: 150px;
+  font-family: DNFBitBitv2;
+  color: white;
 }
 
-hr{
-  height: 12px;
+hr {
+  height: 20px !important;
   width: 4px;
-  border-width:0;
-  color:#000;
+  border-width: 0;
+  color: #000;
   background-color: gray;
   border-radius: 10px;
 }
@@ -50,15 +58,26 @@ button {
   width: 60px;
   text-align: center;
   border-radius: 5px;
-  font-family: DNFBitBitv2;
   color: white;
-  margin: auto 12px;
+  margin: auto 12px !important;
 }
 
 .buyButtons {
-  background: #FF6E6E;
+  background: #ff6e6e;
 }
 
 .sellButtons {
-  background: #4E95FF;
+  background: #4e95ff;
+}
+
+.upDownPercentColorRed {
+  color: #ff6e6e;
+}
+
+.upDownPercentColorBlue {
+  color: #4e95ff;
+}
+
+.upDownPercentColorBlack {
+  color: black;
 }

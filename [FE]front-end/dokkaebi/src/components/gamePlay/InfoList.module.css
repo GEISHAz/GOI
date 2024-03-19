@@ -1,0 +1,61 @@
+.background {
+  width: 90%;
+  height: 44px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  direction: row;
+  justify-content: space-between;
+  margin: 4px auto;
+}
+
+.companyArea {
+  width: 192px;
+  height: 100%;
+  text-align: center;
+  background-color: black;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  color: white;
+  font-family: DNFBitBitv2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  font-family: DNFBitBitv2;
+  color: white;
+}
+
+hr {
+  height: 20px !important;
+  width: 4px;
+  border-width: 0;
+  color: #000;
+  background-color: gray;
+  border-radius: 10px;
+}
+
+button {
+  width: 90px;
+  height: 36px;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+  margin: auto 12px !important;
+}
+
+.levelOneButtons {
+  background: #ff6e6e;
+}
+
+.levelTwoButtons {
+  background: #4e95ff;
+}
+

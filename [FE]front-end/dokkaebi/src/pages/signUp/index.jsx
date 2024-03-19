@@ -1,4 +1,4 @@
-import KakaoLogin from "../../components/signUp/kakaoLogin";
+import GetUserLogin from "../../components/signUp/getUserLogin.jsx";
 import Background from '../../images/main/background.gif';
 
 export default function SignUp() {
@@ -16,7 +16,7 @@ export default function SignUp() {
 
   return (
     <div style={backgroundStyle}>
-      <KakaoLogin />
+      <GetUserLogin />
     </div>
   );
 }

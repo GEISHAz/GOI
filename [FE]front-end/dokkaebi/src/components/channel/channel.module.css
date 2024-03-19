@@ -1,0 +1,15 @@
+.channelContainer {
+  width: 70%;
+  padding: 2% 5%;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 20px; 
+}
+
+.channelBox {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
