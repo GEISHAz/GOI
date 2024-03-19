@@ -14,9 +14,11 @@ public enum SuccessType {
     LOGOUT_SUCCESSFULLY("로그아웃 성공"),
     UPDATE_USER_IMAGE_SUCCESSFULLY("프로필 이미지 수정 성공"),
     UPDATE_USER_NICKNAME_SUCCESSFULLY("닉네임 수정 성공"),
+    UPDATE_USER_INFO_SUCCESSFULLY("유저 정보 업데이트 성공"),
     GET_USER_INFO_SUCCESSFULLY("유저 정보 조회 성공"),
     GET_RANK_INFO_SUCCESSFULLY("랭크 정보 조회 성공"),
     GET_USER_RANK_SUCCESSFULLY("유저 랭크 조회 성공"),
+    CHECK_USER_NICKNAME_SUCCESSFULLY("닉네임 중복 체크 성공"),
 
     //****************************Room****************************//
 
