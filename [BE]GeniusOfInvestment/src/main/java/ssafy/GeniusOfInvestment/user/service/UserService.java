@@ -105,6 +105,4 @@ public class UserService {
     public void joinChannel(Long userId) {
     }
 
-
-
 }

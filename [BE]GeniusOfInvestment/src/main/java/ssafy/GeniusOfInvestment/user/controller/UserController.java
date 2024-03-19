@@ -50,13 +50,11 @@ public class UserController {
         return SuccessResponse.from(SuccessType.UPDATE_USER_INFO_SUCCESSFULLY);
     }
 
-    @GetMapping("/exist/nick-name")
+    @PostMapping("/exist/nick-name")
     public SuccessResponse<Void> existNickName(@RequestBody ExistNickNameRequestDto existNickNameRequestDto){
         userService.checkNickName(existNickNameRequestDto);
         return SuccessResponse.from(SuccessType.CHECK_USER_NICKNAME_SUCCESSFULLY);
     }
-
-
 
     @GetMapping("/rank")
     public SuccessResponse<List<RankInfoResponseDto>> getRankInfo() {
