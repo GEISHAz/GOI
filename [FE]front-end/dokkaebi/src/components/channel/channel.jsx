@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from './channel.module.css';
+import channel from '../../images/channel/icon_channel.png'
 
 export default function Channel() {
   const navigate = useNavigate();
@@ -32,7 +33,12 @@ export default function Channel() {
     
       {/* 채널 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}>
-        <h1 className="text-white font-Bit text-5xl mb-4">채널 선택</h1>
+        {/* 채널 헤더 */}
+        <div className="flex items-center mb-4 pr-10">
+          <img src={channel} alt="Channel Icon" className="h-20 w-20 mr-4" />
+          <h1 className="text-white font-Bit text-5xl">채널 선택</h1>
+        </div>
+        
         <div className="grid grid-cols-2 gap-4 w-full m-4">
           {channels.map((channel, index) => (
             <Link to={`/channel/${index + 1}`} key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
