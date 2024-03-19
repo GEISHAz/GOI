@@ -1,0 +1,23 @@
+.roomContainer {
+    width: 700px;
+    height: 260px;
+    padding: 4% 5%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 20px; 
+  }
+  
+  .roomBox {
+    width: 300px;
+    height: 110px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  .lockIcon {
+    width: 40px;
+    height: auto;
+  }

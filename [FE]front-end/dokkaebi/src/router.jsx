@@ -6,7 +6,7 @@ import KakaoLogin from './pages/signUp/index.jsx';
 import Profile from './pages/profile/index.jsx';
 import GamePlay from './pages/gamePlay/index.jsx';
 import Channel from './pages/channel/index.jsx';
-// import Square from './pages/square/index.jsx';
+import Square from './pages/square/index.jsx';
 import Rank from './pages/rank/index.jsx';
 
 export default function Router() {
@@ -19,7 +19,7 @@ export default function Router() {
       <Route path="/profile/:nickname" element={<Profile />} />
       <Route path="/gamePlay" element={<GamePlay />} />
       <Route path="/channel" element={<Channel />} />
-      {/* <Route path="/channel/:id" element={<Square/>} /> */}
+      <Route path="/channel/:id" element={<Square/>} />
       <Route path="/rank" element={<Rank />} />
     </Routes>
   );

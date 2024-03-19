@@ -1,13 +1,21 @@
 .squareContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
   
-  .mainContent {
-    display: flex;
-    flex: 1;
-  }
+.mainContent {
+  display: flex;
+  flex: 100%;
+}
   
-  /* TopButtons, UserList, RoomList, ChatContainer 스타일 추가 */
-  
+.leftContainer {
+  margin: 0px 3%;
+}
+
+.rightContainer {
+  /* width: 100%; */
+  margin: 0px 100px;
+  display: flex;
+  justify-content: center;
+}
