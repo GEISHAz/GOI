@@ -11,7 +11,7 @@ import brown from '../../images/signUp/brown.gif';
 import green from '../../images/signUp/green.gif';
 import axios from 'axios';
 
-export default function KakaoLogin() {
+export default function getUserLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 모달에서 선택된 사진 불러오기
@@ -19,6 +19,8 @@ export default function KakaoLogin() {
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태  n관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
+  const [nicknameDuplicateError, setNicknameDuplicateError] = useState(false);
+  const [showCheckButton, setShowCheckButton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userId = localStorage.getItem("userId");
   const accessToken = localStorage.getItem("accessToken")
@@ -55,7 +57,7 @@ export default function KakaoLogin() {
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
       console.log("여기 닉네임 :", nickname)
-      const response = await axios.put(`http://localhost:8080/api/users/${userId}/nick-name`, {
+      const response = await axios.post(`http://localhost:8080/api/users/exist/nick-name`, {
         nickName: nickname,
       }, {
         headers: {
@@ -67,11 +69,19 @@ export default function KakaoLogin() {
       setIsNicknameChecked(true);
       setIsNicknameEmpty(false);
       setIsNicknameValid(true); // 닉네임이 유효함
+      setNicknameDuplicateError(false) // 중복검사를 통과하였으니 초기화
       alert("도깨비 이름이 설정되었어요 !");
     } catch (err) {
-      console.log("닉네임 설정 실패 :", err);
-      alert("이름 설정을 실패했어요..");
-      // 여기에서는 에러에 따른 적절한 처리를 해야 합니다. 예를 들어, 중복된 닉네임이라는 응답이 오면 사용자에게 알림 등
+      console.error("닉네임 설정 실패", err);
+      if (err.response && err.response.data.statusCode === 401) {
+        alert("이미 존재하는 이름이에요 !");
+        setIsNicknameChecked(false);
+        setIsNicknameValid(false); // 중복된 닉네임으로 인한 유효하지 않음 표시
+        setNicknameDuplicateError(true) // 중복된 닉네임이 존재한다고 표시
+      } else {
+        alert("이름 설정을 실패했어요.. 규칙을 지켜서 다시 설정해주세요");
+        setNicknameDuplicateError(false); // 이 경우에는 중복 관련 에러가 아니므로 초기화
+      }
     }
   };
 
@@ -88,7 +98,7 @@ export default function KakaoLogin() {
   };
 
   // 첫 닉네임 -> dispatch하여 store에 저장
-  const handleSetInfo = () => {
+  const handleSetInfo = async () => {
     // 닉네임이 입력되지 않았다면 함수 중단
     if (!nickname) {
       setIsNicknameEmpty(true);
@@ -98,11 +108,11 @@ export default function KakaoLogin() {
 
     // 닉네임 중복검사를 하지 않았다면 함수 중단
     if (!isNicknameChecked || !isNicknameValid) {
-      alert("이름 중복 확인을 다시 해주세요 !");
+      alert("중복검사를 다시 확인해주세요 !");
       return;
     }
 
-    // 프로필 이미지 설정하지 않았다면 함수 중단
+    // 프로필 이미지 설정하지 않았다면 함수 중단1
     if (!userProfileImage) {
       alert("도깨비 이미지가 설정되지 않았어요 !")
       return;
@@ -110,12 +120,26 @@ export default function KakaoLogin() {
 
     // 닉네임과 이미지가 모두 설정된 경우에만 실행
     if (nickname && userProfileImage) {
-      // 닉네임 스토어에 저장, 첫 도깨비 이미지는 choiceModal에서 스토어에 저장함
-      dispatch(setUserNickname(nickname));
-      navigate("/hub")
-      // 추가적으로 회원가입 로직 실행 가능, 예: API 호출
-    } else {
-      // 오류 처리, 예: 닉네임 또는 이미지 미설정 경고
+      try {
+        // 여기에 회원가입 정보를 백엔드로 전송하는 API 호출 로직 추가
+        await axios.put(`http://localhost:8080/api/users/${userId}/info`, {
+          nickName: nickname,
+          imageId: userProfileImage.id,
+        }, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });                                   
+  
+        // 닉네임 스토어에 저장, 첫 도깨비 이미지는 choiceModal에서 스토어에 저장함
+        dispatch(setUserNickname(nickname));
+        alert("가입을 환영합니다 !");
+        console.log("가입 완료 !");
+        navigate("/hub");
+      } catch (error) {
+        console.error("회원가입 실패", error);
+        alert("가입 중에 오류가 발생했습니다. 다시 시도해주세요.", () => window.location.reload()); // 새로고침 한 번 해주기
+      }
     }
   };
 
@@ -156,8 +180,9 @@ export default function KakaoLogin() {
           </div>
           <div className='w-full flex justify-end mb-10'>
           {isNicknameEmpty && <span className={`${styles.nicknameWarning}`}>이름이 입력되지 않았어요!</span>}
-          {!isNicknameEmpty && isNicknameChecked && <span className={`${styles.nicknameOkay}`}>사용 가능한 도깨비 이름이에요!</span>}
-          {!isNicknameValid && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
+          {!isNicknameEmpty && isNicknameChecked && !nicknameDuplicateError && <span className={`${styles.nicknameOkay}`}>사용 가능한 도깨비 이름이에요!</span>}
+          {!isNicknameValid && !nicknameDuplicateError && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}  
+          {nicknameDuplicateError && <span className={`${styles.nicknameWarning}`}>이름이 이미 있어요 !</span>}  
             <button
               className={`text-black bg-white font-bold py-2 px-4 ${styles.buttonBackground}`}
               onClick={handleCheckNickname}
@@ -175,7 +200,11 @@ export default function KakaoLogin() {
 
           <div className="flex justify-center items-center mt-5 mb-20">
             <div className={`${styles.previewBox}`}>
-              {userProfileImage && <img src={userProfileImage} alt="초기 프로필 테마" className='w-32' />}
+              {userProfileImage && <img
+                src={userProfileImage.src}
+                alt={userProfileImage.alt}
+                className='w-32'
+              />}
             </div>
           </div>
         </div>

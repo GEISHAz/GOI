@@ -18,13 +18,13 @@ export default function Profile() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
+  const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleNicknameChange = async () => {
-    const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
-    const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
 
     if (nickname.trim().length === 0) {
       setIsNicknameEmpty(true);
@@ -45,7 +45,9 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.put(`http://localhost:8080/api/users/${userId}/nick-name`, { nickName: nickname }, {
+      const response = await axios.post(`http://localhost:8080/api/users/exist/nick-name`, {
+        nickName: nickname
+      }, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -60,7 +62,7 @@ export default function Profile() {
 
     } catch (error) {
       console.error("이름 변경 에러", error);
-      alert("이름을 변경하지 못했어요..");
+      alert("이미 존재하는 이름이에요 ! 다시 시도해주세요");
     }
   };
 
@@ -77,14 +79,57 @@ export default function Profile() {
   };
 
   // "저장" 버튼을 통해 닉네임과 이미지를 리덕스 스토어에 저장
-  const handleSaveProfile = () => {
-    // console.log("변경한 이미지 :", selectedImage)
-    // console.log("변경한 닉네임 :", nickname)
-    dispatch(setUserProfileImage(selectedImage));
-    dispatch(setUserNickname(nickname));
+  const handleSaveProfile = async () => {
+    // 변경 사항이 없는 경우를 체크하기 위한 변수
+    const hasNicknameChanged = nickname !== userNickname;
+    const hasImageChanged = selectedImage.id !== userProfileImage.id;
 
-    alert("도깨비 정보가 성공적으로 저장되었어요 !");
-    navigate("/hub")
+    // 닉네임만 바꾸고 중복 확인을 하지 않았을 경우
+    if (hasNicknameChanged && !isNicknameChecked) {
+      alert("변경 버튼을 눌러 중복 확인을 해주세요!");
+      return; // 함수 실행 중단
+    }
+
+    // 닉네임 또는 이미지 둘 중 하나라도 변경되지 않은 경우
+    if (!hasNicknameChanged && !hasImageChanged) {
+      alert("신상이 바뀐 부분이 없어 저장할 수 없어요 ! 뒤로가기를 통해 나가시면 됩니다 !");
+      return; // 함수 실행 중단
+    }
+
+    // 이미지만 바꼈다면 그 바뀐 이미지를 스토어에 업데이트
+    dispatch(setUserProfileImage(selectedImage));
+    // 닉네임이 바꼈다면 그 바뀐 닉네임을 스토어에 업데이트
+    if (hasNicknameChanged) {
+      dispatch(setUserNickname(nickname));
+    }
+
+    // 닉네임과 이미지가 모두 설정된 경우에만 실행
+    if (nickname && selectedImage) {
+      try {
+        // 백엔드로 PUT 요청 보내기
+        await axios.put(`http://localhost:8080/api/users/${userId}/info`, {
+          nickName: nickname,
+          imageId: selectedImage.id, // 변경된 이미지의 ID
+        }, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        // 리덕스 스토어에 닉네임과 이미지 정보 업데이트
+        dispatch(setUserNickname(nickname));
+        dispatch(setUserProfileImage(selectedImage));
+
+        alert("도깨비 신상이 성공적으로 업데이트 되었어요 !");
+        navigate("/hub");
+      } catch (error) {
+        console.error("프로필 업데이트 실패", error);
+        alert("신상 업데이트 중 오류가 발생했어요. 다시 시도해주세요.");
+      }
+    } else {
+      // 닉네임 또는 이미지가 설정되지 않은 경우 경고
+      alert("닉네임과 이미지 모두 설정이 되어야해요 !");
+    }
   };
 
   // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기
@@ -117,15 +162,15 @@ export default function Profile() {
           {/* 왼쪽 미리보기 영역 */}
           <div className="flex flex-col items-center justify-center w-1/2 ">
             <h1 className="text-white mb-4 font-bold text-2xl">현재 도깨비</h1>
-            <div className={`${styles.previewBox} rounded-lg flex justify-center items-center`}>
+            <div className={`${styles.previewBox} rounded-lg flex justify-center items-center mb-5`}>
               <img
-                src={userProfileImage}
-                alt="미리보기"
+                src={selectedImage ? selectedImage.src : userProfileImage.src}
+                alt={selectedImage ? selectedImage.alt : userProfileImage.alt}
                 className="w-40"/>
             </div>
             <button
               onClick={handleOpenModal}
-              className="mt-5 bg-white text-black font-bold p-2 rounded-lg w-1/3">
+              className="bg-white text-black text-xl font-bold rounded-lg w-1/3">
               도깨비 변경
             </button>
             {isModalOpen && <ChangeModal onClose={handleCloseModal} onSelectImage={(image) => setSelectedImage(image)}/>}
@@ -135,7 +180,7 @@ export default function Profile() {
           <div className="flex flex-col items-stretch p-5 w-1/2">
             <div className='flex flex-row justify-between mb-5'>
               <h1 className='font-bold text-white text-2xl'>도깨비 이름</h1>
-              <h1 className='font-bold text-white text-xl my-auto'>
+              <h1 className='font-bold text-white text-xl my-auto mr-2'>
                 {previousNickname ? `Prev. ${previousNickname}` : "이전 도깨비 이름"}
               </h1>
             </div>
@@ -150,8 +195,8 @@ export default function Profile() {
               />
               <button
                 onClick={handleNicknameChange}
-                className="bg-white text-black font-bold p-2 rounded-lg w-20 mr-2">
-                변 경
+                className="bg-white text-black text-lg font-bold rounded-lg w-1/6">
+                <h1 className='text-center'>변 경</h1>
               </button>
             </div>
             {/* <h1 className='font-bold text-white text-xl'>Curr. {nickname}</h1> */}
@@ -159,7 +204,7 @@ export default function Profile() {
               <div className='flex justify-center items-center'>
                 {isNicknameEmpty && <span className={`${styles.nicknameWarning}`}>이름이 입력되지 않았어요 !</span>}
                 {!isNicknameEmpty && isNicknameChecked && <span className={`${styles.nicknameOkay}`}>도깨비 이름을 변경했어요 !</span>}
-                {!isNicknameValid && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}
+                {!isNicknameValid && !isNicknameChecked && <span className={`${styles.nicknameValid}`}>이름은 2자~10자까지 한글, 영어, 숫자만 !</span>}
               </div>
             </div>
             <h1 className='font-bold text-white text-xl flex justify-center my-auto'>
@@ -171,7 +216,7 @@ export default function Profile() {
         </div>
         
         {/* 저장하기 영역 */}
-        <div className='felx justify-center mt-10'>
+        <div className='flex justify-center mt-10'>
           <button
             onClick={handleSaveProfile}
             className="bg-white text-black font-bold p-2 rounded-lg w-20"

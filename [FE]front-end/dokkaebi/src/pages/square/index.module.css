@@ -1,0 +1,21 @@
+.squareContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+  
+.mainContent {
+  display: flex;
+  flex: 100%;
+}
+  
+.leftContainer {
+  margin: 0px 3%;
+}
+
+.rightContainer {
+  /* width: 100%; */
+  margin: 0px 100px;
+  display: flex;
+  justify-content: center;
+}
