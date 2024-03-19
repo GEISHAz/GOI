@@ -3,7 +3,7 @@ package ssafy.GeniusOfInvestment.user.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 
 import java.util.List;
 import java.util.Optional;

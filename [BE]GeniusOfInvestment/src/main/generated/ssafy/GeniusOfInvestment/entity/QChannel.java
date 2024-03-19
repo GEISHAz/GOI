@@ -8,6 +8,9 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import ssafy.GeniusOfInvestment._common.entity.Channel;
+import ssafy.GeniusOfInvestment._common.entity.Room;
+import ssafy.GeniusOfInvestment._common.entity.User;
 
 
 /**

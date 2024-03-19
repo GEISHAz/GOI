@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.game.dto.*;
-import ssafy.GeniusOfInvestment.redis.GameRoom;
-import ssafy.GeniusOfInvestment.redis.GameUser;
+import ssafy.GeniusOfInvestment._common.redis.GameRoom;
+import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class GameService {
-    private final GameRepository gameRepository;
+    private final RedisGameRepository gameRepository;
     private final UserRepository userRepository;
 
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값

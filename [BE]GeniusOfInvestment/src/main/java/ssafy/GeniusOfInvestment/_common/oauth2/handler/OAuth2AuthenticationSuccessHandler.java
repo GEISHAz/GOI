@@ -18,7 +18,7 @@ import ssafy.GeniusOfInvestment._common.oauth2.user.OAuth2Provider;
 import ssafy.GeniusOfInvestment._common.oauth2.user.OAuth2UserUnlinkManager;
 import ssafy.GeniusOfInvestment._common.utils.CookieUtils;
 import ssafy.GeniusOfInvestment.auth.service.AuthTokenService;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.user.service.UserService;
 
 import java.io.IOException;

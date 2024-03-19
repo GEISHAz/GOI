@@ -2,17 +2,16 @@ package ssafy.GeniusOfInvestment.square.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ssafy.GeniusOfInvestment.entity.Channel;
-import ssafy.GeniusOfInvestment.entity.Room;
-import ssafy.GeniusOfInvestment.entity.User;
-import ssafy.GeniusOfInvestment.game.GameRepository;
-import ssafy.GeniusOfInvestment.redis.GameRoom;
-import ssafy.GeniusOfInvestment.redis.GameUser;
+import ssafy.GeniusOfInvestment._common.entity.Channel;
+import ssafy.GeniusOfInvestment._common.entity.Room;
+import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment.game.RedisGameRepository;
+import ssafy.GeniusOfInvestment._common.redis.GameRoom;
+import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;
 import ssafy.GeniusOfInvestment.square.dto.response.SavedRoomResponse;
-import ssafy.GeniusOfInvestment.square.repository.SquareRepository;
+import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ import java.util.List;
 @Slf4j
 public class SquareService {
 
-    private final SquareRepository squareRepository;
-    private final GameRepository gameRepository;
+    private final RoomRepository squareRepository;
+    private final RedisGameRepository gameRepository;
 
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
 

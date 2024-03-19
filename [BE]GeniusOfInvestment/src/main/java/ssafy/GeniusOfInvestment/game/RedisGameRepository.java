@@ -3,12 +3,12 @@ package ssafy.GeniusOfInvestment.game;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Repository;
-import ssafy.GeniusOfInvestment.redis.GameRoom;
+import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 
 import java.util.Map;
 
 @Repository
-public class GameRepository {
+public class RedisGameRepository {
     private final String hashReference = "GameRoom"; //DB의 테이블 역할
     @Resource(name = "redisTemplate") // 빨간 줄 무시
     private HashOperations<String, Long, GameRoom> hashOperations;

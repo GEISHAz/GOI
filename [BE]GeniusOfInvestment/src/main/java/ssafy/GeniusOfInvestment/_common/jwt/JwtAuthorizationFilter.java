@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ssafy.GeniusOfInvestment._common.exception.JwtException;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.user.service.UserService;
 
 import java.io.IOException;

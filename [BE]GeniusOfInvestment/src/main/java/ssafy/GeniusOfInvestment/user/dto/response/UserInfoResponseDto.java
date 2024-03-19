@@ -2,7 +2,7 @@ package ssafy.GeniusOfInvestment.user.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 
 @Getter
 public class UserInfoResponseDto {

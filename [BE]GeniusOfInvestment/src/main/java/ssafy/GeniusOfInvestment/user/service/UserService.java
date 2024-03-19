@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
-import ssafy.GeniusOfInvestment.entity.User;
+import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.user.dto.request.ExistNickNameRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateUserInfoRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.response.RankInfoResponseDto;
