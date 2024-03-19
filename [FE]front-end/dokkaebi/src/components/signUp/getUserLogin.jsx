@@ -56,8 +56,8 @@ export default function getUserLogin() {
     // 백엔드으로 중복검사 api 요청
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
-      console.log("여기 닉네임 :", nickname)
-      const response = await axios.post(`http://localhost:8080/api/users/exist/nick-name`, {
+      console.log("설정한 닉네임 :", nickname)
+      const response = await axios.post(`http://localhost:8080/api/users/${userId}/exist/nick-name`, {
         nickName: nickname,
       }, {
         headers: {
