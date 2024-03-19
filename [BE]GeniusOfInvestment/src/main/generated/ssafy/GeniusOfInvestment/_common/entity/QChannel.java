@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.entity;
+package ssafy.GeniusOfInvestment._common.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QChannel extends EntityPathBase<Channel> {
 
-    private static final long serialVersionUID = -396160693L;
+    private static final long serialVersionUID = 481536431L;
 
     public static final QChannel channel = new QChannel("channel");
 

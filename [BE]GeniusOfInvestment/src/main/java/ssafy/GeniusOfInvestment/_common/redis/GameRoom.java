@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.redis;
+package ssafy.GeniusOfInvestment._common.redis;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
