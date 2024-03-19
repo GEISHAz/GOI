@@ -48,7 +48,7 @@ export default function hubBottom() {
         path = `/profile/userNickname`;
         break;
       case 'Game':
-        path = `/channel/1`;
+        path = `/channel`;
         break;
       case 'Rank':
         path = `/rank`;
