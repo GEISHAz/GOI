@@ -1,15 +1,14 @@
 package ssafy.GeniusOfInvestment.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +27,6 @@ public class Room {
     //0이면 비밀방, 1이면 공개방
     @Column(columnDefinition = "TINYINT(1) default 1")
     private boolean isPublic;
-
-    @ColumnDefault("1")
-    private int curNum;
 
     //0이면 대기, 1이면 게임중, 2이면 없어진 방
     @Column(columnDefinition = "TINYINT(2) default 0")
