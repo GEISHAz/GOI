@@ -2,12 +2,14 @@ package ssafy.GeniusOfInvestment._common.redis;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RedisUser {
+public class RedisUser implements Serializable {
 
     private Long userId;
 

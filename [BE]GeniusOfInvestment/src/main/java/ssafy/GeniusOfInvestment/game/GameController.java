@@ -26,6 +26,7 @@ public class GameController {
     @GetMapping("/start")
     public Map<String, String> getInitStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
         TurnResponse rst = gameService.getInitStockInfo(user, grId);
+        //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         messageTemplate.convertAndSend("/alram/msg-to/" + grId, rst); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 시작 완료");

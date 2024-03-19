@@ -2,12 +2,17 @@ package ssafy.GeniusOfInvestment.game;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.redis.GameMarket;
+import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.game.dto.*;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
+import ssafy.GeniusOfInvestment.square.repository.RedisUserRepository;
+import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.*;
@@ -18,17 +23,27 @@ import java.util.stream.Stream;
 public class GameService {
     private final RedisGameRepository gameRepository;
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
+    private final RedisUserRepository redisUserRepository;
 
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
-        int cnt = 0;
+
+        //방 상태 바꾸기
+        Optional<Room> rinfo = roomRepository.findById(grId);
+        if(rinfo.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+        rinfo.get().setStatus(1); //방 상태를 게임 중으로 바꾼다.
+
         List<ParticipantInfo> parts = new ArrayList<>();
+        List<GameUser> gameUserList = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
             if(guser.isManager() && !Objects.equals(guser.getUserId(), user.getId())){ //요청을 한 사용자가 방장이 아니다.
                 throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
             }
-            if(guser.isReady()){ //사용자가 레디를 눌렀다.
-                cnt++;
+            if(!guser.isReady() && !guser.isManager()){ //방장이 아닌 사용자가 아직 레디를 누르지 않았다.
+                throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
             }
             Optional<User> unick = userRepository.findById(guser.getUserId());
             if(unick.isEmpty()){
@@ -39,10 +54,17 @@ public class GameService {
                             .userNick(unick.get().getNickName())
                             .totalCost(500000L)
                     .build()); //참가자들 정보를 저장
+
+            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
+            rdu.setStatus(0); //상태 0이 게임중
+            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+
+            //GameUser(참가자)의 상태값을 변경
+            guser.setReady(false);
+            guser.setTotalCost(500000L);
+            gameUserList.add(guser);
         }
-        if(cnt < room.getParticipants().size()-1){ //방장을 제외한 전체 이용자가 아직 레디를 하지않았다.
-            throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
-        }
+
         List<Items1> selectedOne = Stream.of(Items1.values()) //6개 중에서 4개 선택
                 .limit(4)
                 .toList();
@@ -54,7 +76,21 @@ public class GameService {
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         selTwoItems(stockInfos, selectedTwo);
         selOneItems(stockInfos, selectedOne);
-        //방 상태 바꾸기
+
+        //redis의 GameMarket객체에 현재 시장 상황 저장하기
+        List<GameMarket> gms = new ArrayList<>();
+        for(StockInfoResponse stok : stockInfos){
+            gms.add(GameMarket.builder()
+                            .item(stok.getItem())
+                            .Cost(stok.getThisCost())
+                    .build());
+        }
+        room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
+        room.setMarket(gms);
+        gameRepository.updateGameRoom(room);
+
+        //방 상태 변경 내역을 저장
+        roomRepository.save(rinfo.get());
 
         return TurnResponse.builder()
                 .participants(parts)
