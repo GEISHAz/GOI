@@ -24,8 +24,6 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final QChannel channel;
 
-    public final NumberPath<Integer> curNum = createNumber("curNum", Integer.class);
-
     public final NumberPath<Integer> endYear = createNumber("endYear", Integer.class);
 
     public final NumberPath<Integer> fromYear = createNumber("fromYear", Integer.class);
