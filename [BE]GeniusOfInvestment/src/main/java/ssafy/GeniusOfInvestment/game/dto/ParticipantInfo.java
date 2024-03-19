@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.redis;
+package ssafy.GeniusOfInvestment.game.dto;
 
 import lombok.*;
 
@@ -7,9 +7,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameUser {
+public class ParticipantInfo {
     private Long userId;
-    private boolean isReady;
-    private boolean isManager;
+    private String userNick;
     private Long totalCost;
 }
