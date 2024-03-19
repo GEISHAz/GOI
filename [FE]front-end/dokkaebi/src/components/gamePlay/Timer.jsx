@@ -33,7 +33,6 @@ export default function AuthNumTimer() {
 
     return (
         <div>
-            {/* 인증번호 유효 시간을 화면에 출력. */}
             <span className={styles.timer}>{formatTime(remainingTime)}</span>
         </div>
     );

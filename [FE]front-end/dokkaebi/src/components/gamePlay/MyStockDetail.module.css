@@ -1,0 +1,37 @@
+.background {
+  background: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 44px;
+  width: 95%;
+  margin-top: 8px;
+  border-radius: 10px;
+}
+
+.companyArea {
+  background: black;
+  color: white;
+  width: 240px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-family: DNFBitBitv2;
+  font-size: 20px;
+}
+
+.priceArea {
+  width: 240px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.havingArea {
+  width: 240px;
+  text-align: center;
+  font-size: 20px;
+}

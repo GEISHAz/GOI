@@ -1,7 +1,7 @@
 .profileContainer {
   width: 70%;
-  padding: 5%;
-  margin-top: 5%;
+  padding: 1%;
+  margin-top: 3%;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 20px; 
 }
@@ -24,9 +24,30 @@
   background-color: rgba(0, 0, 0, 0.1); /* 검은색 배경에 불투명도 10% */
   border: none;
   height: 2.5em;
-  width: 100%;
+  width: 75%;
   padding: 0 5px;
   color: #000;
   box-sizing: border-box;
   border-radius: 10px;
+}
+
+.nicknameWarning {
+  color: #D32F2F;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}
+
+.nicknameOkay {
+  color: #4CAF50;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
+}
+
+.nicknameValid {
+  color: #FFC0CB;
+  margin-right: 10px;
+  align-self: center;
+  font-weight: bold;
 }
