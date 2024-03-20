@@ -17,7 +17,7 @@ export default function LoginComponent() {
   const navigate = useNavigate();
   const [isHovering, setIsHovering] = useState(false);
 
-  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/loginCallback&mode=login';
+  const KAKAO_AUTH_URL = 'http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/loginCallback&mode=login';
   const NAVER_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/naver?redirect_uri=https://j10d202.p.ssafy.io/loginCallback&mode=login';
   
   const handleKakaoLogin = () => {
