@@ -2,12 +2,14 @@ package ssafy.GeniusOfInvestment._common.redis;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BreakDown {
+public class BreakDown implements Serializable {
     private String item;
     private Long buyVal; //샀을때 금액
     private int shares; // 주식 수(몇 주)
