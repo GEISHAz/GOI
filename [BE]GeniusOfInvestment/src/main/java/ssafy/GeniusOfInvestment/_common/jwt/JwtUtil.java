@@ -25,7 +25,7 @@ public class JwtUtil {
     private final JwtTokenService jwtTokenService;
 
     private static final long REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS = 1000L * 60L * 60L * 24L * 14; //refresh token 2week
-    private static final long ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS = 1000 * 60 * 30; //access token 30min
+    private static final long ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS = 1000 * 60 * 10; //access token 30min
 
     @Value(value = "${jwt.secret}")
     private String secret;
