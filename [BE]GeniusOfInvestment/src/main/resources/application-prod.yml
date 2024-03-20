@@ -5,7 +5,7 @@ spring:
       pageable:
         one-indexed-parameters: true
     redis:
-      host: ENC(NlaOnFEohOhLwfm3BQKYzQxJYtI72xNO)
+      host: ENC(Itg77bWtnrs2oeR1WgQWRR319yZrqaVGlIwA4e9Ka10=)
       port: 6379
       password: ENC(cAV37F+FL3IUpEFNaq367sJN+c36j4oB)
 
