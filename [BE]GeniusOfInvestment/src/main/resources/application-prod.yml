@@ -14,3 +14,8 @@ spring:
     username: ENC(5UCG8P9Sad6Oyv5kecZrwn/U87qooIo+)
     password: ENC(5UCG8P9Sad6Oyv5kecZrwn/U87qooIo+)
     url: ENC(DJe1+vNLc9cScQ5N4JKow1YRNV/jDA/n5UZ0fg+Ec/2YRk5lUe1s3wOM0fnw9vIxl213L6O/kkSaECq4uBBrNG7j7zrgaE1qbmK3JH0rChc0H5HruwUkvOoUfbVWtWfQulIpRkHtU4/6nMCd5e7Hjw==)
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
