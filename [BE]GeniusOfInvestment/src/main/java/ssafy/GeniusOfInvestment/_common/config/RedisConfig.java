@@ -14,7 +14,6 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import ssafy.GeniusOfInvestment._common.stomp.pubsub.RedisSubscriber;
 
 @Configuration
 @EnableRedisRepositories
@@ -57,16 +56,16 @@ public class RedisConfig {
 //        return new ChannelTopic("FRIEND");
 //    }
 
-    @Bean
-    public ChannelTopic channelTopic() {
-        return new ChannelTopic("CHANNEL");
-    }
-
-    // 실제 메시지를 처리하는 subscriber 설정 추가
-    @Bean
-    public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
-        return new MessageListenerAdapter(subscriber, "sendMessage");
-    }
+//    @Bean
+//    public ChannelTopic channelTopic() {
+//        return new ChannelTopic("CHANNEL");
+//    }
+//
+//    // 실제 메시지를 처리하는 subscriber 설정 추가
+//    @Bean
+//    public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
+//        return new MessageListenerAdapter(subscriber, "sendMessage");
+//    }
 
     // redis에 발행(publish)된 메시지 처리를 위한 리스너 설정
 //    @Bean
