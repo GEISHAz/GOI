@@ -13,6 +13,7 @@ import ssafy.GeniusOfInvestment.game.dto.TurnResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 @Slf4j
 @RestController
@@ -28,6 +29,9 @@ public class GameController {
         TurnResponse rst = gameService.getInitStockInfo(user, grId);
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         messageTemplate.convertAndSend("/alram/msg-to/" + grId, rst); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
+//        new Timer().scheduleAtFixedRate(() -> {
+//
+//        }, 0, 1000);
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 시작 완료");
         return json;

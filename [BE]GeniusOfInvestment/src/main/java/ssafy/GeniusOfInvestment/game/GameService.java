@@ -28,6 +28,9 @@ public class GameService {
 
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
 
         //방 상태 바꾸기
         Optional<Room> rinfo = roomRepository.findById(grId);
@@ -56,8 +59,11 @@ public class GameService {
                     .build()); //참가자들 정보를 저장
 
             RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
+            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             rdu.setStatus(0); //상태 0이 게임중
             redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+
+
 
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
@@ -176,6 +182,10 @@ public class GameService {
 
         // 범위 내에서 랜덤 숫자를 생성합니다.
         return (random.nextInt(max - min) + min) / 100;
+    }
+
+    public TimerInfo getTimerInfo(){
+        return null;
     }
 
     public TurnResponse getNextStockInfo(User user, Long grId){
