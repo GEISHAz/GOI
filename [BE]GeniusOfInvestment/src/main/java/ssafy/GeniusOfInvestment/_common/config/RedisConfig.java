@@ -69,16 +69,12 @@ public class RedisConfig {
     }
 
     // redis에 발행(publish)된 메시지 처리를 위한 리스너 설정
-    @Bean
-    public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
-            MessageListenerAdapter listenerAdapter, ChannelTopic channelTopic){
-            //ChannelTopic gameTopic,
-            //ChannelTopic friendTopic) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-//        container.addMessageListener(listenerAdapter, friendTopic); // FRIEND 토픽
-//        container.addMessageListener(listenerAdapter, gameTopic); // GAME 토픽
-        container.addMessageListener(listenerAdapter, channelTopic); // GAME 토픽
-        return container;
-    }
+//    @Bean
+//    public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
+//            MessageListenerAdapter listenerAdapter, ChannelTopic channelTopic){
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        container.addMessageListener(listenerAdapter, channelTopic); // GAME 토픽
+//        return container;
+//    }
 }
