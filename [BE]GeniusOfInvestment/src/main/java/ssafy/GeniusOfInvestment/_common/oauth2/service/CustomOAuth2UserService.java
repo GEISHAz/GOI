@@ -2,6 +2,7 @@ package ssafy.GeniusOfInvestment._common.oauth2.service;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -16,6 +17,7 @@ import ssafy.GeniusOfInvestment._common.oauth2.user.OAuth2UserInfoFactory;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
@@ -24,6 +26,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
         try {
+            log.info("사용자 정보 받아오기 완료 == " + oAuth2User);
+
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {
             throw ex;
