@@ -1,15 +1,20 @@
 import Background from "../../images/gamePlay/background6.gif";
 import styles from "./index.module.css";
-import Players from "../../components/gamePlay/Players";
+import Players from "../../components/gamePlay/user/Players";
 import Timer from "../../components/gamePlay/Timer";
-import Chat from "../../components/gamePlay/Chat";
-import Investment from "../../components/gamePlay/Investment";
-import InfoStore from "../../components/gamePlay/InfoStore";
-import MyStock from "../../components/gamePlay/MyStock";
-import MyInfo from "../../components/gamePlay/MyInfo";
+import Chat from "../../components/gamePlay/chat/Chat";
+import Investment from "../../components/gamePlay/mainStock/Investment";
+import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
+import MyStock from "../../components/gamePlay/myStock/MyStock";
+import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function GamePlay() {
+  const dispatch = useDispatch();
+  const ready = useSelector((state) => state.game.ready)
+  const money = useSelector((state) => state.game.money)
+  const point = useSelector((state) => state.game.point)
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);

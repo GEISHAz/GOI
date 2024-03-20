@@ -101,10 +101,21 @@
   border-top-right-radius: 10px;
 }
 
-.maesuButton{
+.maesuButton {
   width: 300px;
   height: 44px;
   background: #FF6E6E;
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+  color: white;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.maedoButton {
+  width: 300px;
+  height: 44px;
+  background: #4E95FF;
   font-family: DNFBitBitv2;
   font-size: 24px;
   color: white;
