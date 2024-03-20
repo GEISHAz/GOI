@@ -7,10 +7,21 @@ import unlocked from '../../images/square/icon_unlocked.png';
 
 export default function RoomCreateModal({ onClose, userName }) {
   const [isPrivate, setIsPrivate] = useState(false); // 비공개 체크박스의 상태를 위한 훅
+  const [password, setPassword] = useState(''); // 비밀번호 상태를 위한 훅
 
   const handlePrivateChange = (e) => { // 체크박스 상태 변경 함수
     setIsPrivate(e.target.checked);
   };
+
+  const handlePasswordChange = (e) => {
+    // 입력값이 숫자이고 4자리 이하인지 확인
+    const value = e.target.value;
+    if (/^\d{0,4}$/.test(value)) { // 정규표현식을 사용하여 검증
+      // 상태 업데이트 로직
+      setPassword(value); // 상태 업데이트
+    }
+  };
+
 
   return (
     <div className={styles.background}>
@@ -69,10 +80,12 @@ export default function RoomCreateModal({ onClose, userName }) {
             
             {isPrivate && (
               <input
-                type="password"
+                type="text"
                 id="roomPassword"
                 name="roomPassword"
                 placeholder="비밀번호 입력"
+                value={password} // 입력 상태와 바인딩
+                onChange={handlePasswordChange} // 입력 처리 함수
                 className="border-2 border-gray-300 p-1 w-32"
               />
             )}
@@ -98,7 +111,7 @@ export default function RoomCreateModal({ onClose, userName }) {
         <div className="flex justify-center w-full mt-5">
           {/* 확인 버튼 */}
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-lg focus:outline-none focus:shadow-outline"
+            className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
             type="button"
           >
             확인
@@ -107,7 +120,7 @@ export default function RoomCreateModal({ onClose, userName }) {
           {/* 취소 버튼 */}
           <button
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-600 text-white text-2xl px-4 rounded-lg focus:outline-none focus:shadow-outline"
+            className="w-24 h-12 bg-red-500 hover:bg-red-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
             type="button"
           >
             취소
