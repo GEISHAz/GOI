@@ -23,6 +23,7 @@
   font-size: 200%;
   text-align: center;
   align-items: center;
+  margin-top: 3%;
 }
 
 .unactivate {
@@ -62,7 +63,7 @@
 
 .cardImage {
   width: 50%;
-  height: 50%;
+  height: 100%;
   margin: 0 auto;
 }
 
