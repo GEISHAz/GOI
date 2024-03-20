@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.game;
+package ssafy.GeniusOfInvestment.game.repository;
 
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.HashOperations;

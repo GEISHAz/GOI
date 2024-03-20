@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
-import ssafy.GeniusOfInvestment.game.RedisGameRepository;
+import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;

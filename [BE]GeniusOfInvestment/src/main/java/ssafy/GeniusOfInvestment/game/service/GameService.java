@@ -1,13 +1,16 @@
-package ssafy.GeniusOfInvestment.game;
+package ssafy.GeniusOfInvestment.game.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ssafy.GeniusOfInvestment._common.entity.Information;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.redis.GameMarket;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
+import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.dto.*;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
@@ -25,6 +28,7 @@ public class GameService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final RedisUserRepository redisUserRepository;
+    private final InformationRepository informationRepository;
 
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
@@ -63,11 +67,10 @@ public class GameService {
             rdu.setStatus(0); //상태 0이 게임중
             redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
-
-
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
             guser.setTotalCost(500000L);
+            guser.setPoint(3);
             gameUserList.add(guser);
         }
 
@@ -156,6 +159,7 @@ public class GameService {
         }
     }
 
+    //해당 종목을 2개씩 추가한다.
     public void addTwoItems(List<StockInfoResponse> stockInfos, String item){
         StockInfoResponse stk = new StockInfoResponse();
         StringBuilder sb = new StringBuilder();
@@ -184,11 +188,35 @@ public class GameService {
         return (random.nextInt(max - min) + min) / 100;
     }
 
-    public TimerInfo getTimerInfo(){
+    public TurnResponse getNextStockInfo(User user, Long grId){
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+//        Set<Long> info = new HashSet<>();
+//        for(GameUser guser : room.getParticipants()){
+//            info.addAll(guser.getBuyInfos());
+//        }
+//        for(Long id : info){ //사용자들이 구매한 정보 목록
+//            Optional<Information> usrBuy = informationRepository.findById(id);
+//
+//        }
+        for(GameMarket mk : room.getMarket()){
+            if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
+                Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
+
+            }
+        }
         return null;
     }
 
-    public TurnResponse getNextStockInfo(User user, Long grId){
-        return null;
+    public Long calMarketVal(Long cost, int roi){ //수익률로 평가 금액을 계산
+        if(roi >= 0){
+            System.out.println((long) (cost + (cost * (roi/100d))));
+            return (long) (cost + (cost * (roi/100d)));
+        }else {
+            return (long) (cost - (cost * (roi/100d)));
+        }
     }
 }

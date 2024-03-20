@@ -17,8 +17,10 @@ public class Information {
 
     private int year;
 
+    //1단계 정보
     private String lowLv;
 
+    //2단계 정보
     private String highLv;
 
     private int roi;
