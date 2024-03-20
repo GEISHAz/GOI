@@ -29,7 +29,7 @@ export default function LoginCallback() {
 
       if (localStorage.getItem("accessToken")) {
         if (nextPage === "main") {
-          return navigate("/")
+          return navigate("/hub")
         } else {
           return navigate("/getUserLogin")
         }

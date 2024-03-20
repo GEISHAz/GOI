@@ -8,10 +8,14 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const isAuthenticated = await checkAccess();
-      if (!isAuthenticated) {
-        console.log("새 액세스 토큰 받지못함 -> isAuthenticated 없음")
-        // navigate('/login');
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (accessToken) {
+        const isAuthenticated = await checkAccess();
+        if (!isAuthenticated) {
+          console.log("새 액세스 토큰을 받지 못함 -> isAuthenticated 없음");
+          // navigate('/login');
+        }
       }
     };
     checkToken();
