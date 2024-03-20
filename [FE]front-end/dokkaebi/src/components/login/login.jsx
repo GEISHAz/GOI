@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import styles from './login.module.css'
 import KakaoLogin from '../../images/login/login.gif';
@@ -10,30 +10,37 @@ import Naver from '../../images/login/naver.png';
 import yellow from '../../images/login/yellow.gif';
 import pink from '../../images/login/pink.gif';
 import orange from '../../images/login/orange.gif';
+import BackA from '../../images/hub/backA.png';
+import BackB from '../../images/hub/backB.png';
 
 export default function LoginComponent() {
   const navigate = useNavigate();
+  const [isHovering, setIsHovering] = useState(false);
 
-  const KAKAO_AUTH_URL = 'http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/loginCallback&mode=login';
-  const NAVER_AUTH_URL = 'http://localhost:8080/oauth2/authorization/naver?redirect_uri=http://localhost:5173/loginCallback&mode=login';
+  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/loginCallback&mode=login';
+  const NAVER_AUTH_URL = 'https://j10d202.p.ssafy.io/api/oauth2/authorization/naver?redirect_uri=https://j10d202.p.ssafy.io/loginCallback&mode=login';
   
   const handleKakaoLogin = () => {
+    console.log("카카오 로그인 클릭 확인")
     window.location.href = KAKAO_AUTH_URL;
   };
 
   const handleNaverLogin = () => {
+    console.log("네이버 로그인 클릭 확인")
     window.location.href = NAVER_AUTH_URL;
   }
 
   return (
     <div className="flex flex-col">
       {/* 뒤로가기 */}
-      <div className='mt-5 ml-10'>
+      <div className='mt-5 flex items-center justify-start'>
         <button
-          onClick={() => navigate(-1)}
-          className='font-bold text-white text-xl'
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className='w-48 my-auto'
+          onClick={() => navigate("/hub")}
         >
-          Back
+          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>
       </div>
 
