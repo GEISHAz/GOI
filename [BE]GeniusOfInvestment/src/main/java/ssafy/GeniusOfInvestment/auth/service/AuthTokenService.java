@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.jwt.JwtUtil;
 import ssafy.GeniusOfInvestment._common.jwt.SavedToken;
 import ssafy.GeniusOfInvestment._common.jwt.TokenRepository;
 
 import java.util.Optional;
+import ssafy.GeniusOfInvestment._common.response.ErrorType;
 
 @Service
 @RequiredArgsConstructor
@@ -26,19 +28,20 @@ public class AuthTokenService {
         Optional<SavedToken> refreshToken = tokenRepository.findByAccessToken(resolveToken(accessToken));
 
         // RefreshToken이 존재하고 유효하다면 실행
-        if (refreshToken.isPresent() && jwtUtil.validateToken(refreshToken.get().getRefreshToken())) {
-            //RefreshToken 객체를 꺼내온다.
-            SavedToken resultToken = refreshToken.get();
-            //아이디를 추출해 새로운 액세스토큰을 만든다.
-            String newAccessToken = jwtUtil.generateAccessToken(resultToken.getId());
-            //액세스 토큰의 값을 수정해준다.
-            resultToken.updateAccessToken(newAccessToken);
-            tokenRepository.save(resultToken);
-            //새로운 액세스 토큰을 반환해준다.
-            return newAccessToken;
+        if (!refreshToken.isPresent() || jwtUtil.validateToken(refreshToken.get().getRefreshToken())) {
+            // RefreshToken이 유효하지 않다면 예외 처리, 전달
+            throw new CustomBadRequestException(ErrorType.EXPIRED_REFRESH_TOKEN);
         }
-        // RefreshToken이 유효하지 않다면 예외 처리, 전달
-        return null;
+        //RefreshToken 객체를 꺼내온다.
+        SavedToken resultToken = refreshToken.get();
+        //아이디를 추출해 새로운 액세스토큰을 만든다.
+        String newAccessToken = jwtUtil.generateAccessToken(resultToken.getId());
+        //액세스 토큰의 값을 수정해준다.
+        resultToken.updateAccessToken(newAccessToken);
+        tokenRepository.save(resultToken);
+        //새로운 액세스 토큰을 반환해준다.
+        return newAccessToken;
+
     }
 
     @Transactional
