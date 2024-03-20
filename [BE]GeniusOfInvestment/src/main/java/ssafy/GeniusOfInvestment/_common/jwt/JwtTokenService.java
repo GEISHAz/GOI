@@ -10,7 +10,6 @@ public class JwtTokenService {
 
     private final TokenRepository tokenRepository;
 
-    @Transactional
     public void saveTokenInfo(String memberId, String refreshToken, String accessToken) {
         tokenRepository.save(new SavedToken(memberId, accessToken, refreshToken));
     }

@@ -22,7 +22,7 @@ public class AuthTokenService {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
-    @Transactional
+
     public String republishAccessToken(String accessToken) {
         // 액세스 토큰으로 Refresh 토큰 객체를 조회
         Optional<SavedToken> refreshToken = tokenRepository.findByAccessToken(resolveToken(accessToken));
@@ -44,7 +44,7 @@ public class AuthTokenService {
 
     }
 
-    @Transactional
+
     public void removeRefreshToken(String accessToken) {
         SavedToken token = tokenRepository.findByAccessToken(resolveToken(accessToken))
                 .orElseThrow(IllegalArgumentException::new);
@@ -52,7 +52,6 @@ public class AuthTokenService {
         tokenRepository.delete(token);
     }
 
-    @Transactional
     public void removeRefreshTokenById(String memberId) {
         tokenRepository.deleteById(memberId);
     }
