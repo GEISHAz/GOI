@@ -1,4 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useAuthCheck } from './api/accessCheck.js';
+import { logout } from "./features/login/authSlice.js";
 import Main from './pages/main/index.jsx';
 import Hub from './pages/hub/index.jsx';
 import Login from './pages/login/index.jsx';
@@ -10,6 +14,30 @@ import Channel from './pages/channel/index.jsx';
 import Square from './pages/square/index.jsx';
 import Rank from './pages/rank/index.jsx';
 import PrivateRoute from './pages/privateLogin/index.jsx';
+
+const accessCheck = ({ user }) => {
+  const dispatch = useDispatch()
+  const [authCheck] = useAuthCheck()
+  const [component, setComponent] = useState(<div></div>);
+  const navigate = useNavigate()
+ 
+  useEffect(() => {
+    authCheck().then((res)=> {
+      if (res) {
+        setComponent(user)
+      } else {
+        dispatch(logout())
+        navigate('/login', { replace: true })
+      }
+    })
+  },[user])
+  
+  return (
+    <div>
+      {component}
+    </div>
+  );
+}
 
 export default function Router() {
   return (

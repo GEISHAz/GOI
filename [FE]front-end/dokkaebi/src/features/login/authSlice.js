@@ -21,8 +21,15 @@ export const authSlice = createSlice({
     setPreviousUserNickname: (state, action) => {
       state.previousUserNickname = action.payload;
     },
+
+    logout: (state) => {
+      state.isLogin = false;
+      state.userNickname = null;
+      state.userProfileImage = null;
+      state.userProfileImage = null;
+    },
   }  
 })
 
-export const { setUserNickname, setUserProfileImage, setIsLogin, setPreviousUserNickname } = authSlice.actions
+export const { setUserNickname, setUserProfileImage, setIsLogin, setPreviousUserNickname, logout } = authSlice.actions
 export default authSlice.reducer

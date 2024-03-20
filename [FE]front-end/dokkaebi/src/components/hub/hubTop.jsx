@@ -7,6 +7,7 @@ import LogoutButton from '../../images/hub/logoutButton.gif';
 import BackA from '../../images/hub/backA.png';
 import BackB from '../../images/hub/backB.png';
 import styles from './button.module.css'
+import axios from 'axios';
 
 export default function HubTop() {
   const navigate = useNavigate();
@@ -15,12 +16,23 @@ export default function HubTop() {
   const [isHovering, setIsHovering] = useState(false);
 
   // 로그아웃 핸들러
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userId");
-    dispatch(setIsLogin(false)); // 로그인 상태를 false로 업데이트
-    navigate("/hub");
-    alert("로그아웃 되었어요 !")
+  const handleLogout = async () => {
+    try {
+      // 백엔드 서버로 로그아웃 요청 보내기
+      await axios.post('https://j10d202.p.ssafy.io/api/auth/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Authorization 헤더에 액세스 토큰 추가
+        },
+      });
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userId");
+      dispatch(setIsLogin(false)); // 로그인 상태를 false로 업데이트
+      navigate("/hub");
+      alert("로그아웃 되었어요 !");
+    } catch (error) {
+      console.error('로그아웃 요청 중 에러 발생:', error);
+      alert("로그아웃 처리 중 문제가 발생했어요 !");
+    }
   };
 
   return (
