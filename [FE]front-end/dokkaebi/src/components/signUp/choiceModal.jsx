@@ -31,7 +31,7 @@ export default function choiceModal({ onClose }) {
     const selectedImageObj = images.find(image => image.src === selectedSrc);
   
     if (!selectedImageObj) {
-      console.error('선택된 이미지를 찾을 수 없습니다.');
+      console.error('선택된 이미지를 찾을 수 없어요 !');
       return;
     }
 
@@ -41,7 +41,7 @@ export default function choiceModal({ onClose }) {
     try {
       // console.log("userId 확인 :", userId)
       // console.log("accessToken 확인 :", accessToken)
-      const response = await axios.put(`http://localhost:8080/api/users/${userId}/image-id`, {
+      const response = await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/image-id`, {
         imageId: selectedImageObj.id
       }, {
         headers: {
@@ -51,8 +51,8 @@ export default function choiceModal({ onClose }) {
       console.log("보낸 이미지 id 확인 :", selectedImageObj.id)
       console.log('프로필 이미지 선택 완료', response.data);
     } catch (error) {
-      console.error('프로필 이미지 변경 실패:', error);
-      alert("프로필 이미지 변경에 실패했습니다. 다시 시도해주세요.");
+      console.error('프로필 이미지 선택 실패', error);
+      alert("이미지 선택에 실패했어요. 다시 시도해주세요.");
     }
   };
 

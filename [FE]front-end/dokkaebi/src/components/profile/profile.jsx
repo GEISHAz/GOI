@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './profile.module.css'
-import ChangeModal from './changeModal.jsx';
 import { setUserNickname, setUserProfileImage } from '../../features/login/authSlice';
 import axios from 'axios';
+import ChangeModal from './changeModal.jsx';
+import BackA from '../../images/hub/backA.png';
+import BackB from '../../images/hub/backB.png';
+import styles from './profile.module.css'
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ export default function Profile() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
 
@@ -45,7 +48,7 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/users/${userId}/exist/nick-name`, {
+      const response = await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
         nickName: nickname
       }, {
         headers: {
@@ -107,7 +110,7 @@ export default function Profile() {
     if (nickname && selectedImage) {
       try {
         // 백엔드로 PUT 요청 보내기
-        await axios.put(`http://localhost:8080/api/users/${userId}/info`, {
+        await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
           nickName: nickname,
           imageId: selectedImage.id, // 변경된 이미지의 ID
         }, {
@@ -143,12 +146,14 @@ export default function Profile() {
   return (
     <div className="flex flex-col h-screen">
       {/* 뒤로가기 */}
-      <div className='mt-5 ml-10'>
+      <div className='mt-5 flex items-center justify-start'>
         <button
-          onClick={() => navigate(-1)}
-          className='font-bold text-white text-xl'
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className='w-48 my-auto'
+          onClick={() => navigate("/hub")}
         >
-          Back
+          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>
       </div>
 
