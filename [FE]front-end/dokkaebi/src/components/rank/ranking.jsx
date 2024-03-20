@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import BackA from '../../images/hub/backA.png';
+import BackB from '../../images/hub/backB.png';
 import styles from './ranking.module.css';
 
 export default function Ranking() {
   const navigate = useNavigate();
-  
+  const [isHovering, setIsHovering] = useState(false);
   // const myrank
   // 로그인한 유저의 프로필 사진, 닉네임, 포인트
 
@@ -17,12 +19,14 @@ export default function Ranking() {
   return (
     <div className="flex flex-col h-screen">
       {/* 뒤로가기 */}
-      <div className='mt-5 ml-10'>
+      <div className='mt-5 flex items-center justify-start'>
         <button
-          onClick={() => navigate(-1)}
-          className='font-bold text-white text-4xl'
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className='w-48 my-auto'
+          onClick={() => navigate("/hub")}
         >
-          Back
+          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>
       </div>
 

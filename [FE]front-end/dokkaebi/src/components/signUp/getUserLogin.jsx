@@ -20,7 +20,6 @@ export default function getUserLogin() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태  n관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [nicknameDuplicateError, setNicknameDuplicateError] = useState(false);
-  const [showCheckButton, setShowCheckButton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userId = localStorage.getItem("userId");
   const accessToken = localStorage.getItem("accessToken")
@@ -32,7 +31,7 @@ export default function getUserLogin() {
     setIsNicknameEmpty(true);
     setIsNicknameValid(true); // 공백 상태로 받았을 때 정규식 메세지 받지 않기 위해 true로 설정
     setIsNicknameChecked(false); // 중복 검사를 통과하지 않았음
-    alert("닉네임이 입력되지 않았어요!");
+    alert("닉네임이 입력되지 않았어요 !");
     return; // 함수 실행 중단
   }
     // 한글, 영어, 숫자만 허용하는 정규식
@@ -57,7 +56,7 @@ export default function getUserLogin() {
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
       console.log("설정한 닉네임 :", nickname)
-      const response = await axios.post(`http://localhost:8080/api/users/${userId}/exist/nick-name`, {
+      const response = await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
         nickName: nickname,
       }, {
         headers: {
@@ -122,7 +121,7 @@ export default function getUserLogin() {
     if (nickname && userProfileImage) {
       try {
         // 여기에 회원가입 정보를 백엔드로 전송하는 API 호출 로직 추가
-        await axios.put(`http://localhost:8080/api/users/${userId}/info`, {
+        await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
           nickName: nickname,
           imageId: userProfileImage.id,
         }, {
@@ -138,7 +137,7 @@ export default function getUserLogin() {
         navigate("/hub");
       } catch (error) {
         console.error("회원가입 실패", error);
-        alert("가입 중에 오류가 발생했습니다. 다시 시도해주세요.", () => window.location.reload()); // 새로고침 한 번 해주기
+        alert("가입 중에 오류가 발생했어요. 다시 시도해주세요 !", () => window.location.reload()); // 새로고침 한 번 해주기
       }
     }
   };

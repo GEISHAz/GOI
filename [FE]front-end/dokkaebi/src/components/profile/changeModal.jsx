@@ -33,7 +33,7 @@ export default function ChangeModal({ onClose, onSelectImage }) {
 
     if (selectedImageObj) {
       try {
-        const response = await axios.put(`http://localhost:8080/api/users/${userId}/image-id`, {
+        const response = await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/image-id`, {
           imageId: selectedImageObj.id
         }, {
           headers: {
