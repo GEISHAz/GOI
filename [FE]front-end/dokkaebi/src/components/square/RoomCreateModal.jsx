@@ -13,6 +13,7 @@ export default function RoomCreateModal({ onClose, userName }) {
     setIsPrivate(e.target.checked);
   };
 
+  // 비밀번호 숫자 4자리로 제한 
   const handlePasswordChange = (e) => {
     // 입력값이 숫자이고 4자리 이하인지 확인
     const value = e.target.value;
@@ -114,7 +115,7 @@ export default function RoomCreateModal({ onClose, userName }) {
             className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
             type="button"
           >
-            확인
+            생성
           </button>
 
           {/* 취소 버튼 */}

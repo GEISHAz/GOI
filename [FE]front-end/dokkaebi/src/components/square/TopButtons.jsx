@@ -52,8 +52,9 @@ export default function TopButtons() {
           </button>
         </div>
       </div>
-      {isModalOpen && <RoomCreateModal handleCloseModal={handleCloseModal} />} 
-      {/* RoomCreateModal을 렌더링하고, props로 handleCloseModal 함수를 전달합니다. */}
+
+      {/* RoomCreateModal을 렌더링하고, props로 handleCloseModal 함수를 전달 */}
+      {isModalOpen && <RoomCreateModal onClose={handleCloseModal} />} 
     </>
   );
 }
