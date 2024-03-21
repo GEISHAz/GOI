@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class SendFriendRequest {
 
-    private Long Id;
-    private Long friendId;
+    private Long id;
+    private String friendNickName;
 
 }
