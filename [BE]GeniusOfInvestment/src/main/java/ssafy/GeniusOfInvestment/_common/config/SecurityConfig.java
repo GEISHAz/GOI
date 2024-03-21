@@ -67,8 +67,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:8080",
-                "http://127.0.0.1:5500", "http://localhost:5173", "http://127.0.0.1:5173",
-                "https://i10d207.p.ssafy.io:8443/" , "https://i10d207.p.ssafy.io:8443/api"
+                "http://localhost:5173", "http://127.0.0.1:5173", "https://j10d202.p.ssafy.io",
+                "https://j10d202.p.ssafy.io:8080" , "https://j10d202.p.ssafy.io:8080/api"
         ));
 
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));

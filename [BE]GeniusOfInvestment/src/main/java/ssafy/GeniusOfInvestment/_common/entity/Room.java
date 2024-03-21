@@ -38,15 +38,36 @@ public class Room {
 
     private int turnNum;
 
+    @Builder
+    private Room(String title, String password, boolean isPublic, int status, int fromYear, int endYear, int turnNum){
+        this.title = title;
+        this.password = password;
+        this.isPublic = isPublic;
+        this.status = status;
+        this.fromYear = fromYear;
+        this.endYear = endYear;
+        this.turnNum = turnNum;
+    }
+
+    public Room of(String title, String password, boolean isPublic, int status, int fromYear, int endYear, int turnNum){
+        return builder()
+                .title(title)
+                .password(password)
+                .isPublic(isPublic)
+                .status(status)
+                .fromYear(fromYear)
+                .endYear(endYear)
+                .turnNum(turnNum)
+                .build();
+    }
+
+    //-----------------------------------------------------
+
+
     //새로운 엔티티가 저장(추가)되기 직전에
     @PrePersist
     protected void onCreate() {
         turnNum = endYear - fromYear + 1;
     }
 
-    //기존의 엔티티가 업데이트되기 직전에
-//    @PreUpdate
-//    protected void onUpdate() {
-//
-//    }
 }

@@ -19,6 +19,7 @@ public enum SuccessType {
     GET_RANK_INFO_SUCCESSFULLY("랭크 정보 조회 성공"),
     GET_USER_RANK_SUCCESSFULLY("유저 랭크 조회 성공"),
     CHECK_USER_NICKNAME_SUCCESSFULLY("닉네임 중복 체크 성공"),
+    NEW_ACCESS_TOKEN_GENERATED("엑세스 토큰 발급 성공"),
 
     //****************************Room****************************//
 

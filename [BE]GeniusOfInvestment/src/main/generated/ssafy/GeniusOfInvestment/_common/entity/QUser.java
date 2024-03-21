@@ -22,7 +22,7 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final ListPath<Alram, QAlram> alrams = this.<Alram, QAlram>createList("alrams", Alram.class, QAlram.class, PathInits.DIRECT2);
+    public final ListPath<Alarm, QAlarm> alarms = this.<Alarm, QAlarm>createList("alarms", Alarm.class, QAlarm.class, PathInits.DIRECT2);
 
     public final QChannel channel;
 

@@ -26,8 +26,6 @@ public class QFriend extends EntityPathBase<Friend> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> isApprove = createNumber("isApprove", Integer.class);
-
     public final ListPath<ChatRecord, QChatRecord> records = this.<ChatRecord, QChatRecord>createList("records", ChatRecord.class, QChatRecord.class, PathInits.DIRECT2);
 
     public final QUser user;

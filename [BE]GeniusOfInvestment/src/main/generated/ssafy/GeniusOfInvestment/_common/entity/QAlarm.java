@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QAlram is a Querydsl query type for Alram
+ * QAlarm is a Querydsl query type for Alarm
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QAlram extends EntityPathBase<Alram> {
+public class QAlarm extends EntityPathBase<Alarm> {
 
-    private static final long serialVersionUID = 1634541503L;
+    private static final long serialVersionUID = 1634525693L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QAlram alram = new QAlram("alram");
+    public static final QAlarm alarm = new QAlarm("alarm");
 
     public final StringPath content = createString("content");
 
@@ -28,27 +28,25 @@ public class QAlram extends EntityPathBase<Alram> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> type = createNumber("type", Integer.class);
-
     public final QUser user;
 
-    public QAlram(String variable) {
-        this(Alram.class, forVariable(variable), INITS);
+    public QAlarm(String variable) {
+        this(Alarm.class, forVariable(variable), INITS);
     }
 
-    public QAlram(Path<? extends Alram> path) {
+    public QAlarm(Path<? extends Alarm> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QAlram(PathMetadata metadata) {
+    public QAlarm(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QAlram(PathMetadata metadata, PathInits inits) {
-        this(Alram.class, metadata, inits);
+    public QAlarm(PathMetadata metadata, PathInits inits) {
+        this(Alarm.class, metadata, inits);
     }
 
-    public QAlram(Class<? extends Alram> type, PathMetadata metadata, PathInits inits) {
+    public QAlarm(Class<? extends Alarm> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.from = inits.isInitialized("from") ? new QUser(forProperty("from"), inits.get("from")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;

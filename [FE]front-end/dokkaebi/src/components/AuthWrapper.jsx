@@ -13,8 +13,10 @@ const AuthWrapper = ({ children }) => {
       if (accessToken) {
         const isAuthenticated = await checkAccess();
         if (!isAuthenticated) {
-          console.log("새 액세스 토큰을 받지 못함 -> isAuthenticated 없음");
+          console.log("새 액세스 토큰을 받지 못함");
           // navigate('/login');
+        } else {
+          // console.log("액세스 토큰 갱신함")
         }
       }
     };

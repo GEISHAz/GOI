@@ -28,22 +28,22 @@ export function useAuthCheck() {
   };
 
   // 401 에러 감지 및 새 토큰 요청 함수
-  const requestNewToken = async () => {
-    const accessToken = localStorage.getItem('accessToken');
+  const requestNewToken = async (accessToken) => {
     try {
       const response = await axios.post('https://j10d202.p.ssafy.io/api/auth/regenerate-token', {}, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-
-      if (response.status === 200 && response.data.accessToken) {
-        localStorage.setItem('accessToken', response.data.accessToken); // 로컬스토리지에 저장하고
-        return response.data.accessToken; // 새로 발급받은 토큰 반환
+      // console.log("리스폰스 확인 :", response)
+      if (response.status === 200 && response.data.data.accessToken) {
+        // console.log("따끈따끈한 새 액세스 토큰", response.data.data.accessToken)
+        localStorage.setItem('accessToken', response.data.data.accessToken); // 로컬스토리지에 저장하고
+        return response.data.data.accessToken; // 새로 발급받은 토큰 반환
       } else {
         throw new Error('Failed to regenerate token');
       }
     } catch (error) {
-      console.error('Token regeneration failed:', error);
-      handleLogout(); // 토큰 재발급 실패 시 로그아웃 처리
+      console.error('requestNewToken 함수 실패 -> 토큰 갱신 실패', error);
+      handleLogout();
       return null;
     }
   };
@@ -65,9 +65,10 @@ export function useAuthCheck() {
       // 성공적으로 데이터를 받아왔을 때의 처리...
       return true;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if ((error.response && error.response.data.statusCode === 401) || (error.response && error.response.status === 401)) {
         // 401 에러 시 새 토큰 요청
-        return await requestNewToken();
+        // console.log("만료된 액세스 토큰", accessToken)
+        return await requestNewToken(accessToken);
       } else {
         // 다른 에러 처리
         console.error('API request failed:', error);
