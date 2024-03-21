@@ -1,12 +1,18 @@
 .roomContainer {
     width: 700px;
     height: 280px;
+    /* max-height: 280px;
+    overflow-y: auto; */
     padding: 2% 3%;
     margin-top: 2%;
     margin-bottom: 2%;
-    margin-left: 8%;
+
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 20px; 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    grid-template-rows: repeat(2, 1fr); /* 2행, 필요에 따라 자동으로 조정될 수 있음 */
+    gap: 20px;
   }
   
   .roomBox {
@@ -14,6 +20,7 @@
     height: 110px;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 20px;
+    padding: 5%;
     margin-left: 4px;
     margin-right: 4px;
   }
@@ -22,3 +29,12 @@
     width: 40px;
     height: auto;
   }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 0px;
+  }
+  
