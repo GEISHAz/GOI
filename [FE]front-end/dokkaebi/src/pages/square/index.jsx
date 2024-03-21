@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Background from '../../images/channel/background4.gif';
 import UserList from '../../components/square/UserList';
 import RoomList from '../../components/square/RoomList';
-// import ChatContainer from '../../components/square/ChatContainer';
+import ChatContainer from '../../components/square/ChatContainer';
 import TopButtons from '../../components/square/TopButtons';
 import styles from './index.module.css';
 
@@ -42,7 +42,7 @@ export default function Square() {
           {/* 방 목록 컴포넌트 */}
           <RoomList />
           {/* 채팅창 컨테이너 */}
-          {/* <ChatContainer /> */}
+          <ChatContainer />
         </div>
       </div>
     </div>
