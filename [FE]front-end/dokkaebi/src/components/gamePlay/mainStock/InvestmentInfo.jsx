@@ -50,6 +50,7 @@ export default function InvestmentInfo(props) {
           price={props.price}
           percent={props.percent}
           transactionType={transactionType}
+          myStock={0}
         />
       )}
     </div>
