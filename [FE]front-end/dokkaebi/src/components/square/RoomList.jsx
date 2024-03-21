@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './RoomList.module.css';
 
 import lock from '../../images/square/icon_lock.png';
 import unlocked from '../../images/square/icon_unlocked.png';
 
+
 export default function RoomList() {
-  // 임시 방 데이터
+  const navigate = useNavigate();
+
+  // 방 리스트 더미 데이터
   const [rooms] = useState([
     { isPrivate: true, roomId: '1001', hostName: 'A', capacity: '1/4' },
     { isPrivate: false, roomId: '1002', hostName: 'B', capacity: '2/4' },
@@ -34,26 +38,32 @@ export default function RoomList() {
     setCurrentPage(currentPage => Math.max(currentPage - 1, 0));
   };
 
+  // 방 클릭 핸들러 함수
+  const handleRoomClick = (roomId) => {
+    navigate(`/room/${roomId}`);
+  }
+
   return (
     <div>
       <div className={styles.pagination}>
-        <button onClick={prevPage} disabled={currentPage === 0}>&lt;</button>
+        <button onClick={prevPage} disabled={currentPage === 0}>◀</button>
         <div className={styles.roomContainer}>
           {currentRooms.map((room, index) => (
-            <div key={index} className={styles.roomBox}>
+            // 클릭 이벤트 핸들러
+            <div key={index} className={styles.roomBox} onClick={() => handleRoomClick(room.roomId)}>
               <div className="flex items-center col-span-2 row-span-1 text-2xl">
                 <img className={`${styles.lockIcon} mr-2`} src={room.isPrivate ? lock : unlocked} alt={room.isPrivate ? "Lock Icon" : "Unlock Icon"} />
-                <span>{room.roomId}</span>
+                <p className="text-Bit">{room.roomId}</p>
               </div>
               <div className="col-span-1 row-span-1"></div>
               <div className='flex flex-row justify-evenly'>
               <div className="col-span-2 row-span-1 text-xl m-2">{`${room.hostName}님의 방`}</div>
-              <div className={`col-span-1 row-span-1 text-2xl m-2 ${room.capacity === '4/4' ? 'text-gray-500' : ''}`}>{room.capacity}</div>
+              <div className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${room.capacity === '4/4' ? 'text-red-500' : ''}`}>{room.capacity}</div>
             </div>
             </div>
           ))}
         </div>
-        <button onClick={nextPage} disabled={currentPage === Math.ceil(rooms.length / roomsPerPage) - 1}>&gt;</button>
+        <button onClick={nextPage} disabled={currentPage === Math.ceil(rooms.length / roomsPerPage) - 1}>▶</button>
       </div>
     </div>
   );

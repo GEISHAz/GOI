@@ -28,7 +28,7 @@ export default function Router() {
           <Route path="/channel" element={<Channel />} />
           <Route path="/square/:id" element={<Square />} />
           <Route path="/rank" element={<Rank />} />
-          <Route path="/room" element={<RoomLobby/>}></Route>
+          <Route path="/room/:id" element={<RoomLobby/>}></Route>
         {/* </Route> */}
       </Routes>
     </AuthWrapper>
