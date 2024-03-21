@@ -9,7 +9,7 @@ import GamePlay from './pages/gamePlay/index.jsx';
 import Channel from './pages/channel/index.jsx';
 import Square from './pages/square/index.jsx';
 import Rank from './pages/rank/index.jsx';
-// import PrivateRoute from './pages/privateLogin/index.jsx';
+import PrivateRoute from './pages/privateLogin/index.jsx';
 import AuthWrapper from './components/AuthWrapper.jsx';
 
 export default function Router() {
@@ -21,13 +21,13 @@ export default function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="/getUserLogin" element={<GetUserLogin />} />
         <Route path="/callBack" element={<CallBack />} />
-        {/* <Route element={<PrivateRoute />}> */}
+        <Route element={<PrivateRoute />}>
           <Route path="/profile/:nickName" element={<Profile />} />
           <Route path="/gamePlay" element={<GamePlay />} />
           <Route path="/channel" element={<Channel />} />
           <Route path="/square/:id" element={<Square />} />
           <Route path="/rank" element={<Rank />} />
-        {/* </Route> */}
+        </Route>
       </Routes>
     </AuthWrapper>
   );
