@@ -13,13 +13,8 @@ export default function Ranking() {
   // 본인
   const userProfileImage = useSelector((state) => state.auth.userProfileImage);
   const userNickname = useSelector((state) => state.auth.userNickname);
-  const [myEXP, setMyEXP] = useState(null);
-  const [myRank, setMyRank] = useState(null);
-  // 다른유저들 정보 (이름, 이미지, )
-  const [isUserId, setIsUserId] = useState([]);
-  const [isUserNames, setIsUserNames] = useState([]);
-  const [isuserEXP, setIsUserEXP] = useState([]);
-  const [isUserProfile, setIsUserProfile] = useState([]);
+  const [myInfo, setMyInfo] = useState({ exp: null, rank: null });
+  const [otherUsers, setOtherUsers] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
@@ -35,10 +30,7 @@ export default function Ranking() {
           console.log("유저 닉네임 확인", res.data.nickName);
           console.log("유저 경험치 확인", res.data.exp);
           console.log("유저 프로필 확인", res.data.imageId);
-          setIsUserId(res.data.id);
-          setIsUserProfile(res.data.imageId);
-          setIsUserNames(res.data.nickName);
-          setIsUserEXP(res.data.exp);
+          setOtherUsers(res.data);
         } else {
           throw new Error('에러 발생 1');
         }
@@ -55,10 +47,8 @@ export default function Ranking() {
         console.log("리스폰스 확인 2 :", res)
         if (res.status === 200 && res.data) {
           console.log("내 순위 확인", res.data.rank);
-          console.log("내 닉네임 확인", res.data.nickName);
           console.log("내 경험치 확인", res.data.exp);
-          setMyEXP(res.data.exp);
-          setMyRank(res.data.rank);
+          setMyInfo({ rank: res.data.rank, exp: res.data.exp, });
         } else {
           throw new Error('에러 발생 2');
         }
@@ -89,13 +79,13 @@ export default function Ranking() {
     
       <div className="flex flex-row justify-center items-center overflow-auto h-full">
         <div className="flex flex-col items-center justify-center w-full">
-          {userEXP.map((user, index) => (
-            <div key={index} className="flex items-center justify-between p-2 border-b border-gray-200 w-full">
-              <span>{index + 1}위</span>
-              <img src={userProfileImage} alt="유저 프로필" className="h-10 w-10 rounded-full" />
-              <span>{userNickname}</span>
-              <span>{user.exp.toLocaleString()}원</span>
-            </div>
+          {otherUsers.map((user, index) => (
+            <div key={user.id || index} className="flex items-center justify-between p-2 border-b border-gray-200 w-full">
+             <span>{index + 1}위</span>
+             <img src={user.imageId} alt="유저 프로필" className="h-10 w-10 rounded-full" />
+             <span>{user.nickName}</span>
+             <span>{user.exp.toLocaleString()}원</span>
+           </div>
           ))}
         </div>
       </div>
