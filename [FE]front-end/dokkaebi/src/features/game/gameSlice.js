@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const gameSlice = createSlice({
-  name : 'auth',
+  name : 'game',
   initialState : {
     money : 500000,
     ready : false,
@@ -20,5 +20,5 @@ export const gameSlice = createSlice({
   }
 })
 
-export const { setUserNickname, setUserProfileImage, setIsLogin, setPreviousUserNickname } = authSlice.actions
+export const { setMoney, setReady, setPoint } = gameSlice.actions
 export default gameSlice.reducer
