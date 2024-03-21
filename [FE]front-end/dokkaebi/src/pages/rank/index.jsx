@@ -1,5 +1,5 @@
 import React from 'react';
-import Background from '../../images/channel/background4.gif';
+import Background from '../../images/rank/background7.gif';
 import Ranking from '../../components/rank/ranking';
 
 
