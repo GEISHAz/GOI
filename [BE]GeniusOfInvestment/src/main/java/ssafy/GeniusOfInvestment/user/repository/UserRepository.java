@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Long findRankByExp(@Param("userId") Long userId);
 
     boolean existsByNickName(String nickname);
+    Optional<User> findByNickName(String nickName);
 }
