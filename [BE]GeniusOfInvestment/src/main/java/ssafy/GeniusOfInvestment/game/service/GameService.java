@@ -42,7 +42,7 @@ public class GameService {
         }
         int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
         //나중에 setter지우고 update 메소드 만들기
-        rinfo.get().setStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
+        rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
 
         List<ParticipantInfo> parts = new ArrayList<>();
         List<GameUser> gameUserList = new ArrayList<>();
@@ -61,7 +61,8 @@ public class GameService {
                             .userId(guser.getUserId())
                             .userNick(unick.get().getNickName())
                             .totalCost(500000L)
-                    .build()); //참가자들 정보를 저장(응답용)
+                            .point(3)
+                    .build()); //참가자들 초기 게임 정보를 저장(응답용)
 
             RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
             if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
@@ -86,6 +87,9 @@ public class GameService {
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         selTwoItems(stockInfos, selectedTwo);
         selOneItems(stockInfos, selectedOne);
+        for(StockInfoResponse st : stockInfos){
+            System.out.print(st.getItem() + " ");
+        }
 
         //redis의 GameMarket객체에 현재 시장 상황 저장하기
         List<GameMarket> gms = new ArrayList<>();
@@ -104,6 +108,7 @@ public class GameService {
         //roomRepository.save(rinfo.get());
 
         return TurnResponse.builder()
+                .year(year)
                 .participants(parts)
                 .stockInfo(stockInfos)
                 .build();
@@ -248,6 +253,7 @@ public class GameService {
         //----------------------------------------------------------------
         //각 유저에 대한 거래내역을 업데이트
         List<ParticipantInfo> parts = new ArrayList<>();
+        List<GameUser> gameUserList = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
             MyTradingInfo myInfo = myTradingInfoRepository.getOneMyTradingInfo(guser.getUserId());
             if(myInfo == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
@@ -262,6 +268,7 @@ public class GameService {
                         Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent());
                         bd.setNowVal(nowVal);
                         usrTotal += nowVal;
+                        break;
                     }
                 }
             }
@@ -270,11 +277,19 @@ public class GameService {
             if(unick.isEmpty()){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             }
+            int point = guser.getPoint() + 3;
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
                     .userNick(unick.get().getNickName())
                     .totalCost(usrTotal)
+                    .point(point)
                     .build()); //참가자들 정보를 저장(응답용)
+
+            //GameUser(참가자)의 상태값을 변경
+            guser.setReady(false);
+            guser.setTotalCost(500000L);
+            guser.setPoint(point);
+            gameUserList.add(guser);
         }
 
         return TurnResponse.builder()

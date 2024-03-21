@@ -28,6 +28,8 @@ public class QAlarm extends EntityPathBase<Alarm> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Integer> status = createNumber("status", Integer.class);
+
     public final QUser user;
 
     public QAlarm(String variable) {

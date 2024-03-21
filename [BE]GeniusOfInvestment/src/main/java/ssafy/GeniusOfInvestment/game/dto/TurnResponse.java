@@ -8,6 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TurnResponse {
+    private int year;
     private List<ParticipantInfo> participants;
     private List<StockInfoResponse> stockInfo;
 }
