@@ -34,10 +34,10 @@ export function useAuthCheck() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       console.log("리스폰스 확인 :", response)
-      if (response.status === 200 && response.data.accessToken) {
-        console.log("따끈따끈한 새 액세스 토큰", response.data.accessToken)
-        localStorage.setItem('accessToken', response.data.accessToken); // 로컬스토리지에 저장하고
-        return response.data.accessToken; // 새로 발급받은 토큰 반환
+      if (response.status === 200 && response.data.data.accessToken) {
+        console.log("따끈따끈한 새 액세스 토큰", response.data.data.accessToken)
+        localStorage.setItem('accessToken', response.data.data.accessToken); // 로컬스토리지에 저장하고
+        return response.data.data.accessToken; // 새로 발급받은 토큰 반환
       } else {
         throw new Error('Failed to regenerate token');
       }
