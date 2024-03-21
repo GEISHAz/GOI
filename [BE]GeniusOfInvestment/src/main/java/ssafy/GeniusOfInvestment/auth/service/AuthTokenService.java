@@ -11,6 +11,8 @@ import ssafy.GeniusOfInvestment._common.jwt.TokenRepository;
 
 import java.util.Optional;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
+import ssafy.GeniusOfInvestment._common.response.SuccessType;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,6 @@ public class AuthTokenService {
         tokenRepository.save(resultToken);
         //새로운 액세스 토큰을 반환해준다.
         return newAccessToken;
-
     }
 
 

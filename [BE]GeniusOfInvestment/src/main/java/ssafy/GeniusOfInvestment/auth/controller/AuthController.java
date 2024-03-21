@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
 import ssafy.GeniusOfInvestment.auth.service.AuthTokenService;
 
@@ -29,12 +32,12 @@ public class AuthController {
     }
 
     @PostMapping("/regenerate-token")
-    public ResponseEntity<String> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
+    public SuccessResponse<String> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
 
         String newAccessToken = authTokenService.republishAccessToken(accessToken);
         if (StringUtils.hasText(newAccessToken)) {
-            return ResponseEntity.ok(newAccessToken);
+            SuccessResponse.of(SuccessType.NEW_ACCESS_TOKEN_GENERATED,newAccessToken);
         }
-        return ResponseEntity.badRequest().body("access token을 만들지 못했습니다.");
+        throw new CustomBadRequestException(ErrorType.FAIL_TO_GENERATE_ACCESS_TOKEN);
     }
 }
