@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './RoomList.module.css';
+import RoomEnterModal from './RoomEnterModal';
 
 import lock from '../../images/square/icon_lock.png';
 import unlocked from '../../images/square/icon_unlocked.png';
@@ -39,9 +40,17 @@ export default function RoomList() {
   };
 
   // 방 클릭 핸들러 함수
-  const handleRoomClick = (roomId) => {
-    navigate(`/room/${roomId}`);
-  }
+  // 비밀방이라면 -> 비밀방 입장 모달 오픈
+  const handleRoomClick = (room) => {
+    if (room.isPrivate) {
+      setEnterModal(true);
+    } else {
+      navigate(`/room/${room.roomId}`);
+    }
+  };
+
+  // 비밀방 입장 모달 
+  const [EnterModal, setEnterModal] = useState(false);
 
   return (
     <div>
@@ -50,7 +59,10 @@ export default function RoomList() {
         <div className={styles.roomContainer}>
           {currentRooms.map((room, index) => (
             // 클릭 이벤트 핸들러
-            <div key={index} className={styles.roomBox} onClick={() => handleRoomClick(room.roomId)}>
+            <div 
+              key={index} 
+              className={styles.roomBox} 
+              onClick={() => handleRoomClick(room)}>
               <div className="flex items-center col-span-2 row-span-1 text-2xl">
                 <img className={`${styles.lockIcon} mr-2`} src={room.isPrivate ? lock : unlocked} alt={room.isPrivate ? "Lock Icon" : "Unlock Icon"} />
                 <p className="text-Bit">{room.roomId}</p>
@@ -65,6 +77,9 @@ export default function RoomList() {
         </div>
         <button onClick={nextPage} disabled={currentPage === Math.ceil(rooms.length / roomsPerPage) - 1}>▶</button>
       </div>
+
+      {/* 모달 함수 전달 */}
+      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} />}
     </div>
   );
 }

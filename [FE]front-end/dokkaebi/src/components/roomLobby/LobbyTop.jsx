@@ -6,6 +6,7 @@ import messenger from '../../images/square/icon_messenger.png';
 
 
 export default function LobbyTop() {
+  const navigate = useNavigate();
   
   return (
     <>

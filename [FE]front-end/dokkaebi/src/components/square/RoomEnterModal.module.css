@@ -1,9 +1,10 @@
 .background {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 30;
-    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +16,6 @@
     background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     /* margin-left: 8%; */

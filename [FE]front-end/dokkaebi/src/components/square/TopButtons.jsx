@@ -72,6 +72,9 @@ export default function TopButtons() {
       {isModalOpen && <RoomCreateModal onClose={handleCloseModal} />} 
 
       {searchModal && <RoomSearchModal setSearchModal={setSearchModal} />}
+      {searchModal && <RoomSearchModal onClose={() => setSearchModal(false)} />}
+
+      
     </>
   );
 }
