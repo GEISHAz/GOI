@@ -21,7 +21,16 @@ public enum SuccessType {
     CHECK_USER_NICKNAME_SUCCESSFULLY("닉네임 중복 체크 성공"),
     NEW_ACCESS_TOKEN_GENERATED("엑세스 토큰 발급 성공"),
 
+    //***************************Friend****************************//
+    SEND_FRIEND_INVITATION("친구 초대 메시지 전송 성공"),
+    GET_FRIEND_SUCCESSFULLY("친구 리스트 조회 성공"),
+    ACCEPT_FRIEND_INVITATION_SUCCESSFULLY("친구 초대 수락 성공"),
+
+    //***************************Alarm****************************//
+    GET_ALARM_LIST_SUCCESSFULLY("알람 리스트 조회 성공"),
+
     //****************************Room****************************//
+
 
 
     //****************************Game****************************//
