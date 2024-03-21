@@ -65,7 +65,7 @@ export function useAuthCheck() {
       // 성공적으로 데이터를 받아왔을 때의 처리...
       return true;
     } catch (error) {
-      if (error.response && error.response.data.statusCode === 401 && error.response.status === 401) {
+      if ((error.response && error.response.data.statusCode === 401) || (error.response && error.response.status === 401)) {
         // 401 에러 시 새 토큰 요청
         return await requestNewToken();
       } else {
