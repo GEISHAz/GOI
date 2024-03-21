@@ -38,7 +38,7 @@ export default function Ranking() {
   useEffect(() => {
     const fetchUserEXP = async () => {
       try {
-        const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/rank`, {
+        const res = await axios.get(`http://localhost:8080/api/users/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 1 :", res)
@@ -58,7 +58,7 @@ export default function Ranking() {
 
     const fetchMyInfo = async () => {
       try {
-        const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}/rank`, {
+        const res = await axios.get(`http://localhost:8080/api/users/${userId}/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 2 :", res)
@@ -92,9 +92,32 @@ export default function Ranking() {
         </button>
       </div>
 
-      <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>순 위</h1>
-    
+      <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>RANKING</h1>
+
       <div className="flex flex-row justify-center items-center overflow-auto">
+        {/* 자신의 랭킹 확인 */}
+        <div className={`flex flex-col items-center justify-center mr-10 p-5 border rounded-lg ${styles.myrankBox}`}>
+          <h2 className="text-2xl mb-4 text-gray font-Bit">나의 RANK</h2>
+          <div>
+            <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
+              당신의 순위: 
+              <span className={`text-xl text-bold ${styles.rankValue}`}>
+                {myInfo.rank ? (myInfo.rank <= 100 ? `${myInfo.rank}위` : "순위권 외") : "정보 로딩 중..."}
+              </span>
+            </h3>
+          </div>
+          <div>
+            <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
+              현재
+              <span className={`text-xl text-bold ${styles.rankValue}`}>
+                {myInfo.exp}
+              </span>
+              원을 보유 중이에요
+            </h3>
+          </div>
+        </div>
+
+        {/* 유저 랭킹 TOP 100 */}
         <div className="flex flex-col items-center justify-center w-1/2">
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기

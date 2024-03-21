@@ -30,3 +30,11 @@
 .rankHeader {
   color: #FFC0CB;
 }
+
+.rankLabel {
+  color: white;
+}
+
+.rankValue {
+  color: #FF6347; /* 밝은 빨강색, 토마토 색상 */
+}
