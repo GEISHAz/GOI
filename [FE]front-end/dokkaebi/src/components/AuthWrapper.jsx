@@ -16,7 +16,7 @@ const AuthWrapper = ({ children }) => {
           console.log("새 액세스 토큰을 받지 못함 -> isAuthenticated 없음");
           // navigate('/login');
         } else {
-          console.log("새 액세스 토큰 갱신함")
+          console.log("액세스 토큰 갱신함")
         }
       }
     };
