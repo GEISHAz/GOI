@@ -52,7 +52,7 @@ public class TimerService {
         int totalTime = 180000;
 
         // 1초 간격으로 작업 실행
-        timer.scheduleAtFixedRate(task, 0, 1000);
+        timer.scheduleAtFixedRate(task, 100, 1000);
 
         // 3분 후 TimerTask 실행 취소
         //timer.schedule(endTask, 180000, TimeUnit.MILLISECONDS.ordinal());

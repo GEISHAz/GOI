@@ -11,4 +11,5 @@ public class ParticipantInfo {
     private Long userId;
     private String userNick;
     private Long totalCost;
+    private int point;
 }

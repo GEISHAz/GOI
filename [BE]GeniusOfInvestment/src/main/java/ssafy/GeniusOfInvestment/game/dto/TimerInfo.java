@@ -10,6 +10,6 @@ import lombok.Setter;
 public class TimerInfo {
     private int remainingMin;
     private int remainingSec;
-    private int remainingTime;
+    private int remainingTime; //ms
     private int totalTime;
 }

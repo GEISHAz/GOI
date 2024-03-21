@@ -13,6 +13,10 @@ public class Information {
     @Column(name = "info_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
+    //종목의 아이디값
+    //(1: IT, 2: 자동차, 3: 바이오, 4: 통신, 5: 화학, 6: 엔터, 7: 식품, 8: 항공, 9: 건설, 10: 패션&뷰티)
+    private Long areaId;
+
     private String area;
 
     private int year;

@@ -5,15 +5,13 @@ import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.Information;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
-import ssafy.GeniusOfInvestment._common.redis.GameMarket;
-import ssafy.GeniusOfInvestment._common.redis.RedisUser;
+import ssafy.GeniusOfInvestment._common.redis.*;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.dto.*;
-import ssafy.GeniusOfInvestment._common.redis.GameRoom;
-import ssafy.GeniusOfInvestment._common.redis.GameUser;
+import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
 import ssafy.GeniusOfInvestment.square.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
@@ -29,6 +27,7 @@ public class GameService {
     private final RoomRepository roomRepository;
     private final RedisUserRepository redisUserRepository;
     private final InformationRepository informationRepository;
+    private final RedisMyTradingInfoRepository myTradingInfoRepository;
 
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
@@ -41,7 +40,9 @@ public class GameService {
         if(rinfo.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        rinfo.get().setStatus(1); //방 상태를 게임 중으로 바꾼다.
+        int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
+        //나중에 setter지우고 update 메소드 만들기
+        rinfo.get().setStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
 
         List<ParticipantInfo> parts = new ArrayList<>();
         List<GameUser> gameUserList = new ArrayList<>();
@@ -60,7 +61,7 @@ public class GameService {
                             .userId(guser.getUserId())
                             .userNick(unick.get().getNickName())
                             .totalCost(500000L)
-                    .build()); //참가자들 정보를 저장
+                    .build()); //참가자들 정보를 저장(응답용)
 
             RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
             if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
@@ -94,12 +95,13 @@ public class GameService {
                             .Cost(stok.getThisCost())
                     .build());
         }
+        room.setYear(year); //게임의 현재 년도 설정
         room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
-        room.setMarket(gms);
-        gameRepository.updateGameRoom(room);
+        room.setMarket(gms); //새로 생성된 시장 상황을 저장
+        gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
 
         //방 상태 변경 내역을 저장
-        roomRepository.save(rinfo.get());
+        //roomRepository.save(rinfo.get());
 
         return TurnResponse.builder()
                 .participants(parts)
@@ -193,6 +195,11 @@ public class GameService {
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
+        Optional<Room> rm = roomRepository.findById(grId);
+        if(rm.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        if(rm.get().getEndYear() == room.getYear()){ //게임이 끝났다.
+            return null;
+        }
 
 //        Set<Long> info = new HashSet<>();
 //        for(GameUser guser : room.getParticipants()){
@@ -202,13 +209,78 @@ public class GameService {
 //            Optional<Information> usrBuy = informationRepository.findById(id);
 //
 //        }
-        for(GameMarket mk : room.getMarket()){
+        //--------------------------------------------------------------
+        List<StockInfoResponse> stockInfos = new ArrayList<>();
+        List<GameMarket> gms = new ArrayList<>();
+        for(GameMarket mk : room.getMarket()){ //전체 시장 상황을 업데이트
+            Long cur; //현재(새로운) 가격
+            Long last = mk.getCost();
+            int roi; //수익률
             if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
                 Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
-
+                if(usrBuy.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_INFO);
+                roi = usrBuy.get().getRoi();
+                cur = calMarketVal(last, roi);
+            }else {
+                Long itemId = getIdForItem(mk.getItem()); //각 종목의 아이디값
+                List<Information> infos = informationRepository.findByAreaId(itemId);
+                Random random = new Random();
+                int randIdx = random.nextInt(infos.size());
+                Information ranInfo = infos.get(randIdx);
+                roi = ranInfo.getRoi();
+                cur = calMarketVal(last, roi);
             }
+            //redis에 저장될 시장 상황을 업데이트
+            gms.add(GameMarket.builder()
+                    .item(mk.getItem())
+                    .Cost(cur)
+                    .build());
+
+            //응답을 줄 dto에 정보 업데이트
+            stockInfos.add(StockInfoResponse.builder()
+                            .item(mk.getItem())
+                            .lastCost(last)
+                            .thisCost(cur)
+                            .percent(roi)
+                    .build());
         }
-        return null;
+
+        //----------------------------------------------------------------
+        //각 유저에 대한 거래내역을 업데이트
+        List<ParticipantInfo> parts = new ArrayList<>();
+        for(GameUser guser : room.getParticipants()){
+            MyTradingInfo myInfo = myTradingInfoRepository.getOneMyTradingInfo(guser.getUserId());
+            if(myInfo == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            List<BreakDown> bdowns = myInfo.getBreakDowns();
+            List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
+            Long usrTotal = 0L;
+            for(BreakDown bd : bdowns){
+                for(StockInfoResponse totalInfo : stockInfos){
+                    if(bd.getItem().equals(totalInfo.getItem())){ //내가 산 주식 종목에 해당하는 수익률 정보를 전체 주식 정보에서 얻는다.
+                        bd.setRoi(totalInfo.getPercent());
+                        //산 금액과 이전 턴에서의 금액을 분리??
+                        Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent());
+                        bd.setNowVal(nowVal);
+                        usrTotal += nowVal;
+                    }
+                }
+            }
+
+            Optional<User> unick = userRepository.findById(guser.getUserId());
+            if(unick.isEmpty()){
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
+            parts.add(ParticipantInfo.builder()
+                    .userId(guser.getUserId())
+                    .userNick(unick.get().getNickName())
+                    .totalCost(usrTotal)
+                    .build()); //참가자들 정보를 저장(응답용)
+        }
+
+        return TurnResponse.builder()
+                .participants(parts)
+                .stockInfo(stockInfos)
+                .build();
     }
 
     public Long calMarketVal(Long cost, int roi){ //수익률로 평가 금액을 계산
@@ -218,5 +290,33 @@ public class GameService {
         }else {
             return (long) (cost - (cost * (roi/100d)));
         }
+    }
+
+    public Long getIdForItem(String itemName){
+        if(itemName.contains("IT")){
+            return 1L;
+        } else if (itemName.contains("자동차")) {
+            return 2L;
+        } else if (itemName.contains("바이오")) {
+            return 3L;
+        } else if (itemName.contains("통신")) {
+            return 4L;
+        } else if (itemName.contains("화학")) {
+            return 5L;
+        } else if (itemName.contains("엔터")) {
+            return 6L;
+        } else if (itemName.contains("식품")) {
+            return 7L;
+        } else if (itemName.contains("항공")) {
+            return 8L;
+        } else if (itemName.contains("건설")) {
+            return 9L;
+        } else{
+            return 10L;
+        }
+    }
+
+    public void calMyBreakDown(BreakDown breakDown, int roi){
+
     }
 }
