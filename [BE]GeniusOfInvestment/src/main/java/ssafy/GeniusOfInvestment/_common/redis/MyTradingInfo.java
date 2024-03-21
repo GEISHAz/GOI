@@ -12,8 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MyTradingInfo implements Serializable {
     private Long id; //사용자의 아이디값(키값)
-    private Long marketVal;
-    private Long investVal;
+    private Long marketVal; //전체 평가금액
+    private Long investVal; //투자 금액
     private Long yoy; //작년 대비 값(-가능) ex)-27000(원)
     private List<BreakDown> breakDowns; //나의 종목별 거래내역
 }

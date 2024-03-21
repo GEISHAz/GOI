@@ -21,6 +21,8 @@ public class QInformation extends EntityPathBase<Information> {
 
     public final StringPath area = createString("area");
 
+    public final NumberPath<Long> areaId = createNumber("areaId", Long.class);
+
     public final StringPath highLv = createString("highLv");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

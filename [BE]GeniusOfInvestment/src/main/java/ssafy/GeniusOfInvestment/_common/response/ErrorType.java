@@ -35,6 +35,8 @@ public enum ErrorType {
     IS_NOT_MANAGER(HttpStatus.UNAUTHORIZED, "방장만이 요청을 할 수 있습니다."),
     NOT_YET_READY(HttpStatus.FORBIDDEN, "모든 사용자가 레디를 해야됩니다."),
     NOT_FOUND_ROOM(HttpStatus.BAD_REQUEST, "존재하는 방 정보가 아닙니다."),
+    NOT_FOUND_INFO(HttpStatus.BAD_REQUEST, "해당하는 정보가 존재하지 않습니다."),
+    END_GAME(HttpStatus.GONE, "게임이 종료되었습니다.")
     ;
 
 

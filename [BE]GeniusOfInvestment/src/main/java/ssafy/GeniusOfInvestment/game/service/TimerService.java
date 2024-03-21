@@ -1,9 +1,10 @@
-package ssafy.GeniusOfInvestment.game;
+package ssafy.GeniusOfInvestment.game.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.dto.TimerInfo;
 
 import java.util.Timer;
@@ -32,7 +33,11 @@ public class TimerService {
                 tinfo.setRemainingMin(min);
                 tinfo.setRemainingSec(sec);
                 tinfo.setRemainingTime(remainMs);
-                messageTemplate.convertAndSend("/alram/msg-to/" + grId, tinfo);
+                messageTemplate.convertAndSend("/alram/msg-to/" + grId,
+                        MessageDto.builder()
+                                .type(MessageDto.MessageType.TIMER)
+                                .data(tinfo)
+                                .build());
                 if(remainMs == 0) cancel(); //타이머 종료
             }
         };
@@ -47,7 +52,7 @@ public class TimerService {
         int totalTime = 180000;
 
         // 1초 간격으로 작업 실행
-        timer.scheduleAtFixedRate(task, 0, 1000);
+        timer.scheduleAtFixedRate(task, 100, 1000);
 
         // 3분 후 TimerTask 실행 취소
         //timer.schedule(endTask, 180000, TimeUnit.MILLISECONDS.ordinal());

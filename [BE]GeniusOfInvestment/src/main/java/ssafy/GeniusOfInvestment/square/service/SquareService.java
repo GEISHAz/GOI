@@ -9,7 +9,7 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
-import ssafy.GeniusOfInvestment.game.RedisGameRepository;
+import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;
@@ -40,7 +40,6 @@ public class SquareService {
         Channel ch = new Channel();
         ch.setId(info.channelId());
 
-        //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
                 .channel(ch)
