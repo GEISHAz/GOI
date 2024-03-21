@@ -35,9 +35,9 @@ public class AuthController {
     public SuccessResponse<String> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
 
         String newAccessToken = authTokenService.republishAccessToken(accessToken);
-        if (StringUtils.hasText(newAccessToken)) {
-            SuccessResponse.of(SuccessType.NEW_ACCESS_TOKEN_GENERATED,newAccessToken);
+        if (!StringUtils.hasText(newAccessToken)) {
+            throw new CustomBadRequestException(ErrorType.FAIL_TO_GENERATE_ACCESS_TOKEN);
         }
-        throw new CustomBadRequestException(ErrorType.FAIL_TO_GENERATE_ACCESS_TOKEN);
+        return SuccessResponse.of(SuccessType.NEW_ACCESS_TOKEN_GENERATED,newAccessToken);
     }
 }
