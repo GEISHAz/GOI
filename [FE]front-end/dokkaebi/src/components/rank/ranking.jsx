@@ -10,6 +10,9 @@ import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
 import BackA from '../../images/hub/backA.png';
 import BackB from '../../images/hub/backB.png';
+import One from '../../images/rank/1st.png';
+import Two from '../../images/rank/2nd.png';
+import Three from '../../images/rank/3rd.png';
 import styles from './ranking.module.css';
 
 export default function Ranking() {
@@ -122,11 +125,22 @@ export default function Ranking() {
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
             return (
-              <div key={user.id || index} className="flex items-center justify-between p-2 border-b border-gray-200 w-full">
-                <span>{index + 1}위</span>
-                {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
-                <span>{user.nickName}</span>
-                <span>{user.exp.toLocaleString()}원</span>
+              <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
+                <div className={styles.rankDetail}>
+                  <span>{index + 1}위</span>
+                  {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
+                  {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
+                  {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
+                </div>
+                <div className={styles.rankDetail}>
+                  {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+                </div>
+                <div className={styles.rankDetail}>
+                  <span>{user.nickName}</span>
+                </div>
+                <div className={styles.rankDetail}>
+                  <span>{user.exp.toLocaleString()}원</span>
+                </div>
               </div>
             );
           })}
