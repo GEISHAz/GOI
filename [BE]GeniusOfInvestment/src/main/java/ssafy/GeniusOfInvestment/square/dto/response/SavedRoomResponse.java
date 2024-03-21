@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Builder
 public record SavedRoomResponse(
+        Long roomnum,
     String title,
     boolean isPublic,
     String password,
