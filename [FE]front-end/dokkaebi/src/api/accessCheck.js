@@ -43,6 +43,7 @@ export function useAuthCheck() {
       }
     } catch (error) {
       console.error('requestNewToken 함수 실패 -> 토큰 갱신 실패', error);
+      console.log(error)
       handleLogout(); // 토큰 재발급 실패 시 로그아웃 처리
       return null;
     }
