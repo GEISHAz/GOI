@@ -7,14 +7,14 @@ import unlocked from '../../images/square/icon_unlocked.png';
 export default function RoomList() {
   // 임시 방 데이터
   const [rooms] = useState([
-    { isPrivate: true, roomId: '101', hostName: 'A', capacity: '1/4' },
-    { isPrivate: false, roomId: '102', hostName: 'B', capacity: '2/4' },
-    { isPrivate: true, roomId: '103', hostName: 'C', capacity: '3/4' },
-    { isPrivate: false, roomId: '104', hostName: 'D', capacity: '4/4' },
-    { isPrivate: true, roomId: '105', hostName: 'E', capacity: '1/4' },
-    { isPrivate: false, roomId: '106', hostName: 'F', capacity: '2/4' },
-    { isPrivate: true, roomId: '107', hostName: 'G', capacity: '3/4' },
-    { isPrivate: false, roomId: '108', hostName: 'H', capacity: '4/4' },
+    { isPrivate: true, roomId: '1001', hostName: 'A', capacity: '1/4' },
+    { isPrivate: false, roomId: '1002', hostName: 'B', capacity: '2/4' },
+    { isPrivate: true, roomId: '1003', hostName: 'C', capacity: '3/4' },
+    { isPrivate: false, roomId: '1004', hostName: 'D', capacity: '4/4' },
+    { isPrivate: true, roomId: '1005', hostName: 'E', capacity: '1/4' },
+    { isPrivate: false, roomId: '1006', hostName: 'F', capacity: '2/4' },
+    { isPrivate: true, roomId: '1007', hostName: 'G', capacity: '3/4' },
+    { isPrivate: false, roomId: '1008', hostName: 'H', capacity: '4/4' },
     // 추가 방 데이터 ...
   ]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -58,46 +58,3 @@ export default function RoomList() {
     </div>
   );
 }
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import styles from './RoomList.module.css';
-
-// import lock from '../../images/square/icon_lock.png';
-// import unlocked from '../../images/square/icon_unlocked.png';
-
-// export default function RoomList() {
-//   const [rooms, setRooms] = useState([]);
-
-//   useEffect(() => {
-//     fetchRooms().then(data => setRooms(data));
-//   }, []);
-
-//   // axios를 사용하여 데이터 가져오기
-//   async function fetchRooms() {
-//     try {
-//       const response = await axios.get('여기에_방_정보를_가져올_URL_입력');
-//       return response.data; // 이 부분은 백엔드에서 받는 데이터 구조에 따라 조정해야 할 수 있습니다.
-//     } catch (error) {
-//       console.error("방 정보를 가져오는데 실패했습니다:", error);
-//       return []; // 오류가 발생했을 때 빈 배열 반환
-//     }
-//   }
-
-//   return (
-//     <div className={`${styles.roomContainer} overflow-auto`}>
-//       {rooms.map((room, index) => (
-//         <div key={index} className={`${styles.roomBox} grid grid-cols-3 grid-rows-2 gap-5 p-5`}>
-//           <div className="flex items-center col-span-2 row-span-1 text-2xl">
-//             <img className={`${styles.lockIcon} mr-2`} src={room.isPrivate ? lock : unlocked} alt={room.isPrivate ? "잠금 아이콘" : "잠금 해제 아이콘"} />
-//             <span>{`방번호: ${room.roomId}`}</span>
-//           </div>
-//           <div className="col-span-2 row-span-1 text-xl">{`${room.hostName}님의 방`}</div>
-//           <div className={`col-span-1 row-span-1 text-2xl ${room.currentCapacity === "4/4" ? 'text-gray-500' : ''}`}>{room.currentCapacity}</div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
