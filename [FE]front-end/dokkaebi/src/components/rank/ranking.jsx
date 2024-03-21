@@ -19,11 +19,8 @@ export default function Ranking() {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const userId = localStorage.getItem("userId");
-  // 본인
-  const userProfileImage = useSelector((state) => state.auth.userProfileImage);
-  const userNickname = useSelector((state) => state.auth.userNickname);
-  const [myInfo, setMyInfo] = useState({ exp: null, rank: null });
-  const [otherUsers, setOtherUsers] = useState([]);
+  const [myInfo, setMyInfo] = useState({ exp: null, rank: null }); // 본인 정보
+  const [otherUsers, setOtherUsers] = useState([]); // 다른 유저 정보
   const [isHovering, setIsHovering] = useState(false);
 
   const images = [
