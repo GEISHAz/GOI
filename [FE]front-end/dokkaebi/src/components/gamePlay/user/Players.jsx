@@ -15,7 +15,7 @@ export default function Players() {
           <p className={styles.playerNickName}>이름</p>
           <p className={styles.playerReady}>READY</p>
         </div>
-        <p className={styles.playerTotalMoney}>500,000</p>
+        <p className={styles.playerTotalMoney}>500000000000</p>
       </div>
     </div>
   )
