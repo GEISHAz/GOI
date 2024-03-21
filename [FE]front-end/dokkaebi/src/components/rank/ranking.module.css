@@ -1,23 +1,22 @@
 .rankContainer {
-    width: 70%;
-    padding: 4% 5%;
-    margin-top: 2%;
-    margin-bottom: 5%;
+    width: 50%;
+    padding: 3%;
+    /* margin-top: 2%; */
     background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 20px; 
+    border-radius: 10px; 
   }
 
 .rankBox {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 20px;
-    padding: 3%;
-    margin-left: 4px;
-    margin-right: 4px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 5%;
 }
 
 .myrankBox {
   background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 3%;
   margin-left: 4px;
   margin-right: 4px;
@@ -26,4 +25,8 @@
 .backButton {
   width: 100%;
   height: 50px;
+}
+
+.rankHeader {
+  color: #FFC0CB;
 }
