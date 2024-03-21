@@ -12,6 +12,7 @@ import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
+import ssafy.GeniusOfInvestment.auth.dto.response.AccessTokenResponse;
 import ssafy.GeniusOfInvestment.auth.service.AuthTokenService;
 
 @Slf4j
@@ -32,12 +33,13 @@ public class AuthController {
     }
 
     @PostMapping("/regenerate-token")
-    public SuccessResponse<String> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
+    public SuccessResponse<AccessTokenResponse> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
 
         String newAccessToken = authTokenService.republishAccessToken(accessToken);
         if (!StringUtils.hasText(newAccessToken)) {
             throw new CustomBadRequestException(ErrorType.FAIL_TO_GENERATE_ACCESS_TOKEN);
         }
-        return SuccessResponse.of(SuccessType.NEW_ACCESS_TOKEN_GENERATED,newAccessToken);
+        AccessTokenResponse accessTokenResponse = AccessTokenResponse.of(newAccessToken);
+        return SuccessResponse.of(SuccessType.NEW_ACCESS_TOKEN_GENERATED,accessTokenResponse);
     }
 }
