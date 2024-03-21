@@ -17,6 +17,7 @@ export default function HubTop() {
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
+    const accessToken = localStorage.getItem('accessToken');
     try {
       // 백엔드 서버로 로그아웃 요청 보내기
       await axios.post('https://j10d202.p.ssafy.io/api/auth/logout', {}, {
@@ -30,7 +31,7 @@ export default function HubTop() {
       navigate("/hub");
       alert("로그아웃 되었어요 !");
     } catch (error) {
-      console.error('로그아웃 요청 중 에러 발생:', error);
+      console.log('로그아웃 요청 중 에러 발생:', error);
       alert("로그아웃 처리 중 문제가 발생했어요 !");
     }
   };
