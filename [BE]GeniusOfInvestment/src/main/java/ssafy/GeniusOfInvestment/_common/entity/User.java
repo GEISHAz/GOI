@@ -37,10 +37,10 @@ public class User {
 
     //---------------------------------------------------------------------
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Alram> alrams = new ArrayList<>();
-    public void addAlram(Alram alram){
-        alrams.add(alram);
-        alram.setUser(this);
+    private List<Alarm> alarms = new ArrayList<>();
+    public void addAlarm(Alarm alarm){
+        alarms.add(alarm);
+        alarm.setUser(this);
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
