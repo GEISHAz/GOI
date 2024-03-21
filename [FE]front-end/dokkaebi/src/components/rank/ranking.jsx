@@ -94,11 +94,11 @@ export default function Ranking() {
 
       <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>RANKING</h1>
 
-      <div className="flex flex-row justify-center items-center overflow-auto">
+      <div className="flex flex-row justify-center items-center">
         {/* 자신의 랭킹 확인 */}
-        <div className={`flex flex-col items-center justify-center mr-10 p-5 border rounded-lg ${styles.myrankBox}`}>
-          <h2 className="text-2xl mb-4 text-gray font-Bit">나의 RANK</h2>
-          <div>
+        <div className={`flex flex-col items-center justify-center mr-10 p-5 border rounded-lg my-auto ${styles.myrankBox}`}>
+          <h2 className="text-2xl mb-5 text-gray font-Bit">나의 RANK</h2>
+          <div className="mb-5">
             <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
               당신의 순위: 
               <span className={`text-xl text-bold ${styles.rankValue}`}>
@@ -106,11 +106,11 @@ export default function Ranking() {
               </span>
             </h3>
           </div>
-          <div>
+          <div className="mb-5">
             <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
-              현재
+              현재&nbsp;
               <span className={`text-xl text-bold ${styles.rankValue}`}>
-                {myInfo.exp}
+                {myInfo.exp}&nbsp;
               </span>
               원을 보유 중이에요
             </h3>
@@ -118,7 +118,7 @@ export default function Ranking() {
         </div>
 
         {/* 유저 랭킹 TOP 100 */}
-        <div className="flex flex-col items-center justify-center w-1/2">
+        <div className={`flex flex-col items-center justify-center w-1/2 overflow-auto ${styles.rankContainer}`}>
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
             return (
