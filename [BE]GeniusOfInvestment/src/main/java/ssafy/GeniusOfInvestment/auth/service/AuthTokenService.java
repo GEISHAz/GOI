@@ -27,8 +27,8 @@ public class AuthTokenService {
         // 액세스 토큰으로 Refresh 토큰 객체를 조회
         Optional<SavedToken> refreshToken = tokenRepository.findByAccessToken(resolveToken(accessToken));
 
-        // RefreshToken이 존재하고 유효하다면 실행
-        if (!refreshToken.isPresent() || jwtUtil.validateToken(refreshToken.get().getRefreshToken())) {
+        // RefreshToken이 존재하지 않거나 유효하지 않다면 실행
+        if (refreshToken.isEmpty() || !jwtUtil.validateToken(refreshToken.get().getRefreshToken())) {
             // RefreshToken이 유효하지 않다면 예외 처리, 전달
             throw new CustomBadRequestException(ErrorType.EXPIRED_REFRESH_TOKEN);
         }

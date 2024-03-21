@@ -35,6 +35,7 @@ export function useAuthCheck() {
       });
 
       if (response.status === 200 && response.data.accessToken) {
+        console.log("따끈따끈한 새 액세스 토큰", response.data.accessToken)
         localStorage.setItem('accessToken', response.data.accessToken); // 로컬스토리지에 저장하고
         return response.data.accessToken; // 새로 발급받은 토큰 반환
       } else {
@@ -66,6 +67,7 @@ export function useAuthCheck() {
     } catch (error) {
       if ((error.response && error.response.data.statusCode === 401) || (error.response && error.response.status === 401)) {
         // 401 에러 시 새 토큰 요청
+        console.log("만료된 액세스 토큰", accessToken)
         return await requestNewToken(accessToken);
       } else {
         // 다른 에러 처리
