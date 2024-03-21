@@ -19,6 +19,7 @@ const AuthWrapper = ({ children }) => {
       }
     };
     checkToken();
+    console.log("새 엑세스 토큰 저장 완료 !")
   }, [checkAccess, navigate]);
 
   return children;
