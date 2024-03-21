@@ -15,11 +15,12 @@ const AuthWrapper = ({ children }) => {
         if (!isAuthenticated) {
           console.log("새 액세스 토큰을 받지 못함 -> isAuthenticated 없음");
           // navigate('/login');
+        } else {
+          console.log("새 액세스 토큰 갱신함")
         }
       }
     };
     checkToken();
-    console.log("새 엑세스 토큰 저장 완료 !")
   }, [checkAccess, navigate]);
 
   return children;
