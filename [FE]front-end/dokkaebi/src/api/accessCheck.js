@@ -33,7 +33,7 @@ export function useAuthCheck() {
       const response = await axios.post('https://j10d202.p.ssafy.io/api/auth/regenerate-token', {}, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-
+      console.log("리스폰스 확인 :", response)
       if (response.status === 200 && response.data.accessToken) {
         console.log("따끈따끈한 새 액세스 토큰", response.data.accessToken)
         localStorage.setItem('accessToken', response.data.accessToken); // 로컬스토리지에 저장하고
@@ -43,7 +43,7 @@ export function useAuthCheck() {
       }
     } catch (error) {
       console.error('requestNewToken 함수 실패 -> 토큰 갱신 실패', error);
-      handleLogout(); // 토큰 재발급 실패 시 로그아웃 처리
+      // handleLogout(); // 토큰 재발급 실패 시 로그아웃 처리
       return null;
     }
   };
