@@ -25,12 +25,12 @@ export default function Ranking() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 1 :", res)
-        if (res.status === 200 && res.data) {
-          console.log("유저 id 확인", res.data.id);
-          console.log("유저 닉네임 확인", res.data.nickName);
-          console.log("유저 경험치 확인", res.data.exp);
-          console.log("유저 프로필 확인", res.data.imageId);
-          setOtherUsers(res.data);
+        if (res.status === 200 && res.data.data) {
+          console.log("유저 id 확인", res.data.data.id);
+          console.log("유저 닉네임 확인", res.data.data.nickName);
+          console.log("유저 경험치 확인", res.data.data.exp);
+          console.log("유저 프로필 확인", res.data.data.imageId);
+          setOtherUsers(res.data.data);
         } else {
           throw new Error('에러 발생 1');
         }
@@ -45,10 +45,10 @@ export default function Ranking() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 2 :", res)
-        if (res.status === 200 && res.data) {
-          console.log("내 순위 확인", res.data.rank);
-          console.log("내 경험치 확인", res.data.exp);
-          setMyInfo({ rank: res.data.rank, exp: res.data.exp, });
+        if (res.status === 200 && res.data.data) {
+          console.log("내 순위 확인", res.data.data.rank);
+          console.log("내 경험치 확인", res.data.data.exp);
+          setMyInfo({ rank: res.data.data.rank, exp: res.data.data.exp, });
         } else {
           throw new Error('에러 발생 2');
         }
