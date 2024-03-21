@@ -28,18 +28,26 @@ public class Alarm {
 
     private String content;
 
+    private int status;
+
     @Builder
-    private Alarm(User user, User from, String content){
+    private Alarm(User user, User from, String content, int status){
         this.user = user;
         this.from = from;
         this.content = content;
+        this.status = status;
     }
 
-    public static Alarm of(User user, User from, String content){
+    public static Alarm of(User user, User from, String content,int status){
         return builder()
                 .user(user)
                 .from(from)
                 .content(content)
+                .status(status)
                 .build();
+    }
+
+    public void updateStatus(int status){
+        this.status = status;
     }
 }
