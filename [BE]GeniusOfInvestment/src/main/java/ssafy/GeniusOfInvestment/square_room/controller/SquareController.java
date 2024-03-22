@@ -1,16 +1,15 @@
-package ssafy.GeniusOfInvestment.square.controller;
+package ssafy.GeniusOfInvestment.square_room.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
-import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;
-import ssafy.GeniusOfInvestment.square.dto.response.SavedRoomResponse;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareNowUser;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareRoom;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareUser;
-import ssafy.GeniusOfInvestment.square.service.SquareService;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.response.SavedRoomResponse;
+import ssafy.GeniusOfInvestment.square_room.dto.response.SquareNowUser;
+import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
+import ssafy.GeniusOfInvestment.square_room.service.SquareService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square.dto.response;
+package ssafy.GeniusOfInvestment.square_room.dto.response;
 
 import lombok.Builder;
 

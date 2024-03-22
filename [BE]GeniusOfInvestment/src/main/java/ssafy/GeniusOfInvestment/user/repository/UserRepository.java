@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.User;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareUser;
 
 import java.util.List;
 import java.util.Optional;

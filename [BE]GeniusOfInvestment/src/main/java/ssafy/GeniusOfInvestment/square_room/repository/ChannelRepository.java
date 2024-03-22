@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square.repository;
+package ssafy.GeniusOfInvestment.square_room.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ssafy.GeniusOfInvestment._common.entity.Channel;

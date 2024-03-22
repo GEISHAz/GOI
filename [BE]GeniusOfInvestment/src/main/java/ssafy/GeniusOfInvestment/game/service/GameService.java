@@ -12,8 +12,8 @@ import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.dto.*;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
-import ssafy.GeniusOfInvestment.square.repository.RedisUserRepository;
-import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
+import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
+import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.*;

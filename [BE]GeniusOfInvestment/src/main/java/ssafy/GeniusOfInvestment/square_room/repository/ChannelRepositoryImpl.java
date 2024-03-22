@@ -1,10 +1,9 @@
-package ssafy.GeniusOfInvestment.square.repository;
+package ssafy.GeniusOfInvestment.square_room.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import ssafy.GeniusOfInvestment._common.entity.QRoom;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareRoom;
+import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
 
 import java.util.List;
 import static ssafy.GeniusOfInvestment._common.entity.QRoom.room;

@@ -1,10 +1,8 @@
-package ssafy.GeniusOfInvestment.square.dto.request;
+package ssafy.GeniusOfInvestment.square_room.dto.request;
 
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 @Builder
 public record RoomCreateRequest(
