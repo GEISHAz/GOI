@@ -25,8 +25,8 @@ public class ChannelController {
     }
 
     @PostMapping("/enterc") //채널 들어가기
-    public void enterChannel(@AuthenticationPrincipal User user, @RequestBody Channel channel){
-        channelService.enterChannel(user,channel);
+    public void enterChannel(@AuthenticationPrincipal User user, @RequestBody Long channelId){
+        channelService.enterChannel(user,channelId);
     }
 
 

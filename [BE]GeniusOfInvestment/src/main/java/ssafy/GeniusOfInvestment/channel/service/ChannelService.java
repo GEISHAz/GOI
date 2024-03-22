@@ -45,7 +45,13 @@ public class ChannelService {
     }
 
     //채널 들어가기
-    public void enterChannel(User user, Channel channel) {
+    public void enterChannel(User user, Long channelId) {
+        Optional<Channel> ochannel = channelRepository.findById(channelId);
+        Channel channel;
+        if(ochannel.isPresent())
+            channel = ochannel.get();
+        else
+            throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
         // 채널을 들어갈 수 있는지 부터 확인해야함
         if (channel.getParticipants().size() > 100)
             throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
