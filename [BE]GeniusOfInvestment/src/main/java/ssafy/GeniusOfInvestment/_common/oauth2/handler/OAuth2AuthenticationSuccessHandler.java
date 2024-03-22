@@ -92,6 +92,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             //로그인을 처음한 인원 -> DB에 저장해줘야 함
             if(findUser.isEmpty()){
 
+                log.info("principal.getUserInfo().getProvider() = " + principal.getUserInfo().getProvider().ordinal() +"////// principal.getUserInfo().getName() ==  "+principal.getUserInfo().getName());
+
                 User user = User.of(principal.getUserInfo().getId(),0L,1,principal.getUserInfo().getProvider().ordinal()+principal.getUserInfo().getName().substring(0, 1) + principal.getUserInfo().getId());
                 Long memberId = userService.saveSocialMember(user);
                 GeneratedToken token = jwtUtil.generateToken(memberId.toString());
