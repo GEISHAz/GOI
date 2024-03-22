@@ -52,6 +52,8 @@ public class ChannelService {
 
         ///긴급수정
         User user = userRepository.findById(userId).get();
+        log.debug("이거이거 받음: "+userId, channelId);
+        //
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
