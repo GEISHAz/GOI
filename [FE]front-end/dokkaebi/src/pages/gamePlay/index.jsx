@@ -38,6 +38,7 @@ export default function GamePlay() {
       <div className={styles.player1}>
         <Players />
       </div>
+      {/* 내 정보 */}
       <div className={styles.player2}>
         <Players />
       </div>
