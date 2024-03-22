@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment._common.oauth2.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
@@ -15,7 +16,7 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
         // attributes 맵의 kakao_account 키의 값에 실제 attributes 맵이 할당되어 있음
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
-        this.attributes = kakaoProfile;
+        this.attributes = new HashMap<>();
 
         this.id = ((Long) attributes.get("id")).toString();
         this.email = (String) kakaoAccount.get("email");
