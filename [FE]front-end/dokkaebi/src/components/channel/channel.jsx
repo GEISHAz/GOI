@@ -15,9 +15,9 @@ export default function Channel() {
 
   const fetchChannelSelect = async (channelId) => {
     try {
-      console.log("들어갈 채널ID 확인 :", channelId)
       console.log("보내는 토큰 확인 :", accessToken)
       console.log("보내는 유저ID 확인 :", userId)
+      console.log("들어갈 채널ID 확인 :", channelId)
       const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc`, {
         channelId: channelId,
         userId: userId
@@ -47,6 +47,7 @@ export default function Channel() {
         });
         console.log("GET 리스폰스 확인 :", res)
         if (res.status === 200 && res.data) {
+          // 받아오는 res.data 확인 -> id, channelName, userCount
           setGetChannelInfo(res.data)
         } else {
           throw new Error('GET 요청에서 에러 발생');
