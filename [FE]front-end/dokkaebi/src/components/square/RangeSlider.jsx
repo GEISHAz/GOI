@@ -6,12 +6,12 @@ const RangeSlider = () => {
   const minYear = 2011;
   const maxYear = 2023;
   const minGap = 4;
-  // 시작과 종료 연도를 minYear와 minYear+minGap으로 초기화합니다.
+  // 시작과 종료 연도를 minYear와 minYear+minGap으로 초기화
   const [startYear, setStartYear] = useState(minYear);
   const [endYear, setEndYear] = useState(minYear + minGap);
 
-  // startYear의 상한을 endYear-minGap으로 설정하고,
-  // endYear의 하한을 startYear+minGap으로 설정합니다.
+  // startYear의 상한을 endYear-minGap으로 설정
+  // endYear의 하한을 startYear+minGap으로 설정
   useEffect(() => {
     if (startYear > endYear - minGap) {
       setStartYear(endYear - minGap);
