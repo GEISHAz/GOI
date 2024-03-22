@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.game.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.Information;
@@ -29,6 +30,7 @@ public class GameService {
     private final InformationRepository informationRepository;
     private final RedisMyTradingInfoRepository myTradingInfoRepository;
 
+    @Transactional
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
@@ -41,6 +43,7 @@ public class GameService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
         int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
+        int turn = rinfo.get().getTurnNum(); //방에 설정된 총 턴수 불러오기
         //나중에 setter지우고 update 메소드 만들기
         rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
 
@@ -99,6 +102,9 @@ public class GameService {
                             .Cost(stok.getThisCost())
                     .build());
         }
+
+        //GameRoom(redis)에 정보 업데이트
+        room.setRemainTurn(turn-1); //남은 턴수 설정
         room.setYear(year); //게임의 현재 년도 설정
         room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
         room.setMarket(gms); //새로 생성된 시장 상황을 저장
@@ -108,6 +114,7 @@ public class GameService {
         //roomRepository.save(rinfo.get());
 
         return TurnResponse.builder()
+                .remainTurn(turn-1)
                 .year(year)
                 .participants(parts)
                 .stockInfo(stockInfos)
@@ -195,7 +202,10 @@ public class GameService {
         return (random.nextInt(max - min) + min) / 100;
     }
 
-    public TurnResponse getNextStockInfo(User user, Long grId){
+    //redis에 대한 transactional을 걸게 되면 multi-exec가 걸리게 되므로 중간에 redis에 저장한 값을 메소드가 끝나기전에 get을 해올 수 없다.
+    //redis에 저장자체가 메소드가 모두 끝난 후에 실행되므로
+    @Transactional
+    public TurnResponse getNextStockInfo(Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -205,15 +215,8 @@ public class GameService {
         if(rm.get().getEndYear() == room.getYear()){ //게임이 끝났다.
             return null;
         }
-
-//        Set<Long> info = new HashSet<>();
-//        for(GameUser guser : room.getParticipants()){
-//            info.addAll(guser.getBuyInfos());
-//        }
-//        for(Long id : info){ //사용자들이 구매한 정보 목록
-//            Optional<Information> usrBuy = informationRepository.findById(id);
-//
-//        }
+        int turn = room.getRemainTurn() - 1; //턴이 넘어간 후 남은 턴수(0이면 마지막 턴)
+        int year = room.getYear() + 1; //턴이 넘어간 후 현재 년도
         //--------------------------------------------------------------
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         List<GameMarket> gms = new ArrayList<>();
@@ -257,21 +260,32 @@ public class GameService {
         for(GameUser guser : room.getParticipants()){
             MyTradingInfo myInfo = myTradingInfoRepository.getOneMyTradingInfo(guser.getUserId());
             if(myInfo == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            Long remain = myInfo.getRemainVal(); //나의 잔고
             List<BreakDown> bdowns = myInfo.getBreakDowns();
-            List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
+            //List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
             Long usrTotal = 0L;
-            for(BreakDown bd : bdowns){
+            for(BreakDown bd : bdowns){ //
                 for(StockInfoResponse totalInfo : stockInfos){
                     if(bd.getItem().equals(totalInfo.getItem())){ //내가 산 주식 종목에 해당하는 수익률 정보를 전체 주식 정보에서 얻는다.
-                        bd.setRoi(totalInfo.getPercent());
                         //산 금액과 이전 턴에서의 금액을 분리??
-                        Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent());
+                        Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent()); //평가금액을 주식 상황에 맞게 업데이트
                         bd.setNowVal(nowVal);
-                        usrTotal += nowVal;
+                        Long buy = bd.getBuyVal();
+                        bd.setRoi(calRoiByVal(buy, nowVal));
+                        usrTotal += nowVal; //투자한 종목들의 업데이트된 평가 금액의 합
                         break;
                     }
                 }
             }
+
+            //MyTradingInfo(redis)에 정보 업데이트
+            Long lastmVal = myInfo.getMarketVal(); //작년 전체 평가금액
+            Long updatemVal = usrTotal + remain; //업데이트된 전체 평가금액(현재)
+            myInfo.setMarketVal(updatemVal);
+            myInfo.setInvestVal(usrTotal);
+            myInfo.setYoy(updatemVal - lastmVal); //현재 - 작년
+            myInfo.setBreakDowns(bdowns);
+            myTradingInfoRepository.updateMyTradingInfo(myInfo);
 
             Optional<User> unick = userRepository.findById(guser.getUserId());
             if(unick.isEmpty()){
@@ -281,18 +295,27 @@ public class GameService {
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
                     .userNick(unick.get().getNickName())
-                    .totalCost(usrTotal)
+                    .totalCost(usrTotal + remain)
                     .point(point)
                     .build()); //참가자들 정보를 저장(응답용)
 
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
-            guser.setTotalCost(500000L);
+            guser.setTotalCost(usrTotal + remain);
             guser.setPoint(point);
             gameUserList.add(guser);
         }
 
+        //GameRoom(redis)에 정보 업데이트
+        room.setRemainTurn(turn); //남은 턴수 설정
+        room.setYear(year); //게임의 현재 년도 설정
+        room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
+        room.setMarket(gms); //새로 생성된 시장 상황을 저장
+        gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
+
         return TurnResponse.builder()
+                .remainTurn(turn)
+                .year(year)
                 .participants(parts)
                 .stockInfo(stockInfos)
                 .build();
@@ -305,6 +328,10 @@ public class GameService {
         }else {
             return (long) (cost - (cost * (roi/100d)));
         }
+    }
+
+    public int calRoiByVal(Long last, Long cur){ //지난(매입) 금액과 현재 금액으로 수익률을 계산
+        return (int) (Math.abs(1 - (cur/(double)last)) * 100);
     }
 
     public Long getIdForItem(String itemName){
@@ -331,7 +358,36 @@ public class GameService {
         }
     }
 
-    public void calMyBreakDown(BreakDown breakDown, int roi){
+    public int doingReady(User user, Long grId){
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
 
+        List<GameUser> gameUserList = new ArrayList<>();
+        int cnt = 0;
+        for(GameUser guser : room.getParticipants()){
+            if(Objects.equals(guser.getUserId(), user.getId())){ //ready를 요청한 사용자이다.
+                if(!guser.isReady()){
+                    guser.setReady(true);
+                }else{
+                    guser.setReady(false);
+                }
+            }
+            if(guser.isReady()){
+                cnt++;
+            }
+            gameUserList.add(guser);
+        }
+
+        //GameRoom(redis)에 정보 업데이트
+        room.setParticipants(gameUserList);
+        gameRepository.updateGameRoom(room);
+
+        if(cnt == room.getParticipants().size()){
+            return 1;
+        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+            return 0;
+        }
     }
 }

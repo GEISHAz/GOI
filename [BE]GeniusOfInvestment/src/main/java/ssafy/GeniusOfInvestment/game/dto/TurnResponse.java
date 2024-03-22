@@ -8,7 +8,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TurnResponse {
-    private int year;
+    private int remainTurn; //남은 턴수
+    private int year; //현재 년도
     private List<ParticipantInfo> participants;
     private List<StockInfoResponse> stockInfo;
 }
