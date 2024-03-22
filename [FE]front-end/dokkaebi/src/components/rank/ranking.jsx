@@ -41,12 +41,8 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인 1 :", res)
+        // console.log("리스폰스 확인 1 :", res)
         if (res.status === 200 && res.data.data) {
-          // console.log("유저 id 확인", res.data.data.id);
-          // console.log("유저 닉네임 확인", res.data.data.nickName);
-          // console.log("유저 경험치 확인", res.data.data.exp);
-          // console.log("유저 프로필 확인", res.data.data.imageId);
           setOtherUsers(res.data.data);
         } else {
           throw new Error('에러 발생 1');
@@ -61,10 +57,10 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인 2 :", res)
+        // console.log("리스폰스 확인 2 :", res)
         if (res.status === 200 && res.data.data) {
-          console.log("내 순위 확인", res.data.data.rank);
-          console.log("내 경험치 확인", res.data.data.exp);
+          // console.log("내 순위 확인", res.data.data.rank);
+          // console.log("내 경험치 확인", res.data.data.exp);
           setMyInfo({ rank: res.data.data.rank, exp: res.data.data.exp, });
         } else {
           throw new Error('에러 발생 2');
@@ -128,12 +124,12 @@ export default function Ranking() {
                   {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
                   {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
                   {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
-                </div>
-                <div className={styles.rankDetail}>
-                  {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
-                </div>
-                <div className={styles.rankDetail}>
-                  <span>{user.nickName}</span>
+                  <div>
+                    {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+                  </div>
+                  <div>
+                    <span>{user.nickName}</span>
+                  </div>
                 </div>
                 <div className={styles.rankDetail}>
                   <span>{user.exp.toLocaleString()}원</span>
