@@ -3,19 +3,20 @@ import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authReducer from '../features/login/authSlice.js';
-// import accessReducer from '../features/login/accessSlice.js';
+import channelReducer from '../features/channel/channelSlice.js';
 import gameReducer from '../features/game/gameSlice.js';
 
 const persistConfig = {
   key : 'root',
   storage,
-  whitelist : ['auth', 'game']
+  whitelist : ['auth', 'game', 'channel']
 };
 
 const rootReducer = combineReducers({
   auth : authReducer,
   // access : accessReducer
   game: gameReducer,
+  channel: channelReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
