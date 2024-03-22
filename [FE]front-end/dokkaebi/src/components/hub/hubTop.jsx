@@ -49,13 +49,12 @@ export default function HubTop() {
           <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>
       </div>
-
       {/* 로그인, 로그아웃 */}
-      <div className='mt-5'>
+      <div className='mt-5 my-auto flex justify-end mr-10'>
         {isLogin ? (
           // 로그인 상태일 때 "Logout" 버튼 표시
-          <button onClick={handleLogout}>
-            <img src={LogoutButton} alt="로그인버튼" className={`my-auto mr-5 ${styles.logoutButton}`}/>
+          <button onClick={handleLogout}  className={`${styles.logoutButton}`}>
+            <img src={LogoutButton} alt="로그인버튼"/>
           </button>
         ) : (
           // 로그아웃 상태일 때 "Login" 링크 표시

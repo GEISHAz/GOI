@@ -41,8 +41,12 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        // console.log("리스폰스 확인 1 :", res)
+        console.log("리스폰스 확인 1 :", res)
         if (res.status === 200 && res.data.data) {
+          // console.log("유저 id 확인", res.data.data.id);
+          // console.log("유저 닉네임 확인", res.data.data.nickName);
+          // console.log("유저 경험치 확인", res.data.data.exp);
+          // console.log("유저 프로필 확인", res.data.data.imageId);
           setOtherUsers(res.data.data);
         } else {
           throw new Error('에러 발생 1');
@@ -57,10 +61,10 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        // console.log("리스폰스 확인 2 :", res)
+        console.log("리스폰스 확인 2 :", res)
         if (res.status === 200 && res.data.data) {
-          // console.log("내 순위 확인", res.data.data.rank);
-          // console.log("내 경험치 확인", res.data.data.exp);
+          console.log("내 순위 확인", res.data.data.rank);
+          console.log("내 경험치 확인", res.data.data.exp);
           setMyInfo({ rank: res.data.data.rank, exp: res.data.data.exp, });
         } else {
           throw new Error('에러 발생 2');
@@ -90,7 +94,7 @@ export default function Ranking() {
 
       <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>RANKING</h1>
 
-      <div className="flex flex-row justify-center items-center">
+      <div className="flex flex-row justify-center items-center mb-5">
         {/* 자신의 랭킹 확인 */}
         <div className={`flex flex-col items-center justify-center mr-10 p-5 border rounded-lg my-auto ${styles.myrankBox}`}>
           <h2 className="text-2xl mb-5 text-gray font-Bit">나의 RANK</h2>
@@ -115,23 +119,24 @@ export default function Ranking() {
 
         {/* 유저 랭킹 TOP 100 */}
         <div className={`flex flex-col items-center justify-center w-1/2 overflow-auto ${styles.rankContainer}`}>
+          <h1 className="text-bold font-Bit mb-2 text-3xl">TOP 100</h1>
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
             return (
               <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
-                <div className={styles.rankDetail}>
-                  <span>{index + 1}위</span>
+                <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
+                  <span className="my-auto">{index + 1}위</span>
                   {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
                   {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
                   {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
-                  <div>
+                  <div className='my-auto ml-5'>
                     {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
                   </div>
-                  <div>
+                  <div className='my-auto ml-5'>
                     <span>{user.nickName}</span>
                   </div>
                 </div>
-                <div className={styles.rankDetail}>
+                <div className={`flex justify-end ${styles.rankDetail}`}>
                   <span>{user.exp.toLocaleString()}원</span>
                 </div>
               </div>
