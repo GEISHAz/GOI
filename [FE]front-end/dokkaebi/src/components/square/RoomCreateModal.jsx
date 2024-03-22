@@ -129,17 +129,7 @@ export default function RoomCreateModal({ onClose, userName }) {
             <label htmlFor="roomNumber" className="text-2xl mr-2">연도 선택</label>
           </div>
           <RangeSlider />
-          {/* <div>
-            <input
-              type="text"
-              id="roomNumber"
-              name="roomNumber"
-              value="1001"
-              disabled
-              className="border-2 border-gray-300 p-1"
-            />
-          </div> */}
-        </div>
+          </div>
 
         {/* 버튼 그룹 */}
         <div className="flex justify-center w-full mt-5">
