@@ -143,6 +143,8 @@ export default function Profile() {
       setPreviousNickname(storedPreviousNickname);
     }
 
+    console.log("나의 프로필 :", userProfileImage)
+    console.log("나의 닉네임 :", userNickname)
     // 프로필 이미지가 없는 경우 확인 후 기본 이미지 설정
     if (!userProfileImage || !userProfileImage.src) {
       setSelectedImage({
