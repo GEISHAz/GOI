@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,6 +62,9 @@ public class Room {
 
     //-----------------------------------------------------
 
+    public void updateStatus(int status){
+        this.status = status;
+    }
 
     //새로운 엔티티가 저장(추가)되기 직전에
     @PrePersist
