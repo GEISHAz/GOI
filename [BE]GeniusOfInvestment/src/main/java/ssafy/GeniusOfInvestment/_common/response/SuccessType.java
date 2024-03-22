@@ -25,6 +25,7 @@ public enum SuccessType {
     SEND_FRIEND_INVITATION("친구 초대 메시지 전송 성공"),
     GET_FRIEND_SUCCESSFULLY("친구 리스트 조회 성공"),
     ACCEPT_FRIEND_INVITATION_SUCCESSFULLY("친구 초대 수락 성공"),
+    GET_FRIEND_CHAT_INFO("채팅 내역 조회 성공"),
 
     //***************************Alarm****************************//
     GET_ALARM_LIST_SUCCESSFULLY("알람 리스트 조회 성공"),

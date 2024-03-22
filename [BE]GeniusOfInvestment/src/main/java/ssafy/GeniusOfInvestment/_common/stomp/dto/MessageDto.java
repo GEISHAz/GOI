@@ -13,8 +13,8 @@ public class MessageDto {
         //Channel
         CHANNEL_ENTER, CHANNEL_EXIT, CHANNEL_CHAT,
         TIMER, STOCK_MARKET,
-        ROOM_ENTER, ROOM_EXIT
-
+        ROOM_ENTER, ROOM_EXIT,
+        FRIEND_CHAT
 //        FRIEND_CHAT, GAME_CHAT,
 //        START, END, GAME,
 //        MOTION, SETTING,
@@ -24,13 +24,11 @@ public class MessageDto {
     }
 
     private MessageType type;
-    private String roomId; // game roomId, friend chat roomId
     private Object data;
 
     @Builder
-    public MessageDto(MessageType type, String roomId, Object data) {
+    public MessageDto(MessageType type, Object data) {
         this.type = type;
-        this.roomId = roomId;
         this.data = data;
     }
 }

@@ -19,15 +19,15 @@ export default function Router() {
         <Route path="/" element={<Main />} />
         <Route path="/hub" element={<Hub />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/getUserLogin" element={<GetUserLogin />} />
+        <Route path="/signUp" element={<GetUserLogin />} />
         <Route path="/callBack" element={<CallBack />} />
-        <Route element={<PrivateRoute />}>
+        {/* <Route element={<PrivateRoute />}> */}
           <Route path="/profile/:nickName" element={<Profile />} />
           <Route path="/gamePlay" element={<GamePlay />} />
           <Route path="/channel" element={<Channel />} />
           <Route path="/square/:id" element={<Square />} />
           <Route path="/rank" element={<Rank />} />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </AuthWrapper>
   );

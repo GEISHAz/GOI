@@ -28,6 +28,8 @@ public class QChatRecord extends EntityPathBase<ChatRecord> {
 
     public final StringPath msg = createString("msg");
 
+    public final StringPath sender = createString("sender");
+
     public QChatRecord(String variable) {
         this(ChatRecord.class, forVariable(variable), INITS);
     }

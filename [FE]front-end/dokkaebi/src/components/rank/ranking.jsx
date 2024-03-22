@@ -118,7 +118,7 @@ export default function Ranking() {
         </div>
 
         {/* 유저 랭킹 TOP 100 */}
-        <div className={`flex flex-col items-center justify-center w-1/2 overflow-auto ${styles.rankContainer}`}>
+        <div className={`flex flex-col items-center justify-center w-1/2 ${styles.rankContainer}`}>
           <h1 className="text-bold font-Bit mb-2 text-3xl">TOP 100</h1>
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기

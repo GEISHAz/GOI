@@ -23,17 +23,21 @@ public class ChatRecord {
 
     private String msg;
 
+    private String sender;
+
 
     @Builder
-    private ChatRecord(Friend chatId, String msg){
+    private ChatRecord(Friend chatId, String msg, String sender){
         this.chatId = chatId;
         this.msg = msg;
+        this.sender = sender;
     }
 
-    private ChatRecord of(Friend chatId, String msg){
+    public static ChatRecord of(Friend chatId, String msg, String sender){
         return builder()
                 .chatId(chatId)
                 .msg(msg)
+                .sender(sender)
                 .build();
     }
 
