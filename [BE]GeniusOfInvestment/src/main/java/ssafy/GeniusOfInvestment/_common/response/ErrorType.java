@@ -20,6 +20,8 @@ public enum ErrorType {
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다"),
     FAIL_TO_GENERATE_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "엑세스 토큰 생성에 실패했습니다"),
 
+    //****************************Friend****************************//
+    NOT_FOUND_FRIEND_ROOM(HttpStatus.BAD_REQUEST, "채팅하려는 친구 조회에 실패했습니다"),
 
     //****************************Alarm****************************//
     NOT_FOUND_INVITE_USER(HttpStatus.BAD_REQUEST, "초대할 유저를 찾지 못했습니다"),
