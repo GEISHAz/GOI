@@ -1,22 +1,63 @@
-import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setChannelId } from '../../features/channel/channelSlice.js'
 import styles from './channel.module.css';
 import channel from '../../images/channel/icon_channel.png'
+import axios from "axios";
 
 export default function Channel() {
   const navigate = useNavigate();
-  
-  // count는 채널에 접속한 유저수. 지금은 dummy
-  const channels = [
-    { name: "지은탁 채널", count: 99 },
-    { name: "김신 채널", count: 99 },
-    { name: "써니 채널", count: 99 },
-    { name: "저승 채널", count: 99 },
-    { name: "삼신할매 채널", count: 99 },
-    { name: "유덕화 채널", count: 99 },
-    { name: "김은숙 채널", count: 99 },
-    { name: "파국 채널", count: 99 },
-  ];
+  const dispatch = useDispatch();
+  const accessToken = localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("userId")
+  const [getChannelInfo, setGetChannelInfo] = useState([]);
+
+  const fetchChannelSelect = async (channelId) => {
+    try {
+      console.log("들어갈 채널ID 확인 :", channelId)
+      console.log("보내는 토큰 확인 :", accessToken)
+      console.log("보내는 유저ID 확인 :", userId)
+      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc`, {
+        channelId: channelId,
+        userId: userId
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      console.log("POST 리스폰스 확인 :", res)
+      if (res.status === 200) {
+        console.log("200 OK 응답 확인!", res.status)
+        // channelSlice에 채널 ID 값 업데이트해서 저장해주기
+        dispatch(setChannelId(channelId))
+        navigate(`/square/${channelId}`);
+      } else {
+        throw new Error('POST 요청에서 에러 발생');
+      }
+    } catch (error) {
+      console.error('채널 선택 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    // const accessToken = localStorage.getItem("accessToken")
+    const fetchChannelUserCnt = async () => {
+      try {
+        const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log("GET 리스폰스 확인 :", res)
+        if (res.status === 200 && res.data) {
+          setGetChannelInfo(res.data)
+        } else {
+          throw new Error('GET 요청에서 에러 발생');
+        }
+      } catch (error) {
+        console.error('채널 목록 불러오기 실패', error);
+      }
+    };
+
+    fetchChannelUserCnt();
+  }, [accessToken]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -29,7 +70,6 @@ export default function Channel() {
           Back
         </button>
       </div>
-
     
       {/* 채널 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}>
@@ -40,13 +80,18 @@ export default function Channel() {
         </div>
         
         <div className="grid grid-cols-2 gap-4 w-full m-4">
-          {channels.map((channel, index) => (
-            <Link to={`/square/${index + 1}`} key={channel.name} className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}>
+          {getChannelInfo.map((channel, index) => (
+            <button
+              key={channel.channelName}
+              className={`${styles.channelBox} p-4 flex flex-col items-center justify-center`}
+              onClick={() => fetchChannelSelect(channel.id)}  
+            >
               <div className="py-2 px-4 w-full flex flex-row justify-between items-center">
-                <h2 className="text-black font-Bit text-3xl">{channel.name}</h2>
-                <span className="text-blue-500 text-bold text-2xl">{channel.count}/100</span>
+                <h2 className="text-black font-Bit text-3xl">{channel.channelName} 채널</h2>
+                {/* <h2 className="text-black font-Bit text-3xl">채널 이름 나올 곳</h2> */}
+                <span className="text-blue-500 text-bold text-2xl">{channel.userCount}/100</span>
               </div>
-            </Link>
+            </button>
           ))}
         </div>
       </div>
