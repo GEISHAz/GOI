@@ -68,7 +68,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:8080",
                 "http://localhost:5173", "http://127.0.0.1:5173", "https://j10d202.p.ssafy.io",
-                "https://j10d202.p.ssafy.io:8080" , "https://j10d202.p.ssafy.io:8080/api"
+                "https://j10d202.p.ssafy.io:8080" , "https://j10d202.p.ssafy.io:8080/api",
+                "http://127.0.0.1:5500/"
         ));
 
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
