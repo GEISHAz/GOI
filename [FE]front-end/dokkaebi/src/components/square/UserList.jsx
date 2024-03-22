@@ -29,10 +29,10 @@ export default function UserList() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/square/channelmember', {
+        const response = await axios.get('https://j10d202.p.ssafy.io/square/channelmember', {
           headers : { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("응답 확인 :", response)
+        console.log("리스폰스 확인 :", response)
         if (response.status === 200 && response.data.data) {
           setIsUserInfo(response.data.data);
         } else {
