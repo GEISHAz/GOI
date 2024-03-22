@@ -31,7 +31,7 @@ export default function LoginCallback() {
         if (nextPage === "main") {
           return navigate("/hub")
         } else {
-          return navigate("/getUserLogin")
+          return navigate("/signUp")
         }
       } else {
         return navigate("/")
