@@ -33,12 +33,15 @@ public class ChannelService {
             throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
 
         for(Channel c : clist){
-            list.add(
-                    ChannelInfo
-                            .builder()
-                            .id(c.getId())
-                            .userCount(c.getParticipants().size())
-                            .build());
+            if(c.getId() >=1 && c.getId()<=8) {
+                list.add(
+                        ChannelInfo
+                                .builder()
+                                .id(c.getId())
+                                .channelName(channelRepository.findById(c.getId()).get().getChName())
+                                .userCount(c.getParticipants().size())
+                                .build());
+            }
         }
 
         return list;
