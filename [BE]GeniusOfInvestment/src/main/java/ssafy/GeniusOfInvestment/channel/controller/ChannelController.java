@@ -2,17 +2,33 @@ package ssafy.GeniusOfInvestment.channel.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import ssafy.GeniusOfInvestment._common.entity.Channel;
+import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment.channel.dto.response.ChannelInfo;
 import ssafy.GeniusOfInvestment.channel.service.ChannelService;
 
+import java.util.List;
+
 @Slf4j
-@RestController
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/api/channel")
 public class ChannelController {
 
     private final ChannelService channelService;
+
+    @GetMapping("/listc") //채널정보 싹다 주기
+    public List<ChannelInfo> listChannel(@AuthenticationPrincipal User user){
+        return channelService.listAllChannel(user);
+    }
+
+    @PostMapping("/enterc") //채널 들어가기
+    public void enterChannel(@AuthenticationPrincipal User user, @RequestBody Channel channel){
+        channelService.enterChannel(user,channel);
+    }
+
 
 
 }

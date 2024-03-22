@@ -20,4 +20,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     boolean existsByNickName(String nickname);
 
     List<User> findAllByChannel(Channel channel);
+
 }

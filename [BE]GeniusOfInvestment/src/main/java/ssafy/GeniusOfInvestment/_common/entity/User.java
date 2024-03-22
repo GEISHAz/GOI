@@ -80,4 +80,6 @@ public class User {
     public void updateNickName(String nickName) {
         this.nickName = nickName;
     }
+
+    public void updateChannel(Channel channel) { this.channel = channel; }
 }

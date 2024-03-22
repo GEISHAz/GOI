@@ -9,7 +9,5 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Long> {
 
-    @Override
-    Optional<Room> findById(Long aLong);
 
 }
