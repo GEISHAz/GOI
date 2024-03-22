@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserNickname, setUserProfileImage } from '../../features/login/authSlice';
 import axios from 'axios';
 import ChangeModal from './changeModal.jsx';
-import blue from '../../images/profile/blue.gif';
+import blue from '../../images/signUp/blue.gif';
+import brown from '../../images/signUp/brown.gif';
+import green from '../../images/signUp/green.gif';
+import yellow from '../../images/signUp/yellow.gif';
+import pink from '../../images/signUp/pink.gif';
+import orange from '../../images/signUp/orange.gif';
 import BackA from '../../images/hub/backA.png';
 import BackB from '../../images/hub/backB.png';
 import styles from './profile.module.css'
@@ -12,8 +17,11 @@ import styles from './profile.module.css'
 export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
+  const defaultImage = { src: blue, alt: "기본이미지" };
+  const defaultNickname = `도깨비 ${userId}님`;
   const [selectedImage, setSelectedImage] = useState(defaultImage); // 초기값을 현재 프로필 이미지로 설정
   const [nickname, setNickname] = useState(''); // 현재 닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 이전 닉네임
@@ -22,12 +30,18 @@ export default function Profile() {
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
-  const defaultImage = { src: blue, alt: "기본이미지" };
-  const defaultNickname = `도깨비 ${userId}님`;
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
+  const images = [
+    { id: 1, src: blue, alt: "파랑도깨비" },
+    { id: 2, src: brown, alt: "밤색도깨비" },
+    { id: 3, src: yellow, alt: "노랑도깨비" },
+    { id: 4, src: pink, alt: "핑크도깨비" },
+    { id: 5, src: orange, alt: "오렌지도깨비" },
+    { id: 6, src: green, alt: "초록도깨비" },
+  ];
 
   const handleNicknameChange = async () => {
     if (nickname.trim().length === 0) {
@@ -62,7 +76,7 @@ export default function Profile() {
       setIsNicknameChecked(true); // 닉네임 검사 통과
       localStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
       setPreviousNickname(userNickname); // 이전 닉네임 상태 업데이트
-      window.location.reload() // 바뀐 닉네임과 이전 닉네임 반영해주기
+
     } catch (error) {
       console.error("이름 변경 에러", error);
       alert("이미 존재하는 이름이에요 ! 다시 시도해주세요");
@@ -120,7 +134,6 @@ export default function Profile() {
         });
 
         console.log("어떤게날라오나요?", res.data)
-
         // 리덕스 스토어에 닉네임과 이미지 정보 업데이트
         dispatch(setUserNickname(nickname));
         dispatch(setUserProfileImage(selectedImage));
@@ -152,14 +165,19 @@ export default function Profile() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인", res.data)
+        console.log("리스폰스 확인", res)
         if (res.data) {
-          const { nickName, profileImage } = res.data
+          const { nickName, imageId } = res.data.data;
+          // imageId에 해당하는 매칭이미지 찾아주기
+          const matchingImage = images.find(image => image.id === imageId);
+          
+          // authSlice 스토어 업데이트 해주기
           dispatch(setUserNickname(nickName));
-          dispatch(setUserProfileImage(profileImage));
+          dispatch(setUserProfileImage(matchingImage || defaultImage));
 
-          setSelectedImage(profileImage || defaultImage);
-          setNickname(nickName || `도깨비 ${userId}님`);
+          // 설정된 값으로 상태 관리해주기
+          setSelectedImage(matchingImage || defaultImage);
+          setNickname(nickName || defaultNickname);
         }
       } catch (error) {
         console.error("사용자 정보 조회 에러", error)
@@ -167,7 +185,7 @@ export default function Profile() {
       }
     };
     fetchUserInfo();
-  }, [accessToken]);
+  }, [userId]);
 
   return (
     <div className="flex flex-col h-screen">
