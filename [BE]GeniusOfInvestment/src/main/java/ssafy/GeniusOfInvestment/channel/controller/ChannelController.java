@@ -20,13 +20,13 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @GetMapping("/listc") //채널정보 싹다 주기
-    public List<ChannelInfo> listChannel(@AuthenticationPrincipal User user){
-        return channelService.listAllChannel(user);
+    public List<ChannelInfo> listChannel(){
+        return channelService.listAllChannel();
     }
 
     @PostMapping("/enterc") //채널 들어가기
-    public void enterChannel(@AuthenticationPrincipal User user, @RequestBody Long channelId){
-        channelService.enterChannel(user,channelId);
+    public void enterChannel(@AuthenticationPrincipal User user,@RequestBody Long userId, @RequestBody Long channelId){
+        channelService.enterChannel(userId,channelId);
     }
 
 

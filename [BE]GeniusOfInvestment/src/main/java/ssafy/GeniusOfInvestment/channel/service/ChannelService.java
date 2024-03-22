@@ -24,7 +24,7 @@ public class ChannelService {
     private final UserRepository userRepository;
 
     //채널목록
-    public List<ChannelInfo> listAllChannel(User user) {
+    public List<ChannelInfo> listAllChannel() {
 
         List<ChannelInfo> list = new ArrayList<>();
 
@@ -48,7 +48,11 @@ public class ChannelService {
     }
 
     //채널 들어가기
-    public void enterChannel(User user, Long channelId) {
+    public void enterChannel(Long userId, Long channelId) {
+
+        ///긴급수정
+        User user = userRepository.findById(userId).get();
+
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
         if(ochannel.isPresent())
