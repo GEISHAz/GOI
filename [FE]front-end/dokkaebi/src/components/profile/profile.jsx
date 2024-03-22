@@ -142,29 +142,7 @@ export default function Profile() {
     if (storedPreviousNickname) {
       setPreviousNickname(storedPreviousNickname);
     }
-
-    console.log("나의 프로필 :", userProfileImage)
-    console.log("나의 닉네임 :", userNickname)
-    
-    // 프로필 이미지가 없는 경우 확인 후 기본 이미지 설정
-    if (!userProfileImage || !userProfileImage.src) {
-      setSelectedImage({
-        src: blue, // 기본 이미지 경로를 설정하세요.
-        alt: "기본 이미지"
-      });
-    } else {
-      setSelectedImage(userProfileImage);
-    }
-    
-    const defaultNickname = `도깨비${userId}님`
-    // 닉네임이 없는 경우 확인 후 기본 닉네임 설정
-    if (!userNickname || userNickname.trim().length === 0) {
-      setNickname(defaultNickname);
-    } else {
-      setNickname(userNickname);
-    }
-
-  }, [userProfileImage, userNickname]);
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
