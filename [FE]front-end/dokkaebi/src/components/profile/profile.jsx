@@ -14,8 +14,8 @@ export default function Profile() {
   const navigate = useNavigate();
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
-  const [selectedImage, setSelectedImage] = useState(userProfileImage); // 초기값을 현재 프로필 이미지로 설정
-  const [nickname, setNickname] = useState(userNickname); // 현재 닉네임
+  const [selectedImage, setSelectedImage] = useState(null); // 초기값을 현재 프로필 이미지로 설정
+  const [nickname, setNickname] = useState(''); // 현재 닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 이전 닉네임
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
@@ -24,12 +24,12 @@ export default function Profile() {
   const [isHovering, setIsHovering] = useState(false);
   const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
-
+  const defaultImage = { src: blue, alt: "기본이미지" };
+  const defaultNickname = `도깨비 ${userId}님`;
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleNicknameChange = async () => {
-
     if (nickname.trim().length === 0) {
       setIsNicknameEmpty(true);
       setIsNicknameValid(true); // 공백 상태로 받았을 때 정규식 메세지 받지 않기 위해 true로 설정
@@ -49,7 +49,7 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
+      await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
         nickName: nickname
       }, {
         headers: {
@@ -60,10 +60,9 @@ export default function Profile() {
       // console.log("이름 변경 성공 ", response.data);
       alert("도깨비 이름이 변경되었어요 !");
       setIsNicknameChecked(true); // 닉네임 검사 통과
-
       localStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
       setPreviousNickname(userNickname); // 이전 닉네임 상태 업데이트
-
+      window.location.reload() // 바뀐 닉네임과 이전 닉네임 반영해주기
     } catch (error) {
       console.error("이름 변경 에러", error);
       alert("이미 존재하는 이름이에요 ! 다시 시도해주세요");
@@ -111,7 +110,7 @@ export default function Profile() {
     if (nickname && selectedImage) {
       try {
         // 백엔드로 PUT 요청 보내기
-        await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
+        const res = await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
           nickName: nickname,
           imageId: selectedImage.id, // 변경된 이미지의 ID
         }, {
@@ -119,6 +118,8 @@ export default function Profile() {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+
+        console.log("어떤게날라오나요?", res.data)
 
         // 리덕스 스토어에 닉네임과 이미지 정보 업데이트
         dispatch(setUserNickname(nickname));
@@ -142,7 +143,15 @@ export default function Profile() {
     if (storedPreviousNickname) {
       setPreviousNickname(storedPreviousNickname);
     }
-  }, []);
+  }, [userNickname]);
+
+  // 렌더링될 때 프로필이미지 null 경우 처리
+  useEffect(() => {
+    // userProfileImage 상태를 확인하고, 유효하지 않은 경우 defaultImage를 사용합니다.
+    setSelectedImage(userProfileImage || defaultImage);
+    setNickname(userNickname || defaultNickname);
+
+  }, [userProfileImage, userNickname, userId]);
 
   return (
     <div className="flex flex-col h-screen">
