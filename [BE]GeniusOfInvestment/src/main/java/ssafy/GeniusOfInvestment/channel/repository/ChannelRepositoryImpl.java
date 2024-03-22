@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square_room.repository;
+package ssafy.GeniusOfInvestment.channel.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;

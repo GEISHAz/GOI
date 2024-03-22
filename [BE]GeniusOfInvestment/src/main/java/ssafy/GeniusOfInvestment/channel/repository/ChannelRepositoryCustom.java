@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square_room.repository;
+package ssafy.GeniusOfInvestment.channel.repository;
 
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
 

@@ -16,7 +16,7 @@ import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.*;
-import ssafy.GeniusOfInvestment.square_room.repository.ChannelRepository;
+import ssafy.GeniusOfInvestment.channel.repository.ChannelRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
