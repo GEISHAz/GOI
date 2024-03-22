@@ -10,17 +10,17 @@ import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
 import BackA from '../../images/hub/backA.png';
 import BackB from '../../images/hub/backB.png';
+import One from '../../images/rank/1st.png';
+import Two from '../../images/rank/2nd.png';
+import Three from '../../images/rank/3rd.png';
 import styles from './ranking.module.css';
 
 export default function Ranking() {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const userId = localStorage.getItem("userId");
-  // 본인
-  const userProfileImage = useSelector((state) => state.auth.userProfileImage);
-  const userNickname = useSelector((state) => state.auth.userNickname);
-  const [myInfo, setMyInfo] = useState({ exp: null, rank: null });
-  const [otherUsers, setOtherUsers] = useState([]);
+  const [myInfo, setMyInfo] = useState({ exp: null, rank: null }); // 본인 정보
+  const [otherUsers, setOtherUsers] = useState([]); // 다른 유저 정보
   const [isHovering, setIsHovering] = useState(false);
 
   const images = [
@@ -92,18 +92,52 @@ export default function Ranking() {
         </button>
       </div>
 
-      <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>순 위</h1>
-    
-      <div className="flex flex-row justify-center items-center overflow-auto">
-        <div className="flex flex-col items-center justify-center w-1/2">
+      <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>RANKING</h1>
+
+      <div className="flex flex-row justify-center items-center">
+        {/* 자신의 랭킹 확인 */}
+        <div className={`flex flex-col items-center justify-center mr-10 p-5 border rounded-lg my-auto ${styles.myrankBox}`}>
+          <h2 className="text-2xl mb-5 text-gray font-Bit">나의 RANK</h2>
+          <div className="mb-5">
+            <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
+              당신의 순위: 
+              <span className={`text-xl text-bold ${styles.rankValue}`}>
+                {myInfo.rank ? (myInfo.rank <= 100 ? `${myInfo.rank}위` : "순위권 외") : "정보 로딩 중..."}
+              </span>
+            </h3>
+          </div>
+          <div className="mb-5">
+            <h3 className={`text-xl text-bold ${styles.rankLabel}`}>
+              현재&nbsp;
+              <span className={`text-xl text-bold ${styles.rankValue}`}>
+                {myInfo.exp}&nbsp;
+              </span>
+              원을 보유 중이에요
+            </h3>
+          </div>
+        </div>
+
+        {/* 유저 랭킹 TOP 100 */}
+        <div className={`flex flex-col items-center justify-center w-1/2 overflow-auto ${styles.rankContainer}`}>
           {otherUsers.map((user, index) => {
             const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
             return (
-              <div key={user.id || index} className="flex items-center justify-between p-2 border-b border-gray-200 w-full">
-                <span>{index + 1}위</span>
-                {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
-                <span>{user.nickName}</span>
-                <span>{user.exp.toLocaleString()}원</span>
+              <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
+                <div className={styles.rankDetail}>
+                  <span>{index + 1}위</span>
+                  {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
+                  {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
+                  {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
+                </div>
+                <div className={styles.rankDetail}>
+                  {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+                </div>
+                <div className={styles.rankDetail}>
+                  <span>{user.nickName}</span>
+                </div>
+                <div className={styles.rankDetail}>
+                  <span>{user.exp.toLocaleString()}원</span>
+                </div>
               </div>
             );
           })}

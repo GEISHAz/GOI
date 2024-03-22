@@ -1,18 +1,11 @@
 .rankContainer {
-    width: 50%;
+    /* width: 50%; */
     padding: 3%;
     /* margin-top: 2%; */
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px; 
+    color: white;
   }
-
-.rankBox {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    padding: 5%;
-}
 
 .myrankBox {
   background-color: rgba(255, 255, 255, 0.7);
@@ -29,4 +22,29 @@
 
 .rankHeader {
   color: #FFC0CB;
+}
+
+.rankLabel {
+  color: gray;
+}
+
+.rankValue {
+  color: #FF6347; /* 밝은 빨강색, 토마토 색상 */
+}
+
+.rankItemContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 요소들을 양 끝으로 정렬 */
+  width: 100%;
+}
+
+.rankDetail {
+  flex: 1; /* 각 세부 항목이 공간을 균등하게 차지하도록 설정 */
+  text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+.trophyImg {
+  width: 40px; /* 트로피 이미지 크기 조정 */
+  height: auto;
 }
