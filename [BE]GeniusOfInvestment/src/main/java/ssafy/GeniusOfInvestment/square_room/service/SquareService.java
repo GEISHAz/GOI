@@ -138,18 +138,13 @@ public class SquareService {
         //리턴할 list
         List<SquareNowUser> list = new ArrayList<>();
 
-        try {
-            Optional<Channel> byId = channelRepository.findById(channelnum);
-            if(!byId.isPresent())
-                throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
-        }catch(Exception e){
-            throw new CustomBadRequestException(ErrorType.NOT_AVAILABLE_CHANNEL);
-        }
 
         //받아온 방정보
         List<User> users = new ArrayList<>();
         try {
-            users = userRepository.findAllByChannel(byId.get());
+            Optional<Channel> byId = channelRepository.findById(channelnum);
+            if(byId.isPresent())
+                users = userRepository.findAllByChannel(byId.get());
         } catch (Exception e) {
             throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
         }
