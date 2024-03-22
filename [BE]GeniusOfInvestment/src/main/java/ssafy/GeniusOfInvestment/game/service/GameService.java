@@ -66,7 +66,7 @@ public class GameService {
 
             RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
             if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-            rdu.setStatus(0); //상태 0이 게임중
+            rdu.setStatus(true); //상태 true가 게임중
             redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
             //GameUser(참가자)의 상태값을 변경

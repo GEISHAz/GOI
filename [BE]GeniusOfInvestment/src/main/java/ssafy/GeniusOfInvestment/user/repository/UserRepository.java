@@ -3,7 +3,9 @@ package ssafy.GeniusOfInvestment.user.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment.square.dto.response.SquareUser;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +19,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Long findRankByExp(@Param("userId") Long userId);
 
     boolean existsByNickName(String nickname);
+
+    List<User> findAllByChannel(Channel channel);
 }

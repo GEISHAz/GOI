@@ -40,11 +40,13 @@
 }
 
 .rankDetail {
-  flex: 1; /* 각 세부 항목이 공간을 균등하게 차지하도록 설정 */
+  flex: 1;
+  /* display: flex;
+  justify-content: between; */
   text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
 .trophyImg {
-  width: 40px; /* 트로피 이미지 크기 조정 */
+  width: 10%; /* 트로피 이미지 크기 조정 */
   height: auto;
 }

@@ -12,7 +12,9 @@ public class MessageDto {
 //        CREATE, QUIT,
         //Channel
         CHANNEL_ENTER, CHANNEL_EXIT, CHANNEL_CHAT,
-        TIMER, STOCK_MARKET
+        TIMER, STOCK_MARKET,
+        ROOM_ENTER, ROOM_EXIT
+
 //        FRIEND_CHAT, GAME_CHAT,
 //        START, END, GAME,
 //        MOTION, SETTING,

@@ -2,6 +2,7 @@ package ssafy.GeniusOfInvestment.square.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.Room;
@@ -9,19 +10,20 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;
-import ssafy.GeniusOfInvestment.square.dto.response.SavedRoomResponse;
-import ssafy.GeniusOfInvestment.square.dto.response.SquareRoom;
+import ssafy.GeniusOfInvestment.square.dto.response.*;
 import ssafy.GeniusOfInvestment.square.repository.ChannelRepository;
-import ssafy.GeniusOfInvestment.square.repository.ChannelRepositoryCustom;
 import ssafy.GeniusOfInvestment.square.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
+import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,13 +35,15 @@ public class SquareService {
     private final RedisGameRepository redisGameRepository;
     private final RedisUserRepository redisUserRepository;
     private final ChannelRepository channelRepository;
-
+    private final SimpMessageSendingOperations messageTemplate;
+    private final UserRepository userRepository;
 
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
         //저장할 채널 객체 생성
         Channel ch = new Channel();
         ch.setId(info.channelId());
 
+        //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
                 .channel(ch)
@@ -83,9 +87,12 @@ public class SquareService {
         Optional<Room> finded = roomRepository.findById(roomnum);
 
         //방이없다면 ROOM_NOT_FOUND 에러 표시
-        if(finded.isEmpty()){
+        if(finded.isEmpty()) {
             throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-        }
+        } else if (finded.get().getStatus()!=0) {
+            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
+        } else if (!Objects.equals(finded.get().getChannel().getId(), user.getChannel().getId()))
+            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
 
         //유저를 방안에 집어 넣기
         //이미 있는 방정보 roomnum 즉 방 id로 가져오고
@@ -105,11 +112,23 @@ public class SquareService {
 
         //유저 동선 추적
         RedisUser rdu = redisUserRepository.getOneRedisUser(user.getId());
-        if(rdu == null) redisUserRepository.updateUserStatusGameing(new RedisUser(user.getId(), 1));
+        if(rdu == null) redisUserRepository.updateUserStatusGameing(new RedisUser(user.getId(), false));
         else throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
 
         redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
+        // 웹소켓 연결
+        messageTemplate.convertAndSend("/alram/msg-to/" + roomnum,
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_ENTER)
+                        .data(UserConnectMessageResponse
+                                .builder()
+                                .userId(user.getId())
+                                .roomId(gameRoom.getId())
+                                .chId(user.getChannel().getId())
+                                .build())
+                        .build());
     }
 
     public List<SquareRoom> listRoom(Long channelnum) {
@@ -152,6 +171,43 @@ public class SquareService {
                 .build();
     }
 
+    public List<SquareNowUser> listUser(Long channelnum) {
+        //채널 잘못 받을때 예외
+        if (channelnum > 8 || channelnum < 1)
+            throw new CustomBadRequestException(ErrorType.NOT_AVAILABLE_CHANNEL);
 
+        //리턴할 list
+        List<SquareNowUser> list = new ArrayList<>();
 
+        Optional<Channel> byId = channelRepository.findById(channelnum);
+
+        //받아온 방정보
+        List<User> users = new ArrayList<>();
+        try {
+            users = userRepository.findAllByChannel(byId.get());
+        } catch (Exception e) {
+            throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
+        }
+
+        for (User u : users){
+            int nowStatus; // 0 == 로그인 1 == 대기중 2 == 게임중
+            if(redisUserRepository.getOneRedisUser(u.getId())==null) nowStatus=0; // 로그인 중
+            else{
+                if (redisUserRepository.getOneRedisUser(u.getId()).isStatus())
+                    nowStatus = 2; // 게임 중
+                else
+                    nowStatus = 1; // 대기 중
+            }
+
+            list.add(SquareNowUser
+                    .builder()
+                            .id(u.getId())
+                            .nickName(u.getNickName())
+                            .status(nowStatus)
+                            .exp(u.getExp())
+                    .build());
+        }
+
+        return list;
+    }
 }

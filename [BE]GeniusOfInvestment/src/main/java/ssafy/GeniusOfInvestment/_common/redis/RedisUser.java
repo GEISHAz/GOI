@@ -13,6 +13,6 @@ public class RedisUser implements Serializable {
 
     private Long userId;
 
-    //0로그인 1대기중 2게임중
-    private int status;
+    //false == 대기중  // true == 게임중
+    private boolean status;
 }
