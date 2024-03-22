@@ -14,7 +14,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
-  const [selectedImage, setSelectedImage] = useState(null); // 초기값을 현재 프로필 이미지로 설정
+  const [selectedImage, setSelectedImage] = useState(defaultImage); // 초기값을 현재 프로필 이미지로 설정
   const [nickname, setNickname] = useState(''); // 현재 닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 이전 닉네임
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
@@ -147,11 +147,27 @@ export default function Profile() {
 
   // 렌더링될 때 프로필이미지 null 경우 처리
   useEffect(() => {
-    // userProfileImage 상태를 확인하고, 유효하지 않은 경우 defaultImage를 사용합니다.
-    setSelectedImage(userProfileImage || defaultImage);
-    setNickname(userNickname || defaultNickname);
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log("리스폰스 확인", res.data)
+        if (res.data) {
+          const { nickName, profileImage } = res.data
+          dispatch(setUserNickname(nickName));
+          dispatch(setUserProfileImage(profileImage));
 
-  }, [userProfileImage, userNickname, userId]);
+          setSelectedImage(profileImage || defaultImage);
+          setNickname(nickName || `도깨비 ${userId}님`);
+        }
+      } catch (error) {
+        console.error("사용자 정보 조회 에러", error)
+        alert("도깨비 정보를 불러오는데 실패했어요")
+      }
+    };
+    fetchUserInfo();
+  }, [accessToken]);
 
   return (
     <div className="flex flex-col h-screen">
