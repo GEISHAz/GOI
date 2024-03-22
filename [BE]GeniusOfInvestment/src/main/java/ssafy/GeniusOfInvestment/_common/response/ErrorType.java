@@ -30,6 +30,7 @@ public enum ErrorType {
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"입장하려는 방이 존재하지 않습니다."),
     IS_NOT_AVAILABLE_REDISUSER(HttpStatus.I_AM_A_TEAPOT,"유저동선 추적오류가 발생했습니다."),
     NOT_AVAILABLE_CHANNEL(HttpStatus.BAD_REQUEST,"해당채널이 존재하지 않습니다."),
+    CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND,"해당채널이 존재하지 않습니다."),
 
     //****************************Game****************************//
     IS_NOT_MANAGER(HttpStatus.UNAUTHORIZED, "방장만이 요청을 할 수 있습니다."),

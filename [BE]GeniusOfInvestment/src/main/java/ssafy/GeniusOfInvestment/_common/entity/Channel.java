@@ -49,4 +49,7 @@ public class Channel {
         participants.add(user);
         user.setChannel(this);
     }
+    public void setId(Long id){
+        this.id = id;
+    }
 }

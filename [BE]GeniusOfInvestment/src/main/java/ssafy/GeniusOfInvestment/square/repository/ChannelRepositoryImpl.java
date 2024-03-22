@@ -23,7 +23,7 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom{
                         room.isPublic
                 )
                 .from(room)
-                .where(room.status.eq(0))
+                .where(room.status.eq(0).and(room.channel.id.eq(channelNum)))
                 .fetch()
                 .stream()
                 .map(this::TupleToSquareroom)
