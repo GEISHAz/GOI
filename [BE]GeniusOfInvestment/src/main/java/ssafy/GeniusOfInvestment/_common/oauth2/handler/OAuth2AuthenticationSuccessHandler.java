@@ -86,23 +86,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // TODO: 액세스 토큰, 리프레시 토큰 발급
             // TODO: 리프레시 토큰 DB 저장
 
-//            log.info("id={}, email={}, name={}, profileUrl={}, accessToken={}, providerType={}",
-//                    principal.getUserInfo().getId(),
-//                    principal.getUserInfo().getEmail(),
-//                    principal.getUserInfo().getName(),
-//                    principal.getUserInfo().getProfileImageUrl(),
-//                    principal.getUserInfo().getAccessToken(),
-//                    principal.getUserInfo().getProvider()
-//            );
-
-
             String socialId = principal.getUserInfo().getId();
             Optional<User> findUser = userService.findBySocialId(socialId);
 
             //로그인을 처음한 인원 -> DB에 저장해줘야 함
             if(findUser.isEmpty()){
 
-                User user = User.of(principal.getUserInfo().getId(),0L,0,null);
+                User user = User.of(principal.getUserInfo().getId(),0L,1,principal.getUserInfo().getProvider().ordinal()+principal.getUserInfo().getName().substring(0, 1) + principal.getUserInfo().getId());
                 Long memberId = userService.saveSocialMember(user);
                 GeneratedToken token = jwtUtil.generateToken(memberId.toString());
 
