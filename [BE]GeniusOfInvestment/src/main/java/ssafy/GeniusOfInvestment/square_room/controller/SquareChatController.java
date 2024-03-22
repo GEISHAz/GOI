@@ -1,10 +1,10 @@
-package ssafy.GeniusOfInvestment.square.controller;
+package ssafy.GeniusOfInvestment.square_room.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
-import ssafy.GeniusOfInvestment.square.dto.SquareChatMessageDto;
+import ssafy.GeniusOfInvestment.square_room.dto.SquareChatMessageDto;
 
 @Controller
 @RequiredArgsConstructor

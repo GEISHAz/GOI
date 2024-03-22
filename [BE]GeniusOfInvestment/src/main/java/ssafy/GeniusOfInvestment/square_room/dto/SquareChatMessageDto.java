@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square.dto;
+package ssafy.GeniusOfInvestment.square_room.dto;
 
 import lombok.Getter;
 import lombok.Setter;

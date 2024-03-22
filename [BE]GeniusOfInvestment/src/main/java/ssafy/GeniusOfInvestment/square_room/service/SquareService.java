@@ -1,4 +1,4 @@
-package ssafy.GeniusOfInvestment.square.service;
+package ssafy.GeniusOfInvestment.square_room.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +14,11 @@ import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
-import ssafy.GeniusOfInvestment.square.dto.request.RoomCreateRequest;
-import ssafy.GeniusOfInvestment.square.dto.response.*;
-import ssafy.GeniusOfInvestment.square.repository.ChannelRepository;
-import ssafy.GeniusOfInvestment.square.repository.RedisUserRepository;
-import ssafy.GeniusOfInvestment.square.repository.RoomRepository;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.response.*;
+import ssafy.GeniusOfInvestment.square_room.repository.ChannelRepository;
+import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
+import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -122,13 +122,55 @@ public class SquareService {
                 MessageDto
                         .builder()
                         .type(MessageDto.MessageType.ROOM_ENTER)
-                        .data(UserConnectMessageResponse
+                        .data(UserEnterMessageResponse
                                 .builder()
                                 .userId(user.getId())
                                 .roomId(gameRoom.getId())
                                 .chId(user.getChannel().getId())
+                                .isReady(false)
+                                .exp(user.getExp())
+                                .nickName(user.getNickName())
                                 .build())
                         .build());
+    }
+
+    public List<SquareNowUser> listUser(Long channelnum) {
+        //리턴할 list
+        List<SquareNowUser> list = new ArrayList<>();
+
+
+        //받아온 방정보
+        List<User> users = new ArrayList<>();
+        try {
+            Optional<Channel> byId = channelRepository.findById(channelnum);
+            if(byId.isPresent())
+                users = userRepository.findAllByChannel(byId.get());
+        } catch (Exception e) {
+            throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
+        }
+
+        for (User u : users){
+            int nowStatus; // 0 == 로그인 1 == 대기중 2 == 게임중
+            if(redisUserRepository.getOneRedisUser(u.getId())==null) nowStatus=0; // 로그인 중
+            else{
+                if (redisUserRepository.getOneRedisUser(u.getId()).isStatus())
+                    nowStatus = 2; // 게임 중
+                else
+                    nowStatus = 1; // 대기 중
+            }
+
+
+            list.add(SquareNowUser
+                        .builder()
+                            .id(u.getId())
+                            .nickName(u.getNickName())
+                            .status(nowStatus)
+                            .exp(u.getExp())
+                            .imageId(u.getImageId())
+                        .build());
+        }
+
+        return list;
     }
 
     public List<SquareRoom> listRoom(Long channelnum) {
@@ -171,43 +213,5 @@ public class SquareService {
                 .build();
     }
 
-    public List<SquareNowUser> listUser(Long channelnum) {
-        //채널 잘못 받을때 예외
-        if (channelnum > 8 || channelnum < 1)
-            throw new CustomBadRequestException(ErrorType.NOT_AVAILABLE_CHANNEL);
 
-        //리턴할 list
-        List<SquareNowUser> list = new ArrayList<>();
-
-        Optional<Channel> byId = channelRepository.findById(channelnum);
-
-        //받아온 방정보
-        List<User> users = new ArrayList<>();
-        try {
-            users = userRepository.findAllByChannel(byId.get());
-        } catch (Exception e) {
-            throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
-        }
-
-        for (User u : users){
-            int nowStatus; // 0 == 로그인 1 == 대기중 2 == 게임중
-            if(redisUserRepository.getOneRedisUser(u.getId())==null) nowStatus=0; // 로그인 중
-            else{
-                if (redisUserRepository.getOneRedisUser(u.getId()).isStatus())
-                    nowStatus = 2; // 게임 중
-                else
-                    nowStatus = 1; // 대기 중
-            }
-
-            list.add(SquareNowUser
-                    .builder()
-                            .id(u.getId())
-                            .nickName(u.getNickName())
-                            .status(nowStatus)
-                            .exp(u.getExp())
-                    .build());
-        }
-
-        return list;
-    }
 }
