@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserNickname, setUserProfileImage } from '../../features/login/authSlice';
 import axios from 'axios';
 import ChangeModal from './changeModal.jsx';
-import blue from '../../images/profile/blue.gif';
+import blue from '../../images/signUp/blue.gif';
+import brown from '../../images/signUp/brown.gif';
+import green from '../../images/signUp/green.gif';
+import yellow from '../../images/signUp/yellow.gif';
+import pink from '../../images/signUp/pink.gif';
+import orange from '../../images/signUp/orange.gif';
 import BackA from '../../images/hub/backA.png';
 import BackB from '../../images/hub/backB.png';
 import styles from './profile.module.css'
@@ -12,24 +17,33 @@ import styles from './profile.module.css'
 export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
-  const [selectedImage, setSelectedImage] = useState(userProfileImage); // 초기값을 현재 프로필 이미지로 설정
-  const [nickname, setNickname] = useState(userNickname); // 현재 닉네임
+  const defaultImage = { src: blue, alt: "기본이미지" };
+  const defaultNickname = `도깨비 ${userId}님`;
+  const [selectedImage, setSelectedImage] = useState(defaultImage); // 초기값을 현재 프로필 이미지로 설정
+  const [nickname, setNickname] = useState(''); // 현재 닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 이전 닉네임
   const [isNicknameEmpty, setIsNicknameEmpty] = useState(false); // 닉네임 노입력 상태 관리
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
-
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  const handleNicknameChange = async () => {
+  const images = [
+    { id: 1, src: blue, alt: "파랑도깨비" },
+    { id: 2, src: brown, alt: "밤색도깨비" },
+    { id: 3, src: yellow, alt: "노랑도깨비" },
+    { id: 4, src: pink, alt: "핑크도깨비" },
+    { id: 5, src: orange, alt: "오렌지도깨비" },
+    { id: 6, src: green, alt: "초록도깨비" },
+  ];
 
+  const handleNicknameChange = async () => {
     if (nickname.trim().length === 0) {
       setIsNicknameEmpty(true);
       setIsNicknameValid(true); // 공백 상태로 받았을 때 정규식 메세지 받지 않기 위해 true로 설정
@@ -49,7 +63,7 @@ export default function Profile() {
     }
 
     try {
-      const response = await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
+      await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
         nickName: nickname
       }, {
         headers: {
@@ -60,7 +74,6 @@ export default function Profile() {
       // console.log("이름 변경 성공 ", response.data);
       alert("도깨비 이름이 변경되었어요 !");
       setIsNicknameChecked(true); // 닉네임 검사 통과
-
       localStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
       setPreviousNickname(userNickname); // 이전 닉네임 상태 업데이트
 
@@ -111,7 +124,7 @@ export default function Profile() {
     if (nickname && selectedImage) {
       try {
         // 백엔드로 PUT 요청 보내기
-        await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
+        const res = await axios.put(`https://j10d202.p.ssafy.io/api/users/${userId}/info`, {
           nickName: nickname,
           imageId: selectedImage.id, // 변경된 이미지의 ID
         }, {
@@ -120,6 +133,7 @@ export default function Profile() {
           },
         });
 
+        console.log("어떤게날라오나요?", res.data)
         // 리덕스 스토어에 닉네임과 이미지 정보 업데이트
         dispatch(setUserNickname(nickname));
         dispatch(setUserProfileImage(selectedImage));
@@ -142,7 +156,36 @@ export default function Profile() {
     if (storedPreviousNickname) {
       setPreviousNickname(storedPreviousNickname);
     }
-  }, []);
+  }, [userNickname]);
+
+  // 렌더링될 때 프로필이미지 null 경우 처리
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        console.log("리스폰스 확인", res)
+        if (res.data) {
+          const { nickName, imageId } = res.data.data;
+          // imageId에 해당하는 매칭이미지 찾아주기
+          const matchingImage = images.find(image => image.id === imageId);
+          
+          // authSlice 스토어 업데이트 해주기
+          dispatch(setUserNickname(nickName));
+          dispatch(setUserProfileImage(matchingImage || defaultImage));
+
+          // 설정된 값으로 상태 관리해주기
+          setSelectedImage(matchingImage || defaultImage);
+          setNickname(nickName || defaultNickname);
+        }
+      } catch (error) {
+        console.error("사용자 정보 조회 에러", error)
+        alert("도깨비 정보를 불러오는데 실패했어요")
+      }
+    };
+    fetchUserInfo();
+  }, [userId]);
 
   return (
     <div className="flex flex-col h-screen">
