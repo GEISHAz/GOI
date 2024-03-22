@@ -66,6 +66,10 @@ public class Room {
         this.status = status;
     }
 
+    public void setChannel(Channel ch){
+        this.channel = ch;
+    }
+
     //새로운 엔티티가 저장(추가)되기 직전에
     @PrePersist
     protected void onCreate() {
