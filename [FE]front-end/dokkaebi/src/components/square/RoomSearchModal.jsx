@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import styles from './RoomSearchModal.module.css';
 
 
-export default function RoomSearchModal() {
+export default function RoomSearchModal({ onClose }) {
+
     return (
         <div className={styles.background}>
           {/* 모달 컨테이너 */}
           <div className={`${styles.container} flex flex-col items-center justify-center`}>
             {/* 모달 타이틀 */}
-            <h1 className="font-Bit text-4xl mb-10">방 찾기</h1>
+            <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
             <input
               type="text"
               id="roomNumber"
@@ -29,7 +30,7 @@ export default function RoomSearchModal() {
 
             {/* 취소 버튼 */}
             <button
-              //  onClick={onClose}
+              onClick={onClose}
               className="w-24 h-12 bg-red-500 hover:bg-red-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
               type="button"
             >
