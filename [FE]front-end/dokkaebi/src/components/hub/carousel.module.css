@@ -15,7 +15,7 @@
   height: 100%;
   padding: 0 2rem 2rem 2rem;
   border-radius: 20px;
-  
+  /* transition: transform 1s ease; */
 }
 
 .cardHeader {
@@ -32,6 +32,7 @@
   opacity: 0.3;
   transform: scale(0.8);
   z-index: 0;
+  /* transition: transform 0.5s instant; */
 }
 
 .active {
@@ -40,6 +41,7 @@
   transform: scale(1.5);
   z-index: 1;
   cursor: pointer;
+  transition: transform 0.9s ease;
 }
 
 .buttonContainer {
