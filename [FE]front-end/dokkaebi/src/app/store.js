@@ -3,13 +3,14 @@ import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import authReducer from '../features/login/authSlice.js';
+import bgmReducer from '../features/bgm/bgmSlice.js';
 import channelReducer from '../features/channel/channelSlice.js';
 import gameReducer from '../features/game/gameSlice.js';
 
 const persistConfig = {
   key : 'root',
   storage,
-  whitelist : ['auth', 'game', 'channel']
+  whitelist : ['auth', 'game', 'channel', 'bgm']
 };
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   // access : accessReducer
   game: gameReducer,
   channel: channelReducer,
+  bgm: bgmReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

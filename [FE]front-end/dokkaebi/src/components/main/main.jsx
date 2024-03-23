@@ -5,30 +5,6 @@ import playButton from '../../images/main/button_play1.png';
 import playButtonClicked from '../../images/main/button_play2.png';
 import styles from './main.module.css';
 
-
-// 버튼 변경 전 코드
-// export default function Main() {
-//   return (
-//     <div>
-//       <div className='flex flex-col justify-between'>
-//         <div className='ml-20 pt-40'>
-//           <img
-//             src={Logo}
-//             alt='투자의 귀재들 로고'
-//             className={`${styles.mainLogo} mx-auto`}
-//           />
-//         </div>
-//         <div className='text-center pb-60'>
-//           <Link to="/hub" className='font-bold rounded-lg px-6 py-2 mt-20 transition duration-500 ease-in-out bg-white/80 hover:bg-white/100'>
-//             Start !
-//           </Link>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 export default function Main() {
   const navigate = useNavigate();
   const [image, setImage] = useState(playButton); // 초기 이미지를 playButton로 설정
