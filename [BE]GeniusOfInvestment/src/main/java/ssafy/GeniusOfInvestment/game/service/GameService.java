@@ -213,7 +213,7 @@ public class GameService {
         Optional<Room> rm = roomRepository.findById(grId);
         if(rm.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         if(rm.get().getEndYear() == room.getYear()){ //게임이 끝났다.
-            return null;
+            throw new CustomBadRequestException(ErrorType.END_GAME);
         }
         int turn = room.getRemainTurn() - 1; //턴이 넘어간 후 남은 턴수(0이면 마지막 턴)
         int year = room.getYear() + 1; //턴이 넘어간 후 현재 년도
@@ -366,11 +366,14 @@ public class GameService {
 
         List<GameUser> gameUserList = new ArrayList<>();
         int cnt = 0;
+        int flag = 1;
         for(GameUser guser : room.getParticipants()){
             if(Objects.equals(guser.getUserId(), user.getId())){ //ready를 요청한 사용자이다.
                 if(!guser.isReady()){
+                    flag = 0; //레디를 한것
                     guser.setReady(true);
                 }else{
+                    flag = -1; //레디를 취소한것
                     guser.setReady(false);
                 }
             }
@@ -387,7 +390,120 @@ public class GameService {
         if(cnt == room.getParticipants().size()){
             return 1;
         }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
-            return 0;
+            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+            return flag;
+            //return 0;
         }
     }
+
+    @Transactional
+    public List<ParticipantInfo> endGame(Long grId) { //게임이 종료되면 순위에 따라 경험치를 적립
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        List<ParticipantInfo> parts = new ArrayList<>();
+        List<GameUser> gameUserList = new ArrayList<>();
+        room.getParticipants().sort(Comparator.reverseOrder()); //totalCost 기준으로 내림차순 정렬
+        int i = 1;
+        for(GameUser guser : room.getParticipants()){
+            Optional<User> unick = userRepository.findById(guser.getUserId());
+            if(unick.isEmpty()){
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
+
+            parts.add(ParticipantInfo.builder()
+                    .userId(guser.getUserId())
+                    .userNick(unick.get().getNickName())
+                    .totalCost(guser.getTotalCost())
+                    .build()); //응답용
+
+            rewardByRank(unick.get(), i, guser.getTotalCost()); //순위에 따른 경험치 적립
+
+            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
+            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rdu.setStatus(false); //상태 false가 대기
+            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+
+            //나의 거래내역을 삭제한다.
+            myTradingInfoRepository.deleteMyTradingInfo(guser.getUserId());
+
+            //GameUser(참가자)의 상태값을 초기화
+            guser.setReady(false);
+            guser.setTotalCost(0L);
+            guser.setPoint(0);
+            guser.setBuyInfos(new ArrayList<>()); //초기값을 빈 리스트로 선언
+            gameUserList.add(guser);
+            i++;
+        }
+        i = 1;
+        for(ParticipantInfo p : parts){ //log찍기(테스트) 용
+            System.out.println((i++) + " " + p.getTotalCost());
+        }
+
+        Optional<Room> rinfo = roomRepository.findById(grId);
+        if(rinfo.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+        rinfo.get().updateStatus(0); //방 상태를 대기로 바꾼다.
+
+        //GameRoom(redis)에 정보 초기화(게임이 끝났으므로)
+        room.setRemainTurn(0); //남은 턴수 설정
+        room.setYear(0); //게임의 현재 년도 설정
+        room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
+        room.setMarket(null);
+        gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
+
+        return parts;
+    }
+
+    @Transactional
+    public int exitGame(User user, Long grId) {
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        GameUser gameUser = new GameUser();
+        gameUser.setUserId(user.getId());
+        int idx = room.getParticipants().indexOf(gameUser);
+        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+        rewardByRank(user, 4, room.getParticipants().get(idx).getTotalCost()); //4위에 해당하는 패널티 부과
+        //userRepository.save(user); //@AuthenticationPrincipal를 통해서 받아온 유저일 경우 .save()를 호출해야 되나??
+
+        room.getParticipants().remove(gameUser);
+        int remainNum = room.getParticipants().size();
+        gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
+
+        redisUserRepository.deleteUser(user.getId()); //대기방도 아니라 광장으로 나가기 때문에 삭제
+        //나의 거래내역을 삭제한다.
+        myTradingInfoRepository.deleteMyTradingInfo(user.getId());
+
+        return remainNum;
+    }
+
+    //순위에 따른 경험치 적립(tcost는 이번 게임에서 획득한 금액)
+    public void rewardByRank(User user, int rank, Long tcost) {
+        long tmp = 0L;
+        switch (rank){
+            case 1:
+                tmp = user.getExp() + tcost; //유저의 원래 경험치 + 이번 게임에서 획득한 금액
+                user.updateExp(tmp);
+                break;
+            case 2:
+                tmp = user.getExp() + (tcost/2); //유저의 원래 경험치 + 이번 게임에서 획득한 금액의 절반
+                user.updateExp(tmp);
+                break;
+            case 3:
+                tmp = (long) (user.getExp() - (user.getExp() * 0.1));
+                user.updateExp(tmp);
+                break;
+            case 4:
+                tmp = (long) (user.getExp() - (user.getExp() * 0.2));
+                user.updateExp(tmp);
+                break;
+        }
+    }
+
 }

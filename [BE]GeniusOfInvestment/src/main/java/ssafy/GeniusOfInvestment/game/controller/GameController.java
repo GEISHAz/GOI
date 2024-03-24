@@ -7,12 +7,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
+import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
 import ssafy.GeniusOfInvestment.game.service.GameService;
 import ssafy.GeniusOfInvestment.game.service.TimerService;
 import ssafy.GeniusOfInvestment.game.dto.TurnResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -61,13 +63,13 @@ public class GameController {
     public Map<String, String> doingReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
         int status = gameService.doingReady(user, grId);
         Map<String, String> json = new HashMap<>();
-        if(status == 0){ //아직 전체 참여자가 레디를 다 누르지 않았다.
+        if(status == 0 || status == -1){ //아직 전체 참여자가 레디를 다 누르지 않았다.
             messageTemplate.convertAndSend("/sub/msg-to/" + grId,
                     MessageDto.builder()
                             .type(MessageDto.MessageType.READY)
                             .data(ReadyResponse.builder()
                                     .userId(user.getId())
-                                    .ready(true)
+                                    .ready(status == 0)
                                     .build())
                             .build());
             json.put("msg", "레디 완료");
@@ -84,4 +86,47 @@ public class GameController {
         }
         return json;
     }
+
+    @PutMapping("/end/{id}")
+    public Map<String, String> endGame(@PathVariable("id") Long grId){
+        List<ParticipantInfo> rst = gameService.endGame(grId);
+        messageTemplate.convertAndSend("/sub/msg-to/" + grId,
+                MessageDto.builder()
+                        .type(MessageDto.MessageType.GAME_RESULT)
+                        .data(rst)
+                        .build()); //웹소켓으로 게임에 참가한 모든 이용자들에게 게임 결과를 보낸다.
+
+        Map<String, String> json = new HashMap<>();
+        json.put("msg", "게임 종료");
+        return json;
+    }
+
+    @DeleteMapping("/exit/{id}")
+    public Map<String, String> exitGame(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
+        //게임을 나갈때 웹소켓으로 뭘 보내줘야되지??
+        int num = gameService.exitGame(user, grId);
+        Map<String, String> json = new HashMap<>();
+        if(num == 1){ //1명이 남았을 경우에는 게임을 종료
+            List<ParticipantInfo> rst = gameService.endGame(grId);
+            messageTemplate.convertAndSend("/sub/msg-to/" + grId,
+                    MessageDto.builder()
+                            .type(MessageDto.MessageType.GAME_RESULT)
+                            .data(rst)
+                            .build()); //웹소켓으로 게임에 참가한 모든 이용자들에게 게임 결과를 보낸다.
+
+            json.put("msg", "게임 종료");
+            return json;
+        }else {
+            json.put("msg", "게임 탈퇴");
+            //임시(얘기 해봐야 될듯)
+            messageTemplate.convertAndSend("/sub/msg-to/" + grId,
+                    MessageDto.builder()
+                            .type(MessageDto.MessageType.GAME_RESULT)
+                            .data(json)
+                            .build()); //웹소켓으로 게임에 참가한 모든 이용자들에게 게임 결과를 보낸다.
+
+            return json;
+        }
+    }
+
 }
