@@ -231,7 +231,7 @@ public class GameService {
                 cur = calMarketVal(last, roi);
             }else {
                 Long itemId = getIdForItem(mk.getItem()); //각 종목의 아이디값
-                List<Information> infos = informationRepository.findByAreaId(itemId);
+                List<Information> infos = informationRepository.findByAreaIdAndYear(itemId, room.getYear());
                 Random random = new Random();
                 int randIdx = random.nextInt(infos.size());
                 Information ranInfo = infos.get(randIdx);
@@ -264,7 +264,7 @@ public class GameService {
             List<BreakDown> bdowns = myInfo.getBreakDowns();
             //List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
             Long usrTotal = 0L;
-            for(BreakDown bd : bdowns){ //
+            for(BreakDown bd : bdowns){
                 for(StockInfoResponse totalInfo : stockInfos){
                     if(bd.getItem().equals(totalInfo.getItem())){ //내가 산 주식 종목에 해당하는 수익률 정보를 전체 주식 정보에서 얻는다.
                         //산 금액과 이전 턴에서의 금액을 분리??

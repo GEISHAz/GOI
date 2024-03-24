@@ -16,7 +16,7 @@ public class GameUser implements Serializable, Comparable<GameUser> {
     private boolean isReady;
     private boolean isManager;
     private int point;
-    private List<Long> buyInfos;
+    private List<MyOwnInfo> buyInfos; //Information테이블의 아이디값
     private Long totalCost;
 
     @Override

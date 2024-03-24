@@ -44,6 +44,7 @@ public enum ErrorType {
     NOT_FOUND_ROOM(HttpStatus.BAD_REQUEST, "존재하는 방 정보가 아닙니다."),
     NOT_FOUND_INFO(HttpStatus.BAD_REQUEST, "해당하는 정보가 존재하지 않습니다."),
     NOT_FOUND_USER_IN_ROOM(HttpStatus.NOT_FOUND, "방에 해당 유저가 존재하지 않습니다."),
+    INSUFFICIENT_POINT(HttpStatus.NOT_ACCEPTABLE, "보유하신 포인트가 부족합니다."),
     END_GAME(HttpStatus.GONE, "게임이 종료되었습니다.")
     ;
 
