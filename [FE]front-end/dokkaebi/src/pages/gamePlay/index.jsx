@@ -7,18 +7,82 @@ import Investment from "../../components/gamePlay/mainStock/Investment";
 import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
-import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 export default function GamePlay() {
   const dispatch = useDispatch();
-  const ready = useSelector((state) => state.game.ready)
-  const money = useSelector((state) => state.game.money)
-  const point = useSelector((state) => state.game.point)
+  const ready = useSelector((state) => state.game.ready);
+  const money = useSelector((state) => state.game.money);
+  const point = useSelector((state) => state.game.point);
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
   const [myInfoModal, setMyInfoModal] = useState(false);
+
+  const [stompClient, setStompClient] = useState(null);
+  const socketUrl = "https://j10d202.p.ssafy.io/ws";
+
+  useEffect(() => {
+    let reconnectInterval;
+
+    const connect = () => {
+      const socket = new SockJS(socketUrl);
+      const stompClient = Stomp.over(() => socket);
+      setStompClient(stompClient);
+
+      stompClient.connect(
+        {},
+        function (frame) {
+          stompClient.subscribe("/topic/messages", function (message) {
+            const receivedMessage = JSON.parse(message.body);
+
+            if (receivedMessage.type === "STOCK_MARKET") {
+              console.log(receivedMessage.data);
+            } else if (receivedMessage.type === "TIMER") {
+              console.log(receivedMessage.data);
+            }
+          });
+        },
+        function (error) {
+          // 연결이 끊어졌을 때 재연결을 시도합니다.
+          console.log("STOMP: Connection lost. Attempting to reconnect", error);
+          reconnectInterval = setTimeout(connect, 5000); // 5초 후 재연결 시도
+        }
+      );
+    };
+
+    connect();
+
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect();
+      }
+      if (reconnectInterval) {
+        clearTimeout(reconnectInterval);
+      }
+    };
+  }, []);
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    axios
+      .get(`https://j10d202.p.ssafy.io/game/start?id=1`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data); // API 응답 데이터를 출력하거나 처리합니다.
+      })
+      .catch((error) => {
+        console.error("API 요청에 실패했습니다:", error); // 오류를 콘솔에 출력하거나 처리합니다.
+      });
+  }, []);
 
   const openInfoStoreModal = () => {
     setInfoStoreModalOpen(true);
@@ -30,7 +94,7 @@ export default function GamePlay() {
 
   const openMyInfoModal = () => {
     setMyInfoModal(true);
-  }
+  };
 
   return (
     <div className={styles.views}>
@@ -75,7 +139,7 @@ export default function GamePlay() {
 
       {myStockModal && <MyStock setMyStockModal={setMyStockModal} />}
 
-      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal}/>}
+      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal} />}
     </div>
   );
 }
