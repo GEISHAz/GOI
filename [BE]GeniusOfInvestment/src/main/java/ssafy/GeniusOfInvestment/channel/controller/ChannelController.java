@@ -28,13 +28,17 @@ public class ChannelController {
 
     @PutMapping("/enterc/{channelId}") //채널 들어가기
     public void enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("controller 들어옴");
+        log.info("enterChannelController in");
         channelService.enterChannel(user,channelId);
+        log.info("enterChannelController out");
     }
 
     @DeleteMapping("/exitc")// 채널 나가기 처리
+
     public void exitChannel(@AuthenticationPrincipal User user){
+        log.info("exitChannelController in");
         channelService.exitChannel(user);
+        log.info("exitChannelController out");
     }
 
 }

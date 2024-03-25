@@ -51,7 +51,7 @@ public class ChannelService {
 
     //채널 들어가기
     public void enterChannel(User user, Long channelId) {
-
+        log.info("enterChannelService in");
         if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
             user.deleteChannel();
 
@@ -80,12 +80,13 @@ public class ChannelService {
         enterUser.updateChannel(channel);
 
         userRepository.save(enterUser);
+        log.info("enterChannelService in");
     }
 
     public void exitChannel(User user) {
+        log.info("exitChannelService in");
         // 유저DB에서 channel 삭제
         user.deleteChannel();
-
-
+        log.info("exitChannelService out");
     }
 }
