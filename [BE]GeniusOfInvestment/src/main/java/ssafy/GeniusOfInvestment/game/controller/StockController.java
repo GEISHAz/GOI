@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.redis.MyTradingInfo;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
+import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
 import ssafy.GeniusOfInvestment.game.service.StockService;
 
 import java.util.List;
@@ -36,5 +37,11 @@ public class StockController {
     @GetMapping("/infolist")
     public List<BuyInfoResponse> getMyOwnInfoList(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
         return stockService.getMyOwnInfoList(user, grId);
+    }
+
+    //종목별 차트 정보
+    @GetMapping("/chart")
+    public List<ChartResponse> getItemChart(@RequestParam("id") Long grId, @RequestParam("item") String item){
+        return stockService.getItemChart(grId, item);
     }
 }

@@ -18,6 +18,7 @@ import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -94,12 +95,14 @@ public class GameService {
             System.out.print(st.getItem() + " ");
         }
 
-        //redis의 GameMarket객체에 현재 시장 상황 저장하기
+        //redis의 GameMarket객체에 현재(초기) 시장 상황 저장하기
         List<GameMarket> gms = new ArrayList<>();
         for(StockInfoResponse stok : stockInfos){
+            List<Long> tmp = new ArrayList<>();
+            tmp.add(stok.getThisCost());
             gms.add(GameMarket.builder()
                             .item(stok.getItem())
-                            .Cost(stok.getThisCost())
+                            .Cost(tmp)
                     .build());
         }
 
@@ -218,11 +221,13 @@ public class GameService {
         int turn = room.getRemainTurn() - 1; //턴이 넘어간 후 남은 턴수(0이면 마지막 턴)
         int year = room.getYear() + 1; //턴이 넘어간 후 현재 년도
         //--------------------------------------------------------------
+        //전체 시장 상황을 업데이트
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         List<GameMarket> gms = new ArrayList<>();
-        for(GameMarket mk : room.getMarket()){ //전체 시장 상황을 업데이트
+        for(GameMarket mk : room.getMarket()){
             Long cur; //현재(새로운) 가격
-            Long last = mk.getCost();
+            int size = mk.getCost().size();
+            Long last = mk.getCost().get(size-1); //마지막 인덱스에 있는 것이 가장 최근의 가격
             int roi; //수익률
             if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
                 Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
@@ -238,10 +243,11 @@ public class GameService {
                 roi = ranInfo.getRoi();
                 cur = calMarketVal(last, roi);
             }
+            mk.getCost().add(cur); //새로 계산된 가격을 원래의 가격 리스트에 추가
             //redis에 저장될 시장 상황을 업데이트
             gms.add(GameMarket.builder()
                     .item(mk.getItem())
-                    .Cost(cur)
+                    .Cost(mk.getCost())
                     .build());
 
             //응답을 줄 dto에 정보 업데이트
@@ -458,29 +464,32 @@ public class GameService {
         return parts;
     }
 
+    //Transactional 을 지워야 되나?
     @Transactional
-    public int exitGame(User user, Long grId) {
+    public List<ParticipantInfo> exitGame(User user, Long grId) {
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
 
         GameUser gameUser = new GameUser();
-        gameUser.setUserId(user.getId());
+        gameUser.setUserId(user.getId()); //탈퇴한 유저의 객체
         int idx = room.getParticipants().indexOf(gameUser);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         rewardByRank(user, 4, room.getParticipants().get(idx).getTotalCost()); //4위에 해당하는 패널티 부과
         //userRepository.save(user); //@AuthenticationPrincipal를 통해서 받아온 유저일 경우 .save()를 호출해야 되나??
 
         room.getParticipants().remove(gameUser);
-        int remainNum = room.getParticipants().size();
+        //int remainNum = room.getParticipants().size();
         gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
 
         redisUserRepository.deleteUser(user.getId()); //대기방도 아니라 광장으로 나가기 때문에 삭제
         //나의 거래내역을 삭제한다.
         myTradingInfoRepository.deleteMyTradingInfo(user.getId());
 
-        return remainNum;
+        return room.getParticipants().stream()
+                .map(this::mapToParticipantInfo)
+                .collect(Collectors.toList());
     }
 
     //순위에 따른 경험치 적립(tcost는 이번 게임에서 획득한 금액)
@@ -506,4 +515,14 @@ public class GameService {
         }
     }
 
+    public ParticipantInfo mapToParticipantInfo(GameUser gu){
+        Optional<User> user = userRepository.findById(gu.getUserId());
+        if(user.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+        return ParticipantInfo.builder()
+                .userId(gu.getUserId())
+                .userNick(user.get().getNickName())
+                .totalCost(gu.getTotalCost())
+                .point(gu.getPoint())
+                .build();
+    }
 }
