@@ -44,7 +44,7 @@ export default function ChatContainer() {
       const accessToken = sessionStorage.getItem("accessToken");
       if (channelId) {
         try {
-          await axios.delete('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
+          await axios.post('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
             headers: { Authorization: `Bearer ${accessToken}` },  
           });
           console.log("채널 나가면서 채널Id 제거해달라고 요청함")
