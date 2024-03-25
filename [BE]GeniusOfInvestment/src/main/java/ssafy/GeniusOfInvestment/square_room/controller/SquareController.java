@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomListResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SavedRoomResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareNowUser;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
@@ -32,7 +33,7 @@ public class SquareController {
     }
 
     @GetMapping("/list") //방 목록
-    public List<SquareRoom> listRoom(@AuthenticationPrincipal User user, @RequestBody Long channelnum){
+    public RoomListResponse listRoom(@AuthenticationPrincipal User user, @RequestBody Long channelnum){
         return squareService.listRoom(channelnum);
     }
 
