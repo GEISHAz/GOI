@@ -85,6 +85,13 @@ public class ChannelService {
 
     public void exitChannel(User user) {
         log.info("exitChannelService in");
+        log.info("id : "+user.getId());
+        log.info("id : "+user.getNickName());
+        log.info("id : "+user.getExp());
+        log.info("id : "+user.getImageId());
+        log.info("id : "+user.getSocialId());
+        log.info("id : "+user.getChannel());
+
         // 유저DB에서 channel 삭제
         user.deleteChannel();
         userRepository.save(user);
