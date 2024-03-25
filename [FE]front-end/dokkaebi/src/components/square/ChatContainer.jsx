@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 export default function ChatContainer() {
   const sender = useSelector(state => state.auth.userNickname);
   const channelId = useSelector(state => state.game.channelId)
-  // const userId = localStorage.getItem("userId");
+  // const userId = sessionStorage.getItem("userId");
   const [chatList, setChatList] = useState([]);
   // const [chatMessage, setChatMessage] = useState('')
   const [inputMessage, setInputMessage] = useState('');

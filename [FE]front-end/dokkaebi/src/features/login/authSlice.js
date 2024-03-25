@@ -6,7 +6,7 @@ export const authSlice = createSlice({
     userNickname : null,
     userProfileImage : null,
     previousUserNickname: null,
-    isLogin: false,
+    // isLogin: false,
   },
   reducers : {
     setUserNickname : (state,action) => {
@@ -23,7 +23,7 @@ export const authSlice = createSlice({
     },
 
     logout: (state) => {
-      state.isLogin = false;
+      // state.isLogin = false;
       state.userNickname = null;
       state.userProfileImage = null;
       state.userProfileImage = null;

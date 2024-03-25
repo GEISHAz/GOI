@@ -3,12 +3,12 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = () => {
     const [isLogin, setIsLogin] = useState(
-        !!localStorage.getItem("accessToken")
+        !!sessionStorage.getItem("accessToken")
     );
 
     useEffect(() => {
         const checkLoginStatus = () => {
-            const accessToken = localStorage.getItem("accessToken");
+            const accessToken = sessionStorage.getItem("accessToken");
             setIsLogin(!!accessToken);
         };
 

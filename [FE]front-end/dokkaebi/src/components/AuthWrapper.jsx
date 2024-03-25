@@ -12,7 +12,7 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = sessionStorage.getItem('accessToken');
 
       if (accessToken) {
         const isAuthenticated = await checkAccess();

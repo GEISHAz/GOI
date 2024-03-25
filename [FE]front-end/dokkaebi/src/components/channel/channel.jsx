@@ -10,7 +10,7 @@ import axios from "axios";
 export default function Channel() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
   // const userId = localStorage.getItem("userId")
   const [getChannelInfo, setGetChannelInfo] = useState([]);
 

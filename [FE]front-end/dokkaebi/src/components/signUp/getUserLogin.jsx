@@ -21,8 +21,8 @@ export default function getUserLogin() {
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [nicknameDuplicateError, setNicknameDuplicateError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const userId = localStorage.getItem("userId");
-  const accessToken = localStorage.getItem("accessToken")
+  const userId = sessionStorage.getItem("userId");
+  const accessToken = sessionStorage.getItem("accessToken")
 
   // 닉네임 중복검사 로직 (백에서 유효성검사 로직 다 되면 작성 예정)
   const handleCheckNickname = async () => {

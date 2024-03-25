@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useRef } from 'react';
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { setIsLogin, logout } from '../features/login/authSlice.js';
+import { logout } from '../features/login/authSlice.js';
 
 export function useAuthCheck() {
   const dispatch = useDispatch();
@@ -10,10 +10,11 @@ export function useAuthCheck() {
   const intervalIdRef = useRef(null);
   
   const handleLogout = async () => {
-    const accessToken = localStorage.getItem('accessToken');
-    localStorage.clear(); // 로그아웃했다면 로컬스토리지 싹 비우기
+    const accessToken = sessionStorage.getItem('accessToken');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('isLogin'); // 세션스토리지에서 로그인 상태 삭제
     dispatch(logout()); // 리덕스 스토어 로그아웃 처리
-    dispatch(setIsLogin(false)); // 리덕스에 있는 로그인설정도 false
     // 백엔드에 로그아웃 알림
     if (accessToken) {
       try {
@@ -38,7 +39,7 @@ export function useAuthCheck() {
       // console.log("리스폰스 확인 :", response)
       if (response.status === 200 && response.data.data.accessToken) {
         // console.log("따끈따끈한 새 액세스 토큰", response.data.data.accessToken)
-        localStorage.setItem('accessToken', response.data.data.accessToken); // 로컬스토리지에 저장하고
+        sessionStorage.setItem('accessToken', response.data.data.accessToken); // 로컬스토리지에 저장하고
         window.location.reload()
         return response.data.data.accessToken; // 새로 발급받은 토큰 반환 
       } else {
@@ -52,8 +53,8 @@ export function useAuthCheck() {
   };
 
   const checkAccess = async () => {
-    const userId = localStorage.getItem("userId");
-    const accessToken = localStorage.getItem('accessToken');
+    const userId = sessionStorage.getItem("userId");
+    const accessToken = sessionStorage.getItem('accessToken');
 
     if (!accessToken) {
       handleLogout();
@@ -83,7 +84,7 @@ export function useAuthCheck() {
   // 15초마다 토큰 검사 실행 -> 초마다 실시하면 너무많은 서버 로그 발생
   useEffect(() => {
     const startTokenValidationInterval = () => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {
         return;
       }
