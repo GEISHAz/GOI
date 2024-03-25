@@ -11,19 +11,19 @@ export default function Channel() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  const userId = localStorage.getItem("userId")
+  // const userId = localStorage.getItem("userId")
   const [getChannelInfo, setGetChannelInfo] = useState([]);
 
   const fetchChannelSelect = async (channelId) => {
     try {
       console.log("보내는 토큰 확인 :", accessToken)
-      console.log("보내는 유저ID 확인 :", userId)
+      // console.log("보내는 유저ID 확인 :", userId)
       console.log("들어갈 채널ID 확인 :", channelId)
-      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc`, {
-        channelId: channelId,
-        userId: userId
+      const res = await axios.put(`https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`, {
+        // channelId: channelId,
+        // userId: userId
       }, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },  
       });
       console.log("POST 리스폰스 확인 :", res)
       if (res.status === 200) {
@@ -56,7 +56,7 @@ export default function Channel() {
           throw new Error('GET 요청에서 에러 발생');
         }
       } catch (error) {
-        console.error('채널 목록 불러오기 실패', error);
+        console.error('채널 목록 불러오기 실패', error);``
       }
     };
 
