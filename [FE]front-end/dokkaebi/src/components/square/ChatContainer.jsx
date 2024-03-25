@@ -37,11 +37,23 @@ export default function ChatContainer() {
       console.error("채팅 연결 에러", error)
     });
 
+    // 페이지 언로드 시(브라우저에서 제공하는 뒤로가기) 세션 스토리지에서 channelId 제거
+    const handleUnload = () => {
+      sessionStorage.removeItem('channelId');
+    };
+
+    // beforeunload 이벤트 리스너 등록 -> 이 광장페이지에서 벗어난다면 handleUnload 발동
+    window.addEventListener('beforeunload', handleUnload);
+
     return () => {
+      // 성공적으로 연결이 끊어진다면 이벤트 리스너 제거해주기
+      window.removeEventListener('beforeunload', handleUnload);
+
       if (stompClient.current && stompClient.current.connected) {
         console.log("채팅 연결 종료");
         stompClient.current.unsubscribe();
         stompClient.current.disconnect();
+        sessionStorage.removeItem('channelId');
       }
     };
   }, [channelId]);
