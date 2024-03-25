@@ -28,14 +28,14 @@ public class AlarmService {
         if(fromUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         }
-        Optional<User> toUser = userRepository.findById(sendFriendRequest.getFriendId());
+        Optional<User> toUser = userRepository.findByNickName(sendFriendRequest.getFriendNickName());
         if(toUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITE_USER);
         }
 
         User tUser = toUser.get();
         User fUser = fromUser.get();
-        String str = fUser.getNickName() + "님이 " + tUser.getNickName() +"님을 초대했습니다";
+        String str = fUser.getNickName() + " " + tUser.getNickName() +" ";
 
         Alarm alarm = Alarm.of(tUser,fUser,str,0);
         alarmRepository.save(alarm);
@@ -51,6 +51,7 @@ public class AlarmService {
         return list.stream().map(AlarmListResponse::from).toList();
     }
 
+    @Transactional
     public void acceptFriendInvitation(Long alarmId) {
         Optional<Alarm> alarm = alarmRepository.findById(alarmId);
 
@@ -58,5 +59,15 @@ public class AlarmService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITATION);
         }
         alarm.get().updateStatus(1);
+    }
+
+    @Transactional
+    public void rejectFriendInvitation(Long alarmId) {
+        Optional<Alarm> alarm = alarmRepository.findById(alarmId);
+
+        if(alarm.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITATION);
+        }
+        alarm.get().updateStatus(2);
     }
 }
