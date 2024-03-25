@@ -28,6 +28,7 @@ public class ChannelController {
 
     @PutMapping("/enterc/{channelId}") //채널 들어가기
     public void enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
+        log.info("controller 들어옴");
         channelService.enterChannel(user,channelId);
     }
 
