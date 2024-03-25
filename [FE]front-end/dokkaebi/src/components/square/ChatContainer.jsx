@@ -3,16 +3,18 @@ import styles from './ChatContainer.module.css'
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { useSelector } from "react-redux";
+import axios from 'axios';
 
 export default function ChatContainer() {
   const sender = useSelector(state => state.auth.userNickname);
-  const channelId = useSelector(state => state.game.channelId)
   // const userId = sessionStorage.getItem("userId");
   const [chatList, setChatList] = useState([]);
   // const [chatMessage, setChatMessage] = useState('')
   const [inputMessage, setInputMessage] = useState('');
   const recentMessage = useRef(null);
   const stompClient = useRef(null);
+  const subscriptionRef = useRef(null); // 구독할 때 식별자 지정
+  const channelId = sessionStorage.getItem("channelId");
 
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
@@ -26,7 +28,7 @@ export default function ChatContainer() {
       console.log("광장에서 채널 연결됨!!")
 
       // 구독하기
-      stompClient.current.subscribe('/sub/square/chat/'+`${channelId}`, (message) => {
+      subscriptionRef.current = stompClient.current.subscribe('/sub/square/chat/'+`${channelId}`, (message) => {
         // 받은 메세지 처리할 곳
         const msg = JSON.parse(message.body);
         if (msg.type && msg.type === "TALK") {
@@ -38,25 +40,38 @@ export default function ChatContainer() {
     });
 
     // 페이지 언로드 시(브라우저에서 제공하는 뒤로가기) 세션 스토리지에서 channelId 제거
-    const handleUnload = () => {
-      sessionStorage.removeItem('channelId');
+    const handleUnload = async () => {
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (channelId) {
+        try {
+          await axios.delete('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
+            headers: { Authorization: `Bearer ${accessToken}` },  
+          });
+          console.log("채널 나가면서 채널Id 제거해달라고 요청함")
+        } catch (error) {
+          console.error("채널 나가면서 채널Id 제거 실패", error)
+        }
+      }
+      sessionStorage.removeItem('channelId'); // 세션 스토리지에서 제거해주기
     };
 
     // beforeunload 이벤트 리스너 등록 -> 이 광장페이지에서 벗어난다면 handleUnload 발동
     window.addEventListener('beforeunload', handleUnload);
 
     return () => {
-      // 성공적으로 연결이 끊어진다면 이벤트 리스너 제거해주기
-      window.removeEventListener('beforeunload', handleUnload);
-
-      if (stompClient.current && stompClient.current.connected) {
-        console.log("채팅 연결 종료");
-        stompClient.current.unsubscribe();
-        stompClient.current.disconnect();
-        sessionStorage.removeItem('channelId');
-      }
+      // 성공적으로 소켓 연결이 끊어진다면
+      // 백엔드에게 알리면서 이벤트 리스너 제거해주기
+      handleUnload().finally(() => {
+        window.removeEventListener('beforeunload', handleUnload);
+        if (subscriptionRef.current) {
+          subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
+        }
+        if (stompClient.current && stompClient.current.connected) {
+          stompClient.current.disconnect();
+        }
+      });
     };
-  }, [channelId]);
+  }, [chatList, channelId]);
 
   // 메세지 보내기 조작할 함수
   const handleSendMessage = (event) => {
