@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setChannelId } from '../../features/channel/channelSlice.js'
 import Back from '../back/goHub.jsx';
 import styles from './channel.module.css';
 import channel from '../../images/channel/icon_channel.png'
