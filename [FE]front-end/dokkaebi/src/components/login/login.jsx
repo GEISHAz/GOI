@@ -10,11 +10,12 @@ import KakaoLogin from '../../images/login/kakaologin.png';
 import yellow from '../../images/login/yellow.gif';
 import pink from '../../images/login/pink.gif';
 import orange from '../../images/login/orange.gif';
-import Back from '../back/goHub.jsx';
+import BackA from '../../images/hub/backA.png';
+import BackB from '../../images/hub/backB.png';
 
 export default function LoginComponent() {
-  // const navigate = useNavigate();
-  // const [isHovering, setIsHovering] = useState(false);
+  const navigate = useNavigate();
+  const [isHovering, setIsHovering] = useState(false);
 
   const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login';
   // const NAVER_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/naver?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login';
@@ -30,9 +31,18 @@ export default function LoginComponent() {
   // }
 
   return (
-    <div className="flex flex-col h-96">
+    <div className="flex flex-col">
       {/* 뒤로가기 */}
-      <Back />
+      <div className='mt-5 flex items-center justify-start'>
+        <button
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className='w-48 my-auto'
+          onClick={() => navigate("/hub")}
+        >
+          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
+        </button>
+      </div>
 
       {/* 카카오 로그인 */}
       <div className={`${styles.loginBG} flex flex-col items-center justify-center w-1/3 mx-auto bg-black/60 rounded-3xl p-10`}>

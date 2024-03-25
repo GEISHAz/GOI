@@ -23,7 +23,7 @@ export default function Channel() {
         // channelId: channelId,
         // userId: userId
       }, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },  
       });
       console.log("POST 리스폰스 확인 :", res)
       if (res.status === 200) {
@@ -56,7 +56,7 @@ export default function Channel() {
           throw new Error('GET 요청에서 에러 발생');
         }
       } catch (error) {
-        console.error('채널 목록 불러오기 실패', error);
+        console.error('채널 목록 불러오기 실패', error);``
       }
     };
 
