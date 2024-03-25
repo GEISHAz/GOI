@@ -26,23 +26,19 @@ public class Alarm {
     @JoinColumn(name = "from_id")
     private User from;
 
-    private String content;
-
     private int status;
 
     @Builder
-    private Alarm(User user, User from, String content, int status){
+    private Alarm(User user, User from , int status){
         this.user = user;
         this.from = from;
-        this.content = content;
         this.status = status;
     }
 
-    public static Alarm of(User user, User from, String content,int status){
+    public static Alarm of(User user, User from ,int status){
         return builder()
                 .user(user)
                 .from(from)
-                .content(content)
                 .status(status)
                 .build();
     }
