@@ -21,4 +21,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     List<User> findAllByChannel(Channel channel);
 
+    Optional<User> findByNickName(String nickName);
 }

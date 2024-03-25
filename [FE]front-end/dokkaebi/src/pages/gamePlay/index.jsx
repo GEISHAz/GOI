@@ -24,7 +24,7 @@ export default function GamePlay() {
   const [myInfoModal, setMyInfoModal] = useState(false);
 
   const [stompClient, setStompClient] = useState(null);
-  const socketUrl = "https://j10d202.p.ssafy.io/api/ws-stomp";
+  const socketUrl = "https://localhost:8080/ws-stomp";
 
   useEffect(() => {
     let reconnectInterval;
@@ -37,7 +37,7 @@ export default function GamePlay() {
       stompClient.connect(
         {},
         function (frame) {
-          stompClient.subscribe("/topic/messages", function (message) {
+          stompClient.subscribe("/sub/room/cheat/1", function (message) {
             const receivedMessage = JSON.parse(message.body);
 
             if (receivedMessage.type === "STOCK_MARKET") {

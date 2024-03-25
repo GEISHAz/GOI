@@ -9,29 +9,29 @@ import ssafy.GeniusOfInvestment._common.entity.Alarm;
 @RequiredArgsConstructor
 public class AlarmListResponse {
     private Long id;
-    private String content;
-    private Long from_id;
+    private String fromNickName;
+    private Long fromId;
 
     @Builder
-    private AlarmListResponse(Long id, String content, Long from_id){
+    private AlarmListResponse(Long id, String fromNickName, Long fromId){
         this.id = id;
-        this.content = content;
-        this.from_id = from_id;
+        this.fromNickName = fromNickName;
+        this.fromId = fromId;
     }
 
-    public static AlarmListResponse of(Long id, String content, Long from_id){
+    public static AlarmListResponse of(Long id, String fromNickName, Long fromId){
         return builder()
                 .id(id)
-                .content(content)
-                .from_id(from_id)
+                .fromNickName(fromNickName)
+                .fromId(fromId)
                 .build();
     }
 
     public static AlarmListResponse from(Alarm alarm){
         return builder()
                 .id(alarm.getId())
-                .content(alarm.getContent())
-                .from_id(alarm.getFrom().getId())
+                .fromNickName(alarm.getFrom().getNickName())
+                .fromId(alarm.getFrom().getId())
                 .build();
     }
 }
