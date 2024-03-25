@@ -39,7 +39,7 @@ public class ChannelService {
                                 .builder()
                                 .id(c.getId())
                                 .channelName(channelRepository.findById(c.getId()).get().getChName())
-                                .userCount(c.getParticipants().size())
+                                .userCount(userRepository.countByChannel(c))
                                 .build());
             }
         }
@@ -50,11 +50,14 @@ public class ChannelService {
     //채널 들어가기
     public void enterChannel(User user, Long channelId) {
 
+        if(user.getChannel().getId().equals(channelId))
+            user.deleteChannel();
+
         log.info("유저 현 채널 : "+user.getChannel());
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
-        if(!ochannel.isPresent()){
+        if(ochannel.isEmpty()){
             throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
         }
         channel = ochannel.get();
@@ -75,4 +78,8 @@ public class ChannelService {
         enterUser.updateChannel(channel);
     }
 
+    public void exitChannel(User user) {
+        // 유저DB에서 channel 삭제
+        user.deleteChannel();
+    }
 }

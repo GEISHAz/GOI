@@ -82,6 +82,8 @@ public class User {
 
     public void updateChannel(Channel channel) { this.channel = channel; }
 
+    public void deleteChannel(){ this.channel = null; }
+
     public void updateExp(Long exp) {
         this.exp = exp;
     }

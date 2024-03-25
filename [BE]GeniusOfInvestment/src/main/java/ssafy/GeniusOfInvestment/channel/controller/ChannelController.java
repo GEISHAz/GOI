@@ -31,4 +31,9 @@ public class ChannelController {
         channelService.enterChannel(user,channelId);
     }
 
+    @DeleteMapping("/exitc")// 채널 나가기 처리
+    public void exitChannel(@AuthenticationPrincipal User user){
+        channelService.exitChannel(user);
+    }
+
 }
