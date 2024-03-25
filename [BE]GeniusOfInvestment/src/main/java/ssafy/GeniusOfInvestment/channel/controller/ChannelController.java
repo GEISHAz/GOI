@@ -33,9 +33,15 @@ public class ChannelController {
         log.info("enterChannelController out");
     }
 
-    @DeleteMapping("/exitc")// 채널 나가기 처리
-
+    @PostMapping("/exitc")// 채널 나가기 처리
     public void exitChannel(@AuthenticationPrincipal User user){
+        log.info("exitChannelService in");
+        log.info("id : "+user.getId());
+        log.info("id : "+user.getNickName());
+        log.info("id : "+user.getExp());
+        log.info("id : "+user.getImageId());
+        log.info("id : "+user.getSocialId());
+        log.info("id : "+user.getChannel());
         log.info("exitChannelController in");
         channelService.exitChannel(user);
         log.info("exitChannelController out");
