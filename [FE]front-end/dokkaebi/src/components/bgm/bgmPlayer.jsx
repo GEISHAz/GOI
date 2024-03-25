@@ -41,7 +41,7 @@ export default function BGMPlayer() {
 
   return (
     <div className={styles.buttonContainer}>
-      <audio ref={audioRef} src="/bgm/partyOfNobleNobles.mp3" loop />
+      <audio ref={audioRef} src="/bgm/letsClean.mp3" loop />
       {showPrompt && <div className={`w-full ${styles.musicPrompt}`}>배경음악을 틀어보세요!</div>}
       <button
         onClick={handleTogglePlay}

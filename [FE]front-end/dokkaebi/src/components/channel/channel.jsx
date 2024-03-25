@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setChannelId } from '../../features/channel/channelSlice.js'
+import Back from '../back/goHub.jsx';
 import styles from './channel.module.css';
 import channel from '../../images/channel/icon_channel.png'
 import axios from "axios";
@@ -63,14 +64,7 @@ export default function Channel() {
   return (
     <div className="flex flex-col h-screen">
       {/* 뒤로가기 */}
-      <div className='mt-5 ml-10'>
-        <button
-          onClick={() => navigate(-1)}
-          className='font-bold text-white text-4xl'
-        >
-          Back
-        </button>
-      </div>
+      <Back />
     
       {/* 채널 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}>
