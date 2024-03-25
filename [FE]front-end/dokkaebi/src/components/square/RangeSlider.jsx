@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './RangeSlider.module.css';
 
 // 연도 선택 수정 필요 !!!!!!!! 미완성 !!!!!!!!!!!!!
-const RangeSlider = () => {
+const RangeSlider = ({ onYearChange }) => {
   const minYear = 2011;
   const maxYear = 2023;
   const minGap = 4;
@@ -21,15 +21,20 @@ const RangeSlider = () => {
     }
   }, [startYear, endYear, minGap]);
 
+  
+  // handleStartChange와 handleEndChange에서 onYearChange 콜백을 호출
   const handleStartChange = (event) => {
     const value = Math.min(Number(event.target.value), endYear - minGap);
     setStartYear(value);
+    onYearChange(value, endYear); // 부모 컴포넌트 업데이트
   };
 
   const handleEndChange = (event) => {
     const value = Math.max(Number(event.target.value), startYear + minGap);
     setEndYear(value);
+    onYearChange(startYear, value); // 부모 컴포넌트 업데이트
   };
+
 
   // 시작 슬라이더의 스타일을 계산하는 함수
   const calculateStartSliderBackground = () => {

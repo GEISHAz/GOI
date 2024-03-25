@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import styles from './RoomCreateModal.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import lock from '../../images/square/icon_lock.png';
@@ -8,11 +10,22 @@ import RangeSlider from './RangeSlider.jsx';
 
 export default function RoomCreateModal({ onClose, userName }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const accessToken = sessionStorage.getItem("accessToken");
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
   const [isRoomTitle, setIsRoomTitle] = useState(''); // 방 제목 상태 관리
   const [isPrivate, setIsPrivate] = useState(false); // 비공개 체크박스의 상태를 위한 훅
-  const [ispassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
-  const [isyears, setIsyears] = useState(); // 연도 상태 관리
+  const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
+
+  // startYear와 endYear를 위한 상태 추가
+  const [startYear, setStartYear] = useState();
+  const [endYear, setEndYear] = useState();
+
+  // RangeSlider에서 startYear와 endYear가 변경될 때 부모 컴포넌트의 상태를 업데이트하는 콜백 함수
+  const handleYearChange = (start, end) => {
+    setStartYear(start);
+    setEndYear(end);
+  };
 
   const handlePrivateChange = (e) => { // 체크박스 상태 변경 함수
     setIsPrivate(e.target.checked);
@@ -29,7 +42,7 @@ export default function RoomCreateModal({ onClose, userName }) {
   };
 
   // "생성" 버튼 기능 
-  const handleCreateRoom = () => {
+  const handleCreateRoom = async () => {
     // 방 제목을 입력하지 않았을 경우
     if (!isRoomTitle) {
       alert("방 제목을 설정해주세요 !");
@@ -37,7 +50,7 @@ export default function RoomCreateModal({ onClose, userName }) {
     }
 
     // 비공개 체크는 했으나 비밀번호를 입력하지 않았을 경우
-    if (isPrivate && !ispassword) {
+    if (isPrivate && !isPassword) {
       alert("비밀번호를 설정하지 않았어요 !")
       return // 함수 중단
     }
@@ -45,14 +58,34 @@ export default function RoomCreateModal({ onClose, userName }) {
     // 사용자가 "생성" 버튼을 눌러서 방을 만들면, 스토어에 그 정보들을 저장하겠다
     // 그 정보라 하면은, 사용자가 설정한 방제목, 방비밀번호, 연도 3가지
 
-    if (isRoomTitle && ispassword && isyears) {
-      dispatch(setRoomTitle(isRoomTitle))
-      dispatch(setRoomPassword(ispassword))
-      dispatch(setRoomYears(isyears))
+    // 시작 연도와 종료 연도가 모두 설정되었는지 확인
+    if (startYear && endYear && isRoomTitle && (isPrivate ? isPassword : true)) {
+      try {
+        const response = await axios.post('https://j10d202.p.ssafy.io/api/square/create', {
+          title: isRoomTitle,
+          isPrivate: isPrivate,
+          password: isPrivate ? isPassword : null, // 비공개 방일 경우만 비밀번호 설정
+          startYear: startYear,
+          endYear: endYear,
+          channelId: channelId
+        }, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+  
+        if (response.status === 200 || response.status === 201) {
+          console.log('방 생성 성공:', response.data);
+          // 방 생성 성공하면 -> 생성한 방으로 이동
+          navigate(`/room/${room.roomId}`);
+        }
+      } catch (error) {
+        console.error('방 생성 오류:', error);
+        alert('방 생성 중 오류가 발생했습니다.');
+      }
     } else {
       alert("방 설정이 제대로 이루어지지 않았어요 !");
     }
-  }
+  };
+
 
   return (
     <div className={styles.background}>
@@ -117,7 +150,7 @@ export default function RoomCreateModal({ onClose, userName }) {
                 name="roomPassword"
                 placeholder="비밀번호 입력"
                 maxLength={4}
-                value={ispassword} // 입력 상태와 바인딩
+                value={isPassword} // 입력 상태와 바인딩
                 onChange={handlePasswordChange} // 입력 처리 함수
                 className="border-2 border-gray-300 p-1 w-32"
               />
@@ -128,7 +161,9 @@ export default function RoomCreateModal({ onClose, userName }) {
           <div className="flex justify-end items-center">
             <label htmlFor="roomNumber" className="text-2xl mr-2">연도 선택</label>
           </div>
-          <RangeSlider />
+            {/* RangeSlider에 새로운 props 전달
+            handleYearChange를 RangeSlider에 prop으로 전달 */}
+            <RangeSlider onYearChange={handleYearChange} />
           </div>
 
         {/* 버튼 그룹 */}
