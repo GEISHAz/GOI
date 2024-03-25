@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect, useRef } from 'react';
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { setIsLogin, logout } from '../features/login/authSlice.js';
@@ -6,6 +7,7 @@ import { setIsLogin, logout } from '../features/login/authSlice.js';
 export function useAuthCheck() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const intervalIdRef = useRef(null);
   
   const handleLogout = async () => {
     const accessToken = localStorage.getItem('accessToken');
@@ -77,6 +79,32 @@ export function useAuthCheck() {
       }
     }
   };
+
+  // 15초마다 토큰 검사 실행 -> 초마다 실시하면 너무많은 서버 로그 발생
+  useEffect(() => {
+    const startTokenValidationInterval = () => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        return;
+      }
+
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current); // 중복 실행 방지
+      }
+
+      intervalIdRef.current = setInterval(() => {
+        checkAccess(); // 여기에서 토큰 유효성 검사 실행 -> 15초마다 실시
+      }, 15000); // 60,000ms = 1분
+    };
+
+    startTokenValidationInterval();
+
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current); // 컴포넌트 언마운트시 인터벌 정리
+      }
+    };
+  }, [checkAccess]);
 
   return [checkAccess];
 };
