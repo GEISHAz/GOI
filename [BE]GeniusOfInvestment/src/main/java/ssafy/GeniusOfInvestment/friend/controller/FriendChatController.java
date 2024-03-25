@@ -18,6 +18,7 @@ public class FriendChatController {
     public void message(FriendChatMessageDto friendChatMessageDto){
 
         //채팅을 저장하는 메서드
+        System.out.println(friendChatMessageDto.getMessage());
         friendService.saveMessage(friendChatMessageDto);
         messageSendingOperations.convertAndSend("/sub/friend/chat/" + friendChatMessageDto.getRoomId(),friendChatMessageDto);
     }
