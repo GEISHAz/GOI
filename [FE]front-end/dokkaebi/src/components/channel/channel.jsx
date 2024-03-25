@@ -22,8 +22,8 @@ export default function Channel() {
       console.log("POST 리스폰스 확인 :", res)
       if (res.status === 200) {
         console.log("200 OK 응답 확인!", res.status)
-        // channelSlice에 채널 ID 값 업데이트해서 저장해주기
-        dispatch(setChannelId(channelId))
+        // 해당 채널 id에 접근을 허가받으면 세션스토리지에 해당 채널 id를 저장
+        sessionStorage.setItem("channelId", channelId);
         navigate(`/square/${channelId}`);
       } else {
         throw new Error('POST 요청에서 에러 발생');
