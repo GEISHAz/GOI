@@ -26,8 +26,8 @@ export default function ChangeModal({ onClose, onSelectImage }) {
 
   // 이미지 선택 핸들러
   const handleImageSelect = async (image) => {
-    const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
-    const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
+    const userId = sessionStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
+    const accessToken = sessionStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
     const selectedImageObj = images.find(img => img.src === image);
     setSelectedImage(image);
 

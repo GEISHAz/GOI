@@ -16,7 +16,7 @@ import styles from './profile.module.css'
 export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
+  const userId = sessionStorage.getItem("userId"); // 로컬 스토리지에서 userId 가져오기
   const userProfileImage = useSelector((state) => state.auth.userProfileImage); // 회원가입에서 설정한 프로필 사진 불러오기
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
   const defaultImage = { src: blue, alt: "기본이미지" };
@@ -28,7 +28,7 @@ export default function Profile() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
+  const accessToken = sessionStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -72,7 +72,7 @@ export default function Profile() {
       // console.log("이름 변경 성공 ", response.data);
       alert("도깨비 이름이 변경되었어요 !");
       setIsNicknameChecked(true); // 닉네임 검사 통과
-      localStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
+      sessionStorage.setItem('previousNickname', userNickname); // 이전 닉네임 로컬 스토리지에 저장
       setPreviousNickname(userNickname); // 이전 닉네임 상태 업데이트
 
     } catch (error) {
@@ -150,7 +150,7 @@ export default function Profile() {
 
   // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기
   useEffect(() => {
-    const storedPreviousNickname = localStorage.getItem('previousNickname');
+    const storedPreviousNickname = sessionStorage.getItem('previousNickname');
     if (storedPreviousNickname) {
       setPreviousNickname(storedPreviousNickname);
     }

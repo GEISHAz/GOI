@@ -11,7 +11,6 @@ export default function LoginCallback() {
   useEffect(() => {
     const getTokens = async() => {
       const accessToken = await searchParams.get("access-token");
-      // const refreshToken = await searchParams.get("refresh-token");
       const userId = await searchParams.get("user-id")
       const nextPage = await searchParams.get("next")
 
@@ -20,14 +19,14 @@ export default function LoginCallback() {
       console.log("nextPage :", nextPage)
 
       // 액세스 토큰과 userId를 로컬스토리지에 저장
-      if (accessToken !== null) {
-        localStorage.setItem("accessToken", accessToken);
-        // localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userId", userId);
+      if (accessToken !== null && userId !== null) {
+        sessionStorage.setItem("accessToken", accessToken);
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("isLogin", "true"); // 로그인 상태 true로 변경
         dispatch(setIsLogin(true));
       }
 
-      if (localStorage.getItem("accessToken")) {
+      if (sessionStorage.getItem("accessToken")) {
         if (nextPage === "main") {
           return navigate("/hub")
         } else {

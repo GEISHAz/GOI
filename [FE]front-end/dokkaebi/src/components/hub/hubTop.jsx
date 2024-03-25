@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsLogin } from '../../features/login/authSlice';
 import LoginButton from '../../images/hub/loginButton.gif';
 import LogoutButton from '../../images/hub/logoutButton.gif';
 import BackA from '../../images/backButton/backA.png';
@@ -11,13 +9,13 @@ import axios from 'axios';
 
 export default function HubTop() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.auth.isLogin); // 로그인 상태 가져오기
+  // const dispatch = useDispatch();
+  const isLogin = sessionStorage.getItem("isLogin") === "true"; // 로그인 상태 가져오기
   const [isHovering, setIsHovering] = useState(false);
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     try {
       // 백엔드 서버로 로그아웃 요청 보내기
       await axios.post('https://j10d202.p.ssafy.io/api/auth/logout', {}, {
@@ -25,9 +23,10 @@ export default function HubTop() {
           Authorization: `Bearer ${accessToken}`, // Authorization 헤더에 액세스 토큰 추가
         },
       });
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userId");
-      dispatch(setIsLogin(false)); // 로그인 상태를 false로 업데이트
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("userId");
+      sessionStorage.removeItem("isLogin"); // 세션 스토리지에서 로그인 상태 제거
+      // dispatch(setIsLogin(false)); // 로그인 상태를 false로 업데이트
       navigate("/hub");
       alert("로그아웃 되었어요 !");
     } catch (error) {

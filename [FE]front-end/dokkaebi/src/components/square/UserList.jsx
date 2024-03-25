@@ -10,7 +10,7 @@ import orange from '../../images/character/orange.gif';
 
 
 export default function UserList() {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
   const [isUserInfo, setIsUserInfo] = useState([])
 
   // const images = [
