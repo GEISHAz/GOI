@@ -16,6 +16,7 @@ export default function RoomCreateModal({ onClose, userName }) {
   const [isRoomTitle, setIsRoomTitle] = useState(''); // 방 제목 상태 관리
   const [isPrivate, setIsPrivate] = useState(false); // 비공개 체크박스의 상태를 위한 훅
   const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
+  const channelId = sessionStorage.getItem("channelId");
 
   // startYear와 endYear를 위한 상태 추가
   const [startYear, setStartYear] = useState();
@@ -60,6 +61,7 @@ export default function RoomCreateModal({ onClose, userName }) {
 
     // 시작 연도와 종료 연도가 모두 설정되었는지 확인
     if (startYear && endYear && isRoomTitle && (isPrivate ? isPassword : true)) {
+      console.log("channelId 확인", channelId)
       try {
         const response = await axios.post('https://j10d202.p.ssafy.io/api/square/create', {
           title: isRoomTitle,
@@ -78,6 +80,7 @@ export default function RoomCreateModal({ onClose, userName }) {
           navigate(`/room/${room.roomId}`);
         }
       } catch (error) {
+
         console.error('방 생성 오류:', error);
         alert('방 생성 중 오류가 발생했습니다.');
       }
