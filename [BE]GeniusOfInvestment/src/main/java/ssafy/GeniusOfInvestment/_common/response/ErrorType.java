@@ -40,6 +40,7 @@ public enum ErrorType {
 
     //******************** CHANNEL **************************//
     CHANNEL_IS_FULL(HttpStatus.NOT_FOUND,"입장하려는 채널이 가득 찼습니다."),
+    NOT_FOUND_CHANNEL(HttpStatus.I_AM_A_TEAPOT,"채널이 존재하지 않습니다 이놈아."),
 
     //****************************Game****************************//
     IS_NOT_MANAGER(HttpStatus.UNAUTHORIZED, "방장만이 요청을 할 수 있습니다."),

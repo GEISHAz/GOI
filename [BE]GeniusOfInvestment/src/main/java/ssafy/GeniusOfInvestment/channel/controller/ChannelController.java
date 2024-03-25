@@ -41,7 +41,7 @@ public class ChannelController {
         log.info("id : "+user.getExp());
         log.info("id : "+user.getImageId());
         log.info("id : "+user.getSocialId());
-        log.info("id : "+user.getChannel());
+
         log.info("exitChannelController in");
         channelService.exitChannel(user);
         log.info("exitChannelController out");

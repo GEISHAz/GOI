@@ -90,11 +90,16 @@ public class ChannelService {
         log.info("id : "+user.getExp());
         log.info("id : "+user.getImageId());
         log.info("id : "+user.getSocialId());
-        log.info("id : "+user.getChannel());
-
-        // 유저DB에서 channel 삭제
-        user.deleteChannel();
-        userRepository.save(user);
+        Optional<User> byId = userRepository.findById(user.getId());
+        if(!byId.isEmpty()) {
+            byId.get().deleteChannel();
+            User u = byId.get();
+            // 유저DB에서 channel 삭제
+            userRepository.save(u);
+        }
+        else{
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_CHANNEL);
+        }
         log.info("exitChannelService out");
     }
 }
