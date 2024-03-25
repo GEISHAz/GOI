@@ -1,6 +1,8 @@
 // import React from 'react'
 import styles from "./Investment.module.css";
 import InvestmentInfo from "./InvestmentInfo";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Investment() {
   return (
