@@ -15,10 +15,11 @@ export default function ChatContainer() {
   const stompClient = useRef(null);
 
   useEffect(() => {
-    console.log("유즈이펙트 확인!!!!")
-    const socket = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
+    // console.log("유즈이펙트 확인!!!!")
+    const socket = new SockJS('http://localhost:8080/ws-stomp');
+    console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
-    console.log("스톰프 클라이언트 확인 :", stompClient)
+    console.log("스톰프 클라이언트 확인 :", stompClient.current)
 
     // 유저 연결
     stompClient.current.connect({}, () => {
@@ -55,7 +56,7 @@ export default function ChatContainer() {
     if (stompClient.current && stompClient.current.connected && inputMessage.trim() !== '') {
       console.log("메시지 채팅 하나를 보냈어요.")
       // console.log("roomId를 확인합니다. :", params.id)
-      stompClient.current.send(`square/chat/message`, {}, JSON.stringify({
+      stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify({
         roomId: channelId,
         sender: sender,
         message: inputMessage,
@@ -76,7 +77,7 @@ export default function ChatContainer() {
 
   // 채팅창 스크롤
   const scrollToBottom = () => {
-    console.log("최신 메세지 들어옴 -> 스크롤 내려가유~")
+    console.log("최신 채팅내역 불러옴")
     recentMessage.current?.scrollIntoView({ behavior: 'smooth'});
   }
 

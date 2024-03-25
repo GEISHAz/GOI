@@ -173,7 +173,7 @@ public class SquareService {
         return list;
     }
 
-    public List<SquareRoom> listRoom(Long channelnum) {
+    public RoomListResponse listRoom(Long channelnum) {
 
         //채널 잘못 받을때 예외
         if (channelnum>8 || channelnum<1)
@@ -196,7 +196,14 @@ public class SquareService {
                     .userCount(redisGameRepository.getOneGameRoom(id).getParticipants().size())
                     .build());
         }
-        return list;
+
+        //리턴값 생성
+        RoomListResponse result = RoomListResponse
+                .builder()
+                .totalRoomCount(list.size())
+                .list(list)
+                .build();
+        return result;
     }
 
     public SavedRoomResponse makeSavedRoomResponse(Room room){

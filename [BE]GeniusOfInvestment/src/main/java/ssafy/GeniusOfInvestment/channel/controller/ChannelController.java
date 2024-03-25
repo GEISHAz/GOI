@@ -11,6 +11,8 @@ import ssafy.GeniusOfInvestment.channel.service.ChannelService;
 
 import java.util.List;
 
+import static ssafy.GeniusOfInvestment._common.entity.QUser.user;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -24,11 +26,9 @@ public class ChannelController {
         return channelService.listAllChannel();
     }
 
-    @PostMapping("/enterc") //채널 들어가기
-    public void enterChannel(@AuthenticationPrincipal User user,@RequestBody Long userId, @RequestBody Long channelId){
-        channelService.enterChannel(userId,channelId);
+    @PutMapping("/enterc/{channelId}") //채널 들어가기
+    public void enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
+        channelService.enterChannel(user,channelId);
     }
-
-
 
 }

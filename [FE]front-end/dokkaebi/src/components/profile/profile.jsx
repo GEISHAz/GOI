@@ -10,8 +10,7 @@ import green from '../../images/signUp/green.gif';
 import yellow from '../../images/signUp/yellow.gif';
 import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
-import BackA from '../../images/hub/backA.png';
-import BackB from '../../images/hub/backB.png';
+import Back from '../back/goHub.jsx';
 import styles from './profile.module.css'
 
 export default function Profile() {
@@ -29,7 +28,6 @@ export default function Profile() {
   const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 검사 상태 관리
   const [isNicknameValid, setIsNicknameValid] = useState(true); // 닉네임 정규식 검사 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
   const accessToken = localStorage.getItem("accessToken"); // 로컬 스토리지에서 accessToken 가져오기
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -188,18 +186,9 @@ export default function Profile() {
   }, [userId]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-1">
       {/* 뒤로가기 */}
-      <div className='mt-5 flex items-center justify-start'>
-        <button
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className='w-48 my-auto'
-          onClick={() => navigate("/hub")}
-        >
-          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
-        </button>
-      </div>
+      <Back />
 
       {/* 프로필 변경 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow mb-20 ${styles.profileContainer}`}>

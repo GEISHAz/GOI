@@ -48,12 +48,10 @@ public class ChannelService {
     }
 
     //채널 들어가기
-    public void enterChannel(Long userId, Long channelId) {
+    public void enterChannel(User user, Long channelId) {
 
-        ///긴급수정
-        User user = userRepository.findById(userId).get();
-        log.info("이거이거 받음: "+userId, channelId);
-        //
+
+        log.info("유저 현 채널 : "+user.getChannel());
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
@@ -73,6 +71,8 @@ public class ChannelService {
         }else{
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         }
+
+        enterUser.updateChannel(channel);
 
         userRepository.save(enterUser);
     }

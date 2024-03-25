@@ -14,19 +14,19 @@ public class RedisUserRepository {
     private HashOperations<String, Long, RedisUser> hashOperations;
 
     public void saveUserStatusGameing(RedisUser user){
-        hashOperations.put(hashReference, user.getUserId(), user);
+        hashOperations.putIfAbsent(hashReference, user.getUserId(), user);
     }
 
     public void updateUserStatusGameing(RedisUser user){
-        hashOperations.putIfAbsent(hashReference, user.getUserId(), user);
+        hashOperations.put(hashReference, user.getUserId(), user);
     }
 
     public RedisUser getOneRedisUser(Long id){
         return hashOperations.get(hashReference, id);
     }
 
-    public void deleteUser(RedisUser user){
-        hashOperations.delete(hashReference, user.getUserId(), user);
+    public void deleteUser(Long id){
+        hashOperations.delete(hashReference, id);
     }
 
 }

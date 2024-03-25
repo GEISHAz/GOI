@@ -2,22 +2,17 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import styles from './login.module.css'
 import KakaoLogin from '../../images/login/kakaologin.png';
-// import NaverLogin from '../../images/login/googleLogin.png';
-// import WithA from '../../images/login/with.png';
-// import WithB from '../../images/login/naverWith.png';
-// import Kakao from '../../images/login/kakao.png';
-// import Naver from '../../images/login/naver.png';
 import yellow from '../../images/login/yellow.gif';
 import pink from '../../images/login/pink.gif';
 import orange from '../../images/login/orange.gif';
-import BackA from '../../images/hub/backA.png';
-import BackB from '../../images/hub/backB.png';
+import BackA from '../../images/backButton/backA.png';
+import BackB from '../../images/backButton/backB.png';
 
 export default function LoginComponent() {
   const navigate = useNavigate();
   const [isHovering, setIsHovering] = useState(false);
 
-  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login';
+  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login';
   // const NAVER_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/naver?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login';
   
   const handleKakaoLogin = () => {

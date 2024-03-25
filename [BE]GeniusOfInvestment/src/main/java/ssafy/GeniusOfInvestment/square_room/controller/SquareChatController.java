@@ -12,8 +12,9 @@ public class SquareChatController {
 
     private final SimpMessageSendingOperations messageSendingOperations;
 
-    @MessageMapping("/square/chat/message/")
+    @MessageMapping("/square/chat/message")
     public void message(SquareChatMessageDto squareChatMessageDto){
+        System.out.println(squareChatMessageDto.getMessage());
         messageSendingOperations.convertAndSend("/sub/square/chat/" + squareChatMessageDto.getRoomId(),squareChatMessageDto);
     }
 }

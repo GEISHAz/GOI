@@ -11,7 +11,6 @@ import java.util.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class User {
     @Id
@@ -82,4 +81,8 @@ public class User {
     }
 
     public void updateChannel(Channel channel) { this.channel = channel; }
+
+    public void updateExp(Long exp) {
+        this.exp = exp;
+    }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setChannelId } from '../../features/channel/channelSlice.js'
+import Back from '../back/goHub.jsx';
 import styles from './channel.module.css';
 import channel from '../../images/channel/icon_channel.png'
 import axios from "axios";
@@ -10,19 +11,19 @@ export default function Channel() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  const userId = localStorage.getItem("userId")
+  // const userId = localStorage.getItem("userId")
   const [getChannelInfo, setGetChannelInfo] = useState([]);
 
   const fetchChannelSelect = async (channelId) => {
     try {
       console.log("보내는 토큰 확인 :", accessToken)
-      console.log("보내는 유저ID 확인 :", userId)
-      console.log("들어갈 채널ID 확인 :", channelId)
-      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc`, {
-        channelId: channelId,
-        userId: userId
+      // console.log("보내는 유저ID 확인 :", userId)
+      // console.log("들어갈 채널ID 확인 :", channelId)
+      const res = await axios.put(`https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`, {
+        // channelId: channelId,
+        // userId: userId
       }, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },  
       });
       console.log("POST 리스폰스 확인 :", res)
       if (res.status === 200) {
@@ -45,15 +46,17 @@ export default function Channel() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("GET 리스폰스 확인 :", res)
+        // console.log("GET 리스폰스 확인 :", res)
         if (res.status === 200 && res.data) {
           // 받아오는 res.data 확인 -> id, channelName, userCount
+          console.log(res.data)
           setGetChannelInfo(res.data)
+          // const channelId = res.data
         } else {
           throw new Error('GET 요청에서 에러 발생');
         }
       } catch (error) {
-        console.error('채널 목록 불러오기 실패', error);
+        console.error('채널 목록 불러오기 실패', error);``
       }
     };
 
@@ -63,14 +66,7 @@ export default function Channel() {
   return (
     <div className="flex flex-col h-screen">
       {/* 뒤로가기 */}
-      <div className='mt-5 ml-10'>
-        <button
-          onClick={() => navigate(-1)}
-          className='font-bold text-white text-4xl'
-        >
-          Back
-        </button>
-      </div>
+      <Back />
     
       {/* 채널 컨테이너 */}
       <div className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
+// import { useNavigate, Link } from "react-router-dom";
+// import { useSelector } from 'react-redux';
 import axios from "axios";
 import blue from '../../images/signUp/blue.gif';
 import brown from '../../images/signUp/brown.gif';
@@ -8,20 +8,17 @@ import green from '../../images/signUp/green.gif';
 import yellow from '../../images/signUp/yellow.gif';
 import pink from '../../images/signUp/pink.gif';
 import orange from '../../images/signUp/orange.gif';
-import BackA from '../../images/hub/backA.png';
-import BackB from '../../images/hub/backB.png';
 import One from '../../images/rank/1st.png';
 import Two from '../../images/rank/2nd.png';
 import Three from '../../images/rank/3rd.png';
+import Back from '../back/goHub.jsx';
 import styles from './ranking.module.css';
 
 export default function Ranking() {
-  const navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const userId = localStorage.getItem("userId");
   const [myInfo, setMyInfo] = useState({ exp: null, rank: null }); // 본인 정보
   const [otherUsers, setOtherUsers] = useState([]); // 다른 유저 정보
-  const [isHovering, setIsHovering] = useState(false);
 
   const images = [
     { id: 1, src: blue, alt: "파랑도깨비" },
@@ -79,18 +76,9 @@ export default function Ranking() {
   }, [accessToken]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-20">
       {/* 뒤로가기 */}
-      <div className='mt-5 flex items-center justify-start'>
-        <button
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className='w-48 my-auto'
-          onClick={() => navigate("/hub")}
-        >
-          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
-        </button>
-      </div>
+      <Back />
 
       <h1 className={`text-center font-Bit text-6xl mb-4 ${styles.rankHeader}`}>RANKING</h1>
 
@@ -119,29 +107,31 @@ export default function Ranking() {
 
         {/* 유저 랭킹 TOP 100 */}
         <div className={`flex flex-col items-center justify-center w-1/2 ${styles.rankContainer}`}>
-          <h1 className="text-bold font-Bit mb-2 text-3xl">TOP 100</h1>
-          {otherUsers.map((user, index) => {
-            const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
-            return (
-              <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
-                <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
-                  <span className="my-auto">{index + 1}위</span>
-                  {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
-                  {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
-                  {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
-                  <div className='my-auto ml-5'>
-                    {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+          <h1 className="text-bold font-Bit mb-2 text-3xl text-center">TOP 100</h1>
+          <div className={`${styles.scrollCustom} overflow-y-auto`}>
+            {otherUsers.map((user, index) => {
+              const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
+              return (
+                <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
+                  <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
+                    <span className="my-auto">{index + 1}위</span>
+                    {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
+                    {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
+                    {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
+                    <div className='my-auto ml-5'>
+                      {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+                    </div>
+                    <div className='my-auto ml-5'>
+                      <span>{user.nickName}</span>
+                    </div>
                   </div>
-                  <div className='my-auto ml-5'>
-                    <span>{user.nickName}</span>
+                  <div className={`flex justify-end ${styles.rankDetail}`}>
+                    <span>{user.exp.toLocaleString()}원</span>
                   </div>
                 </div>
-                <div className={`flex justify-end ${styles.rankDetail}`}>
-                  <span>{user.exp.toLocaleString()}원</span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

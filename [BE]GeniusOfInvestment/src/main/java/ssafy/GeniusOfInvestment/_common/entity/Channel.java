@@ -47,7 +47,7 @@ public class Channel {
 
     public void addParticipants(User user){
         participants.add(user);
-        user.setChannel(this);
+        user.updateChannel(this);
     }
     public void setId(Long id){
         this.id = id;

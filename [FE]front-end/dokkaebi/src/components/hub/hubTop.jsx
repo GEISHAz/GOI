@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsLogin } from '../../features/login/authSlice';
 import LoginButton from '../../images/hub/loginButton.gif';
 import LogoutButton from '../../images/hub/logoutButton.gif';
-import BackA from '../../images/hub/backA.png';
-import BackB from '../../images/hub/backB.png';
+import BackA from '../../images/backButton/backA.png';
+import BackB from '../../images/backButton/backB.png';
 import styles from './button.module.css'
 import axios from 'axios';
 
@@ -43,12 +43,13 @@ export default function HubTop() {
         <button
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className='w-full my-auto'
+          className='w-full my-auto mx-auto'
           onClick={() => navigate("/")}
         >
           <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>
       </div>
+
       {/* 로그인, 로그아웃 */}
       <div className='mt-5 my-auto flex justify-end mr-10'>
         {isLogin ? (
