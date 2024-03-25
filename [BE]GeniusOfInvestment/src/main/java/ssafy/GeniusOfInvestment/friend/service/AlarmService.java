@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Alarm;
+import ssafy.GeniusOfInvestment._common.entity.Friend;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment.friend.dto.request.SendFriendRequest;
 import ssafy.GeniusOfInvestment.friend.dto.response.AlarmListResponse;
 import ssafy.GeniusOfInvestment.friend.repository.AlarmRepository;
+import ssafy.GeniusOfInvestment.friend.repository.FriendRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 @Service
@@ -20,6 +22,7 @@ public class AlarmService {
 
     private final AlarmRepository alarmRepository;
     private final UserRepository userRepository;
+    private final FriendRepository friendRepository;
 
     @Transactional
     public void sendFriendInvitation(SendFriendRequest sendFriendRequest) {
@@ -28,16 +31,15 @@ public class AlarmService {
         if(fromUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         }
-        Optional<User> toUser = userRepository.findById(sendFriendRequest.getFriendId());
+        Optional<User> toUser = userRepository.findByNickName(sendFriendRequest.getFriendNickName());
         if(toUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITE_USER);
         }
 
         User tUser = toUser.get();
         User fUser = fromUser.get();
-        String str = fUser.getNickName() + "님이 " + tUser.getNickName() +"님을 초대했습니다";
 
-        Alarm alarm = Alarm.of(tUser,fUser,str,0);
+        Alarm alarm = Alarm.of(tUser,fUser,0);
         alarmRepository.save(alarm);
     }
 
@@ -51,12 +53,26 @@ public class AlarmService {
         return list.stream().map(AlarmListResponse::from).toList();
     }
 
+    @Transactional
     public void acceptFriendInvitation(Long alarmId) {
         Optional<Alarm> alarm = alarmRepository.findById(alarmId);
 
         if(alarm.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITATION);
         }
+        Alarm alarm1 = alarm.get();
+        Friend friend = Friend.of(alarm1.getUser(),alarm1.getFrom());
+        friendRepository.save(friend);
         alarm.get().updateStatus(1);
+    }
+
+    @Transactional
+    public void rejectFriendInvitation(Long alarmId) {
+        Optional<Alarm> alarm = alarmRepository.findById(alarmId);
+
+        if(alarm.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITATION);
+        }
+        alarm.get().updateStatus(2);
     }
 }
