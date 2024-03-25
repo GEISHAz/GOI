@@ -104,7 +104,7 @@ public class GameController {
 
 
     public void sendMsg(Long grId, Object obj, MessageDto.MessageType type){
-        messageTemplate.convertAndSend("/sub/msg-to/" + grId,
+        messageTemplate.convertAndSend("/sub/room/chat/" + grId,
                 MessageDto.builder()
                         .type(type)
                         .data(obj)
