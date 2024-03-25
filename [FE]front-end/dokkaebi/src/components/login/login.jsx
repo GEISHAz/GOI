@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import styles from './login.module.css'
 import KakaoLogin from '../../images/login/kakaologin.png';
-// import NaverLogin from '../../images/login/googleLogin.png';
-// import WithA from '../../images/login/with.png';
-// import WithB from '../../images/login/naverWith.png';
-// import Kakao from '../../images/login/kakao.png';
-// import Naver from '../../images/login/naver.png';
 import yellow from '../../images/login/yellow.gif';
 import pink from '../../images/login/pink.gif';
 import orange from '../../images/login/orange.gif';
