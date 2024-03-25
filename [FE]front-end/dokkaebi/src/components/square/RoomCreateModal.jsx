@@ -75,9 +75,9 @@ export default function RoomCreateModal({ onClose, userName }) {
         });
   
         if (response.status === 200 || response.status === 201) {
-          console.log('방 생성 성공:', response.data);
+          console.log('방 생성 성공:', response);
           // 방 생성 성공하면 -> 생성한 방으로 이동
-          navigate(`/room/${room.roomId}`);
+          navigate(`/room/${response.roomnum}`);
         }
       } catch (error) {
 
