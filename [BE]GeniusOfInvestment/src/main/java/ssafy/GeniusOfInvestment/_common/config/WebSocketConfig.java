@@ -9,6 +9,8 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import ssafy.GeniusOfInvestment._common.utils.StompHandler;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
@@ -23,7 +25,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws-stomp")
+                .setAllowedOrigins("http://localhost:8080",
+                        "http://localhost:5173", "http://127.0.0.1:5173",
+                        "https://j10d202.p.ssafy.io",
+                        "https://j10d202.p.ssafy.io:8080",
+                        "https://j10d202.p.ssafy.io:8080/api",
+                        "http://127.0.0.1:5500/"
+                )
                 .withSockJS();
     }
 
