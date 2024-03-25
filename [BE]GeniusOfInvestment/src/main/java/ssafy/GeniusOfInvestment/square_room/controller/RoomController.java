@@ -3,6 +3,7 @@ package ssafy.GeniusOfInvestment.square_room.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class RoomController {
     private final RoomService roomService;
 
     //방 들어가기
-    @RequestMapping("/enter")
+    @PostMapping("/enter")
     public void enterRoom(@AuthenticationPrincipal User user, @RequestBody Room room){
         roomService.enterRoom(user,room);
     }

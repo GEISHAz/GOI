@@ -6,7 +6,7 @@ import lombok.Builder;
 public record SquareRoom(
         Long id,
         String title,
-        boolean isPublic,
+        boolean isPrivate,
         int userCount
 
 ) {

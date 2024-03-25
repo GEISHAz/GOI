@@ -28,10 +28,10 @@ public class SquareController {
         return squareService.insertRoom(user,info);
     }
 
-    @PutMapping("/find") //방찾기
-    public void searchRoom(@AuthenticationPrincipal User user, @RequestBody Long roomnum){
+    @PutMapping("/find/{roomId}") //방찾기
+    public void searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
         log.info("SquareService searchRoom in");
-        squareService.searchRoom(user,roomnum);
+        squareService.searchRoom(user,roomId);
         log.info("SquareService searchRoom out");
     }
 
@@ -46,5 +46,7 @@ public class SquareController {
         log.info("SquareService listUser in");
         return squareService.listUser(channelId);
     }
+
+    
 
 }

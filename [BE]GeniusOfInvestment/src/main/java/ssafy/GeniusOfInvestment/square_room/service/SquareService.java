@@ -192,7 +192,7 @@ public class SquareService {
                     .builder()
                     .id(id)
                     .title(room.title())
-                    .isPublic(room.isPublic())
+                    .isPrivate(room.isPrivate())
                     .userCount(redisGameRepository.getOneGameRoom(id).getParticipants().size())
                     .build());
         }
@@ -212,11 +212,8 @@ public class SquareService {
                 .roomnum(room.getId())
                 .channelId(room.getChannel().getId())
                 .title(room.getTitle())
-                .password(room.getPassword())
-                .isPublic(room.isPublic())
+                .isPrivate(room.isPublic())
                 .status(room.getStatus())
-                .fromYear(room.getFromYear())
-                .endYear(room.getEndYear())
                 .build();
     }
 

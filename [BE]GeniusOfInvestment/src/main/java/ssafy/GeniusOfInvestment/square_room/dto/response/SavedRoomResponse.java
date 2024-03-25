@@ -7,11 +7,8 @@ import lombok.Builder;
 public record SavedRoomResponse(
         Long roomnum,
     String title,
-    boolean isPublic,
-    String password,
+    boolean isPrivate,
     int status,
-    int fromYear,
-    int endYear,
     int turnNum,
     Long channelId
 ){
