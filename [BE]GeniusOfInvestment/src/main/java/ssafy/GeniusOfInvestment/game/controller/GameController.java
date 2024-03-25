@@ -86,17 +86,17 @@ public class GameController {
     @DeleteMapping("/exit/{id}")
     public Map<String, String> exitGame(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
         //게임을 나갈때 웹소켓으로 뭘 보내줘야되지??
-        int num = gameService.exitGame(user, grId);
+        List<ParticipantInfo> num = gameService.exitGame(user, grId);
         Map<String, String> json = new HashMap<>();
-        if(num == 1){ //1명이 남았을 경우에는 게임을 종료
+        if(num.size() == 1){ //1명이 남았을 경우에는 게임을 종료
             List<ParticipantInfo> rst = gameService.endGame(grId);
             sendMsg(grId, rst, MessageDto.MessageType.GAME_RESULT);
             json.put("msg", "게임 종료");
             return json;
         }else {
-            json.put("msg", "게임 탈퇴");
             //임시(얘기 해봐야 될듯)
-            sendMsg(grId, json, MessageDto.MessageType.GAME_RESULT);
+            sendMsg(grId, num, MessageDto.MessageType.GAME_RESULT);
+            json.put("msg", "게임 탈퇴");
             return json;
         }
     }

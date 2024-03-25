@@ -8,6 +8,7 @@ import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.redis.*;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
+import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
 import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
@@ -97,6 +98,7 @@ public class StockService {
                             .build());
                     mine.setPoint(myPoint);
                 }
+                break;
             }
         }
         room.getParticipants().set(idx, mine);
@@ -135,5 +137,30 @@ public class StockService {
                     .build());
         }
         return result;
+    }
+
+    public List<ChartResponse> getItemChart(Long grId, String item){
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        GameMarket tmp = new GameMarket();
+        tmp.setItem(item);
+        int idx = room.getMarket().indexOf(tmp);
+        GameMarket gm = room.getMarket().get(idx);
+        List<Long> history = gm.getCost();
+        int curYear = room.getYear(); //현재 년도
+
+        List<ChartResponse> rst = new ArrayList<>();
+        int year = curYear - history.size() + 1; //초기 시작년도
+        for(Long value : history){
+            rst.add(ChartResponse.builder()
+                            .year(year)
+                            .cost(value)
+                    .build());
+            year++;
+        }
+        return rst;
     }
 }
