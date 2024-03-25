@@ -75,7 +75,4 @@ public class ChannelService {
         enterUser.updateChannel(channel);
     }
 
-    public void enterChannel(User user, Long channelId) {
-
-    }
 }
