@@ -107,29 +107,31 @@ export default function Ranking() {
 
         {/* 유저 랭킹 TOP 100 */}
         <div className={`flex flex-col items-center justify-center w-1/2 ${styles.rankContainer}`}>
-          <h1 className="text-bold font-Bit mb-2 text-3xl">TOP 100</h1>
-          {otherUsers.map((user, index) => {
-            const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
-            return (
-              <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
-                <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
-                  <span className="my-auto">{index + 1}위</span>
-                  {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
-                  {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
-                  {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
-                  <div className='my-auto ml-5'>
-                    {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+          <h1 className="text-bold font-Bit mb-2 text-3xl text-center">TOP 100</h1>
+          <div className={`${styles.scrollCustom} overflow-y-auto`}>
+            {otherUsers.map((user, index) => {
+              const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
+              return (
+                <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
+                  <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
+                    <span className="my-auto">{index + 1}위</span>
+                    {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
+                    {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
+                    {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
+                    <div className='my-auto ml-5'>
+                      {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
+                    </div>
+                    <div className='my-auto ml-5'>
+                      <span>{user.nickName}</span>
+                    </div>
                   </div>
-                  <div className='my-auto ml-5'>
-                    <span>{user.nickName}</span>
+                  <div className={`flex justify-end ${styles.rankDetail}`}>
+                    <span>{user.exp.toLocaleString()}원</span>
                   </div>
                 </div>
-                <div className={`flex justify-end ${styles.rankDetail}`}>
-                  <span>{user.exp.toLocaleString()}원</span>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

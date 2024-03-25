@@ -49,7 +49,9 @@ export default function Channel() {
         console.log("GET 리스폰스 확인 :", res)
         if (res.status === 200 && res.data) {
           // 받아오는 res.data 확인 -> id, channelName, userCount
+          console.log(res.data)
           setGetChannelInfo(res.data)
+          // const channelId = res.data
         } else {
           throw new Error('GET 요청에서 에러 발생');
         }
