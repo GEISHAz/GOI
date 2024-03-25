@@ -10,7 +10,7 @@ import unlocked from '../../images/square/icon_unlocked.png';
 
 export default function RoomList() {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
   const [isRoomsInfo, setIsRoomsInfo] = useState([]); // 방 정보 상태
   const [totalRoomCount, setTotalRoomCount] = useState(0); // 서버에 있는 총 방 개수 관리할 상태
 
