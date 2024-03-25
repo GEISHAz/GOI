@@ -87,6 +87,7 @@ public class ChannelService {
         log.info("exitChannelService in");
         // 유저DB에서 channel 삭제
         user.deleteChannel();
+        userRepository.save(user);
         log.info("exitChannelService out");
     }
 }
