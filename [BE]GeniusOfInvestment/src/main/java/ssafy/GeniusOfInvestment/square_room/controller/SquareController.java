@@ -37,9 +37,9 @@ public class SquareController {
         return squareService.listRoom(channelnum);
     }
 
-    @GetMapping("/channellist") //방 목록
-    public List<SquareNowUser> listUser(@AuthenticationPrincipal User user, @RequestBody Long channelnum){
-        return squareService.listUser(channelnum);
+    @GetMapping("/channellist/{channelId}") //유저목록
+    public List<SquareNowUser> listUser(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
+        return squareService.listUser(channelId);
     }
 
 }
