@@ -24,7 +24,7 @@ export default function GamePlay() {
   const [myInfoModal, setMyInfoModal] = useState(false);
 
   const [stompClient, setStompClient] = useState(null);
-  const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
+  const socketUrl = "http://localhost:8080/ws-stomp";
 
   useEffect(() => {
     let reconnectInterval;
