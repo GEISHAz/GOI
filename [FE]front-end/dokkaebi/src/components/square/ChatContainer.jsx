@@ -16,7 +16,8 @@ export default function ChatContainer() {
 
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
-    const socket = new WebSocket('wss://j10d202.p.ssafy.io/ws-stomp');
+    const socket = new SockJS('http://localhost:8080/ws-stomp');
+    console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
     console.log("스톰프 클라이언트 확인 :", stompClient.current)
 

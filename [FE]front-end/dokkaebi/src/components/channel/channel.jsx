@@ -11,17 +11,17 @@ export default function Channel() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  const userId = localStorage.getItem("userId")
+  // const userId = localStorage.getItem("userId")
   const [getChannelInfo, setGetChannelInfo] = useState([]);
 
   const fetchChannelSelect = async (channelId) => {
     try {
       console.log("보내는 토큰 확인 :", accessToken)
-      console.log("보내는 유저ID 확인 :", userId)
-      console.log("들어갈 채널ID 확인 :", channelId)
-      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc`, {
-        channelId: channelId,
-        userId: userId
+      // console.log("보내는 유저ID 확인 :", userId)
+      // console.log("들어갈 채널ID 확인 :", channelId)
+      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`, {
+        // channelId: channelId,
+        // userId: userId
       }, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -46,7 +46,7 @@ export default function Channel() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("GET 리스폰스 확인 :", res)
+        // console.log("GET 리스폰스 확인 :", res)
         if (res.status === 200 && res.data) {
           // 받아오는 res.data 확인 -> id, channelName, userCount
           console.log(res.data)
