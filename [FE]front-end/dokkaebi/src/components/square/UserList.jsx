@@ -64,8 +64,8 @@ export default function UserList() {
             <div>
               <span>{user.nickName}</span>
             </div>
-            <div>
-              <span>{user.status}</span>
+            <div className='ml-2'>
+              <span>{user.status}원</span>
             </div>
           </div>
         )
