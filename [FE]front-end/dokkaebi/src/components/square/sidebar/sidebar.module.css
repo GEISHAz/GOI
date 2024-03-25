@@ -1,0 +1,33 @@
+.sidebar {
+    position: fixed; /* 사이드바 화면에 고정 */
+    top: 0; /* 상단에서부터 시작 */
+    right: 0; /* 화면의 오른쪽에 위치 */
+    width: 360px; /* 너비 설정 */
+    height: 100%; /* 높이를 화면 전체로 설정 */
+    background-color: #ffffff; /* 배경 색상 */
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5); /* 좌측에 그림자 효과 */
+    z-index: 100; /* 다른 요소들 위에 렌더링되도록 z-index 설정 */
+  }
+  
+  .menuBox {
+    width: 100%;
+    height: 10%;
+    /* background-color: rgba(0, 0, 0, 0.6); */
+    border-radius: 10px;
+    /* padding: 5%;
+    margin: 5%;  */
+  }
+
+  .menu {
+    width: 50%;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 5%;
+    margin: 5%; 
+  }
+  
+  li {
+    margin-bottom: 10px; /* 아이템 간 간격 */
+  }
+  

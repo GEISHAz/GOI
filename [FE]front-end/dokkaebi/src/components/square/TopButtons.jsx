@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './TopButtons.module.css';
 import RoomCreateModal from './RoomCreateModal';
 import RoomSearchModal from './RoomSearchModal';
+import Sidebar from './sidebar/sidebar';
 // import RoomEnterModal from './RoomEnterModal';
 
 import messenger from '../../images/square/icon_messenger.png';
@@ -15,6 +16,7 @@ export default function TopButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [searchModal, setSearchModal] = useState(false);
   // const [EnterModal, setEnterModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 사이드바 상태 관리
 
   // 모달 open/close
   const handleOpenModal = () => setIsModalOpen(true);
@@ -23,6 +25,8 @@ export default function TopButtons() {
   const openSearchModal = () => {
     setSearchModal(true);
   }
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // 사이드바 토글 함수
 
   // const openEnterModal = () => {
   //   setEnterModal(true);
@@ -61,7 +65,7 @@ export default function TopButtons() {
           <button className={`${styles.refreshButton}`}>
             <img src={refresh} alt="RefreshButton" />
           </button>
-          <button className={`${styles.messengerButton}`}>
+          <button className={`${styles.messengerButton}`} onClick={toggleSidebar}>
             <img src={messenger} alt="MessengerButton" />
           </button>
         </div>
@@ -74,7 +78,7 @@ export default function TopButtons() {
       {searchModal && <RoomSearchModal setSearchModal={setSearchModal} />}
       {searchModal && <RoomSearchModal onClose={() => setSearchModal(false)} />}
 
-      
+      {isSidebarOpen && <Sidebar />}
     </>
   );
 }
