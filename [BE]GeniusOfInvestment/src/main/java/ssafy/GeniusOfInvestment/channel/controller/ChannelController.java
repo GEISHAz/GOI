@@ -26,7 +26,7 @@ public class ChannelController {
         return channelService.listAllChannel();
     }
 
-    @PostMapping("/enterc/{channelId}") //채널 들어가기
+    @PutMapping("/enterc/{channelId}") //채널 들어가기
     public void enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
         channelService.enterChannel(user,channelId);
     }
