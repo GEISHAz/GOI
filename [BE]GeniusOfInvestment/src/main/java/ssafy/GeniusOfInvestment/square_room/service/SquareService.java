@@ -49,9 +49,9 @@ public class SquareService {
                 .channel(ch)
                 .title(info.title())
                 .password(info.password())
-                .isPublic(info.isPublic())
+                .isPublic(info.isPrivate())
                 .status(0)
-                .fromYear(info.fromYear())
+                .fromYear(info.startYear())
                 .endYear(info.endYear())
                 .build();
 

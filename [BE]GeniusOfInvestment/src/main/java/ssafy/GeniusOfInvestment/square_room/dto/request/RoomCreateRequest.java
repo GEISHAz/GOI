@@ -8,16 +8,15 @@ import lombok.Builder;
 public record RoomCreateRequest(
     @NotNull
     String title,
-    boolean isPublic,
+    boolean isPrivate,
     String password,
 
     int status,
     @NotNull
-    int fromYear,
+    int startYear,
     @NotNull
     int endYear,
 
-    int turnNum,
     @NotNull
     Long channelId
 ){

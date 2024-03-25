@@ -35,10 +35,10 @@ public class SquareController {
         log.info("SquareService searchRoom out");
     }
 
-    @GetMapping("/list") //방 목록
-    public RoomListResponse listRoom(@AuthenticationPrincipal User user, @RequestBody Long channelnum){
+    @GetMapping("/list/{channelId}") //방 목록
+    public RoomListResponse listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
         log.info("SquareService listRoom in");
-        return squareService.listRoom(channelnum);
+        return squareService.listRoom(channelId);
     }
 
     @GetMapping("/channellist/{channelId}") //유저목록
