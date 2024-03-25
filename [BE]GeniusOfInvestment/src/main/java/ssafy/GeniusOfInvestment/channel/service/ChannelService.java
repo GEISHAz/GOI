@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.channel.service;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class ChannelService {
 
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
     //채널목록
     public List<ChannelInfo> listAllChannel() {
@@ -76,10 +78,14 @@ public class ChannelService {
         }
 
         enterUser.updateChannel(channel);
+
+        userRepository.save(enterUser);
     }
 
     public void exitChannel(User user) {
         // 유저DB에서 channel 삭제
         user.deleteChannel();
+
+
     }
 }
