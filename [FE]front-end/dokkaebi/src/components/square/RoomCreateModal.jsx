@@ -60,7 +60,7 @@ export default function RoomCreateModal({ onClose, userName }) {
     // 그 정보라 하면은, 사용자가 설정한 방제목, 방비밀번호, 연도 3가지
 
     // 시작 연도와 종료 연도가 모두 설정되었는지 확인
-    if (startYear && endYear && isRoomTitle && (isPrivate ? isPassword : true)) {
+    if (startYear && endYear && isRoomTitle) {
       console.log("channelId 확인", channelId)
       try {
         const response = await axios.post('https://j10d202.p.ssafy.io/api/square/create', {
