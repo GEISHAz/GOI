@@ -5,12 +5,14 @@ import KakaoLogin from '../../images/login/kakaologin.png';
 import yellow from '../../images/login/yellow.gif';
 import pink from '../../images/login/pink.gif';
 import orange from '../../images/login/orange.gif';
+import BackA from '../../images/backButton/backA.png';
+import BackB from '../../images/backButton/backB.png';
 
 export default function LoginComponent() {
   const navigate = useNavigate();
   const [isHovering, setIsHovering] = useState(false);
 
-  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login';
+  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login';
   // const NAVER_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/naver?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login';
   
   const handleKakaoLogin = () => {
