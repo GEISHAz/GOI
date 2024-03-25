@@ -19,7 +19,7 @@ export default function Channel() {
       console.log("보내는 토큰 확인 :", accessToken)
       // console.log("보내는 유저ID 확인 :", userId)
       // console.log("들어갈 채널ID 확인 :", channelId)
-      const res = await axios.post(`https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`, {
+      const res = await axios.put(`https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`, {
         // channelId: channelId,
         // userId: userId
       }, {
