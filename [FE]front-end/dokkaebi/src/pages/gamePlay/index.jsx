@@ -24,7 +24,7 @@ export default function GamePlay() {
   const [myInfoModal, setMyInfoModal] = useState(false);
 
   const [stompClient, setStompClient] = useState(null);
-  const socketUrl = "https://j10d202.p.ssafy.io/ws";
+  const socketUrl = "https://j10d202.p.ssafy.io/api/ws-stomp";
 
   useEffect(() => {
     let reconnectInterval;
@@ -70,8 +70,9 @@ export default function GamePlay() {
   const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
+    // console.log(accessToken);
     axios
-      .get(`https://j10d202.p.ssafy.io/game/start?id=1`, {
+      .get(`https://j10d202.p.ssafy.io/api/game/start?id=1111`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
