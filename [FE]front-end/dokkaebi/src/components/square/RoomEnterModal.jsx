@@ -3,7 +3,7 @@ import styles from './RoomEnterModal.module.css';
 
 
 export default function RoomEnterModal({ onClose }) {
-  const [ispassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
+  const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
 
   // 비밀번호 숫자 4자리로 제한 
   const handlePasswordChange = (e) => {
@@ -23,11 +23,9 @@ export default function RoomEnterModal({ onClose }) {
             <h1 className="font-Bit text-5xl mb-10">비밀방 입장</h1>
             <input
               type="text"
-              id="roomNumber"
-              name="roomNumber"
               placeholder="비밀번호 입력"
               maxLength={4}
-              value={ispassword || ''} // 입력 상태를 value와 바인딩
+              value={isPassword || ''} // 입력 상태를 value와 바인딩
               onChange={handlePasswordChange} // 입력 처리 함수를 이벤트 핸들러로 지정
               className="border-2 border-gray-300 p-1 w-48"
             />
