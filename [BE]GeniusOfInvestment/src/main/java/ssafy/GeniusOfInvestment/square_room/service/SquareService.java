@@ -61,10 +61,12 @@ public class SquareService {
                 .endYear(info.endYear())
                 .build();
 
-        SavedRoomResponse result =makeSavedRoomResponse(room);
-
         //방 정보 DB 저장
         roomRepository.save(room);
+
+        SavedRoomResponse result = makeSavedRoomResponse(room,info.channelId());
+
+        log.info("save, result 이후 room"+room.getId());
 
         //Redis 정보속 유저 리스트 생성
         List<GameUser> list = new ArrayList<>();
@@ -174,7 +176,6 @@ public class SquareService {
                     nowStatus = 1; // 대기 중
             }
 
-
             list.add(SquareNowUser
                         .builder()
                             .id(u.getId())
@@ -230,7 +231,7 @@ public class SquareService {
 
     }
 
-    public SavedRoomResponse makeSavedRoomResponse(Room room){
+    public SavedRoomResponse makeSavedRoomResponse(Room room,Long channelId){
         log.info("makeSavedRoom Response in");
 
         if(room.getId()==null)
