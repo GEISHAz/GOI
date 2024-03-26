@@ -83,6 +83,9 @@ export default function GamePlay() {
       .catch((error) => {
         console.error("API 요청에 실패했습니다:", error); // 오류를 콘솔에 출력하거나 처리합니다.
       });
+    return () => {
+      // console.log("unmounting...");
+    }
   }, []);
 
   const openInfoStoreModal = () => {

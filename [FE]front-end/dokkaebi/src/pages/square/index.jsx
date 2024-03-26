@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import { useParams } from "react-router-dom";
 import Background from '../../images/channel/background4.gif';
 import UserList from '../../components/square/UserList';
@@ -20,6 +20,12 @@ export default function Square() {
     top: 0,
     left: 0,
   };
+
+  useEffect(() => {
+    return () => {
+      console.log("Square 페이지 이탈");
+    };
+  }, []);
 
   return (
     <div style={backgroundStyle} className={styles.squareContainer}>

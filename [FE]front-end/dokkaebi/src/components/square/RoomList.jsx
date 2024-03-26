@@ -60,7 +60,7 @@ export default function RoomList() {
   useEffect(() => {
     const fetchRoomList = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/square/list', {
+        const response = await axios.get('https://j10d202.p.ssafy.io/api/square/list', {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 :", response)
