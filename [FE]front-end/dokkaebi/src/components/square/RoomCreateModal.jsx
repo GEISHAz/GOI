@@ -13,7 +13,7 @@ export default function RoomCreateModal({ onClose, userName }) {
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
-  const [isRoomTitle, setIsRoomTitle] = useState(userNickname+'의 방'); // 방 제목 상태 관리
+  const [isRoomTitle, setIsRoomTitle] = useState(userNickname+'님의 방'); // 방 제목 상태 관리
   const [isPrivate, setIsPrivate] = useState(false); // 비공개 체크박스의 상태를 위한 훅
   const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
   const channelId = sessionStorage.getItem("channelId");

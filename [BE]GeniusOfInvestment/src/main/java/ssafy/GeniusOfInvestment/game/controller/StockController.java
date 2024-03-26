@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.redis.MyTradingInfo;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
+import ssafy.GeniusOfInvestment.game.dto.BuySellRequest;
 import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
 import ssafy.GeniusOfInvestment.game.service.StockService;
 
@@ -43,5 +44,17 @@ public class StockController {
     @GetMapping("/chart")
     public List<ChartResponse> getItemChart(@RequestParam("id") Long grId, @RequestParam("item") String item){
         return stockService.getItemChart(grId, item);
+    }
+
+    //주식 매수 기능
+    @PutMapping("/buy")
+    public MyTradingInfo buyStockItem(@AuthenticationPrincipal User user, @RequestBody BuySellRequest buyInfo){
+        return stockService.buyStockItem(user, buyInfo.grId(), buyInfo.item(), buyInfo.share());
+    }
+
+    //주식 매도 기능
+    @PutMapping("/sell")
+    public MyTradingInfo sellStockItem(@AuthenticationPrincipal User user, @RequestBody BuySellRequest buyInfo){
+        return stockService.sellStockItem(user, buyInfo.grId(), buyInfo.item(), buyInfo.share());
     }
 }

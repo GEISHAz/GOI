@@ -53,7 +53,7 @@ export default function UserList() {
       <h1 className="font-Bit text-white text-2xl text-center m-4">접속 중인 유저</h1>
 
       {/* 유저 상태 표시 (게임 중/대기 중) 리스트 */}
-      <div className={`flex flex-col items-center justify-center text-center ${styles.userState}`}>
+      <div className={`flex flex-col items-center text-center ${styles.userState}`}>
         {isUserInfo.map((user) => {
         const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
         return (

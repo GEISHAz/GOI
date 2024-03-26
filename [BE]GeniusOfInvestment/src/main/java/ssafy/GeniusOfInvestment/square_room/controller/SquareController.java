@@ -36,7 +36,7 @@ public class SquareController {
 
     }
 
-    @PutMapping("/find/{roomId}") //방찾기
+    @PostMapping("/find/{roomId}") //방찾기
     public void searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
         log.info("SquareController searchRoom in");
         log.info("user id값"+user.getId());
