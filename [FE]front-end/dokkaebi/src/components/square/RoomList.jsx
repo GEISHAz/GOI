@@ -45,6 +45,7 @@ export default function RoomList() {
     } else {
       axios
         .post(`https://j10d202.p.ssafy.io/api/room/enter/${room.id}`, {
+          // 방 입장인데 왜 방 번호를 안받음?
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
