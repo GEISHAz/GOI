@@ -10,7 +10,6 @@ const Sidebar = () => {
           <div className={styles.menu}>친구 추가</div>
           <div className={styles.menu}>알림</div>
         </div>
-
       </nav>
     </aside>
   );
