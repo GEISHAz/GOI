@@ -85,13 +85,15 @@ public class UserService {
     public User getAuthenticationUser(String userId) {
         return findUser(Long.parseLong(userId));
     }
+
+    @Transactional
     public void checkNickName(Long userId, ExistNickNameRequestDto existNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = existNickNameRequestDto.getNickName();
-        if(user.getNickName()!=null && user.getNickName().equals(nickname)){
-            throw new CustomBadRequestException(ErrorType.NOT_VALID_USER_NICKNAME);
+        if(!user.getNickName().equals(nickname)){
+            validateDuplicatedNickname(existNickNameRequestDto.getNickName());
+            user.updateNickName(nickname);
         }
-        validateDuplicatedNickname(existNickNameRequestDto.getNickName());
     }
 
     private User findUser(Long userId){
@@ -108,8 +110,4 @@ public class UserService {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
         }
     }
-
-    public void joinChannel(Long userId) {
-    }
-
 }
