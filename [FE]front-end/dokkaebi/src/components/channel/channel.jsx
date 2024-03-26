@@ -10,8 +10,29 @@ export default function Channel() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = sessionStorage.getItem("accessToken");
-  const [getChannelInfo, setGetChannelInfo] = useState([]);
+  const [getChannelInfo, setGetChannelInfo] = useState([]);  
 
+  // 채널 정보 불러오는 함수 channel Id를 항상 여기서 받아옴 백한테
+  const fetchChannelUserCnt = async () => {
+    try {
+      const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      // console.log("GET 리스폰스 확인 :", res)
+      if (res.status === 200 && res.data) {
+        // 받아오는 res.data 확인 -> id, channelName, userCount
+        console.log(res.data)
+        setGetChannelInfo(res.data)
+        // const channelId = res.data
+      } else {
+        throw new Error('GET 요청에서 에러 발생');
+      }
+    } catch (error) {
+      console.error('채널 목록 불러오기 실패', error);``
+    }
+  };
+  
+  // 해당 채널 id 값에 맞는 그 광장 채널에 들여보내달라고 요청하는 함수
   const fetchChannelSelect = async (channelId) => {
     try {
       console.log("보내는 토큰 확인 :", accessToken)
@@ -32,28 +53,25 @@ export default function Channel() {
     }
   };
 
+  // 채널 페이지가 마운트 되었을 때, channel Id가 있는지 검사하고, 있다면 초기화시킨다. 그리고 get 요청 함수 부르기
   useEffect(() => {
-    sessionStorage.removeItem('channelId');
-    const fetchChannelUserCnt = async () => {
-      try {
-        const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        // console.log("GET 리스폰스 확인 :", res)
-        if (res.status === 200 && res.data) {
-          // 받아오는 res.data 확인 -> id, channelName, userCount
-          console.log(res.data)
-          setGetChannelInfo(res.data)
-          // const channelId = res.data
-        } else {
-          throw new Error('GET 요청에서 에러 발생');
+    const channelId = sessionStorage.getItem("channelId");
+    const exitAndFetchChannels = async () => {
+      if (channelId) {
+        try {
+          await axios.post(`https://j10d202.p.ssafy.io/api/channel/exitc`, {}, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          console.log("채널 나가기 성공");
+        } catch (error) {
+          console.error("채널 나가기 실패", error);
         }
-      } catch (error) {
-        console.error('채널 목록 불러오기 실패', error);``
+        sessionStorage.removeItem("channelId"); // 세션스토리지도 비워준다.
       }
+      await fetchChannelUserCnt(); // 새로운 channelId를 받기 위한 get 요청 함수 부르기
     };
 
-    fetchChannelUserCnt();
+    exitAndFetchChannels();
   }, [accessToken]);
 
   return (
