@@ -38,7 +38,6 @@ export default function TopButtons() {
     // 사이드바 상태에 따라 BGMPlayer의 가시성을 토글합니다.
     toggleBGMVisibility(!isSidebarOpen);
   };
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // 사이드바 토글 함수
 
   // 빠른 입장 핸들러
   // const handleQuickEnter = async () => {
