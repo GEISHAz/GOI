@@ -49,6 +49,9 @@ public enum ErrorType {
     NOT_FOUND_INFO(HttpStatus.BAD_REQUEST, "해당하는 정보가 존재하지 않습니다."),
     NOT_FOUND_USER_IN_ROOM(HttpStatus.NOT_FOUND, "방에 해당 유저가 존재하지 않습니다."),
     INSUFFICIENT_POINT(HttpStatus.NOT_ACCEPTABLE, "보유하신 포인트가 부족합니다."),
+    INSUFFICIENT_BALANCE(HttpStatus.NOT_ACCEPTABLE, "잔고가 부족합니다."),
+    NOT_FOUND_TRADINGINFO(HttpStatus.NOT_FOUND, "나의 거래 내역이 존재하지 않습니다."),
+    NOT_FOUND_STOCK_ITEM(HttpStatus.NOT_FOUND, "해당하는 주식 종목을 찾을 수 없습니다."),
     END_GAME(HttpStatus.GONE, "게임이 종료되었습니다.")
     ;
 
