@@ -39,8 +39,12 @@ public class SquareService {
     private final UserRepository userRepository;
 
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
+        Optional<User> u = userRepository.findById(user.getId());
         //저장할 채널 객체 생성
-        Channel ch = new Channel();
+        if(u.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+
+        Channel ch = u.get().getChannel();
         ch.setId(info.channelId());
 
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
