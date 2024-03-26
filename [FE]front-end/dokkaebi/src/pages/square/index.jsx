@@ -7,7 +7,6 @@ import ChatContainer from '../../components/square/ChatContainer';
 import TopButtons from '../../components/square/TopButtons';
 import styles from './index.module.css';
 
-
 export default function Square() {
 
   // 배경 GIF 설정
