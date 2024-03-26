@@ -15,26 +15,15 @@ export default function RoomList() {
   const [isRoomsInfo, setIsRoomsInfo] = useState([]); // 방 정보 상태
   const [totalRoomCount, setTotalRoomCount] = useState(0); // 서버에 있는 총 방 개수 관리할 상태
 
-
-  // 방 리스트 더미 데이터
-  // const [room] = useState([
-  //   { isPublic: true, roomId: '1001', hostName: 'A', userCount: '1' },
-  //   { isPublic: false, roomId: '1002', hostName: 'B', userCount: '2' },
-  //   { isPublic: true, roomId: '1003', hostName: 'C', userCount: '3' },
-  //   { isPublic: false, roomId: '1004', hostName: 'D', userCount: '4' },
-  //   { isPublic: true, roomId: '1005', hostName: 'E', userCount: '1' },
-  //   { isPublic: false, roomId: '1006', hostName: 'F', userCount: '2' },
-  //   { isPublic: true, roomId: '1007', hostName: 'G', userCount: '3' },
-  //   { isPublic: false, roomId: '1008', hostName: 'H', userCount: '4' },
-  // ]);
   const [currentPage, setCurrentPage] = useState(0);
   const roomsPerPage = 4; // 한 페이지에 표시할 방의 수
-
+  const [EnterModal, setEnterModal] = useState(false); // 비밀방 입장 모달 
+  
   // 현재 페이지에 따라 표시할 방 계산
   const indexOfLastRoom = (currentPage + 1) * roomsPerPage;
   const indexOfFirstRoom = indexOfLastRoom - roomsPerPage;
   const currentRooms = isRoomsInfo.slice(indexOfFirstRoom, indexOfLastRoom);
-
+  
   // 페이지 변경 함수
   const nextPage = () => {
     setCurrentPage(currentPage => Math.min(currentPage + 1, Math.ceil(isRoomsInfo.length / roomsPerPage) - 1));
@@ -50,12 +39,10 @@ export default function RoomList() {
     if (room.isPrivate) {
       setEnterModal(true);
     } else {
-      navigate(`/room/${room.roomId}`);
+      navigate(`/room/${room.id}`);
     }
   };
 
-  // 비밀방 입장 모달 
-  const [EnterModal, setEnterModal] = useState(false);
 
   // 서버에서 방 목록을 받아오는 함수
   useEffect(() => {
@@ -66,8 +53,8 @@ export default function RoomList() {
         });
         console.log("리스폰스 확인 :", response)
         if (response.status === 200 && response.data.data) {
-          setIsRoomsInfo(response.data.data); // 받아온 방 목록으로 상태 업데이트
-          setTotalRoomCount(response.data.totalRoomCount); // 총 방 개수로 상태 업데이트
+          setIsRoomsInfo(response.data.data || []); // 받아온 방 목록으로 상태 업데이트
+          setTotalRoomCount(response.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다")
         }
@@ -92,8 +79,8 @@ export default function RoomList() {
               onClick={() => handleRoomClick(room)}
             >
               <div className="flex items-center col-span-2 row-span-1 text-2xl">
-                <img className={`${styles.lockIcon} mr-2`} src={room.isPublic ? unlocked : lock} alt={room.isPublic ? "Unlock Icon" : "Lock Icon"} />
-                <p className="text-Bit">{room.roomId}</p>
+                <img className={`${styles.lockIcon} mr-2`} src={room.isPrivate ? lock : unlocked} alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"} />
+                <p className="text-Bit">{room.id}</p>
               </div>
               <div className="col-span-1 row-span-1"></div>
               <div className='flex flex-row justify-evenly'>
