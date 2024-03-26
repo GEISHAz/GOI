@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import Background from '../../images/channel/background4.gif';
 import UserList from '../../components/square/UserList';
 import RoomList from '../../components/square/RoomList';
@@ -9,10 +9,6 @@ import styles from './index.module.css';
 
 
 export default function Square() {
-  // /channel/:id (URL 파라미터에서 id 값을 얻음 -> id 값을 사용하여 해당 채널의 데이터를 조회하고 렌더링)
-  let { id } = useParams();
-  let index = parseInt(id, 10) - 1; // URL의 id에서 1을 빼서 인덱스를 맞춤
-  // -> 'index' 변수를 사용하여 배열에서 해당 채널 데이터에 접근
 
   // 배경 GIF 설정
   const backgroundStyle = {
