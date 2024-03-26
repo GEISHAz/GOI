@@ -10,15 +10,8 @@ import styles from './index.module.css';
 
 export default function Square() {
   // /channel/:id (URL 파라미터에서 id 값을 얻음 -> id 값을 사용하여 해당 채널의 데이터를 조회하고 렌더링)
-  let { channelId } = useParams();
-
-  // 페이지가 로드될 때마다 channelId를 세션스토리지에 저장
-  useEffect(() => {
-    if (channelId) {
-      sessionStorage.setItem("channelId", channelId);
-    }
-  }, [channelId]);
-
+  // let { channelId } = useParams();
+  
   // 배경 GIF 설정
   const backgroundStyle = {
     backgroundImage: `url(${Background})`,

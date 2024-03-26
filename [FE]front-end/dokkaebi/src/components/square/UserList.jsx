@@ -47,6 +47,12 @@ export default function UserList() {
     fetchUserInfo();
   }, [accessToken])
 
+  useEffect(() => {
+    if (channelId) {
+      sessionStorage.setItem("channelId", channelId);
+    }
+  }, [channelId]);
+
   return (
     // "접속 중인 유저" 컨테이너
     <div className={styles.userContainer}>
