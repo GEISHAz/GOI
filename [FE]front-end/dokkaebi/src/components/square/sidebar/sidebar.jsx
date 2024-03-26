@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Messenger from './messenger.jsx'
 import styles from './sidebar.module.css';
 import msgOn from '../../../images/square/mailOn.png';
 import msgOff from '../../../images/square/mailOff.png';
 
 const Sidebar = ({ toggleSidebar }) => {
-
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 문구
 
   const dummy = [
     { id: 1, nickName: "민호짱짱123", friendListId: 1, friendId: 1},
@@ -28,6 +28,11 @@ const Sidebar = ({ toggleSidebar }) => {
 
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend); // 선택된 친구 상태 업데이트
+  };
+
+  // 메신저 닫기 함수
+  const toggleMessageBar = () => {
+    setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
   };
 
   return (
@@ -62,6 +67,7 @@ const Sidebar = ({ toggleSidebar }) => {
 
       <nav>
         <div className='flex justify-start p-10'>
+          {showPrompt && <div className={`w-full text-center font-bold mt-2 ${styles.musicPrompt}`}>음악이 잠시 멈춥니다 !</div>}
           <button
             onClick={toggleSidebar}
             className={`text-2xl font-bold text-white text-center ${styles.closeButton}`}
@@ -72,7 +78,7 @@ const Sidebar = ({ toggleSidebar }) => {
       </nav>
 
       {/* 친구 메신저 열기 */}
-      {selectedFriend && <Messenger selectedFriend={selectedFriend} />}
+      {selectedFriend && <Messenger selectedFriend={selectedFriend} toggleMessageBar={toggleMessageBar} />}
     </aside>
   );
 };

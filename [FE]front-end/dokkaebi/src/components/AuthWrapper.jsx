@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthCheck } from '../api/accessCheck.js';
 import BGMPlayer from '../components/bgm/bgmPlayer.jsx';
 import { useDispatch } from 'react-redux';
+import { BGMProvider } from './bgm/bgmContext.jsx';
 
 const AuthWrapper = ({ children }) => {
   const navigate = useNavigate();
@@ -28,11 +29,10 @@ const AuthWrapper = ({ children }) => {
   }, [checkAccess, navigate]);
 
   return (
-    <>
+    <BGMProvider> {/* BGMProvider로 전체 앱을 감싸 BGM 상태 관리 가능하게 함 */}
       {children}
-      {/* BGMPlayer는 AuthWrapper에 의해 전역적으로 포함되므로, 어느 페이지에서나 배경음악 제어가 가능 */}
       <BGMPlayer />
-    </>
+    </BGMProvider>
   );
 };
 

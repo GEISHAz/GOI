@@ -1,16 +1,19 @@
 import React, { useState } from 'react'; // useState를 추가합니다
 import { useNavigate } from 'react-router-dom';
+import { useBGM } from '../bgm/bgmContext.jsx';
 import styles from './TopButtons.module.css';
 import RoomCreateModal from './RoomCreateModal';
 import RoomSearchModal from './RoomSearchModal';
 import Sidebar from './sidebar/sidebar';
 // import RoomEnterModal from './RoomEnterModal';
 
+
 import messenger from '../../images/square/icon_messenger.png';
 import refresh from '../../images/square/icon_refresh.png';
 import search from '../../images/square/icon_search.png';
 
 export default function TopButtons() {
+  const { toggleBGMVisibility } = useBGM();
   const navigate = useNavigate();
   // 모달 상태변수
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -26,7 +29,12 @@ export default function TopButtons() {
     setSearchModal(true);
   }
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // 사이드바 토글 함수
+  // 사이드바 토글 함수
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    // 사이드바 상태에 따라 BGMPlayer의 가시성을 토글합니다.
+    toggleBGMVisibility(!isSidebarOpen);
+  };
 
   // const openEnterModal = () => {
   //   setEnterModal(true);
