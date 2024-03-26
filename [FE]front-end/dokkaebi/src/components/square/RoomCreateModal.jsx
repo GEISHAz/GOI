@@ -13,14 +13,14 @@ export default function RoomCreateModal({ onClose, userName }) {
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const userNickname = useSelector((state) => state.auth.userNickname); // 회원가입에서 설정한 닉네임 불러오기
-  const [isRoomTitle, setIsRoomTitle] = useState(''); // 방 제목 상태 관리
+  const [isRoomTitle, setIsRoomTitle] = useState(userNickname+'의 방'); // 방 제목 상태 관리
   const [isPrivate, setIsPrivate] = useState(false); // 비공개 체크박스의 상태를 위한 훅
   const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
   const channelId = sessionStorage.getItem("channelId");
 
   // startYear와 endYear를 위한 상태 추가
-  const [startYear, setStartYear] = useState();
-  const [endYear, setEndYear] = useState();
+  const [startYear, setStartYear] = useState(2011);
+  const [endYear, setEndYear] = useState(2015);
 
   // RangeSlider에서 startYear와 endYear가 변경될 때 부모 컴포넌트의 상태를 업데이트하는 콜백 함수
   const handleYearChange = (start, end) => {
@@ -44,6 +44,7 @@ export default function RoomCreateModal({ onClose, userName }) {
 
   // "생성" 버튼 기능 
   const handleCreateRoom = async () => {
+    // console.log(userNickname, "님의 방 생성 요청");
     // 방 제목을 입력하지 않았을 경우
     if (!isRoomTitle) {
       alert("방 제목을 설정해주세요 !");
@@ -128,6 +129,7 @@ export default function RoomCreateModal({ onClose, userName }) {
               className="border-2 border-gray-300 p-1"
               maxLength={15}
               onChange={(e) => setIsRoomTitle(e.target.value)}
+              // defaultValue={userNickname + "의 방"}
             />
           </div>
 
