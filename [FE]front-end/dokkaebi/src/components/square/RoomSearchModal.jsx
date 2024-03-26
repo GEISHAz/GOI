@@ -5,7 +5,7 @@ import styles from './RoomSearchModal.module.css';
 
 
 export default function RoomSearchModal({ onClose }) {
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
   
   // 입력창에 입력된 방 번호를 관리하는 상태
