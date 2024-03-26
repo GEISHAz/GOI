@@ -19,7 +19,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/hub" element={<Hub />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Login />} />
         <Route path="/signUp" element={<GetUserLogin />} />
         <Route path="/callBack" element={<CallBack />} />
         <Route element={<PrivateRoute />}>

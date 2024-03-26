@@ -2,7 +2,7 @@
     position: fixed; /* 사이드바 화면에 고정 */
     top: 0; /* 상단에서부터 시작 */
     right: 0; /* 화면의 오른쪽에 위치 */
-    width: 360px; /* 너비 설정 */
+    width: 25%; /* 너비 설정 */
     height: 100%; /* 높이를 화면 전체로 설정 */
     background-color: #ffffff; /* 배경 색상 */
     box-shadow: -2px 0 5px rgba(0,0,0,0.5); /* 좌측에 그림자 효과 */
