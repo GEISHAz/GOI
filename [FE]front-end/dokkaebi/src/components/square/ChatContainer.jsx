@@ -19,9 +19,9 @@ export default function ChatContainer() {
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
     const socket = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
-    console.log('웹소켓 상태 확인 :', SockJS)
+    // console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
-    console.log("스톰프 클라이언트 확인 :", stompClient.current)
+    // console.log("스톰프 클라이언트 확인 :", stompClient.current)
 
     // 유저 연결
     stompClient.current.connect({}, () => {
@@ -39,39 +39,37 @@ export default function ChatContainer() {
       console.error("채팅 연결 에러", error)
     });
 
-    return () => {
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
-      }
-      if (stompClient.current && stompClient.current.connected) {
-        stompClient.current.disconnect();
-      }
-    };
-  }, [chatList, channelId]);
-
-  // beforeunload 이벤트 리스너 관리를 위한 별도의 useEffect
-  useEffect(() => {
+    // 페이지 언로드 시(브라우저에서 제공하는 뒤로가기) 세션 스토리지에서 channelId 제거
     const handleUnload = async () => {
-      // 페이지 벗어남 시 실행되는 로직
       const accessToken = sessionStorage.getItem("accessToken");
       if (channelId) {
         try {
           await axios.post('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
             headers: { Authorization: `Bearer ${accessToken}` },  
           });
-          sessionStorage.removeItem('channelId');
+          console.log("채널 나가면서 채널Id 제거해달라고 요청함")
         } catch (error) {
-          console.error("채널 나가면서 채널Id 제거 실패", error);
+          console.error("채널 나가면서 채널Id 제거 실패", error)
         }
       }
+      // sessionStorage.removeItem('channelId');
     };
 
-    // beforeunload 이벤트 리스너 등록
+    // beforeunload 이벤트 리스너 등록 -> 이 광장페이지에서 벗어난다면 handleUnload 발동
     window.addEventListener('beforeunload', handleUnload);
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 해제
     return () => {
-      window.removeEventListener('beforeunload', handleUnload);
+      // 성공적으로 소켓 연결이 끊어진다면
+      // 백엔드에게 알리면서 이벤트 리스너 제거해주기
+      handleUnload().finally(() => {
+        window.removeEventListener('beforeunload', handleUnload);
+        if (subscriptionRef.current) {
+          subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
+        }
+        if (stompClient.current && stompClient.current.connected) {
+          stompClient.current.disconnect();
+        }
+      });
     };
   }, [channelId]);
 
@@ -93,7 +91,7 @@ export default function ChatContainer() {
       console.log("sender 확인 :", newMessage.sender)
 
       stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify(newMessage));
-      setChatList([...chatList, newMessage]);
+      // setChatList([...chatList, newMessage]);
       setInputMessage('');
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.")
