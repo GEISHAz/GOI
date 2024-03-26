@@ -11,9 +11,8 @@ import orange from '../../images/character/orange.gif';
 
 export default function UserList() {
   const accessToken = sessionStorage.getItem("accessToken");
-  const channelId = sessionStorage.getItem("channelId");
   const [isUserInfo, setIsUserInfo] = useState([])
-
+  
   const images = [
     { id: 1, src: blue, alt: "파랑도깨비" },
     { id: 2, src: brown, alt: "밤색도깨비" },
@@ -22,12 +21,13 @@ export default function UserList() {
     { id: 5, src: orange, alt: "오렌지도깨비" },
     { id: 6, src: green, alt: "초록도깨비" },
   ];
-
+  
   // imageId를 받아 해당하는 이미지 객체를 반환하는 함수
   const findImageById = (imageId) => images.find(image => image.id === imageId);
-
+  
   // 페이지 들어갔을 때 fetchUserInfo() 함수 실행 -> [accessToken] 토큰 발급 될 때마다 다시 함수 실행
   useEffect(() => {
+    const channelId = sessionStorage.getItem("channelId");
     const fetchUserInfo = async () => {
       console.log("chaanleId 확인", channelId)
       try {

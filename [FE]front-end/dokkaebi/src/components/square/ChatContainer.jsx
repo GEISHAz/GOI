@@ -19,9 +19,9 @@ export default function ChatContainer() {
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
     const socket = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
-    console.log('웹소켓 상태 확인 :', SockJS)
+    // console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
-    console.log("스톰프 클라이언트 확인 :", stompClient.current)
+    // console.log("스톰프 클라이언트 확인 :", stompClient.current)
 
     // 유저 연결
     stompClient.current.connect({}, () => {
@@ -52,7 +52,7 @@ export default function ChatContainer() {
           console.error("채널 나가면서 채널Id 제거 실패", error)
         }
       }
-      sessionStorage.removeItem('channelId'); // 세션 스토리지에서 제거해주기
+      // sessionStorage.removeItem('channelId');
     };
 
     // beforeunload 이벤트 리스너 등록 -> 이 광장페이지에서 벗어난다면 handleUnload 발동
@@ -71,7 +71,7 @@ export default function ChatContainer() {
         }
       });
     };
-  }, [chatList, channelId]);
+  }, [channelId]);
 
   // 메세지 보내기 조작할 함수
   const handleSendMessage = (event) => {
@@ -91,7 +91,7 @@ export default function ChatContainer() {
       console.log("sender 확인 :", newMessage.sender)
 
       stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify(newMessage));
-      setChatList([...chatList, newMessage]);
+      // setChatList([...chatList, newMessage]);
       setInputMessage('');
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.")
