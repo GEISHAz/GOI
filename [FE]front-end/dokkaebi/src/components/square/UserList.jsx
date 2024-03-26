@@ -35,8 +35,8 @@ export default function UserList() {
           headers : { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 :", response)
-        if (response.status === 200 && response.data) {
-          setIsUserInfo(response.data);
+        if (response.status === 200 && response.data.data) {
+          setIsUserInfo(response.data.data);
         } else {
           throw new Error("에러 떴어요")
         }

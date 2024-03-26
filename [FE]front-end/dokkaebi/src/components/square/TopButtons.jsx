@@ -52,12 +52,20 @@ export default function TopButtons() {
             className={`flex items-center justify-center font-Bit text-2xl ${styles.textButton}`}>
             방 만들기
           </button>
+
           {/* 빠른 입장 버튼 */}
-          <button className={`flex items-center justify-center font-Bit text-2xl ${styles.textButton}`}>빠른 입장</button>
+          <button
+            
+            className={`flex items-center justify-center font-Bit text-2xl ${styles.textButton}`}>
+            빠른 입장
+            </button>
+
           {/* 방 찾기 버튼 */}
           <button 
             onClick={openSearchModal}
-            className={`flex items-center justify-center font-Bit text-2xl ${styles.searchButton}`}>방 찾기</button>
+            className={`flex items-center justify-center font-Bit text-2xl ${styles.searchButton}`}>
+            방 찾기
+            </button>
         </div>
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}

@@ -6,6 +6,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment._common.response.SuccessType;
+import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment.channel.dto.response.ChannelInfo;
 import ssafy.GeniusOfInvestment.channel.service.ChannelService;
 
@@ -22,29 +24,32 @@ public class ChannelController {
     private final ChannelService channelService;
 
     @GetMapping("/listc") //채널정보 싹다 주기
-    public List<ChannelInfo> listChannel(){
-        return channelService.listAllChannel();
+    public SuccessResponse<List<ChannelInfo>> listChannel(){
+        log.info("ChannelController listChannel start");
+        return SuccessResponse.of(SuccessType.CHANNEL_LIST_CALLED_SUCCESSFULLY,channelService.listAllChannel());
     }
 
     @PutMapping("/enterc/{channelId}") //채널 들어가기
-    public void enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("enterChannelController in");
+    public SuccessResponse<Void> enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
+        log.info("ChannelController enterChannel start");
         channelService.enterChannel(user,channelId);
-        log.info("enterChannelController out");
+        log.info("ChannelController enterChannel end");
+        return SuccessResponse.from(SuccessType.ENTER_CHANNEL_SUCCESSFULLY);
     }
 
     @PostMapping("/exitc")// 채널 나가기 처리
-    public void exitChannel(@AuthenticationPrincipal User user){
-        log.info("exitChannelService in");
+    public SuccessResponse<Void> exitChannel(@AuthenticationPrincipal User user){
+        log.info("ChannelController exitChannel start");
         log.info("id : "+user.getId());
         log.info("id : "+user.getNickName());
         log.info("id : "+user.getExp());
         log.info("id : "+user.getImageId());
         log.info("id : "+user.getSocialId());
 
-        log.info("exitChannelController in");
         channelService.exitChannel(user);
-        log.info("exitChannelController out");
+
+        log.info("ChannelController exitChannel end");
+        return SuccessResponse.from(SuccessType.EXIT_CHANNEL_SUCCESSFULLY);
     }
 
 }

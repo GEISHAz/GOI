@@ -32,6 +32,17 @@ public enum SuccessType {
     //***************************Alarm****************************//
     GET_ALARM_LIST_SUCCESSFULLY("알람 리스트 조회 성공"),
 
+    //****************************Channel****************************//
+    CHANNEL_LIST_CALLED_SUCCESSFULLY("채널 리스트 조회 성공"),
+
+    //****************************Square****************************//
+    ENTER_CHANNEL_SUCCESSFULLY("채널 입장 성공"),
+    EXIT_CHANNEL_SUCCESSFULLY("채널 나가기 성공"),
+    CREATE_ROOM_SUCCESSFULLY("방 생성 성공"),
+    FAST_ENTER_SUCCESSFULLY("빠른입장 성공"),
+    SEARCH_ROOM_SUCCESSFULLY("방 찾기 성공"),
+    ROOM_LIST_CALLED_SUCCESSFULLY("방 목록 조회 성공"),
+    USER_LIST_CALLED_SUCCESSFULLY("접속 중인 유저목록 조회 성공")
     //****************************Room****************************//
 
 

@@ -52,9 +52,9 @@ export default function RoomList() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("방 목록 Info 확인 :", response)
-        if (response.status === 200 && response.data) {
-          setIsRoomsInfo(response.data.list || []); // 받아온 방 목록으로 상태 업데이트
-          setTotalRoomCount(response.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
+        if (response.status === 200 && response.data.data) {
+          setIsRoomsInfo(response.data.data.list || []); // 받아온 방 목록으로 상태 업데이트
+          setTotalRoomCount(response.data.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다")
         }
