@@ -21,6 +21,7 @@ public enum ErrorType {
 
     //****************************Friend****************************//
     NOT_FOUND_FRIEND_ROOM(HttpStatus.BAD_REQUEST, "채팅하려는 친구 조회에 실패했습니다"),
+    ALREADY_EXISTS_FRIEND(HttpStatus.BAD_REQUEST,"이미 존재하는 친구입니다"),
 
     //****************************Alarm****************************//
     NOT_FOUND_INVITE_USER(HttpStatus.BAD_REQUEST, "초대할 유저를 찾지 못했습니다"),
@@ -28,6 +29,7 @@ public enum ErrorType {
 
     //****************************Alarm****************************//
     NOT_FOUND_FRIEND(HttpStatus.BAD_REQUEST, "삭제할 친구 정보가 없습니다"),
+    ALREADY_EXISTS_ALARM(HttpStatus.BAD_REQUEST,"이미 전송한 요청입니다"),
 
     //****************************Room****************************//
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"입장하려는 방이 존재하지 않습니다"),
