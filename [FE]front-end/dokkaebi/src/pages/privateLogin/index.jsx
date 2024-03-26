@@ -17,7 +17,7 @@ const PrivateRoute = () => {
 
     console.log(isLogin);
 
-    return isLogin ? <Outlet /> : <Navigate to="/login" />;
+    return isLogin ? <Outlet /> : <Navigate to="/join" />;
 };
 
 export default PrivateRoute;

@@ -12,7 +12,7 @@ export default function LoginComponent() {
   const navigate = useNavigate();
   const [isHovering, setIsHovering] = useState(false);
 
-  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/callBack&mode=login'; // 배포용
+  const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login'; // 배포용
   // const KAKAO_AUTH_URL = 'https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login'; // 로컬용
   
   const handleKakaoLogin = () => {

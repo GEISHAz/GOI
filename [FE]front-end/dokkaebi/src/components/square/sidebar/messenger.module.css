@@ -1,0 +1,11 @@
+.messenger {
+  position: fixed;
+  bottom: 0;
+  right: 25%;
+  width: 25%;
+  height: 50%;
+  background-color: #ffff99;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5); 
+  z-index: 101;
+  overflow-y: auto;
+}
