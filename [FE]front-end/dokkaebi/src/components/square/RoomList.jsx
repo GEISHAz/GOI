@@ -43,6 +43,7 @@ export default function RoomList() {
     if (room.isPrivate) {
       setEnterModal(true);
     } else {
+      sessionStorage.setItem(`room${room.id}`, JSON.stringify(room));
       navigate(`/room/${room.id}`);
     }
   };
@@ -59,7 +60,7 @@ export default function RoomList() {
         );
         console.log("방 목록 Info 확인 :", response);
         if (response.status === 200 && response.data) {
-          setIsRoomsInfo(response.data.list || []); // 받아온 방 목록으로 상태 업데이트
+          setIsRoomsInfo(response.data.data.list || []); // 받아온 방 목록으로 상태 업데이트
           setTotalRoomCount(response.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다");

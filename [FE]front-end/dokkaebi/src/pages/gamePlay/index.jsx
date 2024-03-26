@@ -85,7 +85,7 @@ export default function GamePlay() {
       });
     return () => {
       // console.log("unmounting...");
-    }
+    };
   }, []);
 
   const openInfoStoreModal = () => {
