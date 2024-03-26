@@ -1,5 +1,6 @@
-import React, { useState } from 'react'; // useState를 추가합니다
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import styles from './TopButtons.module.css';
 import RoomCreateModal from './RoomCreateModal';
 import RoomSearchModal from './RoomSearchModal';
@@ -11,7 +12,9 @@ import refresh from '../../images/square/icon_refresh.png';
 import search from '../../images/square/icon_search.png';
 
 export default function TopButtons() {
+  const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
+
   // 모달 상태변수
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [searchModal, setSearchModal] = useState(false);
@@ -55,17 +58,17 @@ export default function TopButtons() {
 
           {/* 빠른 입장 버튼 */}
           <button
-            
+            onClick={handleQuickEnter}
             className={`flex items-center justify-center font-Bit text-2xl ${styles.textButton}`}>
             빠른 입장
-            </button>
+          </button>
 
           {/* 방 찾기 버튼 */}
           <button 
             onClick={openSearchModal}
             className={`flex items-center justify-center font-Bit text-2xl ${styles.searchButton}`}>
             방 찾기
-            </button>
+          </button>
         </div>
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}
