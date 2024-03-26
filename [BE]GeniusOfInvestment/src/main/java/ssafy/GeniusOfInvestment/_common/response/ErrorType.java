@@ -37,6 +37,7 @@ public enum ErrorType {
     //******************** Square & Room **************************//
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND,"해당채널이 존재하지 않습니다."),
     NOT_FOUND_REDISUSER(HttpStatus.I_AM_A_TEAPOT,"유저동선 추적오류 입니다."),
+    INVALID_PASSWORD(HttpStatus.LOCKED, "비밀번호가 일치하지 않습니다."),
 
     //******************** CHANNEL **************************//
     CHANNEL_IS_FULL(HttpStatus.NOT_FOUND,"입장하려는 채널이 가득 찼습니다."),
