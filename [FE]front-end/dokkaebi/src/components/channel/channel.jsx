@@ -40,9 +40,10 @@ export default function Channel() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         // console.log("GET 리스폰스 확인 :", res)
-        if (res.status === 200 && res.data) {
+        if (res.status === 200 && res.data && res.msg) {
           // 받아오는 res.data 확인 -> id, channelName, userCount
-          console.log(res.data)
+          console.log("채널 백에서 온 데이터 확인", res.data)
+          console.log("msg 확인 :", res.msg)
           setGetChannelInfo(res.data)
           // const channelId = res.data
         } else {
