@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useBGM } from '../bgm/bgmContext.jsx';
 import axios from "axios";
 import styles from './TopButtons.module.css';
 import RoomCreateModal from './RoomCreateModal';
@@ -7,11 +8,13 @@ import RoomSearchModal from './RoomSearchModal';
 import Sidebar from './sidebar/sidebar';
 // import RoomEnterModal from './RoomEnterModal';
 
+
 import messenger from '../../images/square/icon_messenger.png';
 import refresh from '../../images/square/icon_refresh.png';
 import search from '../../images/square/icon_search.png';
 
 export default function TopButtons() {
+  const { toggleBGMVisibility } = useBGM();
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
 
@@ -29,11 +32,34 @@ export default function TopButtons() {
     setSearchModal(true);
   }
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // 사이드바 토글 함수
+  // 사이드바 토글 함수
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    // 사이드바 상태에 따라 BGMPlayer의 가시성을 토글합니다.
+    toggleBGMVisibility(!isSidebarOpen);
+  };
 
-  const handleQuickEnter = () => {
-    console.log("빠른 입장 확인")
-  }
+  // 빠른 입장 핸들러
+  // const handleQuickEnter = async () => {
+  //   try {
+  //     // 서버로부터 빠른 입장 가능한 방의 정보를 요청
+  //     const response = await axios.get('https://j10d202.p.ssafy.io/api/API주소 넣어야 함', {
+  //     headers: { Authorization: `Bearer ${accessToken}` },
+  //   });
+    
+  //     if (response.status === 200 && response.data.data.roomId) {
+  //       // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동
+  //       navigate(`/room/${response.data.data.roomId}`);
+  //     } else {
+  //       // 서버로부터 적절한 응답을 받지 못한 경우
+  //       alert('빠른 입장 가능한 방을 찾을 수 없습니다.');
+  //     }
+  //   } catch (error) {
+  //     // 요청 중 오류가 발생한 경우
+  //     console.error('빠른 입장 처리 중 오류 발생:', error);
+  //     alert('빠른 입장 처리 중 오류가 발생했습니다');
+  //   }
+  // };
 
   // const openEnterModal = () => {
   //   setEnterModal(true);
@@ -62,7 +88,7 @@ export default function TopButtons() {
 
           {/* 빠른 입장 버튼 */}
           <button
-            onClick={handleQuickEnter}
+            // onClick={handleQuickEnter}
             className={`flex items-center justify-center font-Bit text-2xl ${styles.textButton}`}>
             빠른 입장
           </button>

@@ -4,6 +4,7 @@ import { togglePlay } from '../../features/bgm/bgmSlice.js';
 import musicOn from '../../images/bgm/musicOn.png';
 import musicOff from '../../images/bgm/musicOff.png';
 import styles from './bgmPlayer.module.css';
+import { useBGM } from './bgmContext.jsx';
 
 export default function BGMPlayer() {
   const audioRef = useRef(null);
@@ -11,6 +12,7 @@ export default function BGMPlayer() {
   const { isPlaying } = useSelector((state) => state.bgm);
   const [showPrompt, setShowPrompt] = useState(true); // 안내문구 표시 상태
   const [buttonImage, setButtonImage] = useState(musicOff); // 노래 재생 상태 이미지
+  const { isBGMVisible } = useBGM();
 
   // 음악 재생 상태에 따라 버튼 이미지 변경
   useEffect(() => {
@@ -38,6 +40,8 @@ export default function BGMPlayer() {
 
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
+
+  if (!isBGMVisible) return null;
 
   return (
     <div className={styles.buttonContainer}>

@@ -7,8 +7,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
+import ssafy.GeniusOfInvestment._common.response.SuccessType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.square_room.dto.request.KickRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomInfoResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.dto.response.UserEnterMessageResponse;
 import ssafy.GeniusOfInvestment.square_room.service.RoomService;
@@ -27,27 +31,9 @@ public class RoomController {
 
     //방 들어가기
     @PostMapping("/enter")
-    public Map<String, String> enterRoom(@AuthenticationPrincipal User user, @RequestBody Room room){
-        roomService.enterRoom(user,room);
-        //websocket 들어감 보내주기
-        messageTemplate.convertAndSend("/sub/room/chat/" + room.getId(),
-                MessageDto
-                        .builder()
-                        .type(MessageDto.MessageType.ROOM_ENTER)
-                        .data(UserEnterMessageResponse
-                                .builder()
-                                .userId(user.getId())
-                                .roomId(room.getId())
-                                .chId(user.getChannel().getId())
-                                .isReady(false)
-                                .exp(user.getExp())
-                                .nickName(user.getNickName())
-                                .build())
-                        .build());
-
-        Map<String, String> json = new HashMap<>();
-        json.put("msg", "방 입장 완료");
-        return json;
+    public SuccessResponse<RoomInfoResponse> enterRoom(@AuthenticationPrincipal User user, @RequestBody RoomEnterRequest enterInfo){
+        log.info("RoomController enterRoom start");
+        return SuccessResponse.of(SuccessType.ROOM_ENTER_REQUEST_SUCCESSFULLY,roomService.enterRoom(user,enterInfo));
     }
 
     //방 나가기

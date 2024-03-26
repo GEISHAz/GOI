@@ -11,8 +11,11 @@ import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomInfoResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.dto.response.UserDisConnectMessageResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.response.UserEnterMessageResponse;
@@ -32,23 +35,45 @@ public class RoomService {
     private final RedisUserRepository redisUserRepository;
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final SimpMessageSendingOperations messageTemplate;
 
-    public void enterRoom(User user, Room room) {
-        Optional<Room> rtmp = roomRepository.findById(room.getId());
+    public RoomInfoResponse enterRoom(User user, RoomEnterRequest enterInfo) {
+
+        RoomInfoResponse result;
+
+        Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
         if(rtmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
 
+        Room room = rtmp.get();
+
         if(room.getPassword() != null){
-            if(!room.getPassword().equals(rtmp.get().getPassword())){
-                throw new CustomBadRequestException(ErrorType.INVALID_PASSWORD);
+            if(!room.getPassword().equals(enterInfo.password())){
+                return result = RoomInfoResponse
+                        .builder()
+                        .roomId(enterInfo.roomId())
+                        .status(1)
+                        .build();
             }
         }
         //gameRoom Redis 정보 가져오기
         GameRoom gameRoom = redisGameRepository.getOneGameRoom(room.getId());
         if(gameRoom == null){
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+            return result = RoomInfoResponse
+                    .builder()
+                    .roomId(enterInfo.roomId())
+                    .status(3)
+                    .build();
         }
 
-        // redisUser 가  없어야함 있다면 예외
+        if(gameRoom.getParticipants().size()>=4){
+            return result = RoomInfoResponse
+                    .builder()
+                    .roomId(enterInfo.roomId())
+                    .status(2)
+                    .build();
+        }
+
+        // redisUser 가 없어야함 있다면 예외
         if(redisUserRepository.getOneRedisUser(user.getId()) != null)
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
 
@@ -68,8 +93,34 @@ public class RoomService {
                         .buyInfos(new ArrayList<>())
                         .build());
 
+        //websocket 들어감 보내주기
+        messageTemplate.convertAndSend("/sub/room/chat/" + room.getId(),
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_ENTER)
+                        .data(UserEnterMessageResponse
+                                .builder()
+                                .userId(user.getId())
+                                .roomId(room.getId())
+                                .chId(user.getChannel().getId())
+                                .isReady(false)
+                                .exp(user.getExp())
+                                .nickName(user.getNickName())
+                                .build())
+                        .build());
+
+
         // gameroom에 저장
         redisGameRepository.saveGameRoom(gameRoom);
+
+        //정상동작했다면
+        result = RoomInfoResponse
+                .builder()
+                .roomId(enterInfo.roomId())
+                .status(0)
+                .build();
+
+        return result;
     }
 
     public List<RoomPartInfo> exitRoom(User user, Long rId){
@@ -77,7 +128,7 @@ public class RoomService {
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-
+        Room r;
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
         int idx = room.getParticipants().indexOf(gameUser);
@@ -94,6 +145,7 @@ public class RoomService {
             Optional<Room> tmp = roomRepository.findById(rId);
             if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
             tmp.get().updateStatus(2); //room테이블에 없어진 방 처리
+            r=roomRepository.save(tmp.get());
         }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
