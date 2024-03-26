@@ -50,7 +50,8 @@ export default function Channel() {
           throw new Error('GET 요청에서 에러 발생');
         }
       } catch (error) {
-        console.error('채널 목록 불러오기 실패', error);``
+        console.error('채널 목록 불러오기 실패', error);
+        console.log(error)
       }
     };
 
