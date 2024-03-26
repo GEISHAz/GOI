@@ -27,8 +27,8 @@ export default function Router() {
           <Route path="/game/:id" element={<GamePlay />} />
           <Route path="/channel" element={<Channel />} />
           <Route path="/square/:id" element={<Square />} />
+          <Route path="/room/:id" element={<RoomLobby />}></Route>          
           <Route path="/rank" element={<Rank />} />
-          <Route path="/room/:id" element={<RoomLobby />}></Route>
         </Route>
       </Routes>
     </AuthWrapper>
