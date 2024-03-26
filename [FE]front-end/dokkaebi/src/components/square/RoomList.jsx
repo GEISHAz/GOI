@@ -84,7 +84,7 @@ export default function RoomList() {
               </div>
               <div className="col-span-1 row-span-1"></div>
               <div className='flex flex-row justify-evenly'>
-                <div className="col-span-2 row-span-1 text-xl m-2">{`${room.title}님의 방`}</div>
+                <div className="col-span-2 row-span-1 text-xl m-2">{`${room.title}`}</div>
                 <div className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${room.userCount === 4 ? 'text-red-500' : ''}`}>{room.userCount}/4</div>
               </div>
             </div>
