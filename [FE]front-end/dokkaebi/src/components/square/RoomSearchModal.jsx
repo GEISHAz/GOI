@@ -45,7 +45,7 @@ export default function RoomSearchModal({ onClose }) {
             {/* 모달 타이틀 */}
             <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
             <input
-              type="number"
+              type="text"
               value={roomId}
               onChange={handleRoomIdChange} // 입력 변화를 처리하는 함수 연결
               placeholder="방 번호 입력"
