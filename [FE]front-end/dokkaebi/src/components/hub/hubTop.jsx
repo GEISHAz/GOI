@@ -58,7 +58,7 @@ export default function HubTop() {
           </button>
         ) : (
           // 로그아웃 상태일 때 "Login" 링크 표시
-          <Link to='/login' className='font-bold text-white text-xl'>
+          <Link to='/join' className='font-bold text-white text-xl'>
             <img src={LoginButton} alt="로그인버튼" className={styles.loginButton}/>
           </Link>
         )}
