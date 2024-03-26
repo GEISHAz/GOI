@@ -3,7 +3,6 @@ import styles from './ChatContainer.module.css'
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { useSelector } from "react-redux";
-import axios from 'axios';
 
 export default function ChatContainer() {
   const sender = useSelector(state => state.auth.userNickname);
@@ -39,37 +38,13 @@ export default function ChatContainer() {
       console.error("채팅 연결 에러", error)
     });
 
-    // 페이지 언로드 시(브라우저에서 제공하는 뒤로가기) 세션 스토리지에서 channelId 제거
-    const handleUnload = async () => {
-      const accessToken = sessionStorage.getItem("accessToken");
-      if (channelId) {
-        try {
-          await axios.post('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
-            headers: { Authorization: `Bearer ${accessToken}` },  
-          });
-          console.log("채널 나가면서 채널Id 제거해달라고 요청함")
-        } catch (error) {
-          console.error("채널 나가면서 채널Id 제거 실패", error)
-        }
-      }
-      // sessionStorage.removeItem('channelId');
-    };
-
-    // beforeunload 이벤트 리스너 등록 -> 이 광장페이지에서 벗어난다면 handleUnload 발동
-    window.addEventListener('beforeunload', handleUnload);
-
     return () => {
-      // 성공적으로 소켓 연결이 끊어진다면
-      // 백엔드에게 알리면서 이벤트 리스너 제거해주기
-      handleUnload().finally(() => {
-        window.removeEventListener('beforeunload', handleUnload);
-        if (subscriptionRef.current) {
-          subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
-        }
-        if (stompClient.current && stompClient.current.connected) {
-          stompClient.current.disconnect();
-        }
-      });
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
+      }
+      if (stompClient.current && stompClient.current.connected) {
+        stompClient.current.disconnect();
+      }
     };
   }, [channelId]);
 
