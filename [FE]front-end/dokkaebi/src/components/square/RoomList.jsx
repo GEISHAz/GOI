@@ -65,9 +65,9 @@ export default function RoomList() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 :", response)
-        if (response.status === 200 && response.data.data) {
-          setIsRoomsInfo(response.data.data); // 받아온 방 목록으로 상태 업데이트
-          setTotalRoomCount(response.data.totalRoomCount); // 총 방 개수로 상태 업데이트
+        if (response.status === 200 && response.data) {
+          setIsRoomsInfo(response.data); // 받아온 방 목록으로 상태 업데이트
+          setTotalRoomCount(response.totalRoomCount); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다")
         }
