@@ -55,14 +55,14 @@ public class SquareService {
                 .channel(ch)
                 .title(info.title())
                 .password(info.password())
-                .isPublic(info.isPrivate())
+                .isPublic(!info.isPrivate())
                 .status(0)
                 .fromYear(info.startYear())
                 .endYear(info.endYear())
                 .build();
 
         //방 정보 DB 저장
-        roomRepository.save(room);
+        room = roomRepository.save(room);
 
         SavedRoomResponse result = makeSavedRoomResponse(room,info.channelId());
 
@@ -70,10 +70,9 @@ public class SquareService {
 
         //Redis 정보속 유저 리스트 생성
         List<GameUser> list = new ArrayList<>();
-        list.add(GameUser
-                .builder()
+        list.add(GameUser.builder()
                 .userId(user.getId())
-                .isReady(false)
+                .isReady(true)
                 .isManager(true)
                 .build());
 

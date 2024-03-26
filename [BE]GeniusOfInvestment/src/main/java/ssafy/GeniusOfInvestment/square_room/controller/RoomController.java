@@ -14,7 +14,7 @@ import ssafy.GeniusOfInvestment.square_room.service.RoomService;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("git/api/room")
+@RequestMapping("/api/room")
 public class RoomController {
 
     private final RoomService roomService;

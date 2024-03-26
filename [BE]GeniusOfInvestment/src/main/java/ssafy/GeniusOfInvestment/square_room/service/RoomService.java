@@ -29,6 +29,7 @@ public class RoomService {
     private final RedisGameRepository redisGameRepository;
     private final RedisUserRepository redisUserRepository;
     private final RedisGameUserRepository redisGameUserRepository;
+
     public void enterRoom(User user, Room room) {
 
         //gameRoom Redis 정보 가져오기
