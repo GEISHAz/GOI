@@ -137,7 +137,7 @@ export default function getUserLogin() {
         navigate("/hub");
       } catch (error) {
         console.error("회원가입 실패", error);
-        alert("가입 중에 오류가 발생했어요. 다시 시도해주세요 !", () => window.location.reload()); // 새로고침 한 번 해주기
+        alert("앗 ! 누군가 먼저 닉네임을 설정해버렸어요. 다시 닉네임을 설정해주세요 !", () => window.location.reload()); // 새로고침 한 번 해주기
       }
     }
   };
