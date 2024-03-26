@@ -51,9 +51,9 @@ export default function RoomList() {
         const response = await axios.get(`https://j10d202.p.ssafy.io/api/square/list/${channelId}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인 :", response)
-        if (response.status === 200 && response.data.data) {
-          setIsRoomsInfo(response.data.data || []); // 받아온 방 목록으로 상태 업데이트
+        console.log("방 목록 Info 확인 :", response)
+        if (response.status === 200 && response.data) {
+          setIsRoomsInfo(response.data.list || []); // 받아온 방 목록으로 상태 업데이트
           setTotalRoomCount(response.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다")
