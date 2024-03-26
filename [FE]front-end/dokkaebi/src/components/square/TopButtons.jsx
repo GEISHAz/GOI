@@ -78,7 +78,7 @@ export default function TopButtons() {
       {searchModal && <RoomSearchModal setSearchModal={setSearchModal} />}
       {searchModal && <RoomSearchModal onClose={() => setSearchModal(false)} />}
 
-      {isSidebarOpen && <Sidebar />}
+      {isSidebarOpen && <Sidebar toggleSidebar={toggleSidebar} />}
     </>
   );
 }
