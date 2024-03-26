@@ -1,7 +1,6 @@
 // import React from 'react'
-import styles from './LobbyChat.module.css'
+import styles from "./LobbyChat.module.css";
 // import ChattingSelector from './ChattingSelector'
-
 
 export default function LobbyChat() {
   return (
@@ -21,5 +20,5 @@ export default function LobbyChat() {
       {/* <div className={styles.chatArea}>
       </div> */}
     </div>
-  )
+  );
 }

@@ -43,7 +43,23 @@ export default function RoomList() {
     if (room.isPrivate) {
       setEnterModal(true);
     } else {
-      sessionStorage.setItem(`room${room.id}`, JSON.stringify(room));
+      sessionStorage.setItem(`roomId`, JSON.stringify(room.id));
+      axios
+        .post(`https://j10d202.p.ssafy.io/api/room/enter/${room.id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          console.log("방 접속 성공");
+          sessionStorage.setItem(room.id);
+          navigate(-1);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("방 접속 실패");
+        });
       navigate(`/room/${room.id}`);
     }
   };

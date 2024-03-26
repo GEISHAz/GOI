@@ -39,10 +39,14 @@ export default function userReadyRoom() {
         function (frame) {
           stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
             const receivedMessage = JSON.parse(message.body);
+            console.log(receivedMessage);
+            console.log(receivedMessage.type);
 
             if (receivedMessage.type === "STOCK_MARKET") {
               console.log(receivedMessage.data);
             } else if (receivedMessage.type === "TIMER") {
+              console.log(receivedMessage.data);
+            } else if (receivedMessage.type === "") {
               console.log(receivedMessage.data);
             }
           });

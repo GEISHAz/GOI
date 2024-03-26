@@ -1,57 +1,56 @@
 .chatComponents {
-    background-color: rgba(0, 0, 0, 0.6);
-    width: 1000px;
-    height: 200px;
-    /* border-top-left-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 1000px;
+  height: 200px;
+  /* border-top-left-radius: 20px;
     border-top-right-radius: 20px; */
-    border-radius: 20px;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between; 
-  }
-  
-  .chatArea {
-    width: 95%;
-    display: flex;
-    justify-content: center;
-    direction: row;
-    background-color: rgba(0, 0, 0, 0);
-    position: relative; 
-    bottom: 12px;
-    align-self: center;
-    margin-top: auto;
-  }
-  
-  .chatTo {
-    width: 100px;
-    /* background-color: black; */
-    /* color:white; */
-    font-size: 12px;
-    font-family: Galmuri11;
-    background: rgb(255, 255, 255, 0.7);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border-left-color: white;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-  
-  .chatTo > option {
-    font-family: Galmuri11;
-    background: black;
-    color: white;
-    opacity: 80%;
-    border-radius: 5px;
-  }
-  
-  .chatInput {
-    width: 550px;
-    background-color: rgb(255, 255, 255, 0.7);
-    font-family: Galmuri11;
-    color: rgba(0, 0, 0);
-    padding-left: 12px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    outline: none;
-  }
-  
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chatArea {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  direction: row;
+  background-color: rgba(0, 0, 0, 0);
+  position: relative;
+  bottom: 12px;
+  align-self: center;
+  margin-top: auto;
+}
+
+.chatTo {
+  width: 100px;
+  /* background-color: black; */
+  /* color:white; */
+  font-size: 12px;
+  font-family: Galmuri11;
+  background: rgb(255, 255, 255, 0.7);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-left-color: white;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.chatTo > option {
+  font-family: Galmuri11;
+  background: black;
+  color: white;
+  opacity: 80%;
+  border-radius: 5px;
+}
+
+.chatInput {
+  width: 550px;
+  background-color: rgb(255, 255, 255, 0.7);
+  font-family: Galmuri11;
+  color: rgba(0, 0, 0);
+  padding-left: 12px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  outline: none;
+}
