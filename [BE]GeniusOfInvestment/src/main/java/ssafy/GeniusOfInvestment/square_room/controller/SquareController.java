@@ -24,26 +24,29 @@ public class SquareController {
 
     @PostMapping("/create") //방생성
     public SavedRoomResponse createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
-        log.info("SquareService createRoom in");
+        log.info("SquareController createRoom in");
+        log.info("user id값"+user.getId());
         return squareService.insertRoom(user,info);
     }
 
     @PutMapping("/find/{roomId}") //방찾기
     public void searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
-        log.info("SquareService searchRoom in");
+        log.info("SquareController searchRoom in");
+        log.info("user id값"+user.getId());
         squareService.searchRoom(user,roomId);
-        log.info("SquareService searchRoom out");
+        log.info("SquareController searchRoom out");
     }
 
     @GetMapping("/list/{channelId}") //방 목록
     public RoomListResponse listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("SquareService listRoom in");
+        log.info("SquareController listRoom in");
+        log.info("user id값"+user.getId());
         return squareService.listRoom(channelId);
     }
 
     @GetMapping("/channellist/{channelId}") //유저목록
     public List<SquareNowUser> listUser(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("SquareService listUser in");
+        log.info("SquareController listUser in");
         return squareService.listUser(channelId);
     }
 
