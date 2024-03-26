@@ -11,6 +11,7 @@ import unlocked from '../../images/square/icon_unlocked.png';
 export default function RoomList() {
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
+  const channelId = sessionStorage.getItem("channelId");
   const [isRoomsInfo, setIsRoomsInfo] = useState([]); // 방 정보 상태
   const [totalRoomCount, setTotalRoomCount] = useState(0); // 서버에 있는 총 방 개수 관리할 상태
 
@@ -60,7 +61,7 @@ export default function RoomList() {
   useEffect(() => {
     const fetchRoomList = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/square/list', {
+        const response = await axios.get(`https://j10d202.p.ssafy.io/api/square/list/${channelId}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         console.log("리스폰스 확인 :", response)
