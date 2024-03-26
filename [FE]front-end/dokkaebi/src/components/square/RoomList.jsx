@@ -59,6 +59,8 @@ export default function RoomList() {
           console.log(err);
           console.log("방 접속 실패");
         });
+      sessionStorage.setItem("roomId", room.id);
+      navigate(`/room/${room.id}`);
     }
   };
 
