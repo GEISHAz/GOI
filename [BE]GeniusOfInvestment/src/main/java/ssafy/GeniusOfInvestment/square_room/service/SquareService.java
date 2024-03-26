@@ -39,8 +39,7 @@ public class SquareService {
     private final UserRepository userRepository;
 
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
-
-        log.info("SquareService insertRoom in");
+        log.info("SquareService insertRoom start");
 
         Optional<User> u = userRepository.findById(user.getId());
         //저장할 채널 객체 생성
@@ -85,17 +84,17 @@ public class SquareService {
 
         redisGameRepository.saveGameRoom(gameRoom);
 
-        log.info("SquareService insertRoom out");
+        log.info("SquareService insertRoom end");
 
         return result;
         //방생성 완료
     }
 
     public void searchRoom(User user, Long roomnum) {
+        log.info("SquareService searchRoom start");
         //방 찾고 유저를 방안에 집어넣고 Websocket 연결
-
-        log.info("SquareService searchRoom in");
         //방찾기
+
         Optional<Room> finded = roomRepository.findById(roomnum);
 
         //방이없다면 ROOM_NOT_FOUND 에러 표시
@@ -145,11 +144,11 @@ public class SquareService {
                                 .build())
                         .build());
 
-        log.info("SquareService searchRoom out");
+        log.info("SquareService searchRoom end");
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
-        log.info("SquareService listRoom in");
+        log.info("SquareService listRoom start");
         //리턴할 list
         List<SquareNowUser> list = new ArrayList<>();
 
@@ -184,13 +183,13 @@ public class SquareService {
                             .imageId(u.getImageId())
                         .build());
         }
-        log.info("SquareService insertRoom out");
+        log.info("SquareService insertRoom end");
         return list;
     }
 
     public RoomListResponse listRoom(Long channelnum) {
 
-        log.info("SquareService listRoom in");
+        log.info("SquareService listRoom start");
 
         //채널 잘못 받을때 예외
         if (channelnum>8 || channelnum<1)
@@ -221,8 +220,7 @@ public class SquareService {
                 .list(list)
                 .build();
 
-        log.info("SquareService listRoom out");
-
+        log.info("SquareService listRoom end");
         return result;
     }
 
@@ -231,7 +229,7 @@ public class SquareService {
     }
 
     public SavedRoomResponse makeSavedRoomResponse(Room room,Long channelId){
-        log.info("makeSavedRoom Response in");
+        log.info("SquareService makeSavedRoomResponse start");
 
         if(room.getId()==null)
             log.info("id null");
@@ -240,6 +238,7 @@ public class SquareService {
         if(room.getChannel()==null)
             log.info("channel null");
 
+        log.info("SquareService makeSavedRoomResponse end");
         return SavedRoomResponse
                 .builder()
                 .roomnum(room.getId())
