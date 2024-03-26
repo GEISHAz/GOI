@@ -45,7 +45,6 @@ public class SquareService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
 
         Channel ch = u.get().getChannel();
-        ch.setId(info.channelId());
 
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
