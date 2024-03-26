@@ -19,9 +19,9 @@ export default function ChatContainer() {
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
     const socket = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
-    console.log('웹소켓 상태 확인 :', SockJS)
+    // console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
-    console.log("스톰프 클라이언트 확인 :", stompClient.current)
+    // console.log("스톰프 클라이언트 확인 :", stompClient.current)
 
     // 유저 연결
     stompClient.current.connect({}, () => {
@@ -59,7 +59,7 @@ export default function ChatContainer() {
           await axios.post('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
             headers: { Authorization: `Bearer ${accessToken}` },  
           });
-          sessionStorage.removeItem('channelId');
+          // sessionStorage.removeItem('channelId');
         } catch (error) {
           console.error("채널 나가면서 채널Id 제거 실패", error);
         }

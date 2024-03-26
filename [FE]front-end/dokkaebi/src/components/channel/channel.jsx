@@ -33,7 +33,7 @@ export default function Channel() {
   };
 
   useEffect(() => {
-    // const accessToken = localStorage.getItem("accessToken")
+    sessionStorage.removeItem('channelId');
     const fetchChannelUserCnt = async () => {
       try {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/channel/listc`, {
