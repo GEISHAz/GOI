@@ -29,6 +29,13 @@ public class SquareController {
         return squareService.insertRoom(user,info);
     }
 
+    @PostMapping("/fast") //빠른입장
+    public void fastEnterRoom(@AuthenticationPrincipal User user){
+        log.info("SquareController fastEnterRoom in");
+        log.info("user id값"+user.getId());
+
+    }
+
     @PutMapping("/find/{roomId}") //방찾기
     public void searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
         log.info("SquareController searchRoom in");

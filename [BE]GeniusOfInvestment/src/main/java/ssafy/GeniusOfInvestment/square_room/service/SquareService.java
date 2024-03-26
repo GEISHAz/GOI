@@ -60,7 +60,9 @@ public class SquareService {
                 .fromYear(info.startYear())
                 .endYear(info.endYear())
                 .build();
+
         SavedRoomResponse result =makeSavedRoomResponse(room);
+
         //방 정보 DB 저장
         roomRepository.save(room);
 
@@ -224,8 +226,20 @@ public class SquareService {
         return result;
     }
 
+    public void fastEnter(){
+
+    }
+
     public SavedRoomResponse makeSavedRoomResponse(Room room){
         log.info("makeSavedRoom Response in");
+
+        if(room.getId()==null)
+            log.info("id null");
+        if(room.getTitle()==null)
+            log.info("title null");
+        if(room.getChannel()==null)
+            log.info("channel null");
+
         return SavedRoomResponse
                 .builder()
                 .roomnum(room.getId())
