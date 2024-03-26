@@ -39,6 +39,9 @@ public class SquareService {
     private final UserRepository userRepository;
 
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
+
+        log.info("SquareService insertRoom in");
+
         Optional<User> u = userRepository.findById(user.getId());
         //저장할 채널 객체 생성
         if(u.isEmpty())
@@ -57,7 +60,7 @@ public class SquareService {
                 .fromYear(info.startYear())
                 .endYear(info.endYear())
                 .build();
-
+        SavedRoomResponse result =makeSavedRoomResponse(room);
         //방 정보 DB 저장
         roomRepository.save(room);
 
@@ -79,13 +82,16 @@ public class SquareService {
 
         redisGameRepository.saveGameRoom(gameRoom);
 
-        return makeSavedRoomResponse(room);
+        log.info("SquareService insertRoom out");
+
+        return result;
         //방생성 완료
     }
 
     public void searchRoom(User user, Long roomnum) {
         //방 찾고 유저를 방안에 집어넣고 Websocket 연결
 
+        log.info("SquareService searchRoom in");
         //방찾기
         Optional<Room> finded = roomRepository.findById(roomnum);
 
@@ -135,11 +141,15 @@ public class SquareService {
                                 .nickName(user.getNickName())
                                 .build())
                         .build());
+
+        log.info("SquareService searchRoom out");
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
+        log.info("SquareService listRoom in");
         //리턴할 list
         List<SquareNowUser> list = new ArrayList<>();
+
 
 
         //받아온 방정보
@@ -172,11 +182,13 @@ public class SquareService {
                             .imageId(u.getImageId())
                         .build());
         }
-
+        log.info("SquareService insertRoom out");
         return list;
     }
 
     public RoomListResponse listRoom(Long channelnum) {
+
+        log.info("SquareService listRoom in");
 
         //채널 잘못 받을때 예외
         if (channelnum>8 || channelnum<1)
@@ -206,10 +218,14 @@ public class SquareService {
                 .totalRoomCount(list.size())
                 .list(list)
                 .build();
+
+        log.info("SquareService listRoom out");
+
         return result;
     }
 
     public SavedRoomResponse makeSavedRoomResponse(Room room){
+        log.info("makeSavedRoom Response in");
         return SavedRoomResponse
                 .builder()
                 .roomnum(room.getId())
