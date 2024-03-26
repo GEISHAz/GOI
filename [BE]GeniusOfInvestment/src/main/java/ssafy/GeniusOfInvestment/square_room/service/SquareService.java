@@ -43,7 +43,7 @@ public class SquareService {
 
         Optional<User> u = userRepository.findById(user.getId());
         //저장할 채널 객체 생성
-        if(u.isEmpty())
+        if (u.isEmpty())
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
 
         Channel ch = u.get().getChannel();
@@ -63,9 +63,9 @@ public class SquareService {
         //방 정보 DB 저장
         room = roomRepository.save(room);
 
-        SavedRoomResponse result = makeSavedRoomResponse(room,info.channelId());
+        SavedRoomResponse result = makeSavedRoomResponse(room, info.channelId());
 
-        log.info("save, result 이후 room"+room.getId());
+        log.info("save, result 이후 room" + room.getId());
 
         //Redis 정보속 유저 리스트 생성
         List<GameUser> list = new ArrayList<>();
@@ -90,66 +90,97 @@ public class SquareService {
         //방생성 완료
     }
 
-    public void searchRoom(User user, Long roomnum) {
-        log.info("SquareService searchRoom start");
-        //방 찾고 유저를 방안에 집어넣고 Websocket 연결
-        //방찾기
-
-        Optional<Room> finded = roomRepository.findById(roomnum);
-
-        //방이없다면 ROOM_NOT_FOUND 에러 표시
-        if(finded.isEmpty()) {
-            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-        } else if (finded.get().getStatus()!=0) {
-            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-        } else if (!Objects.equals(finded.get().getChannel().getId(), user.getChannel().getId()))
-            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-
+//    public RoomInfoResponse searchRoom(User user, Long roomnum) {
+//        log.info("SquareService searchRoom start");
+//        //방 찾고 유저를 방안에 집어넣고 Websocket 연결
+//        RoomInfoResponse result;
+//        //방찾기
+//        Optional<Room> finded = roomRepository.findById(roomnum);
+//
+//        //방이없다면 ROOM_NOT_FOUND 에러 표시
+//        if (finded.isEmpty()) {
+//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
+//        } else if (finded.get().getStatus() != 0) {
+//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
+//        } else if (!Objects.equals(finded.get().getChannel().getId(), user.getChannel().getId()))
+//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
+//
+//        GameRoom redisRoom = redisGameRepository.getOneGameRoom(roomnum);
+//        //방이 가득 찼는지 확인
+//        if (redisRoom.getParticipants().size() == 4) {
+//            result = RoomInfoResponse
+//                    .builder()
+//                    .roomId(roomnum)
+//                    .isPrivate(false)
+//                    .enter(false)
+//                    .build();
+//        } else {
+//            //방이 비번상태인지 확인
+//            if (!finded.get().isPublic()) {
+//                //비번방이면
+//                result = RoomInfoResponse
+//                        .builder()
+//                        .roomId(roomnum)
+//                        .isPrivate(true)
+//                        .enter(true)
+//                        .build();
+//            } else {
+//                //비번방아니면
+//                result = RoomInfoResponse
+//                        .builder()
+//                        .roomId(roomnum)
+//                        .isPrivate(false)
+//                        .enter(true)
+//                        .build();
+//
+//            }
+//        }
         //유저를 방안에 집어 넣기
         //이미 있는 방정보 roomnum 즉 방 id로 가져오고
         //유저 한명 추가후 update
-        GameRoom gameRoom = redisGameRepository.getOneGameRoom(roomnum);
+//        GameRoom gameRoom = redisRoom;
+//
+//        List<GameUser> participants = gameRoom.getParticipants();
+//        participants.add(GameUser
+//                .builder()
+//                .userId(user.getId())
+//                .isReady(false)
+//                .isManager(false)
+//                .build());
+//        gameRoom.setParticipants(participants);
+//
+//        redisGameRepository.updateGameRoom(gameRoom);
+//
+//        RedisUser rdu;
+//        //유저 동선 추적
+//        if (redisUserRepository.getOneRedisUser(user.getId()) == null) {
+//            rdu = new RedisUser(user.getId(), false);
+//            redisUserRepository.saveUserStatusGameing(rdu);
+//        } else
+//            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
+//
+//        log.info("RedisUser 방찾기와 동시에 생성 완료 save 까지");
+////        redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+//
+//        // 웹소켓 연결
+//        messageTemplate.convertAndSend("/alram/msg-to/" + roomnum,
+//                MessageDto
+//                        .builder()
+//                        .type(MessageDto.MessageType.ROOM_ENTER)
+//                        .data(UserEnterMessageResponse
+//                                .builder()
+//                                .userId(user.getId())
+//                                .roomId(gameRoom.getId())
+//                                .chId(user.getChannel().getId())
+//                                .isReady(false)
+//                                .exp(user.getExp())
+//                                .nickName(user.getNickName())
+//                                .build())
+//                        .build());
 
-        List<GameUser> participants = gameRoom.getParticipants();
-        participants.add(GameUser
-                .builder()
-                .userId(user.getId())
-                .isReady(false)
-                .isManager(false)
-                .build());
-        gameRoom.setParticipants(participants);
-
-        redisGameRepository.updateGameRoom(gameRoom);
-
-        RedisUser rdu;
-        //유저 동선 추적
-        if(redisUserRepository.getOneRedisUser(user.getId()) == null) {
-            rdu = new RedisUser(user.getId(), false);
-            redisUserRepository.saveUserStatusGameing(rdu);
-        }else
-            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
-
-        log.info("RedisUser 방찾기와 동시에 생성 완료 save 까지");
-//        redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
-
-        // 웹소켓 연결
-        messageTemplate.convertAndSend("/alram/msg-to/" + roomnum,
-                MessageDto
-                        .builder()
-                        .type(MessageDto.MessageType.ROOM_ENTER)
-                        .data(UserEnterMessageResponse
-                                .builder()
-                                .userId(user.getId())
-                                .roomId(gameRoom.getId())
-                                .chId(user.getChannel().getId())
-                                .isReady(false)
-                                .exp(user.getExp())
-                                .nickName(user.getNickName())
-                                .build())
-                        .build());
-
-        log.info("SquareService searchRoom end");
-    }
+//        log.info("SquareService searchRoom end");
+//        return result;
+//    }
 
     public List<SquareNowUser> listUser(Long channelnum) {
         log.info("SquareService listRoom start");
@@ -157,21 +188,20 @@ public class SquareService {
         List<SquareNowUser> list = new ArrayList<>();
 
 
-
         //받아온 방정보
         List<User> users = new ArrayList<>();
         try {
             Optional<Channel> byId = channelRepository.findById(channelnum);
-            if(byId.isPresent())
+            if (byId.isPresent())
                 users = userRepository.findAllByChannel(byId.get());
         } catch (Exception e) {
             throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
         }
 
-        for (User u : users){
+        for (User u : users) {
             int nowStatus; // 0 == 로그인 1 == 대기중 2 == 게임중
-            if(redisUserRepository.getOneRedisUser(u.getId())==null) nowStatus=0; // 로그인 중
-            else{
+            if (redisUserRepository.getOneRedisUser(u.getId()) == null) nowStatus = 0; // 로그인 중
+            else {
                 if (redisUserRepository.getOneRedisUser(u.getId()).isStatus())
                     nowStatus = 2; // 게임 중
                 else
@@ -179,13 +209,13 @@ public class SquareService {
             }
 
             list.add(SquareNowUser
-                        .builder()
-                            .id(u.getId())
-                            .nickName(u.getNickName())
-                            .status(nowStatus)
-                            .exp(u.getExp())
-                            .imageId(u.getImageId())
-                        .build());
+                    .builder()
+                    .id(u.getId())
+                    .nickName(u.getNickName())
+                    .status(nowStatus)
+                    .exp(u.getExp())
+                    .imageId(u.getImageId())
+                    .build());
         }
         log.info("SquareService insertRoom end");
         return list;
@@ -196,11 +226,11 @@ public class SquareService {
         log.info("SquareService listRoom start");
 
         //채널 잘못 받을때 예외
-        if (channelnum>8 || channelnum<1)
+        if (channelnum > 8 || channelnum < 1)
             throw new CustomBadRequestException(ErrorType.NOT_AVAILABLE_CHANNEL);
 
         //리턴할 list
-        List<SquareRoom> list =new ArrayList<>();
+        List<SquareRoom> list = new ArrayList<>();
 
         //받아온 방정보
         List<SquareRoom> rooms = channelRepository.findRoomsStatus0(channelnum);
@@ -228,18 +258,18 @@ public class SquareService {
         return result;
     }
 
-    public void fastEnter(){
+    public void fastEnter() {
 
     }
 
-    public SavedRoomResponse makeSavedRoomResponse(Room room,Long channelId){
+    public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId) {
         log.info("SquareService makeSavedRoomResponse start");
 
-        if(room.getId()==null)
+        if (room.getId() == null)
             log.info("id null");
-        if(room.getTitle()==null)
+        if (room.getTitle() == null)
             log.info("title null");
-        if(room.getChannel()==null)
+        if (room.getChannel() == null)
             log.info("channel null");
 
         log.info("SquareService makeSavedRoomResponse end");

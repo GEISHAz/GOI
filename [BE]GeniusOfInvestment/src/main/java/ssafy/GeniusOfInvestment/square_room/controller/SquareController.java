@@ -8,10 +8,7 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
-import ssafy.GeniusOfInvestment.square_room.dto.response.RoomListResponse;
-import ssafy.GeniusOfInvestment.square_room.dto.response.SavedRoomResponse;
-import ssafy.GeniusOfInvestment.square_room.dto.response.SquareNowUser;
-import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
+import ssafy.GeniusOfInvestment.square_room.dto.response.*;
 import ssafy.GeniusOfInvestment.square_room.service.SquareService;
 
 import java.util.List;
@@ -38,14 +35,13 @@ public class SquareController {
         return SuccessResponse.from(SuccessType.FAST_ENTER_SUCCESSFULLY);
     }
 
-    @PostMapping("/find/{roomId}") //방찾기
-    public SuccessResponse<Void> searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
-        log.info("SquareController searchRoom in");
-        log.info("user id값"+user.getId());
-        squareService.searchRoom(user,roomId);
-        log.info("SquareController searchRoom out");
-        return SuccessResponse.from(SuccessType.SEARCH_ROOM_SUCCESSFULLY);
-    }
+//    @PostMapping("/find/{roomId}") //방찾기
+//    public SuccessResponse<RoomInfoResponse> searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
+//        log.info("SquareController searchRoom in");
+//        log.info("user id값"+user.getId());
+//        return SuccessResponse.of(SuccessType.SEARCH_ROOM_SUCCESSFULLY,
+//                squareService.searchRoom(user,roomId));
+//    }
 
     @GetMapping("/list/{channelId}") //방 목록
     public SuccessResponse<RoomListResponse> listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){

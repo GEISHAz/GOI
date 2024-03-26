@@ -77,7 +77,7 @@ public class RoomService {
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-
+        Room r;
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
         int idx = room.getParticipants().indexOf(gameUser);
@@ -94,6 +94,7 @@ public class RoomService {
             Optional<Room> tmp = roomRepository.findById(rId);
             if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
             tmp.get().updateStatus(2); //room테이블에 없어진 방 처리
+            r=roomRepository.save(tmp.get());
         }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
