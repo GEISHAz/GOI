@@ -13,8 +13,8 @@ import axios from 'axios';
 export default function choiceModal({ onClose }) {
   const [selectedImage, setSelectedImage] = useState('');
   const dispatch = useDispatch();
-  const userId = localStorage.getItem("userId");
-  const accessToken = localStorage.getItem("accessToken");
+  const userId = sessionStorage.getItem("userId");
+  const accessToken = sessionStorage.getItem("accessToken");
 
   // 이미지들에게 번호 부여
   const images = [

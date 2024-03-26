@@ -15,8 +15,8 @@ import Back from '../back/goHub.jsx';
 import styles from './ranking.module.css';
 
 export default function Ranking() {
-  const accessToken = localStorage.getItem("accessToken");
-  const userId = localStorage.getItem("userId");
+  const accessToken = sessionStorage.getItem("accessToken");
+  const userId = sessionStorage.getItem("userId");
   const [myInfo, setMyInfo] = useState({ exp: null, rank: null }); // 본인 정보
   const [otherUsers, setOtherUsers] = useState([]); // 다른 유저 정보
 

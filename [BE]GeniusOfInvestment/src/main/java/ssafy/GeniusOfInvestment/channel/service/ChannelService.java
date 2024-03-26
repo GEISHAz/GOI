@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.channel.service;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class ChannelService {
 
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
     //채널목록
     public List<ChannelInfo> listAllChannel() {
@@ -39,7 +41,7 @@ public class ChannelService {
                                 .builder()
                                 .id(c.getId())
                                 .channelName(channelRepository.findById(c.getId()).get().getChName())
-                                .userCount(c.getParticipants().size())
+                                .userCount(userRepository.countByChannel(c))
                                 .build());
             }
         }
@@ -49,16 +51,19 @@ public class ChannelService {
 
     //채널 들어가기
     public void enterChannel(User user, Long channelId) {
-
+        log.info("enterChannelService in");
+        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
+            user.deleteChannel();
 
         log.info("유저 현 채널 : "+user.getChannel());
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
-        if(ochannel.isPresent())
-            channel = ochannel.get();
-        else
+        if(ochannel.isEmpty()){
             throw new CustomBadRequestException(ErrorType.CHANNEL_NOT_FOUND);
+        }
+        channel = ochannel.get();
+
         // 채널을 들어갈 수 있는지 부터 확인해야함
         if (channel.getParticipants().size() > 100)
             throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
@@ -75,5 +80,26 @@ public class ChannelService {
         enterUser.updateChannel(channel);
 
         userRepository.save(enterUser);
+        log.info("enterChannelService in");
+    }
+
+    public void exitChannel(User user) {
+        log.info("exitChannelService in");
+        log.info("id : "+user.getId());
+        log.info("id : "+user.getNickName());
+        log.info("id : "+user.getExp());
+        log.info("id : "+user.getImageId());
+        log.info("id : "+user.getSocialId());
+        Optional<User> byId = userRepository.findById(user.getId());
+        if(!byId.isEmpty()) {
+            byId.get().deleteChannel();
+            User u = byId.get();
+            // 유저DB에서 channel 삭제
+            userRepository.save(u);
+        }
+        else{
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_CHANNEL);
+        }
+        log.info("exitChannelService out");
     }
 }

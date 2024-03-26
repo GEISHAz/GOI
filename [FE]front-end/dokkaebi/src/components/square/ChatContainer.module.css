@@ -1,58 +1,115 @@
-  .chatComponents {
-    background-color: rgba(0, 0, 0, 0.6);
-    width: 900px;
-    height: 300px;
-    margin-left: 30px;
-    /* border-top-left-radius: 20px;
-    border-top-right-radius: 20px; */
-    border-radius: 20px;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-between; 
-  }
-  
-  .chatArea {
-    width: 95%;
-    display: flex;
-    justify-content: center;
-    direction: row;
-    background-color: rgba(0, 0, 0, 0);
-    position: relative; 
-    bottom: 12px;
-    align-self: center;
-    margin-top: auto;
-  }
-  
-  .chatTo {
-    width: 100px;
-    /* background-color: black; */
-    /* color:white; */
-    font-size: 12px;
-    font-family: Galmuri11;
-    background: rgb(255, 255, 255, 0.7);
-    color: rgb(0, 0, 0);
-    text-align: center;
-    border-left-color: white;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-  
-  .chatTo > option {
-    font-family: Galmuri11;
-    background: black;
-    color: white;
-    opacity: 80%;
-    border-radius: 5px;
-  }
-  
-  .chatInput {
-    width: 550px;
-    background-color: rgb(255, 255, 255, 0.7);
-    font-family: Galmuri11;
-    color: rgba(0, 0, 0);
-    padding-left: 12px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    outline: none;
-  }
-  
+/* 기존 스타일 */
+.chatComponents {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 85%;
+  height: 250px;
+  margin-left: 1%;
+  border-radius: 20px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between;
+  overflow: hidden; /* 경계 밖의 내용을 숨김 */
+}
+
+.chatArea {
+  width: 95%;
+  display: flex;
+  direction: row;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0);
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: 1%;
+}
+
+.chatTo {
+  width: 100px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Galmuri11;
+  background: rgb(255, 255, 255, 0.7);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  margin-left: 2%;
+  border-radius: 5px;
+}
+
+.chatTo > option {
+  font-family: Galmuri11;
+  background: black;
+  color: white;
+  opacity: 80%;
+}
+
+.chatInput {
+  width: 650px;
+  height: 30px;
+  background-color: rgb(255, 255, 255, 0.7);
+  font-family: Galmuri11;
+  color: rgba(0, 0, 0);
+  margin-left: 2%;
+  padding-left: 12px;
+  border-radius: 5px;
+  outline: none;
+}
+
+
+.chat_bubble {
+  color: white;
+  max-width: 95%;
+  /* margin-bottom: 0.5%; */
+  border-radius: 20px;
+}
+
+.chat_start {
+  align-self: flex-start;
+  padding: 1%;
+  /* background-color: #d1edc1; */
+}
+
+.chat_end {
+  align-self: flex-end;
+  padding: 1%;
+}
+
+.chat_bubble strong {
+  color: yellow;
+  font-weight: bold;
+}
+
+.chat_button {
+  color: dark;
+  font-weight: bold;
+}
+
+.messageArea {
+  flex-grow: 1;
+  /* padding-left: 5%; */
+  box-sizing: border-box;
+  margin-right: 1px;
+  overflow-y: auto;
+}
+
+.messageArea::-webkit-scrollbar {
+  width: 15px; /* 스크롤바의 너비 */
+  background-color: rgba(0,0,0,0.2); /* 스크롤바 배경 색상 */
+}
+
+/* 스크롤바 핸들(움직이는 부분)을 위한 스타일 */
+.messageArea::-webkit-scrollbar-thumb {
+  background-color: #FFC0CB; /* 핸들의 배경 색상 */
+  border-radius: 10px; /* 핸들의 모서리 둥글기 */
+  border: 2px solid white; /* 핸들의 테두리 */
+}
+
+/* 스크롤바 트랙(핸들이 움직이는 배경 부분)을 위한 스타일 */
+.messageArea::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px white; /* 내부 그림자 */
+  border-radius: 10px; /* 모서리 둥글기 */
+}
+
+/* 스크롤바 버튼(위, 아래 버튼)을 위한 스타일 */
+.messageArea::-webkit-scrollbar-button {
+  display: none; /* 스크롤바 버튼은 표시하지 않음 */
+}

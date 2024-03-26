@@ -38,7 +38,7 @@ public class Friend {
         this.friend = friend;
     }
 
-    public Friend of(User user, User friend){
+    public static Friend of(User user, User friend){
         return builder()
                 .user(user)
                 .friend(friend)

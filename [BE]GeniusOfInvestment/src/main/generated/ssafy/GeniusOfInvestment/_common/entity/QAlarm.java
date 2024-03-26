@@ -22,8 +22,6 @@ public class QAlarm extends EntityPathBase<Alarm> {
 
     public static final QAlarm alarm = new QAlarm("alarm");
 
-    public final StringPath content = createString("content");
-
     public final QUser from;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

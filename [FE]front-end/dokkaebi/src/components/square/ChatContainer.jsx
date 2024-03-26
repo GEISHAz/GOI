@@ -2,21 +2,23 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from './ChatContainer.module.css'
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import axios from 'axios';
 
 export default function ChatContainer() {
   const sender = useSelector(state => state.auth.userNickname);
-  const channelId = useSelector(state => state.game.channelId)
-  // const userId = localStorage.getItem("userId");
+  // const userId = sessionStorage.getItem("userId");
   const [chatList, setChatList] = useState([]);
   // const [chatMessage, setChatMessage] = useState('')
   const [inputMessage, setInputMessage] = useState('');
   const recentMessage = useRef(null);
   const stompClient = useRef(null);
+  const subscriptionRef = useRef(null); // 구독할 때 식별자 지정
+  const channelId = sessionStorage.getItem("channelId");
 
   useEffect(() => {
     // console.log("유즈이펙트 확인!!!!")
-    const socket = new SockJS('http://localhost:8080/ws-stomp');
+    const socket = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     console.log('웹소켓 상태 확인 :', SockJS)
     stompClient.current = Stomp.over(socket)
     console.log("스톰프 클라이언트 확인 :", stompClient.current)
@@ -26,10 +28,9 @@ export default function ChatContainer() {
       console.log("광장에서 채널 연결됨!!")
 
       // 구독하기
-      stompClient.current.subscribe('/sub/square/chat/'+`${channelId}`, (message) => {
+      subscriptionRef.current = stompClient.current.subscribe('/sub/square/chat/'+`${channelId}`, (message) => {
         // 받은 메세지 처리할 곳
         const msg = JSON.parse(message.body);
-        console.log("message 타입 확인 :", message);
         if (msg.type && msg.type === "TALK") {
           setChatList(chatList => [...chatList, { sender: msg.sender, message: msg.message }]);
         }
@@ -39,12 +40,40 @@ export default function ChatContainer() {
     });
 
     return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
+      }
       if (stompClient.current && stompClient.current.connected) {
-        console.log("채팅 연결 종료");
         stompClient.current.disconnect();
       }
     };
-  }, []);
+  }, [chatList, channelId]);
+
+  // beforeunload 이벤트 리스너 관리를 위한 별도의 useEffect
+  useEffect(() => {
+    const handleUnload = async () => {
+      // 페이지 벗어남 시 실행되는 로직
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (channelId) {
+        try {
+          await axios.post('https://j10d202.p.ssafy.io/api/channel/exitc', {}, {
+            headers: { Authorization: `Bearer ${accessToken}` },  
+          });
+          sessionStorage.removeItem('channelId');
+        } catch (error) {
+          console.error("채널 나가면서 채널Id 제거 실패", error);
+        }
+      }
+    };
+
+    // beforeunload 이벤트 리스너 등록
+    window.addEventListener('beforeunload', handleUnload);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 해제
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, [channelId]);
 
   // 메세지 보내기 조작할 함수
   const handleSendMessage = (event) => {
@@ -54,15 +83,17 @@ export default function ChatContainer() {
     }
 
     if (stompClient.current && stompClient.current.connected && inputMessage.trim() !== '') {
-      console.log("메시지 채팅 하나를 보냈어요.")
-      // console.log("roomId를 확인합니다. :", params.id)
-      stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify({
+      const newMessage = {
         roomId: channelId,
         sender: sender,
         message: inputMessage,
         type: 'TALK',
-      }));
-      
+      };
+      console.log("메시지 채팅 하나를 보냈어요.")
+      console.log("sender 확인 :", newMessage.sender)
+
+      stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify(newMessage));
+      setChatList([...chatList, newMessage]);
       setInputMessage('');
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.")
@@ -92,12 +123,10 @@ export default function ChatContainer() {
           <div
             key={index}
             ref={recentMessage}
-            className={`chat ${message.sender === sender.current ? 'chat-end' : 'chat-start'}`}
+            className={message.sender === sender ? styles.chat_end : styles.chat_start}
           >
-            <div className="chat-bubble">
-              {message.sender !== sender.current && (
-                <strong>{message.sender} : </strong>
-              )}
+            <div className={styles.chat_bubble}>    
+              <strong className='ml-2'>{message.sender} : </strong>      
               <span>{message.message}</span>
             </div>
           </div>
@@ -111,18 +140,20 @@ export default function ChatContainer() {
           <option value="3">C에게</option>
         </select>
         <form onSubmit={handleSendMessage}>
+          <div className='flex'>
           <input
             type="text"
             className={styles.chatInput}
             value={inputMessage}
             onChange={handleInputChange}  
           />
-          <button
+            <button
               type="submit"
-              className="bg-blue-300 text-white rounded-full px-4 py-2 ml-2 focus:outline-none"
+              className={`${styles.chat_button} bg-blue-300 h-8`}
             >
               입력
             </button>
+          </div>
         </form>
       </div>
     </div>

@@ -33,7 +33,7 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom{
                 .builder()
                     .id(tuple.get(0,Long.class))
                     .title(tuple.get(1,String.class))
-                    .isPublic(tuple.get(2,Boolean.class))
+                    .isPrivate(tuple.get(2,Boolean.class))
                 .build();
     }
 }

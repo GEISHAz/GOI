@@ -67,7 +67,7 @@ export default function GamePlay() {
     };
   }, []);
 
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = sessionStorage.getItem("accessToken");
 
   useEffect(() => {
     // console.log(accessToken);
