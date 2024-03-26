@@ -42,16 +42,16 @@ export default function Channel() {
         // console.log("GET 리스폰스 확인 :", res)
         if (res.status === 200) {
           // 받아오는 res.data 확인 -> id, channelName, userCount
-          console.log("채널 백에서 온 데이터 확인", res.data)
-          console.log("msg 확인 :", res.msg)
-          setGetChannelInfo(res.data)
+          // console.log("채널 백에서 온 데이터 확인", res.data.data)
+          // console.log("msg 확인 :", res.data.msg)
+          setGetChannelInfo(res.data.data)
           // const channelId = res.data
         } else {
           throw new Error('GET 요청에서 에러 발생');
         }
       } catch (error) {
         console.error('채널 목록 불러오기 실패', error);
-        console.log(error)
+        // console.log(error)
       }
     };
 

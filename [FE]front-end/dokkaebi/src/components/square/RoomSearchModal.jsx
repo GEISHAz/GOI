@@ -26,7 +26,7 @@ export default function RoomSearchModal({ onClose }) {
 
     if (response.status === 200) {
       console.log('입장 성공:', response);
-      console.log('서버로부터 받은 roomId:', response.data.roomId);
+      console.log('서버로부터 받은 roomId:', response.data.data.roomId);
       navigate(`/room/${roomId}`); // 방 번호에 해당하는 페이지로 이동
     } else {
       throw new Error('입장 실패');
