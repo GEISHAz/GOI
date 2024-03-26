@@ -71,7 +71,8 @@ export default function ChatContainer() {
         }
       });
     };
-  }, [chatList, channelId]);
+  }, [channelId]);
+
   // 메세지 보내기 조작할 함수
   const handleSendMessage = (event) => {
     // 새로고침 방지
@@ -90,7 +91,7 @@ export default function ChatContainer() {
       console.log("sender 확인 :", newMessage.sender)
 
       stompClient.current.send(`/pub/square/chat/message`, {}, JSON.stringify(newMessage));
-      setChatList([...chatList, newMessage]);
+      // setChatList([...chatList, newMessage]);
       setInputMessage('');
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.")
