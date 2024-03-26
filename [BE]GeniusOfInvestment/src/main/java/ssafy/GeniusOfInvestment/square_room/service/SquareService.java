@@ -121,12 +121,16 @@ public class SquareService {
 
         redisGameRepository.updateGameRoom(gameRoom);
 
+        RedisUser rdu;
         //유저 동선 추적
-        RedisUser rdu = redisUserRepository.getOneRedisUser(user.getId());
-        if(rdu == null) redisUserRepository.updateUserStatusGameing(new RedisUser(user.getId(), false));
-        else throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
+        if(redisUserRepository.getOneRedisUser(user.getId()) == null) {
+            rdu = new RedisUser(user.getId(), false);
+            redisUserRepository.saveUserStatusGameing(rdu);
+        }else
+            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
 
-        redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+        log.info("RedisUser 방찾기와 동시에 생성 완료 save 까지");
+//        redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
         // 웹소켓 연결
         messageTemplate.convertAndSend("/alram/msg-to/" + roomnum,
