@@ -244,7 +244,7 @@ public class SquareService {
         return SavedRoomResponse
                 .builder()
                 .roomnum(room.getId())
-                .channelId(room.getChannel().getId())
+                .channelId(channelId)
                 .title(room.getTitle())
                 .isPrivate(room.isPublic())
                 .status(room.getStatus())
