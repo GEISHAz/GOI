@@ -31,6 +31,10 @@ export default function TopButtons() {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen); // 사이드바 토글 함수
 
+  const handleQuickEnter = () => {
+    console.log("빠른 입장 확인")
+  }
+
   // const openEnterModal = () => {
   //   setEnterModal(true);
   // }
