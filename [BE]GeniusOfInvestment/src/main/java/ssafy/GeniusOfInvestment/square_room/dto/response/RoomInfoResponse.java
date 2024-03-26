@@ -5,8 +5,11 @@ import lombok.Builder;
 @Builder
 public record RoomInfoResponse(
         Long roomId,
-        boolean isPrivate, //true면 비번방 false면 공개방
-        boolean enter //true 면 가능 false 면 불가능
+        int status  //0이면 통과했다
+                    //1이면 비번걸렸다. 또는 틀렸다. 돌려준 roomId랑 비번 다시 보내라
+                    //2이면 방이 가득찼다. 모달끄고 이제 그만불러라
+                    //3이면 존재하지 않는다. 모달끄고 이제 그만불러라
+
 
 ) {
 }

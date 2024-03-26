@@ -2,6 +2,7 @@ package ssafy.GeniusOfInvestment._common.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
@@ -42,9 +43,9 @@ public enum SuccessType {
     FAST_ENTER_SUCCESSFULLY("빠른입장 성공"),
     SEARCH_ROOM_SUCCESSFULLY("방 찾기 성공"),
     ROOM_LIST_CALLED_SUCCESSFULLY("방 목록 조회 성공"),
-    USER_LIST_CALLED_SUCCESSFULLY("접속 중인 유저목록 조회 성공")
+    USER_LIST_CALLED_SUCCESSFULLY("접속 중인 유저목록 조회 성공"),
     //****************************Room****************************//
-
+    ROOM_ENTER_REQUEST_SUCCESSFULLY("방 접속 로직 정상 동작"),
 
 
     //****************************Game****************************//
