@@ -110,4 +110,39 @@ public class RoomService {
         return rstList;
     }
 
+    public List<RoomPartInfo> kickUser(User user, Long targetId, Long rId){
+        GameRoom room = redisGameRepository.getOneGameRoom(rId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        GameUser gameUser = new GameUser();
+        gameUser.setUserId(user.getId());
+        int idx = room.getParticipants().indexOf(gameUser);
+        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+        gameUser = room.getParticipants().get(idx); //강퇴를 요청한 유저의 객체
+        if(!gameUser.isManager()){
+            throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
+        }
+        GameUser target = new GameUser();
+        target.setUserId(targetId);
+        idx = room.getParticipants().indexOf(target);
+        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+        room.getParticipants().remove(idx); //강퇴 당할 유저를 redis 참가자 리스트에서 삭제
+        redisGameRepository.updateGameRoom(room);
+
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        for(GameUser gu : room.getParticipants()){
+            Optional<User> tmp = userRepository.findById(gu.getUserId());
+            if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rstList.add(RoomPartInfo.builder()
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .build());
+        }
+        return rstList;
+    }
+
 }

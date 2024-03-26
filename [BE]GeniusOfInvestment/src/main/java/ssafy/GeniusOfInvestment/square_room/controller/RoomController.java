@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
+import ssafy.GeniusOfInvestment.square_room.dto.request.KickRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.dto.response.UserEnterMessageResponse;
 import ssafy.GeniusOfInvestment.square_room.service.RoomService;
@@ -49,9 +50,35 @@ public class RoomController {
         return json;
     }
 
+    //방 나가기
     @DeleteMapping("/exit/{id}")
-    public void exitRoom(@AuthenticationPrincipal User user, @PathVariable("id") Long rId){
+    public Map<String, String> exitRoom(@AuthenticationPrincipal User user, @PathVariable("id") Long rId){
         List<RoomPartInfo> rInfo = roomService.exitRoom(user, rId);
+        messageTemplate.convertAndSend("/sub/room/chat/" + rId,
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_EXIT)
+                        .data(rInfo)
+                        .build());
+
+        Map<String, String> json = new HashMap<>();
+        json.put("msg", "방 나가기 완료");
+        return json;
+    }
+
+    @PostMapping("/kick")
+    public Map<String, String> kickUser(@AuthenticationPrincipal User user, @RequestBody KickRequest kinfo){
+        List<RoomPartInfo> rInfo = roomService.kickUser(user, kinfo.userId(), kinfo.roomId());
+        messageTemplate.convertAndSend("/sub/room/chat/" + kinfo.roomId(),
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_KICK)
+                        .data(rInfo)
+                        .build());
+
+        Map<String, String> json = new HashMap<>();
+        json.put("msg", "유저 강퇴 완료");
+        return json;
     }
 
 //    @RequestMapping("/ready")
