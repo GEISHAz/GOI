@@ -40,7 +40,7 @@ export default function Channel() {
   const fetchChannelSelect = async (channelId) => {
     try {
       console.log("보내는 토큰 확인 :", accessToken);
-      const res = await axios.put(
+      const res = await axios.post(
         `https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`,
         {},
         {

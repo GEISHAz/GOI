@@ -17,6 +17,7 @@ export default function RoomList() {
   const [currentPage, setCurrentPage] = useState(0);
   const roomsPerPage = 4; // 한 페이지에 표시할 방의 수
   const [EnterModal, setEnterModal] = useState(false); // 비밀방 입장 모달
+  const [roomId,useRoomId] = useState()
 
   // 현재 페이지에 따라 표시할 방 계산
   const indexOfLastRoom = (currentPage + 1) * roomsPerPage;
@@ -40,8 +41,13 @@ export default function RoomList() {
   // 방 클릭 핸들러 함수
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
+    useRoomId(room.id)
+    console.log(room.isPrivate)
     if (room.isPrivate) {
+      // setRoomId(room.id);
+      console.log("?????")
       setEnterModal(true);
+      console.log(room.id)
     } else {
       axios
         .post(`https://j10d202.p.ssafy.io/api/room/enter`,
@@ -54,7 +60,7 @@ export default function RoomList() {
         })
         .then((res) => {
           console.log(res);
-          console.log("방 접속 성공");
+          console.log("방 접속 성공?");
           sessionStorage.setItem("roomId", room.id);
           navigate(`/room/${room.id}`);
         })
@@ -62,8 +68,8 @@ export default function RoomList() {
           console.log(err);
           console.log("방 접속 실패");
         });
-      sessionStorage.setItem("roomId", room.id);
-      navigate(`/room/${room.id}`);
+      // sessionStorage.setItem("roomId", room.id);
+      // navigate(`/room/${room.id}`);
     }
   };
 
@@ -138,7 +144,7 @@ export default function RoomList() {
       </div>
 
       {/* 모달 함수 전달 */}
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} roomId={room.id}/>}
+      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId}/>}
     </div>
   );
 }
