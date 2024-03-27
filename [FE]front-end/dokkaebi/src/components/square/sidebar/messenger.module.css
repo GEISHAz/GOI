@@ -40,6 +40,10 @@
   border-left: none;
   border-right: none;
   margin-bottom: 2%;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .chatList::-webkit-scrollbar {
@@ -65,6 +69,13 @@
   display: none; /* 스크롤바 버튼은 표시하지 않음 */
 }
 
+.chatting {
+  flex-grow: 1;
+  box-sizing: border-box;
+  margin-right: 1px;
+  overflow-y: auto;
+}
+
 /* 인풋 영역 */
 .inputDiv {
   width : 100%;
@@ -83,4 +94,29 @@
   color: white;
   width : 25%;
   padding : 2.5%; 
+}
+
+/* 내 채팅 */
+.chatMine {
+  text-align: right;
+  background-color: #d1eaff; /* 예시 색상 */
+  margin-left: auto;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+/* 상대방(친구)의 채팅 */
+.chatTheirs {
+  text-align: left;
+  background-color: #f0f0f0; /* 예시 색상 */
+  margin-right: auto;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+/* 채팅 내역 */
+.chatBubble {
+  color: white;
+  max-width: 95%;
+  border-radius: 20px;
 }

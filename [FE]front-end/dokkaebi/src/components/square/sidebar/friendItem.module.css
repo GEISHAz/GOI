@@ -1,0 +1,50 @@
+.friendItem {
+  width: 100%;
+}
+
+.friendList {
+  width: 95%;
+  height: 50px;
+  border-radius: 5px;
+  margin-left: 1.5%;
+  margin-bottom: 1.5%;
+  background-color: #FFDFDF;
+  padding: 1px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  cursor: pointer;
+}
+
+.contextMenu {
+  width: 100%;
+  height: auto;
+  padding: 1px;
+  display: flex;
+}
+
+.deleteButton, .deleteClose {
+  width: 17.5%;
+  padding: 1%;
+  height: auto;
+  background-color: #FB929E;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* 버튼 모서리 둥글게 */
+  font-size: 12.5px; /* 폰트 크기 조절 */
+}
+
+/* 버튼 호버 효과 추가 */
+.friendList:hover {
+  transform: scale(1.02);
+  font-weight: bold;
+  background-color : #FFDFEF;
+  transition: transform 0.2s ease-in-out
+}
+
+.deleteButton:hover, .deleteClose:hover {
+  background-color: darken(#FB929E, 10%);
+}
+

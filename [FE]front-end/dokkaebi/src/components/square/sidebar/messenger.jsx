@@ -1,8 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import friendClose from '../../../images/backButton/friendBack.gif';
 import styles from './messenger.module.css';
 
-const Messenger = ({ selectedFriend, toggleMessageBar }) => {
+const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendChat }) => {
+  const [inputMessage, setInputMessage] = useState('');
+  const recentMsg = useRef(null);
+  const userNickname = useSelector((state) => state.auth.userNickname);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // 메세지 전달하고 페이지 리로드 방지
+    handleSendMSG(inputMessage); // 메시지 전송 함수에 사용자가 입력한 inputMessage 담아서 전달
+    setInputMessage(""); // 채팅 치고 나면 입력 필드 초기화
+  };
+
+  const handleChange = (e) => {
+    setInputMessage(e.target.value); // 입력 필드 값 업데이트
+  };
+
+  // 채팅창 스크롤
+  const scrollToBottom = () => {
+    console.log("최신으로 친구와의 채팅 불러옴");
+    recentMsg.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [isFriendChat.length]);
+
   return (
     <aside className={styles.messenger}>
       <nav>
@@ -24,8 +49,20 @@ const Messenger = ({ selectedFriend, toggleMessageBar }) => {
       <nav>
         <div className={`flex flex-col overflow-y-auto ${styles.chatList}`}> 
           {/* 대화내역 */}
-          <div>
-            대화내역 보일 곳
+          <div className={styles.chatting}>
+            {isFriendChat.map((chat, index) => (
+              <div
+                key={index}
+                ref={recentMsg}
+                className={
+                  chat.sender === userNickname ? styles.chatMine : styles.chatTheirs
+                }
+              >
+                <div className={styles.chatBubble}>
+                  <span>{chat.message}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </nav>
@@ -33,12 +70,14 @@ const Messenger = ({ selectedFriend, toggleMessageBar }) => {
       {/* 채팅 칠 곳 */}
       <nav>
         <div className={`flex justify-center items-center ${styles.inputDiv}`}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className='flex justify-center'>
               <input
                 type="text"
                 className={styles.chatInput}
-                // value={inputMessage}
+                maxLength={100}
+                value={inputMessage}
+                onChange={handleChange}
               />
                 <button
                   type="submit"
