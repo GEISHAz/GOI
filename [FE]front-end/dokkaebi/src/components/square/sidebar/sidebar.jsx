@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 import Messenger from './messenger.jsx'
 import FriendAddModal from './friendAddModal.jsx';
 import FriendAlarm from './friendAlarmModal.jsx';
+import FriendItem from './friendItem.jsx';
 import styles from './sidebar.module.css';
-import msgOn from '../../../images/square/mailOn.png';
-import msgOff from '../../../images/square/mailOff.png';
-import ContextMenu from './contextMenu.jsx';
 
 const Sidebar = ({ toggleSidebar }) => {
-  const accessToken = sessionStorage.getItem("accessToken");
-  const userId = sessionStorage.getItem("userId");
+  const client = useRef(null); // 구독할 클라이언트
+  const subscriptionRef = useRef(null); // 구독할 때 식별자 지정
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [isFriendList, setIsFriendList] = useState([]);
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 문구
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
   const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림관리
-  const [contextMenu, setContextMenu] = useState(null);
-
+  const [isFriendChat, setIsFriendChat] = useState([]);
+  const userNickname = useSelector((state) => state.auth.userNickname);
+  const accessToken = sessionStorage.getItem("accessToken");
+  const userId = sessionStorage.getItem("userId");
+  
+  // 친구를 클릭하면 메신저가 열리는 함수
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend); // 선택된 친구 상태 업데이트
   };
@@ -27,22 +32,7 @@ const Sidebar = ({ toggleSidebar }) => {
     setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
   };
 
-  // 우클릭 이벤트 핸들러
-  const handleContextMenu = (event, friend) => {
-    event.preventDefault(); // 기본 우클릭 메뉴 비활성화
-    setContextMenu({
-      x: event.clientX,
-      y: event.clientY,
-      friend: friend,
-    });
-  };
-
-  // 컨텍스트 메뉴 닫기 함수
-  const closeContextMenu = () => {
-    setContextMenu(null);
-  };
-
-  const fetchFriendList = async () => {
+  const friendList = async () => {
     try {
       const res = await axios.get(`https://j10d202.p.ssafy.io/api/friend/${userId}/list`, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -74,7 +64,7 @@ const Sidebar = ({ toggleSidebar }) => {
         headers : {  Authorization: `Bearer ${accessToken}` },
       });
       alert("도깨비 친구를 삭제했어요")
-      fetchFriendList(); // 친구 목록 다시 불러오기
+      friendList(); // 친구 목록 다시 불러오기
     } catch (error) {
       console.error('친구 삭제 실패', error)
     }
@@ -93,11 +83,83 @@ const Sidebar = ({ toggleSidebar }) => {
   const closeAlarmModal = () => {setIsFriendAlarm(false)}
 
   // 친구 목록 갱신 함수
-  const refreshFriendList = () => {fetchFriendList()};
+  const refreshFriendList = () => {friendList()};
 
   useEffect(() => {
-    fetchFriendList();
+    friendList();
   }, []);
+
+  // 친구와의 채팅 연결
+  useEffect(() => {
+    // 친구와의 1대1 채팅을 위해 새로운 독립적인 웹소켓 연결
+    const connectWebSocket = () => {
+      const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
+      client.current = Stomp.over(sock);
+      
+      client.current.connect({}, frame => {
+        console.log("친구 채팅 연결됨!!")
+        console.log(frame)
+        
+        // 예시로, 사용자의 모든 친구와의 채팅 채널에 구독하는 코드
+        isFriendList.forEach(friend => {
+          const friendListId = friend.friendListId;
+          subscriptionRef.current = client.current.subscribe(
+            '/sub/friend/chat/' + `${friendListId}`,
+            (message) => {
+              // 받은 메세지 처리할 곳
+              const msg = JSON.parse(message.body);
+              if (msg.type && msg.type === "TALK") {
+                setIsFriendChat((isFriendChat) => [
+                  ...isFriendChat,
+                  { sender: msg.sender, message: msg.sender, },
+                ]);
+              }
+          });
+        });
+      }, (error) => {
+        console.error('친구 채팅 연결 에러', error);
+      });
+
+      return () => {
+        if (subscriptionRef.current) {
+          subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
+        }
+
+        if (client.current && client.current.connected) {
+          client.current.disconnect();
+        }
+      };
+    };
+
+    connectWebSocket();
+  }, [isFriendChat]);
+
+  // 메세지 보내기 조작할 함수 -> Messenger.jsx로 props 내려서 작동시킴
+  const handleSendMSG = (message) => {
+    if (
+      client.current &&
+      client.current.connected &&
+      message.trim() !== ""
+    ) {
+      const newMsg = {
+        roomId: selectedFriend.friendListId,
+        sender: userNickname,
+        message: message,
+        type: "TALK",
+      };
+      console.log("친구에게 채팅 하나를 보냈어요.");
+      console.log("sender 확인 :", newMsg.sender);
+
+      client.current.send(
+        `/pub/friend/chat/message`,
+        {},
+        JSON.stringify(newMsg)
+      );
+    } else {
+      alert("잠시 후에 시도해주세요. 채팅이 너무 빨라요 !");
+      console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
+    }
+  };
 
   return (
     <aside className={styles.sidebar}>
@@ -112,30 +174,14 @@ const Sidebar = ({ toggleSidebar }) => {
       {/* 친구 목록 */}
       <nav>
         <div className={`flex flex-col items-center overflow-y-auto ${styles.friendContianer}`}>
-          <div className='w-full'>
-            {isFriendList.map((user, index) => {
-              return (
-                <div 
-                  key={index}
-                  className={styles.friendList}
-                  onClick={() => handleFriendClick(user)}
-                  onContextMenu={(e) => handleContextMenu(e, user)}
-                >
-                  <span className='font-bold ml-5'>{user.nickName}</span>
-                  <div className='flex justify-center items-center'>
-                    <img src={msgOff} alt='메세지상태' className='mr-5'/>
-                  </div>
-                </div>
-              )
-            })}
-            {contextMenu && (
-            <ContextMenu
-              x={contextMenu.x}
-              y={contextMenu.y}
-              onClose={closeContextMenu}
-              onFriendDelete={() => friendDelete(contextMenu.friend.friendListId)}
-            />)}
-          </div>
+          {isFriendList.map((friend, index) => (
+            <FriendItem
+              key={index}
+              friend={friend} // friend 라는 인자로 props 해준다
+              onDeleteFriend={friendDelete} // 삭제하는 함수 props
+              onFriendClick={handleFriendClick} // 메신저 토글 함수 props
+            />
+          ))}
         </div>
       </nav>
 
@@ -151,13 +197,18 @@ const Sidebar = ({ toggleSidebar }) => {
           {showPrompt && <div className={`w-full text-center font-bold ${styles.musicPrompt}`}>음악이 잠시 멈춥니다 !</div>}
       </nav>
 
-      {/* 친구 메신저 열기 */}
-      {selectedFriend && <Messenger selectedFriend={selectedFriend} toggleMessageBar={toggleMessageBar} />}
+      {/* 친구 메신저 열고 닫기 */}
+      {selectedFriend && <Messenger
+        selectedFriend={selectedFriend} // 선택된 친구 props
+        toggleMessageBar={toggleMessageBar} // 메신저 열고 닫는 함수 props
+        handleSendMSG={handleSendMSG} // 메신저 조작 함수 props
+        isFriendChat={isFriendChat} // 채팅 내역 props
+      />}
 
-      {/* 친구 추가 모달 열기 */}
+      {/* 친구 추가 모달 열고 닫기 */}
       {isAddFriendModalOpen && <FriendAddModal onClose={closeAddFriendModal} />}
 
-      {/* 친구 요청 알림 모달 열기 */}
+      {/* 친구 요청 알림 모달 열고 닫기 */}
       {isFriendAlarm && <FriendAlarm onRefreshFriendList={refreshFriendList} onAlarmClose={closeAlarmModal} />}
     </aside>
   );
