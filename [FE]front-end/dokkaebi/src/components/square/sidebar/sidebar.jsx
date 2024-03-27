@@ -6,6 +6,7 @@ import FriendAlarm from './friendAlarmModal.jsx';
 import styles from './sidebar.module.css';
 import msgOn from '../../../images/square/mailOn.png';
 import msgOff from '../../../images/square/mailOff.png';
+import ContextMenu from './contextMenu.jsx';
 
 const Sidebar = ({ toggleSidebar }) => {
   const accessToken = sessionStorage.getItem("accessToken");
@@ -15,6 +16,7 @@ const Sidebar = ({ toggleSidebar }) => {
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 문구
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
   const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림관리
+  const [contextMenu, setContextMenu] = useState(null);
 
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend); // 선택된 친구 상태 업데이트
@@ -23,6 +25,21 @@ const Sidebar = ({ toggleSidebar }) => {
   // 메신저 닫기 함수
   const toggleMessageBar = () => {
     setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
+  };
+
+  // 우클릭 이벤트 핸들러
+  const handleContextMenu = (event, friend) => {
+    event.preventDefault(); // 기본 우클릭 메뉴 비활성화
+    setContextMenu({
+      x: event.clientX,
+      y: event.clientY,
+      friend: friend,
+    });
+  };
+
+  // 컨텍스트 메뉴 닫기 함수
+  const closeContextMenu = () => {
+    setContextMenu(null);
   };
 
   const fetchFriendList = async () => {
@@ -78,6 +95,21 @@ const Sidebar = ({ toggleSidebar }) => {
   const refreshFriendList = () => {fetchFriendList()};
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (contextMenu) {
+        closeContextMenu(); // 컨텍스트 메뉴 닫기
+      }
+    };
+
+    // 클릭 이벤트 리스너 추가
+    document.addEventListener('click', handleClickOutside);
+    // 클릭 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [contextMenu]);
+
+  useEffect(() => {
     fetchFriendList();
   }, []);
 
@@ -101,10 +133,10 @@ const Sidebar = ({ toggleSidebar }) => {
                   key={index}
                   className={styles.friendList}
                   onClick={() => handleFriendClick(user)}
+                  onContextMenu={(e) => handleContextMenu(e, user)}
                 >
                   <span className='font-bold ml-5'>{user.nickName}</span>
-                  <div>
-                    <button className='' onClick={() => friendDelete(user.friendListId)}>삭제</button>
+                  <div className='flex justify-center items-center'>
                     <img src={msgOff} alt='메세지상태' className='mr-5'/>
                   </div>
                 </div>
@@ -112,6 +144,14 @@ const Sidebar = ({ toggleSidebar }) => {
             })}
           </div>
         </div>
+        {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={closeContextMenu}
+          onFriendDelete={() => friendDelete(contextMenu.friend.friendListId)}
+        />
+      )}
       </nav>
 
       <nav>
