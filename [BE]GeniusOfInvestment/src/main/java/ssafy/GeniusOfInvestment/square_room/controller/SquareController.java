@@ -22,10 +22,10 @@ public class SquareController {
     private final SquareService squareService;
 
     @PostMapping("/create") //방생성
-    public SuccessResponse<SavedRoomResponse> createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
+    public List<RoomPartInfo> createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
         log.info("SquareController createRoom start");
         log.info("user id값"+user.getId());
-        return SuccessResponse.of(SuccessType.CREATE_ROOM_SUCCESSFULLY,squareService.insertRoom(user,info));
+        return squareService.insertRoom(user, info);
     }
 
     @PostMapping("/fast") //빠른입장
