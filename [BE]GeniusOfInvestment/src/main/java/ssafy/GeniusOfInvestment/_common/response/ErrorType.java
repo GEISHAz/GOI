@@ -12,7 +12,7 @@ public enum ErrorType {
     //도메인별로 ErrorType 정의, 에러 발생 시 errorCode,msg 반환
 
     //****************************User****************************//
-    NOT_FOUND_USER(HttpStatus.UNAUTHORIZED,"등록된 사용자가 없습니다"),
+    NOT_FOUND_USER(HttpStatus.UNAUTHORIZED,"등록된 사용자가 없어요 !"),
     ALREADY_EXIST_USER_NICKNAME(HttpStatus.UNAUTHORIZED, "이미 존재하는 닉네임 입니다"),
     NOT_VALID_USER_NICKNAME(HttpStatus.BAD_REQUEST, "변경하려는 닉네임이 본인 닉네임 입니다"),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다"),
@@ -21,15 +21,15 @@ public enum ErrorType {
 
     //****************************Friend****************************//
     NOT_FOUND_FRIEND_ROOM(HttpStatus.BAD_REQUEST, "채팅하려는 친구 조회에 실패했습니다"),
-    ALREADY_EXISTS_FRIEND(HttpStatus.BAD_REQUEST,"이미 존재하는 친구입니다"),
+    ALREADY_EXISTS_FRIEND(HttpStatus.BAD_REQUEST,"이미 친구가 맺어져있어요 !"),
 
     //****************************Alarm****************************//
-    NOT_FOUND_INVITE_USER(HttpStatus.BAD_REQUEST, "초대할 유저를 찾지 못했습니다"),
+    NOT_FOUND_INVITE_USER(HttpStatus.BAD_REQUEST, "해당하는 유저가 없어요 !"),
     NOT_FOUND_INVITATION(HttpStatus.BAD_REQUEST, "초대 요청을 찾지 못했습니다"),
 
     //****************************Alarm****************************//
     NOT_FOUND_FRIEND(HttpStatus.BAD_REQUEST, "삭제할 친구 정보가 없습니다"),
-    ALREADY_EXISTS_ALARM(HttpStatus.BAD_REQUEST,"이미 전송한 요청입니다"),
+    ALREADY_EXISTS_ALARM(HttpStatus.BAD_REQUEST,"이미 요청을 보낸 상태에요 !"),
 
     //****************************Room****************************//
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"입장하려는 방이 존재하지 않습니다"),
