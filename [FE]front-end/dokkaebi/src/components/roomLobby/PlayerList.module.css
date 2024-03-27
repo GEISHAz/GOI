@@ -1,67 +1,71 @@
 .PlayerContainer {
-    width: 840px;
-    height: 420px;
-    padding: 2% 3%;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 20px; 
-  }
-  
-  .PlayerBox {
-    width: 340px;
-    height: 160px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 20px;
-    margin-left: 4px;
-    margin-right: 4px;
-    padding-left: 5%;
-    padding-bottom: 2%;
-  }
+  width: 840px;
+  height: 420px;
+  padding: 2% 3%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 20px;
+}
 
-  .playerComponents {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    direction: row;
-    align-items: center;
-  }
-  
-  .playerComponents > img {
-    width: 100px;
-    height: 100px;
-    /* margin: auto 16px auto 24px */
-  }
-  
-  .playerInfo {
-    display: flex;
-    flex-direction: column;
-    /* margin: auto 8px; */
-    margin-left: 20px;
-    margin-top: 20px;
-  }
-  
-  .player {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .playerNickName {
-    font-family: DNFBitBitv2;
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  .playerReady {
-    font-family: DNFBitBitv2;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    margin-left: 12px;
-    color: gray;
-  }
-  
-  .playerTotalMoney {
-    font-family: Galmuri11;
-    font-size: 24px;
-  }
+.PlayerBox {
+  width: 340px;
+  height: 160px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  margin-left: 4px;
+  margin-right: 4px;
+  padding-left: 5%;
+  padding-bottom: 2%;
+}
+
+.playerComponents {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  direction: row;
+  align-items: center;
+}
+
+.playerComponents > img {
+  width: 100px;
+  height: 100px;
+  /* margin: auto 16px auto 24px */
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  /* margin: auto 8px; */
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+}
+
+.playerNickName {
+  font-family: DNFBitBitv2;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.playerReady {
+  font-family: DNFBitBitv2;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  color: gray;
+}
+
+.playerTotalMoney {
+  font-family: Galmuri11;
+  font-size: 24px;
+}
+
+.playerReadyActive {
+  color: red;
+}

@@ -8,9 +8,9 @@ import yellow from "../../images/character/yellow.gif";
 import pink from "../../images/character/pink.gif";
 import orange from "../../images/character/orange.gif";
 
-export default function UserList(props) {
+export default function UserList() {
   const accessToken = sessionStorage.getItem("accessToken");
-  const [isUserInfo, setIsUserInfo] = useState(props.userList);
+  const [isUserInfo, setIsUserInfo] = useState([]);
 
   const images = [
     { id: 1, src: blue, alt: "파랑도깨비" },

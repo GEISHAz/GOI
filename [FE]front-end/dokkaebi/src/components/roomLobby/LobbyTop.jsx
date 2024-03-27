@@ -27,38 +27,57 @@ export default function LobbyTop() {
         console.log(err);
         console.log("방 나가기 실패");
       });
-
   };
 
-  return (
-    <>
-      <div className="flex items-center justify-between p-5">
-        {/* 뒤로가기 버튼 */}
-        <div>
-          <button
-            onClick={handleBackButtonClick}
-            className="font-bold text-white text-4xl"
-          >
-            Back
-          </button>
-        </div>
+  const handleReadyButtonClick = () => {
+    axios
+      .post(
+        `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
+        {},
+        {
+          headers: { accessToken: `Bearer ${accessToken}` },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log("레디 성공");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("레디 실패");
+      });
 
-        <div className="flex-grow flex justify-center gap-4">
-          {/* 레디 버튼 */}
-          <button
-            className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
-          >
-            READY
-          </button>
-        </div>
+    return (
+      <>
+        <div className="flex items-center justify-between p-5">
+          {/* 뒤로가기 버튼 */}
+          <div>
+            <button
+              onClick={handleBackButtonClick}
+              className="font-bold text-white text-4xl"
+            >
+              Back
+            </button>
+          </div>
 
-        {/* 메신저 버튼 */}
-        <div className="flex">
-          <button className={`${styles.messengerButton}`}>
-            <img src={messenger} alt="MessengerButton" />
-          </button>
+          <div className="flex-grow flex justify-center gap-4">
+            {/* 레디 버튼 */}
+            <button
+              onClick={handleReadyButtonClick}
+              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
+            >
+              READY
+            </button>
+          </div>
+
+          {/* 메신저 버튼 */}
+          <div className="flex">
+            <button className={`${styles.messengerButton}`}>
+              <img src={messenger} alt="MessengerButton" />
+            </button>
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  };
 }

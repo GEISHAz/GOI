@@ -3,6 +3,7 @@ import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
 
+import { useLocation } from "react-router-dom";
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -23,11 +24,43 @@ export default function userReadyRoom() {
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
 
+  let location = useLocation();
+
   const stompClientRef = useRef(null);
 
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
+  const [response, setResponse] = useState(location.state.response.data);
+  const [userList, setUserList] = useState(null);
 
-  const [userList, setUserList] = useState([]); 
+  const [isAllReady, setIsAllReady] = useState(false);
+
+  const toggleReady = (userId) => {
+    setUserList(
+      userList.map((user) =>
+        user.id === userId ? { ...user, isReady: !user.isReady } : user
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (response.msg) {
+      setUserList(response.data);
+    } else {
+      setUserList(response.userList);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    console.log("방 유저 리스트 확인0", response);
+    console.log("방 유저 리스트 확인1", userList);
+    // console.log("방 유저 리스트 확인", location.state.res.data);
+    // console.log(location.state.content);
+    if (userList && userList.every((user) => user.isReady)) {
+      setIsAllReady(true);
+    } else {
+      setIsAllReady(false);
+    }
+  }, [userList]);
 
   useEffect(() => {
     let reconnectInterval;
@@ -48,6 +81,7 @@ export default function userReadyRoom() {
             if (receivedMessage.type === "ROOM_ENTER") {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
+              console.log("받은 유저정보 확인", userList);
             }
           });
         },
@@ -63,12 +97,12 @@ export default function userReadyRoom() {
 
     return () => {
       console.log("unmounting...");
-    console.log(stompClientRef.current);
-    
-    if (stompClientRef.current) {
-      stompClientRef.current.disconnect();
-      console.log("STOMP: Disconnected");
-    }
+      console.log(stompClientRef.current);
+
+      if (stompClientRef.current) {
+        stompClientRef.current.disconnect();
+        console.log("STOMP: Disconnected");
+      }
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
@@ -78,11 +112,15 @@ export default function userReadyRoom() {
 
   return (
     <div style={backgroundStyle}>
-      <LobbyTop />
+      <LobbyTop
+        userList={userList}
+        toggleReady={toggleReady}
+        isAllReady={isAllReady}
+      />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
-        <PlayerList />
-        <LobbyChat userList={userList}/>
+        <PlayerList userList={userList} />
+        <LobbyChat />
       </div>
     </div>
   );

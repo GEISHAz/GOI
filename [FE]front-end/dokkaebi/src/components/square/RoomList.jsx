@@ -44,25 +44,29 @@ export default function RoomList() {
       setEnterModal(true);
     } else {
       axios
-        .post(`https://j10d202.p.ssafy.io/api/room/enter`,
-        {"roomId" : room.id, "password" : '',},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
+        .post(
+          `https://j10d202.p.ssafy.io/api/room/enter`,
+          { roomId: room.id, password: "" },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
           console.log("방 접속 성공");
           sessionStorage.setItem("roomId", room.id);
-          navigate(`/room/${room.id}`);
+          navigate(`/room/${room.id}`, {
+            state: JSON.parse(JSON.stringify({ response })),
+          });
         })
         .catch((err) => {
           console.log(err);
           console.log("방 접속 실패");
         });
-      sessionStorage.setItem("roomId", room.id);
-      navigate(`/room/${room.id}`);
+      // sessionStorage.setItem("roomId", room.id);
+      // navigate(`/room/${room.id}`);
     }
   };
 
@@ -137,7 +141,7 @@ export default function RoomList() {
       </div>
 
       {/* 모달 함수 전달 */}
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)}/>}
+      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} />}
     </div>
   );
 }

@@ -28,22 +28,25 @@ export default function Square() {
 
   useEffect(() => {
     sessionStorage.getItem("roomId");
-    axios
-      .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("방 나가기 성공");
-        sessionStorage.removeItem("roomId");
-        navigate(`/square/${channelId}`);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("방 나가기 실패");
-      });
+    if (roomId) {
+      axios
+        .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          console.log("방 나가기 성공");
+          sessionStorage.removeItem("roomId");
+          navigate(`/square/${channelId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("방 나가기 실패");
+        });
+    }
+
     return () => {
       // console.log("Square 페이지 이탈");
     };
