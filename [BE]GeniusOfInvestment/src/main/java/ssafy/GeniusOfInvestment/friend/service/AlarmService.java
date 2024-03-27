@@ -48,7 +48,7 @@ public class AlarmService {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXISTS_FRIEND);
         }
 
-        Optional<Alarm> findAlarm = alarmRepository.findAlarmsByUserAndFrom(fromUser.get(),toUser.get());
+        Optional<Alarm> findAlarm = alarmRepository.findAlarmsByUserAndFrom(toUser.get(),fromUser.get());
 
         if(findAlarm.isPresent()){
             int status = findAlarm.get().getStatus();
