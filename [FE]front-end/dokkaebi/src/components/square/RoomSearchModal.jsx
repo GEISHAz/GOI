@@ -10,7 +10,7 @@ export default function RoomSearchModal({ onClose }) {
   const navigate = useNavigate();
 
   // 입력창에 입력된 방 번호를 관리하는 상태
-  const [roomId, setRoomId] = useState("");
+  const [roomId, setRoomId] = useState('');
 
   // 비밀방이라면 -> 입력창에 입력된 비밀번호 관리
   const [password, setPassword] = useState('');
@@ -27,48 +27,46 @@ export default function RoomSearchModal({ onClose }) {
   const handleEnterClick = async () => {
     try {
       const response = await axios.post('https://j10d202.p.ssafy.io/api/room/enter', {
-      roomId: roomId,
-      password: password,
-    }, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-    if (response.status === 200) {
-      console.log('입장 성공:', response);
-      console.log('서버로부터 받은 roomId :', response.data.data.roomId);
-      console.log('서버에서 받은 status 확인 :', response.data.data.status)
-
-      // status에 따른 조건을 switch로 나누기
-      switch(response.data.data.status) {
-          case 0: // 입장 성공
-            navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
-            break;
-          case 1: // 비밀방 입장 모달 열기
-            setShowRoomEnterModal(true); // 비밀방 입장 모달 표시
-            break;
-          case 2: // 방이 가득 찼음
-            alert('방이 가득 차서 입장할 수 없어요!');
-            onClose(); // 모달 닫기
-            break;
-          case 3: // 존재하지 않는 방번호
-            alert('존재하지 않는 방번호입니다!');
-            onClose(); // 모달 닫기
-            break;
-          default:
-            // 예외 처리
-            alert('알 수 없는 오류가 발생!');
-            onClose(); // 모달 닫기
-            break;
-        }
-      } else {
-        throw new Error('입장 실패');
+        roomId: roomId,
+        password: password,
+      }, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+  
+      // 성공적인 응답 처리
+      if (response.status === 200) {
+        console.log('입장 성공:', response);
+        console.log('서버로부터 받은 roomId :', response.data.data.roomId);
+        console.log('서버에서 받은 status 확인 :', response.data.data.status);
+  
+        navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
       }
     } catch (error) {
-      console.error('입장 처리 중 오류 발생:', error);
-      alert('입장 처리 중 오류가 발생했습니다');
+      // 에러코드에 따른 조건을 switch로 나누기
+      switch(error.response.data.statusCode) {
+        case 423: // 방 비밀번호 틀렸을 때
+          alert('비밀번호가 틀렸어요!');
+          break; // 이 break를 추가했습니다.
+  
+        case 426: // 방이 가득 찼을 때
+          alert('방이 가득 차서 입장할 수 없어요!');
+          onClose(); // 모달 닫기
+          break;
+  
+        case 404: // 방이 존재하지 않을 때
+          alert('존재하지 않는 방번호입니다!');
+          onClose(); // 모달 닫기
+          break;
+        
+        default:
+          // 예외 처리
+          alert('알 수 없는 오류가 발생!');
+          onClose(); // 모달 닫기
+          break;
+      }
     }
   };
-
+  
   return (
       <div className={styles.background}>
         {/* 모달 컨테이너 */}
