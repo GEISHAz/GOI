@@ -10,6 +10,8 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
+import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
+import ssafy.GeniusOfInvestment.game.dto.TurnResponse;
 import ssafy.GeniusOfInvestment.square_room.dto.request.KickRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomInfoResponse;
@@ -75,14 +77,36 @@ public class RoomController {
         return json;
     }
 
-//    @RequestMapping("/ready")
-//    public void readyRoom(@AuthenticationPrincipal User user, @RequestBody Room room){
-//        roomService.readyRoom(user,room);
-//    }
-//
-//    @RequestMapping("/kick")
-//    public void kickUser(@AuthenticationPrincipal User user, @RequestBody Room room){
-//        roomService.kickUser(user,room);
-//    }
+    @PutMapping("/ready/{id}")
+    public Map<String, String> doingRoomReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
+        int status = roomService.doingRoomReady(user, grId);
+        Map<String, String> json = new HashMap<>();
+        //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것
+//        messageTemplate.convertAndSend("/sub/room/chat/" + grId,
+//                MessageDto.builder()
+//                        .type(MessageDto.MessageType.READY)
+//                        .data(
+//                                ReadyResponse.builder()
+//                                        .userId(user.getId())
+//                                        .ready(status == 0)
+//                                        .build())
+//                        .build());
+        sendMsg(grId,
+                ReadyResponse.builder()
+                        .userId(user.getId())
+                        .ready(status == 0)
+                        .build(),
+                MessageDto.MessageType.READY);
+        json.put("msg", "레디 완료");
+        return json;
+    }
+
+    public void sendMsg(Long grId, Object obj, MessageDto.MessageType type){
+        messageTemplate.convertAndSend("/sub/room/chat/" + grId,
+                MessageDto.builder()
+                        .type(type)
+                        .data(obj)
+                        .build()); //웹소켓으로 게임에 참가한 모든 이용자들에게 게임 결과를 보낸다.
+    }
 
 }
