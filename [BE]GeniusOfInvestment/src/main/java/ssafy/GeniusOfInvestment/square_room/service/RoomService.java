@@ -26,6 +26,7 @@ import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,7 +59,6 @@ public class RoomService {
         for(GameUser tp : gameRoom.getParticipants()){
             log.info("enter 참여자 " + tp.getUserId().toString());
         }
-        //log.info("enter기능 속 레디스 참여자 목록 로그: " + gameRoom.getParticipants().toString());
 
         //방이 가득 찼다.
         if(gameRoom.getParticipants().size()>=4){
@@ -91,6 +91,7 @@ public class RoomService {
         redisGameRepository.updateGameRoom(gameRoom);
         for(GameUser tp : gameRoom.getParticipants()){
             log.info("enter후 참여자 " + tp.getUserId().toString());
+            log.info("방장인가?? " + tp.isManager());
         }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
@@ -113,7 +114,6 @@ public class RoomService {
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        log.info("게임 룸에 정보가 제대로 있나?? " + room.getParticipants().toString());
         log.info("방 아이디 값은 " + room.getId().toString());
 
         GameUser gameUser = new GameUser();
@@ -192,4 +192,46 @@ public class RoomService {
         return rstList;
     }
 
+    public int doingRoomReady(User user, Long grId){
+        GameRoom room = redisGameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        List<GameUser> gameUserList = new ArrayList<>();
+        int cnt = 0;
+        int flag = 1;
+        for(GameUser guser : room.getParticipants()){
+            if(Objects.equals(guser.getUserId(), user.getId())){ //ready를 요청한 사용자이다.
+                if(!guser.isReady()){
+                    flag = 0; //레디를 한것
+                    guser.setReady(true);
+                }else{
+                    flag = -1; //레디를 취소한것
+                    guser.setReady(false);
+                }
+            }
+//            if(guser.isReady()){
+//                cnt++;
+//            }
+            gameUserList.add(guser);
+        }
+
+        //GameRoom(redis)에 정보 업데이트
+        room.setParticipants(gameUserList);
+        redisGameRepository.updateGameRoom(room);
+
+        //ready를 요청한 사용자가 참가자 목록에 없다.
+        if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+        return flag;
+
+//        if(cnt == room.getParticipants().size()){
+//            return 1;
+//        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+//            //ready를 요청한 사용자가 참가자 목록에 없다.
+//            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+//            return flag;
+//            //return 0;
+//        }
+    }
 }
