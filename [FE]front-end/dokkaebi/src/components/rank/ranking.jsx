@@ -114,10 +114,10 @@ export default function Ranking() {
               return (
                 <div key={user.id || index} className={`flex items-center justify-between p-2 border-b border-gray-200 w-full ${styles.rankItemContainer}`}>
                   <div className={`flex flex-row my-auto ${styles.rankDetail}`}>
-                    <span className="my-auto">{index + 1}위</span>
-                    {index === 0 && <img src={One} alt="1등" className={styles.trophyImg} />}
-                    {index === 1 && <img src={Two} alt="2등" className={styles.trophyImg} />}
-                    {index === 2 && <img src={Three} alt="3등" className={styles.trophyImg} />}
+                    <span className="my-auto">{user.rankByExp}위</span>
+                    {user.rankByExp === 1 && <img src={One} alt="1등" className={styles.trophyImg} />}
+                    {user.rankByExp === 2 && <img src={Two} alt="2등" className={styles.trophyImg} />}
+                    {user.rankByExp === 3 && <img src={Three} alt="3등" className={styles.trophyImg} />}
                     <div className='my-auto ml-5'>
                       {image && <img src={image.src} alt={image.alt} className="h-10 w-10" />}
                     </div>
