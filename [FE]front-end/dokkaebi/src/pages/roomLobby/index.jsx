@@ -46,8 +46,8 @@ export default function userReadyRoom() {
               console.log(receivedMessage.data);
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.data);
-            } else if (receivedMessage.type === "") {
-              console.log(receivedMessage.data);
+            } else if (receivedMessage.type === "ROOM_ENTER") {
+              console.log(receivedMessage.data, "socket Enter message.data");
             }
           });
         },
