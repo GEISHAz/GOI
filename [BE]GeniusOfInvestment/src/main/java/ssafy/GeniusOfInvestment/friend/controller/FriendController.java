@@ -11,7 +11,7 @@ import ssafy.GeniusOfInvestment.friend.service.FriendService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/friend")
+@RequestMapping("/api/friend")
 public class FriendController {
 
     private final FriendService friendService;
