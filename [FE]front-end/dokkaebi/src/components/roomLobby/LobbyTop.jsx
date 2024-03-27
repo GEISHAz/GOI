@@ -8,6 +8,7 @@ export default function LobbyTop() {
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
+  const channelId = sessionStorage.getItem("channelId");
 
   const handleBackButtonClick = () => {
     axios
@@ -20,7 +21,7 @@ export default function LobbyTop() {
         console.log(res);
         console.log("방 나가기 성공");
         sessionStorage.removeItem("roomId");
-        navigate(-1);
+        navigate(`/square/${channelId}`);
       })
       .catch((err) => {
         console.log(err);
