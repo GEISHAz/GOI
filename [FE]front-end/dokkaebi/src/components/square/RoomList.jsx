@@ -138,7 +138,7 @@ export default function RoomList() {
       </div>
 
       {/* 모달 함수 전달 */}
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} />}
+      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} roomId={room.id}/>}
     </div>
   );
 }
