@@ -1,4 +1,4 @@
-.modalBackground {
+.alarmBackground {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-.modalContainer {
+.alarmContainer {
   background-color: #FFDFDF;
   padding: 20px;
   border-radius: 10px;
@@ -21,31 +21,37 @@
   max-width: 400px;
   width: 95%;
   max-height: 300px;
+  border: 2px solid white;
 }
 
-.friendHeader {
+.alarmHeader {
   color : #FB929E;
+}
+
+
+.friendConfirm {
+  border: 1px solid white;
+  border-radius: 15px;
+}
+
+.friendPost {
+  
+}
+
+.fromNickName {
+  /* color: white; */
+  /* background: #FB929E; */
+  /* border-radius: 10px; */
+  padding: 3%;
 }
 
 .nothingFriend {
 
 }
 
-.friendConfirm {
-
-}
-
-.fromNickName {
-
-}
-
-.friendPost {
-
-}
-
 /* 수락 버튼 */
 .okayButton {
-  width: 20%;
+  width: 27.5%;
   background-color: #FB929E;
   color: white;
   border: none;
@@ -55,7 +61,7 @@
 
 /* 거절 버튼 */
 .rejectButton {
-  width 20%;
+  width: 27.5%;
   background-color: #FB929E;
   color: white;
   border: none;

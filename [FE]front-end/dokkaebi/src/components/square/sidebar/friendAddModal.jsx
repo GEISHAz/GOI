@@ -36,18 +36,18 @@ const FriendAddModal = ({ onClose }) => {
   };
 
   return (
-    <div className={styles.modalBackground}>
-      <div className={styles.modalContainer}>
+    <div className={styles.friendBackground}>
+      <div className={styles.friendContainer}>
         <h1 className={`flex justify-center items-center font-Bit mb-2 ${styles.friendHeader}`}>도깨비 친구를 추가해보세요 !</h1>
-        <input
-          type="text"
-          placeholder="추가할 유저를 입력 후 요청을 보내세요 !"
-          maxLength={10}
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className={`mb-2 ${styles.searchInput}`}
-        />
-        <div className='flex justify-end mb-2'>
+          <input
+            type="text"
+            placeholder="추가할 유저를 입력 후 요청을 보내세요 !"
+            maxLength={10}
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className={`mb-1 ml-2 text-md ${styles.searchInput}`}
+          />
+        <div className='flex justify-end mb-5'>
           <button onClick={handleAddFriend} className={styles.friendAdd}>친구 요청</button>
         </div>
         <div className='flex justify-center mb-2'>
