@@ -86,6 +86,7 @@ public class SquareService {
                 .isReady(true)
                 .isManager(true)
                 .exp(user.getExp())
+                .imageId(user.getImageId())
                 .build());
 
         return makeSavedRoomResponse(room, info.channelId(), rstList);
