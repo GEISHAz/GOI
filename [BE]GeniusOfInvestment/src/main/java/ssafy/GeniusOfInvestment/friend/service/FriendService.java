@@ -2,6 +2,8 @@ package ssafy.GeniusOfInvestment.friend.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,12 +33,16 @@ public class FriendService {
     public List<FriendListResponse> getFriendList(Long userId) {
 
         List<Friend> friendsByUserAndFriendUserIsMe = friendRepository.findFriendsByUserAndFriendUserIsMe(userId);
-
-
+        List<FriendListResponse> friendListResponseListUserIsMe = friendsByUserAndFriendUserIsMe.stream()
+                .map(friend -> FriendListResponse.of(friend.getId(),friend.getFriend().getId(),friend.getFriend().getNickName())).toList();
         List<Friend> friendsByUserAndFriendFriendIsMe = friendRepository.findFriendsByUserAndFriendFriendIsMe(userId);
-
-        List<Friend> list = friendRepository.findFriendByUserIdOrFriendId(userId);
-        return list.stream().map(FriendListResponse::from).toList();
+        List<FriendListResponse> friendListResponseListFriendIsMe = friendsByUserAndFriendFriendIsMe.stream()
+                .map(friend -> FriendListResponse.of(friend.getId(),friend.getUser().getId(),friend.getUser().getNickName())).toList();
+        return Stream.concat(
+                        friendListResponseListUserIsMe.stream(),
+                        friendListResponseListFriendIsMe.stream()
+                )
+                .toList();
     }
 
     public void saveMessage(FriendChatMessageDto friendChatMessageDto) {
@@ -66,5 +72,4 @@ public class FriendService {
         }
         friendRepository.delete(friend);
     }
-
 }
