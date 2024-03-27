@@ -1,4 +1,4 @@
-.modalBackground {
+.friendBackground {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,15 +11,16 @@
   z-index: 1000;
 }
 
-.modalContainer {
+.friendContainer {
   background-color: #FFDFDF;
-  padding: 20px;
+  border: 2px solid white;
+  padding: 15px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px; /* 버튼과 입력 필드 사이의 간격 */
   max-width: 400px; /* 모달의 최대 너비 */
-  width: 90%;
+  width: 100%;
 }
 
 .friendHeader {
@@ -27,15 +28,17 @@
 }
 
 .searchInput {
-  width: 100%;
+  width: 95.5%;
   height: 35px;
   padding-left: 10px;
   border: 1px solid #FFDFDF;
   border-radius: 10px;
+  box-shadow: 0 0 2px;
 }
 
 .friendAdd {
-  width: 27.5%;
+  width: 25%;
+  height: 35px;
   padding: 5px;
   background-color: #FB929E;
   color: white;

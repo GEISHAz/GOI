@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './friendAdd.module.css'; 
+import styles from './friendAlarm.module.css'; 
 import axios from 'axios';
 
 const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
@@ -61,25 +61,31 @@ const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
   }, [userId, accessToken]);
 
   return (
-    <div className={styles.modalBackground}>
-      <div className={`overflow-y-auto ${styles.modalContainer}`}>
-        <h1 className={`flex justify-center items-center font-Bit mb-2 ${styles.friendHeader}`}>친구 요청을 확인해보세요 !</h1>
+    <div className={styles.alarmBackground}>
+      <div className={`overflow-y-auto ${styles.alarmContainer}`}>
+        <h1 className={`flex justify-center items-center font-Bit mb-2 ${styles.alarmHeader}`}>친구 요청을 확인해보세요 !</h1>
         <div>
           {friendRequests.length > 0 ? (
             friendRequests.map((request) => (
               <div
                 key={request.id}
-                className={`flex justify-between mb-5 ${styles.friendConfirm}`}
+                className={`flex flex-col justify-between mb-5 ${styles.friendConfirm}`}
               >
-                <div className={`flex justify-center ${styles.friendPost}`}>
-                  <span className={styles.fromNickName}>{request.fromNickName}</span>
-                  님이 친구 요청을 보냈어요.
+                <div className={`flex justify-center items-center mb-1 ${styles.friendPost}`}>
+                  <span className={`text-center font-bold ${styles.fromNickName}`}>{request.fromNickName}</span>
+                  <span className='text-sm ml-1'>님이 친구 요청을 보냈어요 !</span>
                 </div>
-                <div className='flex justify-end'>
-                  <button className={`font-bold ${styles.okayButton}`} onClick={() => handleAcceptRequest(request.id)}>
+                <div className='flex flex-row justify-center items-center mb-2'>
+                  <button
+                    className={`font-bold text-sm ${styles.okayButton}`}
+                    onClick={() => handleAcceptRequest(request.id)}
+                  >
                     수락
                   </button>
-                  <button className={`font-bold ${styles.rejectButton}`} onClick={() => handleRejectRequest(request.id)}>
+                  <button
+                    className={`font-bold text-sm ${styles.rejectButton}`}
+                    onClick={() => handleRejectRequest(request.id)}
+                  >
                     거절
                   </button>
                 </div>

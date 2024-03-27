@@ -5,9 +5,11 @@ import styles from './RoomEnterModal.module.css';
 
 
 export default function RoomEnterModal({ onClose, roomId }) {
-  const [isPassword, setIsPassword] = useState(null); // 비밀번호 상태 관리
+  const [isPassword, setIsPassword] = useState(''); // 비밀번호 상태 관리
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
+
+  const propsRoomId = roomId // props 받은 룸 ID
 
   // 비밀번호 숫자 4자리로 제한 
   const handlePasswordChange = (e) => {
@@ -22,11 +24,11 @@ export default function RoomEnterModal({ onClose, roomId }) {
   const handleEnter = async () => {
     try {
       // roomId 확인
-      console.log('요청 전 roomId:', roomId); // 요청 전 roomId 확인
+      console.log('요청 전 roomId:', propsRoomId); // 요청 전 roomId 확인
 
       // 서버에 POST 요청 보내기
       const response = await axios.post('https://j10d202.p.ssafy.io/api/room/enter', {
-        roomId, // roomId는 RoomList에서 props로 가져옴
+        roomId: propsRoomId,
         password: isPassword,
       }, {
         headers: {
@@ -39,10 +41,11 @@ export default function RoomEnterModal({ onClose, roomId }) {
       // 응답 처리
       if (response.data.data.status === 0) {
         // 비밀번호가 맞으면, roomId에 해당하는 경로로 이동
-        navigate(`/room/${room.id}`);
+        navigate(`/room/${propsRoomId}`);
       } else if (response.data.data.status === 1) {
         // 비밀번호가 틀리면, 오류 메시지 표시
         alert('비밀번호가 틀렸습니다.');
+        setIsPassword('')
       }
     } catch (error) {
       console.error('방 입장 처리 중 오류 발생:', error);
