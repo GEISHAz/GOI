@@ -106,3 +106,10 @@
     visibility: hidden;
   }
 }
+
+.friendDelete {
+  width: 20%;
+  /* border: 1px solid black;
+  border-radius: 10px;
+  z-index: 101; */
+}
