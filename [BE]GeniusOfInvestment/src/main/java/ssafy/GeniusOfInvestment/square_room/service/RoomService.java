@@ -55,7 +55,10 @@ public class RoomService {
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDIS_GAMEROOM);
         }
         log.info("enter기능 속 레디스 방 아이디 로그: " + gameRoom.getId().toString());
-        log.info("enter기능 속 레디스 참여자 목록 로그: " + gameRoom.getParticipants().toString());
+        for(GameUser tp : gameRoom.getParticipants()){
+            log.info("참여자 " + tp.getUserId().toString());
+        }
+        //log.info("enter기능 속 레디스 참여자 목록 로그: " + gameRoom.getParticipants().toString());
 
         //방이 가득 찼다.
         if(gameRoom.getParticipants().size()>=4){
@@ -107,7 +110,11 @@ public class RoomService {
         log.info("방 아이디 값은 " + room.getId().toString());
 
         GameUser gameUser = new GameUser();
+        log.info("요청 유저 아이디: " + user.getId());
         gameUser.setUserId(user.getId());
+        for(GameUser tp : room.getParticipants()){
+            log.info("참여자 " + tp.getUserId().toString());
+        }
         int idx = room.getParticipants().indexOf(gameUser);
         log.info("gameuser인덱스값이 " + idx);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
