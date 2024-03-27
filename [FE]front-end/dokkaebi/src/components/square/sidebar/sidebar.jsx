@@ -67,7 +67,8 @@ const Sidebar = ({ toggleSidebar }) => {
 
   const friendDelete = async (friendListId) => {
     try {
-      await axios.delete(`https://j10d202.p.ssafy.io/friend/${userId}/delete`, {
+      console.log("friendListId 확인 :", friendListId)
+      await axios.delete(`https://j10d202.p.ssafy.io/api/friend/${userId}/delete`, {
         friendListId: friendListId,
       }, {
         headers : {  Authorization: `Bearer ${accessToken}` },
@@ -93,21 +94,6 @@ const Sidebar = ({ toggleSidebar }) => {
 
   // 친구 목록 갱신 함수
   const refreshFriendList = () => {fetchFriendList()};
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (contextMenu) {
-        closeContextMenu(); // 컨텍스트 메뉴 닫기
-      }
-    };
-
-    // 클릭 이벤트 리스너 추가
-    document.addEventListener('click', handleClickOutside);
-    // 클릭 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [contextMenu]);
 
   useEffect(() => {
     fetchFriendList();
@@ -142,28 +128,27 @@ const Sidebar = ({ toggleSidebar }) => {
                 </div>
               )
             })}
+            {contextMenu && (
+            <ContextMenu
+              x={contextMenu.x}
+              y={contextMenu.y}
+              onClose={closeContextMenu}
+              onFriendDelete={() => friendDelete(contextMenu.friend.friendListId)}
+            />)}
           </div>
         </div>
-        {contextMenu && (
-        <ContextMenu
-          x={contextMenu.x}
-          y={contextMenu.y}
-          onClose={closeContextMenu}
-          onFriendDelete={() => friendDelete(contextMenu.friend.friendListId)}
-        />
-      )}
       </nav>
 
       <nav>
-        <div className='flex justify-start p-10'>
-          {showPrompt && <div className={`w-full text-center font-bold mt-2 ${styles.musicPrompt}`}>음악이 잠시 멈춥니다 !</div>}
+        <div className='flex justify-center p-10'>
           <button
             onClick={toggleSidebar}
             className={`text-2xl font-bold text-white text-center ${styles.closeButton}`}
-          >
+            >
             닫기
           </button>
         </div>
+          {showPrompt && <div className={`w-full text-center font-bold ${styles.musicPrompt}`}>음악이 잠시 멈춥니다 !</div>}
       </nav>
 
       {/* 친구 메신저 열기 */}
