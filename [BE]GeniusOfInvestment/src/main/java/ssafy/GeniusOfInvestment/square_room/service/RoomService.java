@@ -88,7 +88,7 @@ public class RoomService {
                         .buyInfos(new ArrayList<>())
                         .build());
         // gameroom에 저장
-        redisGameRepository.saveGameRoom(gameRoom);
+        redisGameRepository.updateGameRoom(gameRoom);
         for(GameUser tp : gameRoom.getParticipants()){
             log.info("enter후 참여자 " + tp.getUserId().toString());
         }
