@@ -21,7 +21,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
     }
   };
 
-  const handleEnter = async () => {
+  const handleEnterClick = async () => {
     try {
       // roomId 확인
       console.log('요청 전 roomId:', propsRoomId); // 요청 전 roomId 확인
@@ -39,17 +39,38 @@ export default function RoomEnterModal({ onClose, roomId }) {
       console.log('요청 후 roomId:', roomId); // 요청 후 roomId 확인
 
       // 응답 처리
-      if (response.data.data.status === 0) {
-        // 비밀번호가 맞으면, roomId에 해당하는 경로로 이동
-        navigate(`/room/${propsRoomId}`);
-      } else if (response.data.data.status === 1) {
-        // 비밀번호가 틀리면, 오류 메시지 표시
-        alert('비밀번호가 틀렸습니다.');
-        setIsPassword('')
+      if (response.status === 200) {
+        console.log('입장 성공:', response);
+        // console.log('서버로부터 받은 roomId :', response.data.data.roomId);
+        // console.log('서버에서 받은 status 확인 :', response.data.data.status);
+  
+        // navigate(`/room/${roomId}`); // 해당 방으로 이동
+        navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
       }
     } catch (error) {
-      console.error('방 입장 처리 중 오류 발생:', error);
-      alert('방 입장 처리 중 오류가 발생했습니다.');
+      // 에러코드에 따른 조건을 switch로 나누기
+      console.log('에러 종류 확인:', error.response.data.statusCode)
+      switch(error.response.data.statusCode) {
+        case 423: // 방 비밀번호 틀렸을 때
+        setShowRoomEnterModal(true)  
+        break; // 이 break를 추가했습니다.
+  
+        case 426: // 방이 가득 찼을 때
+          alert('방이 가득 차서 입장할 수 없어요!');
+          onClose(); // 모달 닫기
+          break;
+  
+        case 404: // 방이 존재하지 않을 때
+          alert('존재하지 않는 방번호입니다!');
+          onClose(); // 모달 닫기
+          break;
+        
+        default:
+          // 예외 처리
+          alert('알 수 없는 오류가 발생!');
+          onClose(); // 모달 닫기
+          break;
+      }
     }
   };
 
@@ -72,7 +93,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
             <div className="flex justify-center w-full mt-5">
             {/* 입장 버튼 */}
             <button
-              onClick={handleEnter} // 입장 버튼 클릭 시 handleEnter 함수 호출
+              onClick={handleEnterClick} // 입장 버튼 클릭 시 handleEnterClick 함수 호출
               className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
               type="button"
             >
