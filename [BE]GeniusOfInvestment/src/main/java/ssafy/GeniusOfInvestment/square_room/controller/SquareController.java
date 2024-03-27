@@ -22,7 +22,7 @@ public class SquareController {
     private final SquareService squareService;
 
     @PostMapping("/create") //방생성
-    public List<RoomPartInfo> createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
+    public SavedRoomResponse createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
         log.info("SquareController createRoom start");
         log.info("user id값"+user.getId());
         return squareService.insertRoom(user, info);

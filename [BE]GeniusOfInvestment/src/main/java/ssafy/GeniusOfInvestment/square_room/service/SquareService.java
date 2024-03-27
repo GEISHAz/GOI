@@ -36,7 +36,7 @@ public class SquareService {
     private final SimpMessageSendingOperations messageTemplate;
     private final UserRepository userRepository;
 
-    public List<RoomPartInfo> insertRoom(User user, RoomCreateRequest info) {
+    public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
         log.info("SquareService insertRoom start");
 
         Optional<User> u = userRepository.findById(user.getId());
@@ -87,7 +87,7 @@ public class SquareService {
                 .isManager(true)
                 .build());
 
-        return rstList;
+        return makeSavedRoomResponse(room, info.channelId(), rstList);
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
@@ -197,26 +197,27 @@ public class SquareService {
         return result;
     }
 
-//    public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId) {
-//        log.info("SquareService makeSavedRoomResponse start");
-//
-//        if (room.getId() == null)
-//            log.info("id null");
-//        if (room.getTitle() == null)
-//            log.info("title null");
-//        if (room.getChannel() == null)
-//            log.info("channel null");
-//
-//        log.info("SquareService makeSavedRoomResponse end");
-//        return SavedRoomResponse
-//                .builder()
-//                .roomnum(room.getId())
-//                .channelId(channelId)
-//                .title(room.getTitle())
-//                .isPrivate(room.isPublic())
-//                .status(room.getStatus())
-//                .build();
-//    }
+    public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId, List<RoomPartInfo> userList) {
+        log.info("SquareService makeSavedRoomResponse start");
+
+        if (room.getId() == null)
+            log.info("id null");
+        if (room.getTitle() == null)
+            log.info("title null");
+        if (room.getChannel() == null)
+            log.info("channel null");
+
+        log.info("SquareService makeSavedRoomResponse end");
+        return SavedRoomResponse
+                .builder()
+                .roomnum(room.getId())
+                .channelId(channelId)
+                .title(room.getTitle())
+                .isPrivate(!room.isPublic())
+                .status(room.getStatus())
+                .userList(userList)
+                .build();
+    }
 
 
     public boolean isGameRoomFull(Long roomId){
