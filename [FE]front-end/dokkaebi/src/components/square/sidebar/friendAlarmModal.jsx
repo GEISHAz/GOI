@@ -17,7 +17,7 @@ const FriendAlarmModal = ({ onAlarmClose }) => {
       });
       console.log(response.data);
       alert('성공적으로 친구가 맺어졌어요 !');
-      // 요청 목록 갱신이나 모달 닫기 등의 추가 작업
+      window.location.reload() // 새로고침 해주기
       onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
     } catch (error) {
       console.error('친구 요청 수락 실패:', error.response);
@@ -36,6 +36,7 @@ const FriendAlarmModal = ({ onAlarmClose }) => {
       console.log(response.data);
       alert('친구 요청을 거절했어요.');
       // 요청 목록 갱신이나 모달 닫기 등의 추가 작업
+      window.location.reload() // 새로고침 해주기
       onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
     } catch (error) {
       console.error('거절 요청 실패:', error.response);
