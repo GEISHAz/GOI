@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.user.service;
 
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -73,13 +74,19 @@ public class UserService {
         user.updateImageId(updateNickNameRequestDto.getImageId());
     }
 
+    @Transactional
     public List<RankInfoResponseDto> getRankInfo() {
-        return userRepository.findAllByOrderByExpDesc().stream().map(RankInfoResponseDto::from).collect(Collectors.toList());
+
+        List<User> users = userRepository.findAllByOrderByExpDesc();
+        List<Long> ranks = userRepository.findAllRankByExp();
+        return IntStream.range(0, users.size())
+                .mapToObj(i -> RankInfoResponseDto.from(users.get(i), ranks.get(i)))
+                .toList();
     }
 
     public UserRankResponseDto getUserRank(Long userId) {
         User user = findUser(userId);
-        return UserRankResponseDto.of(userRepository.findRankByExp(userId),user.getNickName(),user.getExp());
+        return UserRankResponseDto.of(userRepository.findRankByExp(user),user.getNickName(),user.getExp());
     }
 
     public User getAuthenticationUser(String userId) {

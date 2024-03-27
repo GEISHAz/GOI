@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './friendAdd.module.css'; 
 import axios from 'axios';
 
-const FriendAlarmModal = ({ onAlarmClose }) => {
+const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   const [friendRequests, setFriendRequests] = useState([]);
@@ -17,7 +17,7 @@ const FriendAlarmModal = ({ onAlarmClose }) => {
       });
       console.log(response.data);
       alert('성공적으로 친구가 맺어졌어요 !');
-      // 요청 목록 갱신이나 모달 닫기 등의 추가 작업
+      onRefreshFriendList(); // 친구 목록 다시 업데이트해주기 
       onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
     } catch (error) {
       console.error('친구 요청 수락 실패:', error.response);
@@ -34,8 +34,8 @@ const FriendAlarmModal = ({ onAlarmClose }) => {
         }
       });
       console.log(response.data);
-      alert('친구 요청을 거절했어요.');
-      // 요청 목록 갱신이나 모달 닫기 등의 추가 작업
+      alert('친구 요청을 거절했어요 !');
+      onRefreshFriendList(); // 친구 목록 다시 업데이트해주기 
       onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
     } catch (error) {
       console.error('거절 요청 실패:', error.response);
