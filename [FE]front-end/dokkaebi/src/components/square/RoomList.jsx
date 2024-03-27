@@ -45,7 +45,6 @@ export default function RoomList() {
     } else {
       axios
         .post(`https://j10d202.p.ssafy.io/api/room/enter`,
-        // 방 입장인데 왜 방 번호를 안받음? -> body에 roomId, password를 넣어줘야 함
         {"roomId" : room.id, "password" : '',},
         {
           headers: {
@@ -138,7 +137,7 @@ export default function RoomList() {
       </div>
 
       {/* 모달 함수 전달 */}
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} roomId={room.id}/>}
+      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)}/>}
     </div>
   );
 }
