@@ -14,8 +14,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findBySocialId(String socialId);
     List<User> findAllByOrderByExpDesc();
 
-    @Query("SELECT COUNT(*) + 1 AS rank FROM User u WHERE u.exp > (SELECT u2.exp FROM User u2 WHERE u2.id = :userId)")
-    Long findRankByExp(@Param("userId") Long userId);
+//    @Query("SELECT COUNT(*) + 1 AS rank FROM User u WHERE u.exp > (SELECT u2.exp FROM User u2 WHERE u2.id = :userId)")
+//    Long findRankByExp(@Param("userId") Long userId);
+
+    @Query(" SELECT RANK() OVER (ORDER BY u.exp DESC) AS rank FROM User u WHERE u = :user")
+    Long findRankByExp(User user);
 
     boolean existsByNickName(String nickname);
 
@@ -24,4 +27,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     int countByChannel(Channel channel);
 
     Optional<User> findByNickName(String nickName);
+
+    @Query("SELECT  RANK() OVER (ORDER BY u.exp DESC) AS rank FROM User u")
+    List<Long> findAllRankByExp();
 }
