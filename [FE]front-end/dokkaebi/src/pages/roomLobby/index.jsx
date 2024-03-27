@@ -3,7 +3,7 @@ import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
@@ -27,6 +27,8 @@ export default function userReadyRoom() {
 
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
 
+  const [userList, setUserList] = useState([]); 
+
   useEffect(() => {
     let reconnectInterval;
 
@@ -43,12 +45,9 @@ export default function userReadyRoom() {
             console.log(receivedMessage);
             console.log(receivedMessage.type);
 
-            if (receivedMessage.type === "STOCK_MARKET") {
+            if (receivedMessage.type === "ROOM_ENTER") {
               console.log(receivedMessage.data);
-            } else if (receivedMessage.type === "TIMER") {
-              console.log(receivedMessage.data);
-            } else if (receivedMessage.type === "ROOM_ENTER") {
-              console.log(receivedMessage.data, "socket Enter message.data");
+              setUserList(receivedMessage.data);
             }
           });
         },
@@ -83,7 +82,7 @@ export default function userReadyRoom() {
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
         <PlayerList />
-        <LobbyChat />
+        <LobbyChat userList={userList}/>
       </div>
     </div>
   );
