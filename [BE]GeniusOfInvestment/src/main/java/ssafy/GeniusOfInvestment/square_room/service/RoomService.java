@@ -39,9 +39,6 @@ public class RoomService {
     private final SimpMessageSendingOperations messageTemplate;
 
     public List<RoomPartInfo> enterRoom(User user, RoomEnterRequest enterInfo) {
-
-        RoomInfoResponse result;
-
         Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
         if(rtmp.isEmpty() || rtmp.get().getStatus() == 2) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         Room room = rtmp.get(); //들어가려는 방 정보를 얻는다.
@@ -57,6 +54,8 @@ public class RoomService {
             System.out.println("redis 설정 잘못 된듯");
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDIS_GAMEROOM);
         }
+        log.info("enter기능 속 레디스 방 아이디 로그: " + gameRoom.getId().toString());
+        log.info("enter기능 속 레디스 참여자 목록 로그: " + gameRoom.getParticipants().toString());
 
         //방이 가득 찼다.
         if(gameRoom.getParticipants().size()>=4){
