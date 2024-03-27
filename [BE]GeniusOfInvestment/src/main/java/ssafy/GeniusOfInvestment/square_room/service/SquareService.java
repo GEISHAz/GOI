@@ -85,6 +85,7 @@ public class SquareService {
                 .userNick(user.getNickName())
                 .isReady(true)
                 .isManager(true)
+                .exp(user.getExp())
                 .build());
 
         return makeSavedRoomResponse(room, info.channelId(), rstList);

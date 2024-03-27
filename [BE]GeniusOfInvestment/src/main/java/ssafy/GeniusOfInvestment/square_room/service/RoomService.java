@@ -103,6 +103,7 @@ public class RoomService {
                     .userNick(tmp.get().getNickName())
                     .isReady(gu.isReady())
                     .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
                     .build());
         }
         return rstList;
