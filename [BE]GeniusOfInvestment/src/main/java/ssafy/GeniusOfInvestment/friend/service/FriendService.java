@@ -22,10 +22,18 @@ import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 public class FriendService {
 
     private final FriendRepository friendRepository;
-    private final UserRepository userRepository;
     private final ChatRecordRepository chatRecordRepository;
 
+    /*
+    1. 내 아이디가 my_id라면 friend를 response에 추가
+    2. 내 아이디가 friend_id라면 user를 response에 추가
+     */
     public List<FriendListResponse> getFriendList(Long userId) {
+
+        List<Friend> friendsByUserAndFriendUserIsMe = friendRepository.findFriendsByUserAndFriendUserIsMe(userId);
+
+
+        List<Friend> friendsByUserAndFriendFriendIsMe = friendRepository.findFriendsByUserAndFriendFriendIsMe(userId);
 
         List<Friend> list = friendRepository.findFriendByUserIdOrFriendId(userId);
         return list.stream().map(FriendListResponse::from).toList();
