@@ -36,7 +36,7 @@ public class SquareService {
     private final SimpMessageSendingOperations messageTemplate;
     private final UserRepository userRepository;
 
-    public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
+    public List<RoomPartInfo> insertRoom(User user, RoomCreateRequest info) {
         log.info("SquareService insertRoom start");
 
         Optional<User> u = userRepository.findById(user.getId());
@@ -57,12 +57,8 @@ public class SquareService {
                 .fromYear(info.startYear())
                 .endYear(info.endYear())
                 .build();
-
         //방 정보 DB 저장
         room = roomRepository.save(room);
-
-        SavedRoomResponse result = makeSavedRoomResponse(room, info.channelId());
-
         log.info("save, result 이후 room" + room.getId());
 
         //Redis 정보속 유저 리스트 생성
@@ -79,13 +75,19 @@ public class SquareService {
                 .id(room.getId())
                 .participants(list)
                 .build();
-
         redisGameRepository.saveGameRoom(gameRoom);
 
         log.info("SquareService insertRoom end");
 
-        return result;
-        //방생성 완료
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        rstList.add(RoomPartInfo.builder()
+                .userId(user.getId())
+                .userNick(user.getNickName())
+                .isReady(true)
+                .isManager(true)
+                .build());
+
+        return rstList;
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
@@ -195,26 +197,26 @@ public class SquareService {
         return result;
     }
 
-    public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId) {
-        log.info("SquareService makeSavedRoomResponse start");
-
-        if (room.getId() == null)
-            log.info("id null");
-        if (room.getTitle() == null)
-            log.info("title null");
-        if (room.getChannel() == null)
-            log.info("channel null");
-
-        log.info("SquareService makeSavedRoomResponse end");
-        return SavedRoomResponse
-                .builder()
-                .roomnum(room.getId())
-                .channelId(channelId)
-                .title(room.getTitle())
-                .isPrivate(room.isPublic())
-                .status(room.getStatus())
-                .build();
-    }
+//    public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId) {
+//        log.info("SquareService makeSavedRoomResponse start");
+//
+//        if (room.getId() == null)
+//            log.info("id null");
+//        if (room.getTitle() == null)
+//            log.info("title null");
+//        if (room.getChannel() == null)
+//            log.info("channel null");
+//
+//        log.info("SquareService makeSavedRoomResponse end");
+//        return SavedRoomResponse
+//                .builder()
+//                .roomnum(room.getId())
+//                .channelId(channelId)
+//                .title(room.getTitle())
+//                .isPrivate(room.isPublic())
+//                .status(room.getStatus())
+//                .build();
+//    }
 
 
     public boolean isGameRoomFull(Long roomId){
