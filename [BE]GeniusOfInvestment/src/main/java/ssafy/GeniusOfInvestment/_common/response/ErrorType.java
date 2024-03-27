@@ -40,6 +40,8 @@ public enum ErrorType {
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND,"해당채널이 존재하지 않습니다."),
     NOT_FOUND_REDISUSER(HttpStatus.I_AM_A_TEAPOT,"유저동선 추적오류 입니다."),
     INVALID_PASSWORD(HttpStatus.LOCKED, "비밀번호가 일치하지 않습니다."),
+    IS_FULL_ROOM(HttpStatus.UPGRADE_REQUIRED, "방이 가득찼다."),
+    IS_NOT_AVAILABLE_REDIS_GAMEROOM(HttpStatus.FORBIDDEN, "레디스에 방 정보가 없습니다."),
 
     //******************** CHANNEL **************************//
     CHANNEL_IS_FULL(HttpStatus.NOT_FOUND,"입장하려는 채널이 가득 찼습니다."),
@@ -48,8 +50,8 @@ public enum ErrorType {
     //****************************Game****************************//
     IS_NOT_MANAGER(HttpStatus.UNAUTHORIZED, "방장만이 요청을 할 수 있습니다."),
     NOT_YET_READY(HttpStatus.FORBIDDEN, "모든 사용자가 레디를 해야됩니다."),
-    NOT_FOUND_ROOM(HttpStatus.BAD_REQUEST, "존재하는 방 정보가 아닙니다."),
-    NOT_FOUND_INFO(HttpStatus.BAD_REQUEST, "해당하는 정보가 존재하지 않습니다."),
+    NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, "존재하는 방 정보가 아닙니다."),
+    NOT_FOUND_INFO(HttpStatus.NOT_FOUND, "해당하는 정보가 존재하지 않습니다."),
     NOT_FOUND_USER_IN_ROOM(HttpStatus.NOT_FOUND, "방에 해당 유저가 존재하지 않습니다."),
     INSUFFICIENT_POINT(HttpStatus.NOT_ACCEPTABLE, "보유하신 포인트가 부족합니다."),
     INSUFFICIENT_BALANCE(HttpStatus.NOT_ACCEPTABLE, "잔고가 부족합니다."),
