@@ -14,6 +14,7 @@ import refresh from '../../images/square/icon_refresh.png';
 import search from '../../images/square/icon_search.png';
 
 export default function TopButtons() {
+  const channelId = sessionStorage.getItem("channelId");
   const { toggleBGMVisibility } = useBGM();
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ export default function TopButtons() {
         {/* 뒤로가기 버튼 */}
         <div>
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(`/square/${channelId}`)}
             className='font-bold text-white text-4xl'
           >
             Back

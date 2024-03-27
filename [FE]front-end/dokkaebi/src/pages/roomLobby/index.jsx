@@ -3,7 +3,7 @@ import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
 
-import React, { useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
@@ -23,7 +23,8 @@ export default function userReadyRoom() {
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
 
-  const [stompClient, setStompClient] = useState(null);
+  const stompClientRef = useRef(null);
+
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function userReadyRoom() {
     const connect = () => {
       const socket = new SockJS(socketUrl);
       const stompClient = Stomp.over(() => socket);
-      setStompClient(stompClient);
+      stompClientRef.current = stompClient;
 
       stompClient.connect(
         {},
@@ -63,9 +64,12 @@ export default function userReadyRoom() {
 
     return () => {
       console.log("unmounting...");
-      if (stompClient) {
-        stompClient.disconnect();
-      }
+    console.log(stompClientRef.current);
+    
+    if (stompClientRef.current) {
+      stompClientRef.current.disconnect();
+      console.log("STOMP: Disconnected");
+    }
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);

@@ -27,6 +27,7 @@ export default function LobbyTop() {
         console.log(err);
         console.log("방 나가기 실패");
       });
+
   };
 
   return (
