@@ -56,7 +56,7 @@ public class RoomService {
         }
         log.info("enter기능 속 레디스 방 아이디 로그: " + gameRoom.getId().toString());
         for(GameUser tp : gameRoom.getParticipants()){
-            log.info("참여자 " + tp.getUserId().toString());
+            log.info("enter 참여자 " + tp.getUserId().toString());
         }
         //log.info("enter기능 속 레디스 참여자 목록 로그: " + gameRoom.getParticipants().toString());
 
@@ -75,6 +75,10 @@ public class RoomService {
                 .status(false) //대기중 상태로
                 .build());
 
+        log.info("참여 신청 유저 아이디: " + user.getId());
+        for(GameUser tp : gameRoom.getParticipants()){
+            log.info("enter전 참여자 " + tp.getUserId().toString());
+        }
         // gameuser 만들어서 Gameroom 에 넣어주고 저장
         gameRoom.getParticipants().add(
                 GameUser.builder()
@@ -85,6 +89,9 @@ public class RoomService {
                         .build());
         // gameroom에 저장
         redisGameRepository.saveGameRoom(gameRoom);
+        for(GameUser tp : gameRoom.getParticipants()){
+            log.info("enter후 참여자 " + tp.getUserId().toString());
+        }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
         for(GameUser gu : gameRoom.getParticipants()){
