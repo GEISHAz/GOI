@@ -39,7 +39,7 @@ export default function RoomSearchModal({ onClose }) {
         console.log('서버로부터 받은 roomId :', response.data.data.roomId);
         console.log('서버에서 받은 status 확인 :', response.data.data.status);
   
-        navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
+        navigate(`/room/${roomId}`); // 해당 방으로 이동
       }
     } catch (error) {
       // 에러코드에 따른 조건을 switch로 나누기
