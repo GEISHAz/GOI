@@ -15,7 +15,7 @@ const Sidebar = ({ toggleSidebar }) => {
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 문구
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
   const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림관리
-  
+
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend); // 선택된 친구 상태 업데이트
   };
@@ -25,33 +25,42 @@ const Sidebar = ({ toggleSidebar }) => {
     setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
   };
 
-
-  useEffect(() => {
-    const fetchFriendList = async () => {
-      try {
-        const res = await axios.get(`https://j10d202.p.ssafy.io/api/friend/${userId}/list`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        console.log("친구 목록 불러오기 :", res)
-        if (res.status === 200 && res.data.data) {
-          console.log("메세지 확인 :", res.data.msg);
-          const friends = res.data.data.map(friend => ({
-            id: friend.friendId,
-            nickName: friend.nickName,
-            friendListId: friend.friendListId,
-          }));
-          setIsFriendList(friends);
-          // setIsFriendList(res.data.data)
-        } else {
-          throw new Error('에러 발생');
-        }
-      } catch (error) {
-        console.error('친구 목록 불러오기 실패', error);
+  const fetchFriendList = async () => {
+    try {
+      const res = await axios.get(`https://j10d202.p.ssafy.io/api/friend/${userId}/list`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      console.log("친구 목록 불러오기 :", res)
+      if (res.status === 200 && res.data.data) {
+        console.log("메세지 확인 :", res.data.msg);
+        const friends = res.data.data.map(friend => ({
+          id: friend.friendId,
+          nickName: friend.nickName,
+          friendListId: friend.friendListId,
+        }));
+        setIsFriendList(friends);
+        // setIsFriendList(res.data.data)
+      } else {
+        throw new Error('에러 발생');
       }
-    };
+    } catch (error) {
+      console.error('친구 목록 불러오기 실패', error);
+    }
+  };
 
-    fetchFriendList();
-  }, [])
+  const friendDelete = async (friendListId) => {
+    try {
+      await axios.delete(`https://j10d202.p.ssafy.io/friend/${userId}/delete`, {
+        friendListId: friendListId,
+      }, {
+        headers : {  Authorization: `Bearer ${accessToken}` },
+      });
+      alert("도깨비 친구를 삭제했어요")
+      fetchFriendList(); // 친구 목록 다시 불러오기
+    } catch (error) {
+      console.error('친구 삭제 실패', error)
+    }
+  };
 
   // 친구 추가 모달 열기
   const openAddFriendModal = () => {setIsAddFriendModalOpen(true);};
@@ -64,6 +73,13 @@ const Sidebar = ({ toggleSidebar }) => {
 
   // 친구 요청 알림 모달 닫기
   const closeAlarmModal = () => {setIsFriendAlarm(false)}
+
+  // 친구 목록 갱신 함수
+  const refreshFriendList = () => {fetchFriendList()};
+
+  useEffect(() => {
+    fetchFriendList();
+  }, []);
 
   return (
     <aside className={styles.sidebar}>
@@ -87,7 +103,10 @@ const Sidebar = ({ toggleSidebar }) => {
                   onClick={() => handleFriendClick(user)}
                 >
                   <span className='font-bold ml-5'>{user.nickName}</span>
-                  <img src={msgOff} alt='메세지상태' className='mr-5'/>
+                  <div>
+                    <button className='' onClick={() => friendDelete(user.friendListId)}>삭제</button>
+                    <img src={msgOff} alt='메세지상태' className='mr-5'/>
+                  </div>
                 </div>
               )
             })}
@@ -114,7 +133,7 @@ const Sidebar = ({ toggleSidebar }) => {
       {isAddFriendModalOpen && <FriendAddModal onClose={closeAddFriendModal} />}
 
       {/* 친구 요청 알림 모달 열기 */}
-      {isFriendAlarm && <FriendAlarm onAlarmClose={closeAlarmModal} />}
+      {isFriendAlarm && <FriendAlarm onRefreshFriendList={refreshFriendList} onAlarmClose={closeAlarmModal} />}
     </aside>
   );
 };
