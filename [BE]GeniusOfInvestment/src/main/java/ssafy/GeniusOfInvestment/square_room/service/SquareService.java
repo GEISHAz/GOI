@@ -15,16 +15,14 @@ import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.*;
 import ssafy.GeniusOfInvestment.channel.repository.ChannelRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -89,98 +87,6 @@ public class SquareService {
         return result;
         //방생성 완료
     }
-
-//    public RoomInfoResponse searchRoom(User user, Long roomnum) {
-//        log.info("SquareService searchRoom start");
-//        //방 찾고 유저를 방안에 집어넣고 Websocket 연결
-//        RoomInfoResponse result;
-//        //방찾기
-//        Optional<Room> finded = roomRepository.findById(roomnum);
-//
-//        //방이없다면 ROOM_NOT_FOUND 에러 표시
-//        if (finded.isEmpty()) {
-//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-//        } else if (finded.get().getStatus() != 0) {
-//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-//        } else if (!Objects.equals(finded.get().getChannel().getId(), user.getChannel().getId()))
-//            throw new CustomBadRequestException(ErrorType.ROOM_NOT_FOUND);
-//
-//        GameRoom redisRoom = redisGameRepository.getOneGameRoom(roomnum);
-//        //방이 가득 찼는지 확인
-//        if (redisRoom.getParticipants().size() == 4) {
-//            result = RoomInfoResponse
-//                    .builder()
-//                    .roomId(roomnum)
-//                    .isPrivate(false)
-//                    .enter(false)
-//                    .build();
-//        } else {
-//            //방이 비번상태인지 확인
-//            if (!finded.get().isPublic()) {
-//                //비번방이면
-//                result = RoomInfoResponse
-//                        .builder()
-//                        .roomId(roomnum)
-//                        .isPrivate(true)
-//                        .enter(true)
-//                        .build();
-//            } else {
-//                //비번방아니면
-//                result = RoomInfoResponse
-//                        .builder()
-//                        .roomId(roomnum)
-//                        .isPrivate(false)
-//                        .enter(true)
-//                        .build();
-//
-//            }
-//        }
-        //유저를 방안에 집어 넣기
-        //이미 있는 방정보 roomnum 즉 방 id로 가져오고
-        //유저 한명 추가후 update
-//        GameRoom gameRoom = redisRoom;
-//
-//        List<GameUser> participants = gameRoom.getParticipants();
-//        participants.add(GameUser
-//                .builder()
-//                .userId(user.getId())
-//                .isReady(false)
-//                .isManager(false)
-//                .build());
-//        gameRoom.setParticipants(participants);
-//
-//        redisGameRepository.updateGameRoom(gameRoom);
-//
-//        RedisUser rdu;
-//        //유저 동선 추적
-//        if (redisUserRepository.getOneRedisUser(user.getId()) == null) {
-//            rdu = new RedisUser(user.getId(), false);
-//            redisUserRepository.saveUserStatusGameing(rdu);
-//        } else
-//            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
-//
-//        log.info("RedisUser 방찾기와 동시에 생성 완료 save 까지");
-////        redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
-//
-//        // 웹소켓 연결
-//        messageTemplate.convertAndSend("/alram/msg-to/" + roomnum,
-//                MessageDto
-//                        .builder()
-//                        .type(MessageDto.MessageType.ROOM_ENTER)
-//                        .data(UserEnterMessageResponse
-//                                .builder()
-//                                .userId(user.getId())
-//                                .roomId(gameRoom.getId())
-//                                .chId(user.getChannel().getId())
-//                                .isReady(false)
-//                                .exp(user.getExp())
-//                                .nickName(user.getNickName())
-//                                .build())
-//                        .build());
-
-//        log.info("SquareService searchRoom end");
-//        return result;
-//    }
 
     public List<SquareNowUser> listUser(Long channelnum) {
         log.info("SquareService listRoom start");
@@ -258,8 +164,35 @@ public class SquareService {
         return result;
     }
 
-    public void fastEnter() {
+    public RoomInfoResponse fastEnter(User user) {
+        log.info("SquareService fastEnter start");
+        RoomInfoResponse result = RoomInfoResponse
+                .builder()
+                .roomId(99999999L)
+                .status(99999999)
+                .build();
+        List<SquareRoom> list = roomRepository.findRoomCanEnter(user.getChannel().getId());
+        int number = list.size();
+        log.info("in fastEnter list size = "+number);
+        boolean stop = false;
+        Random rand = new Random();
+        do {
+            log.info("in fastEnter while start");
+            int num  = rand.nextInt(number);
+            if(isGameRoomFull(list.get(num).id()))
+                continue;
+            stop = true;
+            return result = RoomInfoResponse
+                    .builder()
+                    .roomId(list.get(num).id())
+                    .status(0)
+                    .build();
+        } while(stop);
+        log.info("return id     = " +result.roomId());
+        log.info("return status = " +result.status());
+        log.info("in fastEnter while end");
 
+        return result;
     }
 
     public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId) {
@@ -283,5 +216,19 @@ public class SquareService {
                 .build();
     }
 
+
+    public boolean isGameRoomFull(Long roomId){
+        GameRoom oneGameRoom = redisGameRepository.getOneGameRoom(roomId);
+        if (oneGameRoom.getParticipants().size()==4)
+            return true;
+        return false;
+    }
+
+    public boolean isGameRoomLocked(Long roomId){
+        Optional<Room> byId = roomRepository.findById(roomId);
+        if(byId.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        return !byId.get().isPublic();
+    }
 
 }

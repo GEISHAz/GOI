@@ -29,19 +29,13 @@ public class SquareController {
     }
 
     @PostMapping("/fast") //빠른입장
-    public SuccessResponse<Void> fastEnterRoom(@AuthenticationPrincipal User user){
+    public SuccessResponse<RoomInfoResponse> fastEnterRoom(@AuthenticationPrincipal User user){
         log.info("SquareController fastEnterRoom start");
         log.info("user id값"+user.getId());
-        return SuccessResponse.from(SuccessType.FAST_ENTER_SUCCESSFULLY);
+        return SuccessResponse.of(SuccessType.FAST_ENTER_SUCCESSFULLY,squareService.fastEnter(user));
     }
 
-//    @PostMapping("/find/{roomId}") //방찾기
-//    public SuccessResponse<RoomInfoResponse> searchRoom(@AuthenticationPrincipal User user, @PathVariable("roomId") Long roomId){
-//        log.info("SquareController searchRoom in");
-//        log.info("user id값"+user.getId());
-//        return SuccessResponse.of(SuccessType.SEARCH_ROOM_SUCCESSFULLY,
-//                squareService.searchRoom(user,roomId));
-//    }
+
 
     @GetMapping("/list/{channelId}") //방 목록
     public SuccessResponse<RoomListResponse> listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){

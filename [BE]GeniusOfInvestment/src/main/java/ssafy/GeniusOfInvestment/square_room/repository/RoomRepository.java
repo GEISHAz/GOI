@@ -7,7 +7,7 @@ import ssafy.GeniusOfInvestment._common.entity.Room;
 import java.util.Optional;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room,Long> {
+public interface RoomRepository extends JpaRepository<Room,Long>,RoomRepositoryCustom {
 
 
 }
