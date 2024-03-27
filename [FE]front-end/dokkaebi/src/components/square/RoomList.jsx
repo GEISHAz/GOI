@@ -51,7 +51,6 @@ export default function RoomList() {
     } else {
       axios
         .post(`https://j10d202.p.ssafy.io/api/room/enter`,
-        // 방 입장인데 왜 방 번호를 안받음? -> body에 roomId, password를 넣어줘야 함
         {"roomId" : room.id, "password" : '',},
         {
           headers: {

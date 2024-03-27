@@ -2,6 +2,8 @@ package ssafy.GeniusOfInvestment.friend.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,25 @@ import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 public class FriendService {
 
     private final FriendRepository friendRepository;
-    private final UserRepository userRepository;
     private final ChatRecordRepository chatRecordRepository;
 
+    /*
+    1. 내 아이디가 my_id라면 friend를 response에 추가
+    2. 내 아이디가 friend_id라면 user를 response에 추가
+     */
     public List<FriendListResponse> getFriendList(Long userId) {
 
-        List<Friend> list = friendRepository.findFriendByUserIdOrFriendId(userId);
-        return list.stream().map(FriendListResponse::from).toList();
+        List<Friend> friendsByUserAndFriendUserIsMe = friendRepository.findFriendsByUserAndFriendUserIsMe(userId);
+        List<FriendListResponse> friendListResponseListUserIsMe = friendsByUserAndFriendUserIsMe.stream()
+                .map(friend -> FriendListResponse.of(friend.getId(),friend.getFriend().getId(),friend.getFriend().getNickName())).toList();
+        List<Friend> friendsByUserAndFriendFriendIsMe = friendRepository.findFriendsByUserAndFriendFriendIsMe(userId);
+        List<FriendListResponse> friendListResponseListFriendIsMe = friendsByUserAndFriendFriendIsMe.stream()
+                .map(friend -> FriendListResponse.of(friend.getId(),friend.getUser().getId(),friend.getUser().getNickName())).toList();
+        return Stream.concat(
+                        friendListResponseListUserIsMe.stream(),
+                        friendListResponseListFriendIsMe.stream()
+                )
+                .toList();
     }
 
     public void saveMessage(FriendChatMessageDto friendChatMessageDto) {
@@ -58,5 +72,4 @@ public class FriendService {
         }
         friendRepository.delete(friend);
     }
-
 }

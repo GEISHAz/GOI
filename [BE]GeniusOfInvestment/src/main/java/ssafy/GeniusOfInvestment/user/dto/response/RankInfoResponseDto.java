@@ -12,21 +12,24 @@ public class RankInfoResponseDto {
     private final String nickName;
     private final Long exp;
     private final int imageId;
+    private final Long rankByExp;
 
     @Builder
-    private RankInfoResponseDto(Long id, String nickName, Long exp,int imageId){
+    private RankInfoResponseDto(Long id, String nickName, Long exp,int imageId,Long rankByExp){
         this.id = id;
         this.nickName = nickName;
         this.exp = exp;
         this.imageId = imageId;
+        this.rankByExp = rankByExp;
     }
 
-    public static RankInfoResponseDto from(User user){
+    public static RankInfoResponseDto from(User user, Long rankByExp){
         return builder()
                 .id(user.getId())
                 .nickName(user.getNickName())
                 .exp(user.getExp())
                 .imageId(user.getImageId())
+                .rankByExp(rankByExp)
                 .build();
     }
 }

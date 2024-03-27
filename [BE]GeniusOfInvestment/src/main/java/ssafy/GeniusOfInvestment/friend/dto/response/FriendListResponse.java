@@ -18,6 +18,14 @@ public class FriendListResponse {
         this.nickName = nickName;
     }
 
+    public static FriendListResponse of(Long friendListId, Long friendId, String nickName){
+        return builder()
+                .friendListId(friendListId)
+                .friendId(friendId)
+                .nickName(nickName)
+                .build();
+    }
+
     public static FriendListResponse from(Friend friend){
         return builder()
                 .friendListId(friend.getId())

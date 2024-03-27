@@ -64,11 +64,11 @@ public class RoomService {
         if(gameRoom.getParticipants().size()>=4){
             throw new CustomBadRequestException(ErrorType.IS_FULL_ROOM);
         }
-
+        log.info("IS_FULL_ROOM");
         // redisUser 가 없어야함 있다면 예외
         if(redisUserRepository.getOneRedisUser(user.getId()) != null)
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
-
+        log.info("IS_NOT_AVILABLE_REDISUSER");
         // redis user 만들기, 상태추적
         redisUserRepository.saveUserStatusGameing(RedisUser.builder()
                 .userId(user.getId())
@@ -103,6 +103,8 @@ public class RoomService {
                     .userNick(tmp.get().getNickName())
                     .isReady(gu.isReady())
                     .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
                     .build());
         }
         return rstList;

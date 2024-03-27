@@ -67,7 +67,7 @@ export default function Channel() {
     const exitAndFetchChannels = async () => {
       if (channelId) {
         try {
-          await axios.post(
+          await axios.delete(
             `https://j10d202.p.ssafy.io/api/channel/exitc`,
             {},
             {

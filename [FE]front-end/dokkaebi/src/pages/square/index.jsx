@@ -5,9 +5,15 @@ import UserList from "../../components/square/UserList";
 import RoomList from "../../components/square/RoomList";
 import ChatContainer from "../../components/square/ChatContainer";
 import TopButtons from "../../components/square/TopButtons";
+import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
+import axios from "axios";
 
 export default function Square() {
+  const channelId = sessionStorage.getItem("channelId");
+  const accessToken = sessionStorage.getItem("accessToken");
+  const roomId = sessionStorage.getItem("roomId");
+  const navigate = useNavigate();
   // 배경 GIF 설정
   const backgroundStyle = {
     backgroundImage: `url(${Background})`,
@@ -20,11 +26,28 @@ export default function Square() {
     left: 0,
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("Square 페이지 이탈");
-  //   };
-  // }, []);
+  useEffect(() => {
+    sessionStorage.getItem("roomId");
+    axios
+      .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        console.log("방 나가기 성공");
+        sessionStorage.removeItem("roomId");
+        navigate(`/square/${channelId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("방 나가기 실패");
+      });
+    return () => {
+      // console.log("Square 페이지 이탈");
+    };
+  }, []);
 
   return (
     <div style={backgroundStyle} className={styles.squareContainer}>
