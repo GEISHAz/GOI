@@ -20,11 +20,12 @@ export default function Square() {
     left: 0,
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("Square 페이지 이탈");
-  //   };
-  // }, []);
+  useEffect(() => {
+    sessionStorage.removeItem("roomId");
+    return () => {
+      // console.log("Square 페이지 이탈");
+    };
+  }, []);
 
   return (
     <div style={backgroundStyle} className={styles.squareContainer}>
