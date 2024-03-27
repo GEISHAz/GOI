@@ -72,7 +72,7 @@ export default function TopButtons() {
         {/* 뒤로가기 버튼 */}
         <div>
           <button
-            onClick={() => navigate(`/square/${channelId}`)}
+            onClick={() => navigate(`/channel`)}
             className='font-bold text-white text-4xl'
           >
             Back
