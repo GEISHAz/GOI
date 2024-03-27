@@ -148,12 +148,16 @@ public class SquareService {
         //list 가공
         for (SquareRoom room : rooms) {
             Long id = room.id();
+            GameRoom groom = redisGameRepository.getOneGameRoom(id);
+            if(groom == null){
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+            }
             list.add(SquareRoom
                     .builder()
                     .id(id)
                     .title(room.title())
                     .isPrivate(room.isPrivate())
-                    .userCount(redisGameRepository.getOneGameRoom(id).getParticipants().size())
+                    .userCount(groom.getParticipants().size())
                     .build());
         }
 

@@ -21,7 +21,7 @@ public class RoomRepositoryImpl implements RoomRepositoryCustom{
                         room.isPublic
                 )
                 .from(room)
-                .where(room.isPublic.eq(false).and(room.channel.id.eq(channelId)))
+                .where(room.isPublic.eq(true).and(room.channel.id.eq(channelId)))
                 .fetch()
                 .stream()
                 .map(this::TupleToSquareroom)
@@ -32,7 +32,7 @@ public class RoomRepositoryImpl implements RoomRepositoryCustom{
                 .builder()
                 .id(tuple.get(0,Long.class))
                 .title(tuple.get(1,String.class))
-                .isPrivate(tuple.get(2,Boolean.class))
+                .isPrivate(Boolean.TRUE.equals(tuple.get(2, Boolean.class)))
                 .build();
     }
 }
