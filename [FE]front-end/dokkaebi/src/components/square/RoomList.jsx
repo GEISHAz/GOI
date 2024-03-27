@@ -17,7 +17,7 @@ export default function RoomList() {
   const [currentPage, setCurrentPage] = useState(0);
   const roomsPerPage = 4; // 한 페이지에 표시할 방의 수
   const [EnterModal, setEnterModal] = useState(false); // 비밀방 입장 모달
-  const [roomId,useRoomId] = useState()
+  const [roomId, useRoomId] = useState();
 
   // 현재 페이지에 따라 표시할 방 계산
   const indexOfLastRoom = (currentPage + 1) * roomsPerPage;
@@ -41,13 +41,13 @@ export default function RoomList() {
   // 방 클릭 핸들러 함수
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
-    useRoomId(room.id)
-    console.log(room.isPrivate)
+    useRoomId(room.id);
+    console.log(room.isPrivate);
     if (room.isPrivate) {
       // setRoomId(room.id);
-      console.log("?????")
+      console.log("?????");
       setEnterModal(true);
-      console.log(room.id)
+      console.log(room.id);
     } else {
       axios
         .post(
@@ -147,11 +147,9 @@ export default function RoomList() {
       </div>
 
       {/* 모달 함수 전달 */}
-<<<<<<< HEAD
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} />}
-=======
-      {EnterModal && <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId}/>}
->>>>>>> develop
+      {EnterModal && (
+        <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />
+      )}
     </div>
   );
 }
