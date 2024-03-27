@@ -31,9 +31,17 @@ public class RoomController {
 
     //방 들어가기
     @PostMapping("/enter")
-    public SuccessResponse<RoomInfoResponse> enterRoom(@AuthenticationPrincipal User user, @RequestBody RoomEnterRequest enterInfo){
+    public List<RoomPartInfo> enterRoom(@AuthenticationPrincipal User user, @RequestBody RoomEnterRequest enterInfo){
         log.info("RoomController enterRoom start");
-        return SuccessResponse.of(SuccessType.ROOM_ENTER_REQUEST_SUCCESSFULLY,roomService.enterRoom(user,enterInfo));
+        List<RoomPartInfo> rst = roomService.enterRoom(user, enterInfo);
+        //websocket 들어감 보내주기
+        messageTemplate.convertAndSend("/sub/room/chat/" + enterInfo.roomId(),
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_ENTER)
+                        .data(rst)
+                        .build());
+        return rst;
     }
 
     //방 나가기

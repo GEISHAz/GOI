@@ -43,7 +43,26 @@ export default function RoomList() {
     if (room.isPrivate) {
       setEnterModal(true);
     } else {
-      sessionStorage.setItem(`room${room.id}`, JSON.stringify(room));
+      axios
+        .post(`https://j10d202.p.ssafy.io/api/room/enter`,
+        // 방 입장인데 왜 방 번호를 안받음? -> body에 roomId, password를 넣어줘야 함
+        {"roomId" : room.id, "password" : '',},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          console.log("방 접속 성공");
+          sessionStorage.setItem("roomId", room.id);
+          navigate(`/room/${room.id}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log("방 접속 실패");
+        });
+      sessionStorage.setItem("roomId", room.id);
       navigate(`/room/${room.id}`);
     }
   };

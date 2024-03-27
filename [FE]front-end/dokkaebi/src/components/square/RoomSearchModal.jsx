@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RoomEnterModal from './RoomEnterModal';
 import styles from './RoomSearchModal.module.css';
@@ -8,7 +8,7 @@ import styles from './RoomSearchModal.module.css';
 export default function RoomSearchModal({ onClose }) {
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
-  
+
   // 입력창에 입력된 방 번호를 관리하는 상태
   const [roomId, setRoomId] = useState('');
 
@@ -70,28 +70,30 @@ export default function RoomSearchModal({ onClose }) {
   };
 
   return (
-      <div className={styles.background}>
-        {/* 모달 컨테이너 */}
-        <div className={`${styles.container} flex flex-col items-center justify-center`}>
-          {/* 모달 타이틀 */}
-          <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
-          <input
-            type="text"
-            value={roomId}
-            onChange={handleRoomIdChange} // 입력 변화를 처리하는 함수 연결
-            placeholder="방 번호 입력"
-            className="border-2 border-gray-300 p-1 w-48"
-          />
-          
-          {/* 버튼 그룹 */}
-          <div className="flex justify-center w-full mt-5">
+    <div className={styles.background}>
+      {/* 모달 컨테이너 */}
+      <div
+        className={`${styles.container} flex flex-col items-center justify-center`}
+      >
+        {/* 모달 타이틀 */}
+        <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
+        <input
+          type="text"
+          value={roomId}
+          onChange={handleRoomIdChange} // 입력 변화를 처리하는 함수 연결
+          placeholder="방 번호 입력"
+          className="border-2 border-gray-300 p-1 w-48"
+        />
+
+        {/* 버튼 그룹 */}
+        <div className="flex justify-center w-full mt-5">
           {/* 입장 버튼 */}
           <button
             onClick={handleEnterClick} // 클릭 이벤트 핸들러 연결
             className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
             type="button"
           >
-          입장
+            입장
           </button>
 
           {/* 취소 버튼 */}
@@ -102,10 +104,8 @@ export default function RoomSearchModal({ onClose }) {
           >
             취소
           </button>
-          </div>
-          {/* 조건부 렌더링을 사용하여 RoomEnterModal 표시 */}
-          {showRoomEnterModal && <RoomEnterModal roomId={roomId} onClose={() => setShowRoomEnterModal(false)} />}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}

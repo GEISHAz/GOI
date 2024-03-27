@@ -41,9 +41,9 @@ export default function GamePlay() {
             const receivedMessage = JSON.parse(message.body);
 
             if (receivedMessage.type === "STOCK_MARKET") {
-              console.log(receivedMessage.data);
+              console.log(receivedMessage);
             } else if (receivedMessage.type === "TIMER") {
-              console.log(receivedMessage.data);
+              console.log(receivedMessage.data.remainingTime);
             }
           });
         },
