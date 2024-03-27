@@ -49,4 +49,6 @@ public class SquareController {
         log.info("SquareController listUser in");
         return SuccessResponse.of(SuccessType.USER_LIST_CALLED_SUCCESSFULLY,squareService.listUser(channelId));
     }
+
+
 }

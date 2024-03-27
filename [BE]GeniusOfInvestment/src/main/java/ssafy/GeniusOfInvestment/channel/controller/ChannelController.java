@@ -29,7 +29,7 @@ public class ChannelController {
         return SuccessResponse.of(SuccessType.CHANNEL_LIST_CALLED_SUCCESSFULLY,channelService.listAllChannel());
     }
 
-    @PutMapping("/enterc/{channelId}") //채널 들어가기
+    @PostMapping("/enterc/{channelId}") //채널 들어가기
     public SuccessResponse<Void> enterChannel(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
         log.info("ChannelController enterChannel start");
         channelService.enterChannel(user,channelId);
@@ -37,7 +37,7 @@ public class ChannelController {
         return SuccessResponse.from(SuccessType.ENTER_CHANNEL_SUCCESSFULLY);
     }
 
-    @PostMapping("/exitc")// 채널 나가기 처리
+    @DeleteMapping("/exitc")// 채널 나가기 처리
     public SuccessResponse<Void> exitChannel(@AuthenticationPrincipal User user){
         log.info("ChannelController exitChannel start");
         log.info("id : "+user.getId());
@@ -45,11 +45,9 @@ public class ChannelController {
         log.info("id : "+user.getExp());
         log.info("id : "+user.getImageId());
         log.info("id : "+user.getSocialId());
-
         channelService.exitChannel(user);
 
         log.info("ChannelController exitChannel end");
         return SuccessResponse.from(SuccessType.EXIT_CHANNEL_SUCCESSFULLY);
     }
-
 }
