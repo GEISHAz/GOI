@@ -59,22 +59,40 @@ export default function UserList() {
 
       {/* 유저 상태 표시 (게임 중/대기 중) 리스트 */}
       <div
-        className={`flex flex-col items-center text-center ${styles.userState}`}
+        className={`flex flex-col items-center text-center ${styles.userState}`
+      }
       >
         {isUserInfo.map((user) => {
           const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
+          let statusText = "알 수 없는 상태"; // 기본값 설정
+          let statusClass = ""; // 상태에 따른 클래스명 기본값
+
+            // user.status 값에 따라 statusText 및 statusClass 업데이트
+            if (user.status === 0) {
+              statusText = "로비";
+              statusClass = styles.login; // CSS 모듈의 클래스명
+            } 
+            else if (user.status === 1) {
+              statusText = "대기중";
+              statusClass = styles.waiting;
+            } 
+            else if (user.status === 2) {
+              statusText = "게임중";
+              statusClass = styles.playing;
+            }
+
           return (
-            <div key={user.id} className="flex flex-row my-auto">
-              <div>
+            <div key={user.id} className="flex items-center justify-between p-2 border-b border-gray-200 w-full ml-2 mr-2">
+              <div className="my-auto">
                 {image && (
                   <img src={image.src} alt={image.alt} className="h-10 w-10" />
                 )}
               </div>
-              <div>
+              <div className="my-auto ml-1">
                 <span>{user.nickName}</span>
               </div>
-              <div className="ml-2">
-                <span>{user.status}원</span>
+              <div className={`my-auto flex justify-end ml-2 ${statusClass}`}>
+                <span>{statusText}</span>
               </div>
             </div>
           );

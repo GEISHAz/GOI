@@ -174,12 +174,11 @@ public class SquareService {
         return result;
     }
 
-    public RoomInfoResponse fastEnter(User user) {
+    public RoomEnterRequest fastEnter(User user) {
         log.info("SquareService fastEnter start");
-        RoomInfoResponse result = RoomInfoResponse
+        RoomEnterRequest result = RoomEnterRequest
                 .builder()
                 .roomId(99999999L)
-                .status(99999999)
                 .build();
         List<SquareRoom> list = roomRepository.findRoomCanEnter(user.getChannel().getId());
         int number = list.size();
@@ -192,16 +191,14 @@ public class SquareService {
             if(isGameRoomFull(list.get(num).id()))
                 continue;
             stop = true;
-            return result = RoomInfoResponse
+            return result = RoomEnterRequest
                     .builder()
                     .roomId(list.get(num).id())
-                    .status(0)
                     .build();
+
         } while(stop);
         log.info("return id     = " +result.roomId());
-        log.info("return status = " +result.status());
         log.info("in fastEnter while end");
-
         return result;
     }
 
