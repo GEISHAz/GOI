@@ -31,6 +31,7 @@ export default function userReadyRoom() {
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
+  const [isStart, setIsStart] = useState(false);
 
   useEffect(() => {
     console.log("gkrltlfgek", response);
@@ -60,6 +61,7 @@ export default function userReadyRoom() {
         {},
         function (frame) {
           stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
+            console.log("방", roomId);
             const receivedMessage = JSON.parse(message.body);
             console.log(receivedMessage);
             console.log(receivedMessage.type);
@@ -71,6 +73,10 @@ export default function userReadyRoom() {
             } else if (receivedMessage.type === "ROOM_EXIT") {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
+            } else if (receivedMessage.type === "READY") {
+              console.log(receivedMessage.data.list);
+              setUserList(receivedMessage.data.list);
+              setIsStart(receivedMessage.data.ready);
             }
           });
         },

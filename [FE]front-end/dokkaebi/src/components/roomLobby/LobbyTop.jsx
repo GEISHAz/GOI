@@ -13,6 +13,7 @@ export default function LobbyTop({ userList }) {
   const roomId = sessionStorage.getItem("roomId");
   const channelId = sessionStorage.getItem("channelId");
 
+  const [isStart, setIsStart] = useState(false);
   const [isReady, setIsReady] = useState(false);
   let amIManager = false;
 
@@ -59,17 +60,16 @@ export default function LobbyTop({ userList }) {
 
   const handleStartButtonClick = () => {
     axios
-      .put(`https://j10d202.p.ssafy.io/api/room/ready/${roomId}`, {
+      .put(`https://j10d202.p.ssafy.io/api/room/start/${roomId}`, {
         headers: { accessToken: `Bearer ${accessToken}` },
       })
       .then((res) => {
         console.log(res);
-        console.log("레디 바뀜 확인");
-        setIsReady(!isReady);
+        console.log("게임 시작");
       })
       .catch((err) => {
         console.log(err);
-        console.log("레디 바뀜 실패");
+        console.log("게임 시작 실패");
       });
   };
 
@@ -91,7 +91,8 @@ export default function LobbyTop({ userList }) {
           {amIManager ? (
             <button
               onClick={handleStartButtonClick}
-              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
+              disabled={!isReady}
+              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton} `}
             >
               START
             </button>
