@@ -52,6 +52,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
             //SecurityContext에 저장할 User 객체 생성
+            log.info("토큰값이 " + token);
             User user = userService.getAuthenticationUser(jwtUtil.getUserId(token));
 
             Authentication authentication = jwtUtil.getAuthentication(user);

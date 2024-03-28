@@ -8,20 +8,20 @@ import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
 public class ChatRecordResponse {
 
     private final Long id;
-    private final String msg;
+    private final String message;
     private final String sender;
 
     @Builder
-    private ChatRecordResponse(Long id,String msg, String sender){
+    private ChatRecordResponse(Long id,String message, String sender){
         this.id = id;
-        this.msg = msg;
+        this.message = message;
         this.sender = sender;
     }
 
     public static ChatRecordResponse from(ChatRecord chatRecord){
         return builder()
                 .id(chatRecord.getId())
-                .msg(chatRecord.getMsg())
+                .message(chatRecord.getMsg())
                 .sender(chatRecord.getSender())
                 .build();
     }

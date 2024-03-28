@@ -39,6 +39,13 @@ export default function TopButtons() {
     toggleBGMVisibility(!isSidebarOpen);
   };
 
+  // 새로고침 핸들러
+  const handleRefreshClick = () => {
+    // UserList와 RoomList를 새로고침하기 위한 이벤트 발생
+    window.dispatchEvent(new CustomEvent("refreshUserList"));
+    window.dispatchEvent(new CustomEvent("refreshRoomList"));
+  };
+
   // 빠른 입장 핸들러
   const handleQuickEnter = async () => {
     // post /api/square/fast
@@ -157,12 +164,17 @@ export default function TopButtons() {
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}
         <div className="flex">
-          <button className={`${styles.refreshButton}`}>
+          {/* 새로고침 버튼 */}
+          <button
+            onClick={handleRefreshClick}
+            className={`${styles.refreshButton}`}
+          >
             <img src={refresh} alt="RefreshButton" />
           </button>
+          {/* 친구 채팅 버튼 */}
           <button
-            className={`${styles.messengerButton}`}
             onClick={toggleSidebar}
+            className={`${styles.messengerButton}`}
           >
             <img src={messenger} alt="MessengerButton" />
           </button>

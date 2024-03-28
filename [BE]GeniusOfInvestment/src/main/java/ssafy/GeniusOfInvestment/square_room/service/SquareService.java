@@ -48,6 +48,7 @@ public class SquareService {
 
         Channel ch = u.get().getChannel();
 
+
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
@@ -92,6 +93,13 @@ public class SquareService {
                 .build());
 
         return makeSavedRoomResponse(room, info.channelId(), rstList);
+    }
+
+    //방 번호를 생성(ex)1001, 2001)
+    public int createRoomNum(Channel ch){
+        Long chId = ch.getId();
+
+        return 0;
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {

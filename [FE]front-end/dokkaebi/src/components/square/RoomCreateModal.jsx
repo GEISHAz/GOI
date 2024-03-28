@@ -150,7 +150,7 @@ export default function RoomCreateModal({ onClose, userName }) {
               type="text"
               value={isRoomTitle}
               className="border-2 border-gray-300 p-1"
-              maxLength={15}
+              maxLength={10}
               onChange={(e) => setIsRoomTitle(e.target.value)}
               // defaultValue={userNickname + "의 방"}
             />

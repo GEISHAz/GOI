@@ -97,9 +97,24 @@ export default function RoomList() {
         console.error("방 목록 불러오기 실패", error);
       }
     };
-    fetchRoomList();
-  }, []); // 의존성 배열이 빈 배열이므로, 컴포넌트가 마운트될 때 한 번만 호출됨
+    // 새로고침 이벤트 리스너 추가
+    const handleRefresh = () => {
+      console.log("방목록 새로고침 확인");
+      fetchRoomList();
+    };
 
+    window.addEventListener('refreshRoomList', handleRefresh);
+
+    // 첫 로딩 시에도 데이터를 불러옴
+    fetchRoomList();
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('refreshRoomList', handleRefresh);
+    };
+    }, []);  // 의존성 배열이 빈 배열이므로 -> 컴포넌트가 마운트될 때 한 번만 호출
+
+    
   return (
     <div>
       <div className={styles.pagination}>
@@ -120,11 +135,11 @@ export default function RoomList() {
                   src={room.isPrivate ? lock : unlocked}
                   alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
                 />
-                <p className="text-Bit">{room.id}</p>
+                <p className="text-Bit">Room {room.id}</p>
               </div>
               <div className="col-span-1 row-span-1"></div>
               <div className="flex flex-row justify-evenly">
-                <div className="col-span-2 row-span-1 text-xl m-2">{`${room.title}`}</div>
+                <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
                 <div
                   className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
                     room.userCount === 4 ? "text-red-500" : ""
