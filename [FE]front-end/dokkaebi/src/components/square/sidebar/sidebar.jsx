@@ -58,14 +58,14 @@ const Sidebar = ({ toggleSidebar }) => {
     try {
       console.log("friendListId 확인 :", friendListId)
       await axios.delete(`https://j10d202.p.ssafy.io/api/friend/${userId}/delete`, {
-        friendListId: friendListId,
-      }, {
+        data: { friendListId: friendListId },
         headers : {  Authorization: `Bearer ${accessToken}` },
       });
       alert("도깨비 친구를 삭제했어요")
       friendList(); // 친구 목록 다시 불러오기
     } catch (error) {
       console.error('친구 삭제 실패', error)
+      console.log(error)
     }
   };
 
