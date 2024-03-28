@@ -44,10 +44,10 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     console.log("gkrltlfgek",response)
-    if (response.msg) {
-      setUserList(response)
-    } else {
+    if (response.userList) {
       setUserList(response.userList);
+    } else {
+      setUserList(response)
     }
   }, [response]);
 
