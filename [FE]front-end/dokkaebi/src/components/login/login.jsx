@@ -49,7 +49,7 @@ export default function LoginComponent() {
       <div
         className={`${styles.loginBG} flex flex-col items-center justify-center w-1/3 mx-auto bg-black/60 rounded-3xl p-10`}
       >
-        <h1 className="font-bold text-white text-3xl mb-10">로 그 인</h1>
+        <h1 className="text-white text-5xl mb-10 font-Bit">로 그 인</h1>
         <h2 className="font-bold text-white text-xl mb-10">
           도깨비로 참여하세요 !
         </h2>
@@ -61,7 +61,7 @@ export default function LoginComponent() {
         <img
           src={KakaoLogin}
           alt="카카오 로그인"
-          className={`${styles.clickCursor} w-80`}
+          className={`${styles.clickCursor} ${styles.kakaoButton} w-80`}
           onClick={handleKakaoLogin}
         />
         {/* <div className='w-1/4 flex justify-center mb-10'>

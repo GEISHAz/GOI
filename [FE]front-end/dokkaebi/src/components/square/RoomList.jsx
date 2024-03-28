@@ -135,7 +135,7 @@ export default function RoomList() {
                       src={room.isPrivate ? lock : unlocked}
                       alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
                     />
-                    <p className="text-Bit">Room {room.id}</p>
+                    <p className="text-Bit">{room.roomNum}</p>
                   </div>
                   <div className="col-span-1 row-span-1"></div>
                   <div className="flex flex-row justify-evenly">
