@@ -3,12 +3,24 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LobbyTop.module.css";
 import messenger from "../../images/square/icon_messenger.png";
 import axios from "axios";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-export default function LobbyTop(props) {
+export default function LobbyTop({ userList }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userNickname = useSelector((state) => state.auth.userNickname);
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
   const channelId = sessionStorage.getItem("channelId");
+
+  const [isReady, setIsReady] = useState(false);
+  let amIManager = false;
+
+  userList.forEach((user) => {
+    if (user.nickname === userNickname) {
+      amIManager = user.isManager;
+    }
+  });
 
   const handleBackButtonClick = () => {
     axios
@@ -31,53 +43,75 @@ export default function LobbyTop(props) {
 
   const handleReadyButtonClick = () => {
     axios
-      .post(
-        `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
-        {},
-        {
-          headers: { accessToken: `Bearer ${accessToken}` },
-        }
-      )
+      .put(`https://j10d202.p.ssafy.io/api/room/ready/${roomId}`, {
+        headers: { accessToken: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         console.log(res);
-        console.log("레디 성공");
+        console.log("레디 바뀜 확인");
+        setIsReady(!isReady);
       })
       .catch((err) => {
         console.log(err);
-        console.log("레디 실패");
+        console.log("레디 바뀜 실패");
       });
+  };
 
-    return (
-      <>
-        <div className="flex items-center justify-between p-5">
-          {/* 뒤로가기 버튼 */}
-          <div>
+  const handleStartButtonClick = () => {
+    axios
+      .put(`https://j10d202.p.ssafy.io/api/room/ready/${roomId}`, {
+        headers: { accessToken: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        console.log(res);
+        console.log("레디 바뀜 확인");
+        setIsReady(!isReady);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("레디 바뀜 실패");
+      });
+  };
+
+  return (
+    <>
+      <div className="flex items-center justify-between p-5">
+        {/* 뒤로가기 버튼 */}
+        <div>
+          <button
+            onClick={handleBackButtonClick}
+            className="font-bold text-white text-4xl"
+          >
+            Back
+          </button>
+        </div>
+
+        <div className="flex-grow flex justify-center gap-4">
+          {/* 레디 버튼 */}
+          {amIManager ? (
             <button
-              onClick={handleBackButtonClick}
-              className="font-bold text-white text-4xl"
+              onClick={handleStartButtonClick}
+              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
             >
-              Back
+              START
             </button>
-          </div>
-
-          <div className="flex-grow flex justify-center gap-4">
-            {/* 레디 버튼 */}
+          ) : (
             <button
               onClick={handleReadyButtonClick}
               className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
             >
-              READY
+              {isReady ? "Cancel" : "Ready"}
             </button>
-          </div>
-
-          {/* 메신저 버튼 */}
-          <div className="flex">
-            <button className={`${styles.messengerButton}`}>
-              <img src={messenger} alt="MessengerButton" />
-            </button>
-          </div>
+          )}
         </div>
-      </>
-    );
-  };
+
+        {/* 메신저 버튼 */}
+        <div className="flex">
+          <button className={`${styles.messengerButton}`}>
+            <img src={messenger} alt="MessengerButton" />
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }

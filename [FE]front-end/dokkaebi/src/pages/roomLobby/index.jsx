@@ -32,22 +32,12 @@ export default function userReadyRoom() {
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
 
-  const [isAllReady, setIsAllReady] = useState(false);
-
-  const toggleReady = (userId) => {
-    setUserList(
-      userList.map((user) =>
-        user.id === userId ? { ...user, isReady: !user.isReady } : user
-      )
-    );
-  };
-
   useEffect(() => {
-    console.log("gkrltlfgek",response)
+    console.log("gkrltlfgek", response);
     if (response.userList) {
       setUserList(response.userList);
     } else {
-      setUserList(response)
+      setUserList(response);
     }
   }, [response]);
 
@@ -111,11 +101,7 @@ export default function userReadyRoom() {
 
   return (
     <div style={backgroundStyle}>
-      <LobbyTop
-        userList={userList}
-        toggleReady={toggleReady}
-        // isAllReady={isAllReady}
-      />
+      <LobbyTop userList={userList} />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
         <PlayerList userList={userList} />
