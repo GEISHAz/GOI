@@ -11,27 +11,28 @@ import styles from './sidebar.module.css';
 
 const Sidebar = ({ toggleSidebar }) => {
   const client = useRef(null); // 구독할 클라이언트
-  const subscriptionRef = useRef(null); // 구독할 때 식별자 지정
-  const [selectedFriend, setSelectedFriend] = useState(null);
-  const [isFriendList, setIsFriendList] = useState([]);
-  const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 문구
+  const subscriptionRef = useRef(null); // 구독할 때 고유 식별자 지정
+  const [selectedFriend, setSelectedFriend] = useState(null); // 친구 목록 중 친구 1명을 선택했을 때 상태 관리
+  const [isFriendList, setIsFriendList] = useState([]); // 친구 목록 관리
+  const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 관리
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
-  const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림관리
-  const [isFriendChat, setIsFriendChat] = useState([]);
+  const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림 관리
+  const [isFriendChat, setIsFriendChat] = useState([]); // 받은 메시지 관리 
   const userNickname = useSelector((state) => state.auth.userNickname);
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   
-  // 친구를 클릭하면 메신저가 열리는 함수
+  // 친구를 클릭하면 메신저가 열기 -> friend 인자 전달
   const handleFriendClick = (friend) => {
     setSelectedFriend({ ...friend }); // 선택된 친구 상태 업데이트
   };
 
-  // 메신저 닫기 함수
+  // 메신저 닫기
   const toggleMessageBar = () => {
     setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
   };
 
+  // 친구 목록 불러오기
   const friendList = async () => {
     try {
       const res = await axios.get(`https://j10d202.p.ssafy.io/api/friend/${userId}/list`, {
@@ -54,11 +55,12 @@ const Sidebar = ({ toggleSidebar }) => {
     }
   };
 
+  // 친구 삭제
   const friendDelete = async (friendListId) => {
     try {
       console.log("friendListId 확인 :", friendListId)
       await axios.delete(`https://j10d202.p.ssafy.io/api/friend/${userId}/delete`, {
-        data: { friendListId: friendListId },
+        data: { friendListId: friendListId }, // delete 요청은 Request.Body 형식이 아닌 data에 감싸서 보내기
         headers : {  Authorization: `Bearer ${accessToken}` },
       });
       alert("도깨비 친구를 삭제했어요")
@@ -105,8 +107,12 @@ const Sidebar = ({ toggleSidebar }) => {
             (message) => {
               // 받은 메세지 처리할 곳
               const msg = JSON.parse(message.body);
+              console.log("메세지 확인", msg)
               if (msg.type && msg.type === "TALK") {
-                setIsFriendChat(prevMessages => [...prevMessages, msg]);
+                setIsFriendChat((prevMessages) => {
+                  return prevMessages
+                    ? [...prevMessages, msg] : null;
+                });
               }
           });
         });
@@ -199,7 +205,6 @@ const Sidebar = ({ toggleSidebar }) => {
         handleSendMSG={handleSendMSG} // 메신저 조작 함수 props
         isFriendChat={isFriendChat} // 채팅 내역 props
         setIsFriendChat={setIsFriendChat} // 채팅 내역 저장한거 props -> 이전 채팅 기록을 꺼내기 위함
-        isFriendList={isFriendList}
       />}
 
       {/* 친구 추가 모달 열고 닫기 */}

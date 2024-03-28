@@ -33,14 +33,14 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
   useEffect(() => {
     const chatHistory = async () => {
       if (selectedFriend) {
-        const friendListid = selectedFriend.friendListId
+        const friendListId = selectedFriend.friendListId;
         try {
-          const response = await axios.get(`https://j10d202.p.ssafy.io/api/chat/${friendListid}/list`, {
+          const response = await axios.get(`https://j10d202.p.ssafy.io/api/chat/${friendListId}/list`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
           if (response.status === 200) {
-            console.log("이전 채팅 내역 불러옴!!")
-            setIsFriendChat(response.data.data); // 채팅 내역 상태 업데이트
+            console.log("이전 채팅 내역 불러옴!!", response);
+            setIsFriendChat(response.data.data); // 직접 상태 업데이트
           } else {
             console.error("채팅 기록 불러오기 실패:", response);
           }
@@ -49,9 +49,9 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
         }
       }
     };
-    
-    chatHistory(); // 선택된 친구가 있을 경우, 채팅 기록 불러오기 실행    
-  }, [selectedFriend, accessToken]);
+  
+    chatHistory();
+  }, [selectedFriend, accessToken, setIsFriendChat]);
 
   return (
     <aside className={styles.messenger}>
