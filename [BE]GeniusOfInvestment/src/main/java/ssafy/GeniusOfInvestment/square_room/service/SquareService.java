@@ -85,6 +85,17 @@ public class SquareService {
                 .build();
         redisGameRepository.saveGameRoom(gameRoom);
 
+        log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
+        if(redisUserRepository.getOneRedisUser(user.getId()) != null) {
+            log.info("IS_NOT_AVILABLE_REDISUSER");
+            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
+        }
+        // redis user 만들기, 상태추적
+        redisUserRepository.saveUserStatusGameing(RedisUser.builder()
+                .userId(user.getId())
+                .status(false) //대기중 상태로
+                .build());
+
         log.info("SquareService insertRoom end");
 
         List<RoomPartInfo> rstList = new ArrayList<>();

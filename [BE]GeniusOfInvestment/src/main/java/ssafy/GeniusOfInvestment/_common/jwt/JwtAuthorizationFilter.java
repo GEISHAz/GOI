@@ -55,6 +55,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             log.info("토큰값이 " + token);
             User user = userService.getAuthenticationUser(jwtUtil.getUserId(token));
             log.info("jwt필터에서 유저: " + user);
+            log.info("필터에서 유저 아이디: " + user.getId());
 
             Authentication authentication = jwtUtil.getAuthentication(user);
             SecurityContextHolder.getContext().setAuthentication(authentication);
