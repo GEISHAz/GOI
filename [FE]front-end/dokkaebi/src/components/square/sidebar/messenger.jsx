@@ -22,7 +22,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
 
   // 채팅창 스크롤
   const scrollToBottom = () => {
-    console.log("최신으로 친구와의 채팅 불러옴");
+    // console.log("최신으로 친구와의 채팅 불러옴");
     recentMsg.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -39,7 +39,8 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
             headers: { Authorization: `Bearer ${accessToken}` },
           });
           if (response.status === 200) {
-            setIsFriendChat(response.data); // 채팅 내역 상태 업데이트
+            console.log("이전 채팅 내역 불러옴!!")
+            setIsFriendChat(response.data.data); // 채팅 내역 상태 업데이트
           } else {
             console.error("채팅 기록 불러오기 실패:", response);
           }
