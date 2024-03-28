@@ -79,6 +79,7 @@ public class RoomController {
 
     @PutMapping("/ready/{id}")
     public Map<String, String> doingRoomReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
+        log.info("AuthenticationPrincipal로 유저가 못 받아오나?? " + user);
         ReadyResponse rsp = roomService.doingRoomReady(user, grId);
         Map<String, String> json = new HashMap<>();
         //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것

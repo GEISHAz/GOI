@@ -115,56 +115,55 @@ export default function RoomList() {
     }, []);  // 의존성 배열이 빈 배열이므로 -> 컴포넌트가 마운트될 때 한 번만 호출
 
     
-  return (
-    <div>
-      <div className={styles.pagination}>
-        <button onClick={prevPage} disabled={currentPage === 0}>
-          ◀
-        </button>
-        <div className={styles.roomContainer}>
-          {currentRooms.map((room, index) => (
-            // 클릭 이벤트 핸들러
-            <div
-              key={index}
-              className={styles.roomBox}
-              onClick={() => handleRoomClick(room)}
-            >
-              <div className="flex items-center col-span-2 row-span-1 text-2xl">
-                <img
-                  className={`${styles.lockIcon} mr-2`}
-                  src={room.isPrivate ? lock : unlocked}
-                  alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
-                />
-                <p className="text-Bit">Room {room.id}</p>
-              </div>
-              <div className="col-span-1 row-span-1"></div>
-              <div className="flex flex-row justify-evenly">
-                <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
+    return (
+      <div>
+        <div className={styles.pagination}>
+          <button onClick={prevPage} disabled={currentPage === 0}>
+            ◀
+          </button>
+          <div className={styles.roomContainer}>
+            {currentRooms.length > 0 ? (
+              currentRooms.map((room, index) => (
                 <div
-                  className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
-                    room.userCount === 4 ? "text-red-500" : ""
-                  }`}
+                  key={index}
+                  className={styles.roomBox}
+                  onClick={() => handleRoomClick(room)}
                 >
-                  {room.userCount}/4
+                  <div className="flex items-center col-span-2 row-span-1 text-2xl">
+                    <img
+                      className={`${styles.lockIcon} mr-2`}
+                      src={room.isPrivate ? lock : unlocked}
+                      alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
+                    />
+                    <p className="text-Bit">{room.roomNum}</p>
+                  </div>
+                  <div className="col-span-1 row-span-1"></div>
+                  <div className="flex flex-row justify-evenly">
+                    <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
+                    <div
+                      className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
+                        room.userCount === 4 ? "text-red-500" : ""
+                      }`}
+                    >
+                      {room.userCount}/4
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))
+            ) : (
+              <p className="text-center text-white text-lg mt-10 font-Galmuri11">방을 만들거나 새로고침 해주세요!</p>
+            )}
+          </div>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1}
+          >
+            ▶
+          </button>
         </div>
-        <button
-          onClick={nextPage}
-          disabled={
-            currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1
-          }
-        >
-          ▶
-        </button>
+    
+        {/* 모달 함수 전달 */}
+        {EnterModal && 
+        <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />}
       </div>
-
-      {/* 모달 함수 전달 */}
-      {EnterModal && (
-        <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />
-      )}
-    </div>
-  );
-}
+    )};    
