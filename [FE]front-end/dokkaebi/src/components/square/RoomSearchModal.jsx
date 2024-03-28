@@ -39,8 +39,9 @@ export default function RoomSearchModal({ onClose }) {
         // console.log('서버로부터 받은 roomId :', response.data.data.roomId);
         // console.log('서버에서 받은 status 확인 :', response.data.data.status);
   
-        // navigate(`/room/${roomId}`); // 해당 방으로 이동
-        navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
+        navigate(`/room/${roomId}`); // 해당 방으로 이동
+        
+        // navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
       }
     } catch (error) {
       // 에러코드에 따른 조건을 switch로 나누기
@@ -48,7 +49,7 @@ export default function RoomSearchModal({ onClose }) {
       switch(error.response.data.statusCode) {
         case 423: // 방 비밀번호 틀렸을 때
         setShowRoomEnterModal(true)  
-        break; // 이 break를 추가했습니다.
+        break; 
   
         case 426: // 방이 가득 찼을 때
           alert('방이 가득 차서 입장할 수 없어요!');
