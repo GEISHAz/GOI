@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
-import ssafy.GeniusOfInvestment.friend.dto.request.ChatRecordRequest;
 import ssafy.GeniusOfInvestment.friend.dto.response.ChatRecordResponse;
 import ssafy.GeniusOfInvestment.friend.repository.ChatRecordRepository;
 
@@ -15,8 +14,8 @@ public class ChatRecordService {
 
     private final ChatRecordRepository chatRecordRepository;
 
-    public List<ChatRecordResponse> getChatRecord(ChatRecordRequest chatRecordRequest) {
-        List<ChatRecord> chatRecords = chatRecordRepository.findByChatId(chatRecordRequest.getId());
+    public List<ChatRecordResponse> getChatRecord(Long chatId) {
+        List<ChatRecord> chatRecords = chatRecordRepository.findByChatId(chatId);
         chatRecords.sort(Comparator.comparing(ChatRecord::getId));
         return chatRecords.stream().map(ChatRecordResponse::from).toList();
     }
