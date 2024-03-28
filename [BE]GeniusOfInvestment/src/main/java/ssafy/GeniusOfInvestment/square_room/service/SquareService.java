@@ -48,10 +48,15 @@ public class SquareService {
 
         Channel ch = u.get().getChannel();
 
-
+        int rmNum = createRoomNum(ch);
+        if(rmNum == 0){
+            throw new CustomBadRequestException(ErrorType.ERR_CREATE_ROOMNUM);
+        }
+        log.info("생성된 방번호: " + rmNum);
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
+                .roomNum(rmNum)
                 .channel(ch)
                 .title(info.title())
                 .password(info.password())
@@ -97,9 +102,24 @@ public class SquareService {
 
     //방 번호를 생성(ex)1001, 2001)
     public int createRoomNum(Channel ch){
-        Long chId = ch.getId();
-
-        return 0;
+        Room room = roomRepository.findLargestRmNum(ch);
+        if(room == null){ //이 채널에 생성된 방이 없다.
+            return (int) ((ch.getId()*1000) + 1);
+        }else {
+            int num = room.getRoomNum() + 1;
+            if(num >= (ch.getId()+1) * 1000){ //그 다음 천단위로 넘어간다 (ex)1999 -> 2000)
+                num = (int) ((ch.getId()*1000) + 1);
+                while (num < (ch.getId()+1) * 1000){
+                    //이 숫자에 대해서 roomNum가 존재하지 않는다면
+                    if(!roomRepository.existsByChannelAndRoomNumAndStatusBetween(ch, num, 0, 1)){
+                        return num;
+                    }
+                    num++;
+                }
+                throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
+            }
+            return 0;
+        }
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
@@ -158,6 +178,10 @@ public class SquareService {
         //list 가공
         for (SquareRoom room : rooms) {
             Long id = room.id();
+            if(room.roomNum() == 0){
+                log.info("방 번호가 잘못 검색이 되었다. 방번호가 제대로 저장이 안된듯");
+                throw new CustomBadRequestException(ErrorType.ERR_CREATE_ROOMNUM);
+            }
             GameRoom groom = redisGameRepository.getOneGameRoom(id);
             if(groom == null){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -165,6 +189,7 @@ public class SquareService {
             list.add(SquareRoom
                     .builder()
                     .id(id)
+                    .roomNum(room.roomNum())
                     .title(room.title())
                     .isPrivate(room.isPrivate())
                     .userCount(groom.getParticipants().size())
@@ -199,9 +224,10 @@ public class SquareService {
             if(isGameRoomFull(list.get(num).id()))
                 continue;
             stop = true;
-            return result = RoomEnterRequest
+            return RoomEnterRequest
                     .builder()
                     .roomId(list.get(num).id())
+                    .roomNum(list.get(num).roomNum())
                     .build();
 
         } while(stop);
@@ -223,7 +249,8 @@ public class SquareService {
         log.info("SquareService makeSavedRoomResponse end");
         return SavedRoomResponse
                 .builder()
-                .roomnum(room.getId())
+                .roomId(room.getId())
+                .roomnum(room.getRoomNum())
                 .channelId(channelId)
                 .title(room.getTitle())
                 .isPrivate(!room.isPublic())
