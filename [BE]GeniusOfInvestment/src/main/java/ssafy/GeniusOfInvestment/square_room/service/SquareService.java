@@ -97,6 +97,8 @@ public class SquareService {
 
     //방 번호를 생성(ex)1001, 2001)
     public int createRoomNum(Channel ch){
+        Long chId = ch.getId();
+
         return 0;
     }
 

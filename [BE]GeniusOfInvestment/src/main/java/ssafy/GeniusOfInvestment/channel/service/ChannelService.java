@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
@@ -50,6 +51,7 @@ public class ChannelService {
     }
 
     //채널 들어가기
+    @Transactional
     public void enterChannel(User user, Long channelId) {
         log.info("enterChannelService in");
 //        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
