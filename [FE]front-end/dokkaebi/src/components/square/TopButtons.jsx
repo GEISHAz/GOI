@@ -40,16 +40,23 @@ export default function TopButtons() {
     toggleBGMVisibility(!isSidebarOpen);
   };
 
+  // 새로고침 핸들러
+  const handleRefreshClick = () => {
+    // UserList와 RoomList를 새로고침하기 위한 이벤트 발생
+    window.dispatchEvent(new CustomEvent('refreshUserList'));
+    window.dispatchEvent(new CustomEvent('refreshRoomList'));
+  };
+
   // 빠른 입장 핸들러
   // const handleQuickEnter = async () => {
   //   try {
   //     // 서버로부터 빠른 입장 가능한 방의 정보를 요청
-  //     const response = await axios.get('https://j10d202.p.ssafy.io/api/API주소 넣어야 함', {
+  //     const response = await axios.post('https://j10d202.p.ssafy.io/api/API주소 넣어야 함', {
   //     headers: { Authorization: `Bearer ${accessToken}` },
   //   });
     
   //     if (response.status === 200 && response.data.data.roomId) {
-  //       // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동
+  //       // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동  (경로 맞는지 확인)
   //       navigate(`/room/${response.data.data.roomId}`);
   //     } else {
   //       // 서버로부터 적절한 응답을 받지 못한 경우
@@ -104,10 +111,16 @@ export default function TopButtons() {
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}
         <div className='flex'>
-          <button className={`${styles.refreshButton}`}>
+          {/* 새로고침 버튼 */}
+          <button
+            onClick={handleRefreshClick}
+            className={`${styles.refreshButton}`}>
             <img src={refresh} alt="RefreshButton" />
           </button>
-          <button className={`${styles.messengerButton}`} onClick={toggleSidebar}>
+          {/* 친구 채팅 버튼 */}
+          <button 
+            onClick={toggleSidebar}
+            className={`${styles.messengerButton}`} >
             <img src={messenger} alt="MessengerButton" />
           </button>
         </div>
