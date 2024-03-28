@@ -107,7 +107,7 @@ public class JwtUtil {
     }
 
     public Authentication getAuthentication(User user) {
-
+        log.info("util안에 user: " + user);
         return new UsernamePasswordAuthenticationToken(user, "",
                 Collections.emptyList());
     }

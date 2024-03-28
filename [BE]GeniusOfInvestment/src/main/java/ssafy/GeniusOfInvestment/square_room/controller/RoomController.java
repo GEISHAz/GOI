@@ -78,7 +78,7 @@ public class RoomController {
     }
 
     @PostMapping("/ready/{id}")
-    public Map<String, String> doingRoomReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
+    public Map<String, String> readyRoom(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
         log.info("AuthenticationPrincipal로 유저가 못 받아오나?? " + user);
         ReadyResponse rsp = roomService.doingRoomReady(user, grId);
         Map<String, String> json = new HashMap<>();
