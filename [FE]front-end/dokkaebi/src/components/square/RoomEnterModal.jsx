@@ -1,78 +1,79 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import styles from './RoomEnterModal.module.css';
-
 
 export default function RoomEnterModal({ onClose, roomId }) {
   const [isPassword, setIsPassword] = useState(''); // 비밀번호 상태 관리
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const [showRoomEnterModal, setShowRoomEnterModal] = useState(false);
 
-  const propsRoomId = roomId // props 받은 룸 ID
+  useEffect(() => {
+    console.log('비밀 번호:', isPassword);
+  }, [isPassword]);
 
   // 비밀번호 숫자 4자리로 제한 
   const handlePasswordChange = (e) => {
     // 입력값이 숫자이고 4자리 이하인지 확인
     const value = e.target.value;
+    console.log('입력 값:', value); // 입력 필드의 값을 출력
     if (/^\d{0,4}$/.test(value)) { // 정규표현식을 사용하여 검증
       // 상태 업데이트 로직
       setIsPassword(value); // 상태 업데이트
+      console.log('비밀 번호:', isPassword);
     }
   };
 
-  const handleEnterClick = async () => {
-    try {
-      // roomId 확인
-      console.log('요청 전 roomId:', propsRoomId); // 요청 전 roomId 확인
-
-      // 서버에 POST 요청 보내기
-      const response = await axios.post('https://j10d202.p.ssafy.io/api/room/enter', {
-        roomId: propsRoomId,
-        password: isPassword,
+  const handleEnterClick = () => {
+    console.log("비밀 :", isPassword)
+    axios
+      .post('https://j10d202.p.ssafy.io/api/room/enter', {
+        roomId: roomId, password: isPassword,
       }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
-
-      console.log('요청 후 roomId:', roomId); // 요청 후 roomId 확인
-
-      // 응답 처리
-      if (response.status === 200) {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
         console.log('입장 성공:', response);
-        // console.log('서버로부터 받은 roomId :', response.data.data.roomId);
-        // console.log('서버에서 받은 status 확인 :', response.data.data.status);
-  
-        // navigate(`/room/${roomId}`); // 해당 방으로 이동
-        navigate(`/room/${response.data.data.roomId}`); // 해당 방으로 이동
-      }
-    } catch (error) {
-      // 에러코드에 따른 조건을 switch로 나누기
-      console.log('에러 종류 확인:', error.response.data.statusCode)
-      switch(error.response.data.statusCode) {
-        case 423: // 방 비밀번호 틀렸을 때
-        setShowRoomEnterModal(true)  
-        break; // 이 break를 추가했습니다.
-  
-        case 426: // 방이 가득 찼을 때
-          alert('방이 가득 차서 입장할 수 없어요!');
-          onClose(); // 모달 닫기
-          break;
-  
-        case 404: // 방이 존재하지 않을 때
-          alert('존재하지 않는 방번호입니다!');
-          onClose(); // 모달 닫기
-          break;
-        
-        default:
-          // 예외 처리
-          alert('알 수 없는 오류가 발생!');
-          onClose(); // 모달 닫기
-          break;
-      }
-    }
-  };
+        if (response.status === 200) {
+          console.log('입장 성공:', response);
+          navigate(`/room/${roomId}`, {
+            state: JSON.parse(JSON.stringify({ response })),
+          });
+        }
+      })
+      .catch((error) => {
+        console.log('비번:', isPassword);
+        console.log('입장 실패:', error);
+        if (!error.response) {
+          alert('알 수 없는 오류가 발생했습니다.');
+          onClose();
+          return;
+        }
+        switch (error.response.data.statusCode) {
+          case 423: // 방 비밀번호 틀렸을 때
+            setShowRoomEnterModal(true)
+            break;
+    
+          case 426: // 방이 가득 찼을 때
+            alert('방이 가득 차서 입장할 수 없어요!');
+            onClose(); // 모달 닫기
+            break;
+    
+          case 404: // 방이 존재하지 않을 때
+            alert('존재하지 않는 방번호입니다!');
+            onClose(); // 모달 닫기
+            break;
+          
+          default:
+            // 예외 처리
+            alert('알 수 없는 오류가 발생!');
+            onClose(); // 모달 닫기
+            break;
+          }
+      });
+    };
+    
 
     return (
         <div className={styles.background}>
