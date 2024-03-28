@@ -76,8 +76,8 @@ public class FriendService {
         Optional<Alarm> alarmsByFromAndUser = alarmRepository.findAlarmsByFromAndUser(friend.getUser(),
                 friend.getFriend());
 
-        alarmsByUserAndFrom.ifPresent(alarm -> alarm.updateStatus(0));
-        alarmsByFromAndUser.ifPresent(alarm -> alarm.updateStatus(0));
+        alarmsByUserAndFrom.ifPresent(alarm -> alarm.updateStatus(2));
+        alarmsByFromAndUser.ifPresent(alarm -> alarm.updateStatus(2));
 
         friendRepository.delete(friend);
     }
