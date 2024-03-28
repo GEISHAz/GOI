@@ -34,6 +34,8 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath password = createString("password");
 
+    public final NumberPath<Integer> roomNum = createNumber("roomNum", Integer.class);
+
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
 
     public final StringPath title = createString("title");
