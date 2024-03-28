@@ -30,7 +30,7 @@ export default function userReadyRoom() {
 
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
   const [response, setResponse] = useState(location.state.response.data);
-  const [userList, setUserList] = useState(null);
+  const [userList, setUserList] = useState([]);
 
   const [isAllReady, setIsAllReady] = useState(false);
 
@@ -43,8 +43,9 @@ export default function userReadyRoom() {
   };
 
   useEffect(() => {
+    console.log("gkrltlfgek",response)
     if (response.msg) {
-      setUserList(response.data);
+      setUserList(response)
     } else {
       setUserList(response.userList);
     }
@@ -55,11 +56,6 @@ export default function userReadyRoom() {
     console.log("방 유저 리스트 확인1", userList);
     // console.log("방 유저 리스트 확인", location.state.res.data);
     // console.log(location.state.content);
-    if (userList && userList.every((user) => user.isReady)) {
-      setIsAllReady(true);
-    } else {
-      setIsAllReady(false);
-    }
   }, [userList]);
 
   useEffect(() => {
@@ -82,6 +78,9 @@ export default function userReadyRoom() {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
               console.log("받은 유저정보 확인", userList);
+            } else if (receivedMessage.type === "ROOM_EXIT") {
+              console.log(receivedMessage.data);
+              setUserList(receivedMessage.data);
             }
           });
         },
@@ -115,7 +114,7 @@ export default function userReadyRoom() {
       <LobbyTop
         userList={userList}
         toggleReady={toggleReady}
-        isAllReady={isAllReady}
+        // isAllReady={isAllReady}
       />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">

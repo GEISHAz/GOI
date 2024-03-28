@@ -69,7 +69,6 @@ export default function Channel() {
         try {
           await axios.delete(
             `https://j10d202.p.ssafy.io/api/channel/exitc`,
-            {},
             {
               headers: { Authorization: `Bearer ${accessToken}` },
             }
