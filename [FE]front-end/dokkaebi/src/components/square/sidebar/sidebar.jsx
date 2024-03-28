@@ -24,7 +24,7 @@ const Sidebar = ({ toggleSidebar }) => {
   
   // 친구를 클릭하면 메신저가 열리는 함수
   const handleFriendClick = (friend) => {
-    setSelectedFriend(friend); // 선택된 친구 상태 업데이트
+    setSelectedFriend({ ...friend }); // 선택된 친구 상태 업데이트
   };
 
   // 메신저 닫기 함수
@@ -198,6 +198,8 @@ const Sidebar = ({ toggleSidebar }) => {
         toggleMessageBar={toggleMessageBar} // 메신저 열고 닫는 함수 props
         handleSendMSG={handleSendMSG} // 메신저 조작 함수 props
         isFriendChat={isFriendChat} // 채팅 내역 props
+        setIsFriendChat={setIsFriendChat} // 채팅 내역 저장한거 props -> 이전 채팅 기록을 꺼내기 위함
+        isFriendList={isFriendList}
       />}
 
       {/* 친구 추가 모달 열고 닫기 */}

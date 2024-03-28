@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static ssafy.GeniusOfInvestment._common.entity.QRoom.room;
 
 @RequiredArgsConstructor
 public class RoomRepositoryImpl implements RoomRepositoryCustom{
 
-    JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
     @Override
     public List<SquareRoom> findRoomCanEnter(Long channelId) {
         return jpaQueryFactory
@@ -25,7 +27,7 @@ public class RoomRepositoryImpl implements RoomRepositoryCustom{
                 .fetch()
                 .stream()
                 .map(this::TupleToSquareroom)
-                .toList();
+                .collect(Collectors.toList());
     }
     private SquareRoom TupleToSquareroom(Tuple tuple){
         return SquareRoom

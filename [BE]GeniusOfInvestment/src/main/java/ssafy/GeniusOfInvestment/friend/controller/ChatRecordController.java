@@ -3,6 +3,7 @@ package ssafy.GeniusOfInvestment.friend.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +20,8 @@ public class ChatRecordController {
 
     private final ChatRecordService chatRecordService;
 
-    @GetMapping("/list")
-    public SuccessResponse<List<ChatRecordResponse>> getChatRecord(@RequestBody ChatRecordRequest chatRecordRequest){
-        return SuccessResponse.of(SuccessType.GET_FRIEND_CHAT_INFO,chatRecordService.getChatRecord(chatRecordRequest));
+    @GetMapping("/{id}/list")
+    public SuccessResponse<List<ChatRecordResponse>> getChatRecord(@PathVariable(value = "id") Long chatId){
+        return SuccessResponse.of(SuccessType.GET_FRIEND_CHAT_INFO,chatRecordService.getChatRecord(chatId));
     }
 }
