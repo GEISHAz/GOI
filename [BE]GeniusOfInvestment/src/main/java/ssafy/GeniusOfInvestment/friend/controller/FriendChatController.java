@@ -14,7 +14,7 @@ public class FriendChatController {
     private final SimpMessageSendingOperations messageSendingOperations;
     private final FriendService friendService;
 
-    @MessageMapping("/friend/chat/message/")
+    @MessageMapping("/friend/chat/message")
     public void message(FriendChatMessageDto friendChatMessageDto){
 
         //채팅을 저장하는 메서드

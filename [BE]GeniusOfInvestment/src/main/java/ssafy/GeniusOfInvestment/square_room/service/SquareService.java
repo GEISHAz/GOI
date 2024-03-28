@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.square_room.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -36,6 +37,7 @@ public class SquareService {
     private final SimpMessageSendingOperations messageTemplate;
     private final UserRepository userRepository;
 
+    @Transactional
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
         log.info("SquareService insertRoom start");
 
