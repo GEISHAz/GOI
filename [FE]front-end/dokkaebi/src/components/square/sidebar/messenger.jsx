@@ -33,9 +33,9 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
   useEffect(() => {
     const chatHistory = async () => {
       if (selectedFriend) {
+        const friendListid = selectedFriend.friendListId
         try {
-          const response = await axios.get('https://j10d202.p.ssafy.io/api/chat/list', {
-            params: { id: selectedFriend.friendId }, // URL 파라미터로 ID 전달
+          const response = await axios.get(`https://j10d202.p.ssafy.io/api/chat/${friendListid}/list`, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
           if (response.status === 200) {
