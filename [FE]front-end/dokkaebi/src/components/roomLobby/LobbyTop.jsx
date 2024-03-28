@@ -54,7 +54,7 @@ export default function LobbyTop({ userList }) {
 
   const handleReadyButtonClick = () => {
     axios
-      .put(
+      .post(
         `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
         {},
         {
