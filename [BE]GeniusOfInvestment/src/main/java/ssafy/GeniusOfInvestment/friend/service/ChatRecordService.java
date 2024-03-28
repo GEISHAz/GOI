@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.friend.service;
 
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class ChatRecordService {
 
     public List<ChatRecordResponse> getChatRecord(ChatRecordRequest chatRecordRequest) {
         List<ChatRecord> chatRecords = chatRecordRepository.findByChatId(chatRecordRequest.getId());
+        chatRecords.sort(Comparator.comparing(ChatRecord::getId));
         return chatRecords.stream().map(ChatRecordResponse::from).toList();
     }
 }
