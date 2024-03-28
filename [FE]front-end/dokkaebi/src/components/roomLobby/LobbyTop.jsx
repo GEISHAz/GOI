@@ -15,12 +15,12 @@ export default function LobbyTop({ userList }) {
 
   const [isStart, setIsStart] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  let amIManager = false;
+  const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
     userList.forEach((user) => {
       if (user.userNick === userNickname) {
-        amIManager = user.isManager;
+        setAmIManager(user.isManager);
         console.log("나는 방장 : ", amIManager);
       }
     });
@@ -54,9 +54,13 @@ export default function LobbyTop({ userList }) {
 
   const handleReadyButtonClick = () => {
     axios
-      .put(`https://j10d202.p.ssafy.io/api/room/ready/${roomId}`, {
-        headers: { accessToken: `Bearer ${accessToken}` },
-      })
+      .put(
+        `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
+        {},
+        {
+          headers: { accessToken: `Bearer ${accessToken}` },
+        }
+      )
       .then((res) => {
         console.log(res);
         console.log("레디 바뀜 확인");
