@@ -42,6 +42,9 @@ public class AlarmService {
         if(toUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITE_USER);
         }
+        if(fromUser.equals(toUser)){
+//            throw new CustomBadRequestException(Error)
+        }
 
         Optional<Friend> friendsByUserAndFriend = friendRepository.findFriendsByUserAndFriend(fromUser.get(), toUser.get());
         if (friendsByUserAndFriend.isPresent()){

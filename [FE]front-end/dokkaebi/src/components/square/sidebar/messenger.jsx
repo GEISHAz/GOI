@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import friendClose from '../../../images/backButton/friendBack.gif';
 import styles from './messenger.module.css';
+import axios from 'axios';
 
-const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendChat }) => {
+const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendChat, setIsFriendChat }) => {
   const [inputMessage, setInputMessage] = useState('');
   const recentMsg = useRef(null);
+  const accessToken = sessionStorage.getItem("accessToken");
   const userNickname = useSelector((state) => state.auth.userNickname);
 
   const handleSubmit = (e) => {
@@ -20,13 +22,36 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
 
   // 채팅창 스크롤
   const scrollToBottom = () => {
-    console.log("최신으로 친구와의 채팅 불러옴");
+    // console.log("최신으로 친구와의 채팅 불러옴");
     recentMsg.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [isFriendChat.length]);
+
+  useEffect(() => {
+    const chatHistory = async () => {
+      if (selectedFriend) {
+        const friendListId = selectedFriend.friendListId;
+        try {
+          const response = await axios.get(`https://j10d202.p.ssafy.io/api/chat/${friendListId}/list`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          if (response.status === 200) {
+            console.log("이전 채팅 내역 불러옴!!", response);
+            setIsFriendChat(response.data.data); // 직접 상태 업데이트
+          } else {
+            console.error("채팅 기록 불러오기 실패:", response);
+          }
+        } catch (error) {
+          console.error("채팅 기록 불러오기 중 에러 발생:", error);
+        }
+      }
+    };
+  
+    chatHistory();
+  }, [selectedFriend, accessToken, setIsFriendChat]);
 
   return (
     <aside className={styles.messenger}>

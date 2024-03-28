@@ -48,6 +48,7 @@ public class SquareService {
 
         Channel ch = u.get().getChannel();
 
+
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
@@ -92,6 +93,13 @@ public class SquareService {
                 .build());
 
         return makeSavedRoomResponse(room, info.channelId(), rstList);
+    }
+
+    //방 번호를 생성(ex)1001, 2001)
+    public int createRoomNum(Channel ch){
+        Long chId = ch.getId();
+
+        return 0;
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
@@ -174,12 +182,11 @@ public class SquareService {
         return result;
     }
 
-    public RoomInfoResponse fastEnter(User user) {
+    public RoomEnterRequest fastEnter(User user) {
         log.info("SquareService fastEnter start");
-        RoomInfoResponse result = RoomInfoResponse
+        RoomEnterRequest result = RoomEnterRequest
                 .builder()
                 .roomId(99999999L)
-                .status(99999999)
                 .build();
         List<SquareRoom> list = roomRepository.findRoomCanEnter(user.getChannel().getId());
         int number = list.size();
@@ -192,16 +199,14 @@ public class SquareService {
             if(isGameRoomFull(list.get(num).id()))
                 continue;
             stop = true;
-            return result = RoomInfoResponse
+            return result = RoomEnterRequest
                     .builder()
                     .roomId(list.get(num).id())
-                    .status(0)
                     .build();
+
         } while(stop);
         log.info("return id     = " +result.roomId());
-        log.info("return status = " +result.status());
         log.info("in fastEnter while end");
-
         return result;
     }
 

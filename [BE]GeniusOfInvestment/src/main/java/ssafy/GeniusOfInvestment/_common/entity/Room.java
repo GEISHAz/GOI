@@ -14,6 +14,9 @@ public class Room {
     @Column(name = "room_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private int roomNum;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;

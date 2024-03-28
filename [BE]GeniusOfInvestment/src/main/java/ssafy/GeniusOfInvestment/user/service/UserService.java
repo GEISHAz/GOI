@@ -90,6 +90,7 @@ public class UserService {
     }
 
     public User getAuthenticationUser(String userId) {
+        log.info("토큰에서 뽑아온 userId: " + userId);
         return findUser(Long.parseLong(userId));
     }
 
