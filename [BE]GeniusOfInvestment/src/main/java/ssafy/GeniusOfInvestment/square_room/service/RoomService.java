@@ -65,14 +65,15 @@ public class RoomService {
         log.info("현재 그방의 멤버수"+gameRoom.getParticipants().size());
         //방이 가득 찼다.
         if(gameRoom.getParticipants().size()>=4){
+            log.info("IS_FULL_ROOM");
             throw new CustomBadRequestException(ErrorType.IS_FULL_ROOM);
         }
-        log.info("IS_FULL_ROOM");
         // redisUser 가 없어야함 있다면 예외
         log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
-        if(redisUserRepository.getOneRedisUser(user.getId()) != null)
+        if(redisUserRepository.getOneRedisUser(user.getId()) != null) {
+            log.info("IS_NOT_AVILABLE_REDISUSER");
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
-        log.info("IS_NOT_AVILABLE_REDISUSER");
+        }
         // redis user 만들기, 상태추적
         redisUserRepository.saveUserStatusGameing(RedisUser.builder()
                 .userId(user.getId())
@@ -134,13 +135,16 @@ public class RoomService {
         log.info("gameuser인덱스값이 " + idx);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         gameUser = room.getParticipants().get(idx); //탈퇴한 유저의 객체
+
         if(room.getParticipants().size() != 1){ //남아있는 인원이 2명 이상
+            log.info("방 나가기 전 방 안의 유저 수"+room.getParticipants().size());
             room.getParticipants().remove(idx);
             if(gameUser.isManager()){ //방장 권한을 가장 먼저 들어온 유저에게 위임
                 room.getParticipants().get(0).setManager(true);
                 room.getParticipants().get(0).setReady(true);
             }
             redisGameRepository.updateGameRoom(room);
+            log.info("방 나가기 후 방 안의 유저 수"+room.getParticipants().size());
         }else { //한명이 남아있었으므로 방 삭제까지 같이 수행
             redisGameRepository.deleteGameRoom(rId);
             Optional<Room> tmp = roomRepository.findById(rId);
@@ -148,6 +152,7 @@ public class RoomService {
             tmp.get().updateStatus(2); //room테이블에 없어진 방 처리
             roomRepository.save(tmp.get());
         }
+
         try {
             redisUserRepository.deleteUser(user.getId());
         }catch(Exception e){

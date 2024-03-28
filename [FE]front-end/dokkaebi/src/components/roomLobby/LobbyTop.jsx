@@ -4,7 +4,7 @@ import styles from "./LobbyTop.module.css";
 import messenger from "../../images/square/icon_messenger.png";
 import axios from "axios";
 
-export default function LobbyTop() {
+export default function LobbyTop(props) {
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
