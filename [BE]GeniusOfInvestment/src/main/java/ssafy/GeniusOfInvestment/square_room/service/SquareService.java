@@ -95,6 +95,7 @@ public class SquareService {
         return makeSavedRoomResponse(room, info.channelId(), rstList);
     }
 
+    //방 번호를 생성(ex)1001, 2001)
     public int createRoomNum(Channel ch){
         return 0;
     }
