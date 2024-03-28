@@ -2,13 +2,17 @@ package ssafy.GeniusOfInvestment.square_room.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
+import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomCreateRequest;
+import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.*;
+import ssafy.GeniusOfInvestment.square_room.service.RoomService;
 import ssafy.GeniusOfInvestment.square_room.service.SquareService;
 
 import java.util.List;
@@ -19,7 +23,9 @@ import java.util.List;
 @RequestMapping("/api/square")
 public class SquareController {
 
+    private final RoomService roomService;
     private final SquareService squareService;
+    private final SimpMessageSendingOperations messageTemplate;
 
     @PostMapping("/create") //방생성
     public SavedRoomResponse createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
@@ -29,13 +35,20 @@ public class SquareController {
     }
 
     @PostMapping("/fast") //빠른입장
-    public SuccessResponse<RoomInfoResponse> fastEnterRoom(@AuthenticationPrincipal User user){
+    public List<RoomPartInfo> fastEnterRoom(@AuthenticationPrincipal User user){
         log.info("SquareController fastEnterRoom start");
-        log.info("user id값"+user.getId());
-        return SuccessResponse.of(SuccessType.FAST_ENTER_SUCCESSFULLY,squareService.fastEnter(user));
+        RoomEnterRequest res = squareService.fastEnter(user);
+        //websocket 들어감 보내주기
+        List<RoomPartInfo> rst = roomService.enterRoom(user, res);
+        messageTemplate.convertAndSend("/sub/room/chat/" + res.roomId(),
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_ENTER)
+                        .data(rst)
+                        .build());
+        log.info("SquareController fastEnterRoom end");
+        return rst;
     }
-
-
 
     @GetMapping("/list/{channelId}") //방 목록
     public SuccessResponse<RoomListResponse> listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
