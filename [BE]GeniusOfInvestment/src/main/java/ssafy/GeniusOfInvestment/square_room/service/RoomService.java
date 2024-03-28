@@ -213,9 +213,9 @@ public class RoomService {
                     guser.setReady(false);
                 }
             }
-//            if(guser.isReady()){
-//                cnt++;
-//            }
+            if(guser.isReady()){
+                cnt++;
+            }
             gameUserList.add(guser);
         }
 
@@ -223,17 +223,12 @@ public class RoomService {
         room.setParticipants(gameUserList);
         redisGameRepository.updateGameRoom(room);
 
-        //ready를 요청한 사용자가 참가자 목록에 없다.
-        if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-        return flag;
-
-//        if(cnt == room.getParticipants().size()){
-//            return 1;
-//        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
-//            //ready를 요청한 사용자가 참가자 목록에 없다.
-//            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-//            return flag;
-//            //return 0;
-//        }
+        if(cnt == room.getParticipants().size()){
+            return 1;
+        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+            //ready를 요청한 사용자가 참가자 목록에 없다.
+            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+            return flag;
+        }
     }
 }
