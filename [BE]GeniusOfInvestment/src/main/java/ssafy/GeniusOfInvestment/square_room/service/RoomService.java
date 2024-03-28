@@ -138,6 +138,7 @@ public class RoomService {
             room.getParticipants().remove(idx);
             if(gameUser.isManager()){ //방장 권한을 가장 먼저 들어온 유저에게 위임
                 room.getParticipants().get(0).setManager(true);
+                room.getParticipants().get(0).setReady(true);
             }
             redisGameRepository.updateGameRoom(room);
         }else { //한명이 남아있었으므로 방 삭제까지 같이 수행
