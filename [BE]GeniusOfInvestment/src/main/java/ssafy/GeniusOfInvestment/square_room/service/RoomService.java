@@ -160,10 +160,12 @@ public class RoomService {
             Optional<User> tmp = userRepository.findById(gu.getUserId());
             if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             rstList.add(RoomPartInfo.builder()
-                            .userId(gu.getUserId())
-                            .userNick(tmp.get().getNickName())
-                            .isReady(gu.isReady())
-                            .isManager(gu.isManager())
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
                     .build());
         }
         log.info("RoomService exitRoom end");
@@ -203,6 +205,8 @@ public class RoomService {
                     .userNick(tmp.get().getNickName())
                     .isReady(gu.isReady())
                     .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
                     .build());
         }
         log.info("RoomService kickUser end");
