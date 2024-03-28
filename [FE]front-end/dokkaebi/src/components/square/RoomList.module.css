@@ -14,26 +14,26 @@
     gap: 20px;
   }
   
-  .roomBox {
-    width: 300px;
-    height: 110px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 20px;
-    padding: 5%;
-    margin-left: 4px;
-    margin-right: 4px;
-  }
+.roomBox {
+  width: 300px;
+  height: 110px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 5%;
+  margin-left: 4px;
+  margin-right: 4px;
+}
 
-  .lockIcon {
-    width: 40px;
-    height: auto;
-  }
+.lockIcon {
+  width: 40px;
+  height: auto;
+}
 
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* padding: 20px; */
-    gap: 0px;
-  }
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 20px; */
+  gap: 0px;
+}
   

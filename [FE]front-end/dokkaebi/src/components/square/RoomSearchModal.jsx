@@ -10,7 +10,7 @@ export default function RoomSearchModal({ onClose }) {
   const navigate = useNavigate();
 
   // 입력창에 입력된 방 번호를 관리하는 상태
-  const [roomId, setRoomId] = useState('');
+  const [roomNum, setRoomNum] = useState('');
 
   // 비밀방이라면 -> 입력창에 입력된 비밀번호 관리
   const [password, setPassword] = useState('');
@@ -19,8 +19,8 @@ export default function RoomSearchModal({ onClose }) {
   const [showRoomEnterModal, setShowRoomEnterModal] = useState(false);
 
   // 방 번호 입력 이벤트 핸들러
-  const handleRoomIdChange = (e) => {
-    setRoomId(e.target.value);
+  const handleRoomNumChange = (e) => {
+    setRoomNum(e.target.value);
   };
   let retryCount = 0;
   const MAX_RETRY_COUNT = 5;  
@@ -34,7 +34,7 @@ export default function RoomSearchModal({ onClose }) {
 
     axios
       .post('https://j10d202.p.ssafy.io/api/room/enter', {
-        roomId: roomId, password: password,
+        roomNum: roomNum, password: password,
       }, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -87,8 +87,8 @@ export default function RoomSearchModal({ onClose }) {
           <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
           <input
             type="text"
-            value={roomId}
-            onChange={handleRoomIdChange} // 입력 변화를 처리하는 함수 연결
+            value={roomNum}
+            onChange={handleRoomNumChange} // 입력 변화를 처리하는 함수 연결
             placeholder="방 번호 입력"
             className="border-2 border-gray-300 p-1 w-48"
           />

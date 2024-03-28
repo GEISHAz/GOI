@@ -23,6 +23,17 @@
   display: flex;
 }
 
+.newMessageCount {
+  color: red;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.messageIcon {
+  width: 10%;
+  height: 10%;
+}
+
 .deleteButton, .deleteClose {
   width: 17.5%;
   padding: 1%;
