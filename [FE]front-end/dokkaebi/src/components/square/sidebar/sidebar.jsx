@@ -17,7 +17,8 @@ const Sidebar = ({ toggleSidebar }) => {
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 관리
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
   const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림 관리
-  const [isFriendChat, setIsFriendChat] = useState([]); // 받은 메시지 관리 
+  const [isFriendChat, setIsFriendChat] = useState([]); // 받은 메시지 관리
+  const [newMessageCounts, setNewMessageCounts ] = useState({}); // 새 메시지 알림 상태
   const userNickname = useSelector((state) => state.auth.userNickname);
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
@@ -114,25 +115,40 @@ const Sidebar = ({ toggleSidebar }) => {
                     ? [...prevMessages, msg] : null;
                 });
               }
+
+              if (msg.type === "TALK" && msg.sender !== userNickname) {
+                // 상대에게 받은 메시지 수 업데이트
+                setNewMessageCounts(prev => ({
+                  ...prev,
+                  [friendListId]: (prev[friendListId] || 0) + 1
+                }));
+              }
+            });
           });
+        }, (error) => {
+          console.error('친구 채팅 연결 에러', error);
         });
-      }, (error) => {
-        console.error('친구 채팅 연결 에러', error);
-      });
 
-      return () => {
-        if (subscriptionRef.current) {
-          subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
-        }
+        return () => {
+          if (subscriptionRef.current) {
+            subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
+          }
 
-        if (client.current && client.current.connected) {
-          client.current.disconnect();
-        }
+          if (client.current && client.current.connected) {
+            client.current.disconnect();
+          }
+        };
       };
-    };
-
     connectWebSocket();
-  }, [isFriendList]);
+  }, [isFriendList, userNickname]);
+
+  // 메시지를 읽었을 때 호출되는 함수
+  const handleReadMessage = (friendListId) => {
+    setNewMessageCounts(prev => ({
+      ...prev,
+      [friendListId]: 0 // 메세지를 읽었다면 0으로 다시 표기해주기
+    }));
+  };
 
   // 메세지 보내기 조작할 함수 -> Messenger.jsx로 props 내려서 작동시킴
   const handleSendMSG = (message) => {
@@ -180,7 +196,11 @@ const Sidebar = ({ toggleSidebar }) => {
               key={index}
               friend={friend} // friend 라는 인자로 props 해준다
               onDeleteFriend={friendDelete} // 삭제하는 함수 props
-              onFriendClick={handleFriendClick} // 메신저 토글 함수 props
+              onFriendClick={() => {
+                handleFriendClick(friend);
+                handleReadMessage(friend.friendListId);  // 메시지 읽음 처리 추가
+              }} // 메신저 토글 함수 props
+              newMessageCount={newMessageCounts[friend.friendListId] || 0} // 메세지 수신을 숫자로 props
             />
           ))}
         </div>
