@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./LobbyTop.module.css";
 import messenger from "../../images/square/icon_messenger.png";
@@ -17,11 +17,21 @@ export default function LobbyTop({ userList }) {
   const [isReady, setIsReady] = useState(false);
   let amIManager = false;
 
-  userList.forEach((user) => {
-    if (user.nickname === userNickname) {
-      amIManager = user.isManager;
-    }
-  });
+  useEffect(() => {
+    userList.forEach((user) => {
+      if (user.userNick === userNickname) {
+        amIManager = user.isManager;
+        console.log("나는 방장 : ", amIManager);
+      }
+    });
+  }, [userList]);
+
+  // userList.forEach((user) => {
+  //   if (user.nickname === userNickname) {
+  //     amIManager = user.isManager;
+  //     console.log("나는 방장 : ", amIManager);
+  //   }
+  // });
 
   const handleBackButtonClick = () => {
     axios
