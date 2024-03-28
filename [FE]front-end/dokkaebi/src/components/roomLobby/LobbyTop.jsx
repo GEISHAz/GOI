@@ -72,11 +72,13 @@ export default function LobbyTop({ userList, isStart }) {
       .then((res) => {
         console.log(res);
         console.log("레디 바뀜 확인");
+        console.log("레디요청 엑세스 토큰", accessToken);
         setIsReady(!isReady);
       })
       .catch((err) => {
         console.log(err);
         console.log("레디 바뀜 실패");
+        console.log("레디요청 엑세스 토큰", accessToken);
       });
   };
 
