@@ -39,7 +39,9 @@ public class RoomService {
     private final UserRepository userRepository;
     private final SimpMessageSendingOperations messageTemplate;
 
+    @Transactional
     public List<RoomPartInfo> enterRoom(User user, RoomEnterRequest enterInfo) {
+        log.info("RoomService enterRoom start");
         Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
         if(rtmp.isEmpty() || rtmp.get().getStatus() == 2) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         Room room = rtmp.get(); //들어가려는 방 정보를 얻는다.
@@ -60,12 +62,14 @@ public class RoomService {
             log.info("enter 참여자 " + tp.getUserId().toString());
         }
 
+        log.info("현재 그방의 멤버수"+gameRoom.getParticipants().size());
         //방이 가득 찼다.
         if(gameRoom.getParticipants().size()>=4){
             throw new CustomBadRequestException(ErrorType.IS_FULL_ROOM);
         }
         log.info("IS_FULL_ROOM");
         // redisUser 가 없어야함 있다면 예외
+        log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
         if(redisUserRepository.getOneRedisUser(user.getId()) != null)
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
         log.info("IS_NOT_AVILABLE_REDISUSER");
@@ -107,11 +111,13 @@ public class RoomService {
                     .imageId(tmp.get().getImageId())
                     .build());
         }
+        log.info("RoomService enterRoom end");
         return rstList;
     }
 
     @Transactional
     public List<RoomPartInfo> exitRoom(User user, Long rId){
+        log.info("RoomService exitRoom start");
         GameRoom room = redisGameRepository.getOneGameRoom(rId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -132,6 +138,7 @@ public class RoomService {
             room.getParticipants().remove(idx);
             if(gameUser.isManager()){ //방장 권한을 가장 먼저 들어온 유저에게 위임
                 room.getParticipants().get(0).setManager(true);
+                room.getParticipants().get(0).setReady(true);
             }
             redisGameRepository.updateGameRoom(room);
         }else { //한명이 남아있었으므로 방 삭제까지 같이 수행
@@ -141,7 +148,12 @@ public class RoomService {
             tmp.get().updateStatus(2); //room테이블에 없어진 방 처리
             roomRepository.save(tmp.get());
         }
-        redisUserRepository.deleteUser(user.getId());
+        try {
+            redisUserRepository.deleteUser(user.getId());
+        }catch(Exception e){
+            log.info("역시나 적시나 존시나 딜리트RedisUser안됨");
+            throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
+        }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
         for(GameUser gu : room.getParticipants()){
@@ -154,11 +166,13 @@ public class RoomService {
                             .isManager(gu.isManager())
                     .build());
         }
+        log.info("RoomService exitRoom end");
         return rstList;
     }
 
     @Transactional
     public List<RoomPartInfo> kickUser(User user, Long targetId, Long rId){
+        log.info("RoomService kickUser start");
         GameRoom room = redisGameRepository.getOneGameRoom(rId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -191,6 +205,7 @@ public class RoomService {
                     .isManager(gu.isManager())
                     .build());
         }
+        log.info("RoomService kickUser end");
         return rstList;
     }
 
@@ -213,9 +228,9 @@ public class RoomService {
                     guser.setReady(false);
                 }
             }
-//            if(guser.isReady()){
-//                cnt++;
-//            }
+            if(guser.isReady()){
+                cnt++;
+            }
             gameUserList.add(guser);
         }
 
@@ -223,17 +238,12 @@ public class RoomService {
         room.setParticipants(gameUserList);
         redisGameRepository.updateGameRoom(room);
 
-        //ready를 요청한 사용자가 참가자 목록에 없다.
-        if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-        return flag;
-
-//        if(cnt == room.getParticipants().size()){
-//            return 1;
-//        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
-//            //ready를 요청한 사용자가 참가자 목록에 없다.
-//            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-//            return flag;
-//            //return 0;
-//        }
+        if(cnt == room.getParticipants().size()){
+            return 1;
+        }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+            //ready를 요청한 사용자가 참가자 목록에 없다.
+            if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+            return flag;
+        }
     }
 }
