@@ -108,7 +108,7 @@ const Sidebar = ({ toggleSidebar }) => {
               if (msg.type && msg.type === "TALK") {
                 setIsFriendChat((isFriendChat) => [
                   ...isFriendChat,
-                  { sender: msg.sender, message: msg.sender, },
+                  { sender: msg.sender, message: msg.message, },
                 ]);
               }
           });
@@ -152,7 +152,7 @@ const Sidebar = ({ toggleSidebar }) => {
         {},
         JSON.stringify(newMsg)
       );
-      setIsFriendChat([...isFriendChat, newMsg])
+      setIsFriendChat([...isFriendChat, {sender: userNickname, message: message}])
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빨라요 !");
       console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
