@@ -59,7 +59,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
                 }
               >
                 <div className={styles.chatBubble}>
-                  {/* <span className='font-bold'>{chat.message}</span> */}
+                  <span className='font-bold'>{chat.message}</span>
                 </div>
               </div>
             ))}
