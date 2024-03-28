@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import friendClose from '../../../images/backButton/friendBack.gif';
 import styles from './messenger.module.css';
+import axios from 'axios';
 
 const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendChat, setIsFriendChat }) => {
   const [inputMessage, setInputMessage] = useState('');
