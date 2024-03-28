@@ -14,7 +14,7 @@ public class Room {
     @Column(name = "room_id", columnDefinition = "INT UNSIGNED")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private int roomNum;
 
     @ManyToOne(fetch = FetchType.LAZY)

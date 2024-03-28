@@ -79,17 +79,11 @@ public class RoomController {
 
     @PutMapping("/ready/{id}")
     public Map<String, String> doingRoomReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
-        int status = roomService.doingRoomReady(user, grId);
+        ReadyResponse rsp = roomService.doingRoomReady(user, grId);
         Map<String, String> json = new HashMap<>();
         //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것
         //status = 1이면 전체가 레디를 완료한 것
-        sendMsg(grId,
-                ReadyResponse.builder()
-                        .userId(user.getId())
-                        .ready(status == 0)
-                        .start(status == 1)
-                        .build(),
-                MessageDto.MessageType.READY);
+        sendMsg(grId, rsp, MessageDto.MessageType.READY);
         json.put("msg", "레디 완료");
         return json;
     }

@@ -3,6 +3,8 @@ package ssafy.GeniusOfInvestment.square_room.repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import ssafy.GeniusOfInvestment._common.entity.Channel;
+import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
 
 import java.util.List;
@@ -23,12 +25,31 @@ public class RoomRepositoryImpl implements RoomRepositoryCustom{
                         room.isPublic
                 )
                 .from(room)
-                .where(room.isPublic.eq(true).and(room.channel.id.eq(channelId)))
+                .where(room.isPublic.eq(true).and(room.channel.id.eq(channelId)).and(room.status.ne(2)))
                 .fetch()
                 .stream()
                 .map(this::TupleToSquareroom)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Room findLargestRmNum(Channel ch) {
+        return jpaQueryFactory
+                .selectFrom(room)
+                .where(room.channel.eq(ch).and(room.status.ne(2)))
+                .orderBy(room.roomNum.desc())
+                .limit(1)
+                .fetchOne();
+    }
+
+//    @Override
+//    public Long countRmNumByCh(Channel ch, int roomNum) {
+//        return jpaQueryFactory
+//                .selectFrom(room)
+//                .where(room.channel.eq(ch).and(room.roomNum.eq(roomNum)).and(room.status.ne(2)))
+//                .fetchCount();
+//    }
+
     private SquareRoom TupleToSquareroom(Tuple tuple){
         return SquareRoom
                 .builder()
