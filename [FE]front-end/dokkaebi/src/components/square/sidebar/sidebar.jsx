@@ -129,7 +129,7 @@ const Sidebar = ({ toggleSidebar }) => {
     };
 
     connectWebSocket();
-  }, []);
+  }, [isFriendList]);
 
   // 메세지 보내기 조작할 함수 -> Messenger.jsx로 props 내려서 작동시킴
   const handleSendMSG = (message) => {
