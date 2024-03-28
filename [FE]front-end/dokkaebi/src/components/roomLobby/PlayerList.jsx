@@ -25,7 +25,11 @@ export default function PlayerList({ userList }) {
   const findImageById = (imageId) =>
     images.find((image) => image.id === imageId);
 
-  const users = userList || [];
+    const users = Array.isArray(userList) ? userList : [userList];
+
+  if (!Array.isArray(users)) {
+    return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
+  }
 
   return (
     <div className={styles.PlayerContainer}>

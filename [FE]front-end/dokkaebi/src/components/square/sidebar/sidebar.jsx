@@ -46,7 +46,6 @@ const Sidebar = ({ toggleSidebar }) => {
           friendListId: friend.friendListId,
         }));
         setIsFriendList(friends);
-        // setIsFriendList(res.data.data)
       } else {
         throw new Error('에러 발생');
       }
@@ -59,14 +58,14 @@ const Sidebar = ({ toggleSidebar }) => {
     try {
       console.log("friendListId 확인 :", friendListId)
       await axios.delete(`https://j10d202.p.ssafy.io/api/friend/${userId}/delete`, {
-        friendListId: friendListId,
-      }, {
+        data: { friendListId: friendListId },
         headers : {  Authorization: `Bearer ${accessToken}` },
       });
       alert("도깨비 친구를 삭제했어요")
       friendList(); // 친구 목록 다시 불러오기
     } catch (error) {
       console.error('친구 삭제 실패', error)
+      console.log(error)
     }
   };
 
@@ -96,11 +95,9 @@ const Sidebar = ({ toggleSidebar }) => {
       const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
       client.current = Stomp.over(sock);
       
-      client.current.connect({}, frame => {
+      client.current.connect({}, () => {
         console.log("친구 채팅 연결됨!!")
-        console.log(frame)
-        
-        // 예시로, 사용자의 모든 친구와의 채팅 채널에 구독하는 코드
+        // 사용자의 모든 친구와의 채팅 채널에 구독
         isFriendList.forEach(friend => {
           const friendListId = friend.friendListId;
           subscriptionRef.current = client.current.subscribe(
@@ -109,10 +106,7 @@ const Sidebar = ({ toggleSidebar }) => {
               // 받은 메세지 처리할 곳
               const msg = JSON.parse(message.body);
               if (msg.type && msg.type === "TALK") {
-                setIsFriendChat((isFriendChat) => [
-                  ...isFriendChat,
-                  { sender: msg.sender, message: msg.sender, },
-                ]);
+                setIsFriendChat(prevMessages => [...prevMessages, msg]);
               }
           });
         });
@@ -132,7 +126,7 @@ const Sidebar = ({ toggleSidebar }) => {
     };
 
     connectWebSocket();
-  }, [isFriendChat]);
+  }, [isFriendList]);
 
   // 메세지 보내기 조작할 함수 -> Messenger.jsx로 props 내려서 작동시킴
   const handleSendMSG = (message) => {
@@ -155,6 +149,7 @@ const Sidebar = ({ toggleSidebar }) => {
         {},
         JSON.stringify(newMsg)
       );
+      // setIsFriendChat([...isFriendChat, {sender: userNickname, message: message}])
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빨라요 !");
       console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
