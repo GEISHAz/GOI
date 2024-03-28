@@ -5,7 +5,7 @@ import messenger from "../../images/square/icon_messenger.png";
 import axios from "axios";
 import { connect, useDispatch, useSelector } from "react-redux";
 
-export default function LobbyTop({ userList }) {
+export default function LobbyTop({ userList, isStart }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userNickname = useSelector((state) => state.auth.userNickname);
@@ -13,7 +13,7 @@ export default function LobbyTop({ userList }) {
   const roomId = sessionStorage.getItem("roomId");
   const channelId = sessionStorage.getItem("channelId");
 
-  const [isStart, setIsStart] = useState(false);
+  const [start, setStart] = useState(isStart);
   const [isReady, setIsReady] = useState(false);
   const [amIManager, setAmIManager] = useState(false);
 
@@ -25,6 +25,14 @@ export default function LobbyTop({ userList }) {
       }
     });
   }, [userList]);
+
+  useEffect(() => {
+    if (isStart === true) {
+      setStart(true);
+    } else if (isStart === false) {
+      setStart(false);
+    }
+  }, [isStart]);
 
   // userList.forEach((user) => {
   //   if (user.nickname === userNickname) {
@@ -105,7 +113,7 @@ export default function LobbyTop({ userList }) {
           {amIManager ? (
             <button
               onClick={handleStartButtonClick}
-              disabled={!isReady}
+              disabled={!isStart}
               className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton} `}
             >
               START

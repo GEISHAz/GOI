@@ -107,7 +107,7 @@ export default function userReadyRoom() {
 
   return (
     <div style={backgroundStyle}>
-      <LobbyTop userList={userList} />
+      <LobbyTop userList={userList} isStart={isStart} />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
         <PlayerList userList={userList} />
