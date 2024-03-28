@@ -148,6 +148,10 @@ export default function Profile() {
     }
   };
 
+  const handleUserExit = () => {
+
+  }
+
   // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기
   useEffect(() => {
     const storedPreviousNickname = sessionStorage.getItem('previousNickname');
@@ -254,13 +258,28 @@ export default function Profile() {
         </div>
         
         {/* 저장하기 영역 */}
-        <div className='flex justify-center mt-10'>
-          <button
-            onClick={handleSaveProfile}
-            className="bg-white text-black font-bold p-2 rounded-lg w-20"
-          >
-            저 장
-          </button>
+        <div className={`${styles.saveAndOut}`}>
+          <div className='flex justify-between mt-10 mr-5'>
+            <div className='w-20'>
+              {/* between 정렬용 div */}
+            </div>
+            <div className='ml-10'>
+              <button
+                onClick={handleSaveProfile}
+                className="bg-white text-black font-bold p-2 rounded-lg w-20 flex items-center justify-center"
+              >
+                저 장
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleUserExit}
+                className="bg-white text-black font-bold p-2 rounded-lg w-auto flex items-center justify-center"
+              >
+                회원 탈퇴
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
