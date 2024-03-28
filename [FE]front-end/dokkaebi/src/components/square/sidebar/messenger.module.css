@@ -99,7 +99,7 @@
 /* 내 채팅 */
 .chatMine {
   text-align: right;
-  background-color: #d1eaff; /* 예시 색상 */
+  /* background-color: #d1eaff; */
   margin-left: auto;
   padding: 5px;
   border-radius: 10px;
@@ -108,7 +108,7 @@
 /* 상대방(친구)의 채팅 */
 .chatTheirs {
   text-align: left;
-  background-color: #f0f0f0; /* 예시 색상 */
+  /* background-color: #f0f0f0; */
   margin-right: auto;
   padding: 5px;
   border-radius: 10px;
@@ -116,7 +116,7 @@
 
 /* 채팅 내역 */
 .chatBubble {
-  color: white;
+  color: black;
   max-width: 95%;
   border-radius: 20px;
 }
