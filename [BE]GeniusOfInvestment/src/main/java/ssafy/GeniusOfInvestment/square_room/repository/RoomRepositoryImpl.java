@@ -11,7 +11,7 @@ import static ssafy.GeniusOfInvestment._common.entity.QRoom.room;
 @RequiredArgsConstructor
 public class RoomRepositoryImpl implements RoomRepositoryCustom{
 
-    JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
     @Override
     public List<SquareRoom> findRoomCanEnter(Long channelId) {
         return jpaQueryFactory
