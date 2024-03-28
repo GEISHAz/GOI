@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Long>,RoomRepositoryCustom {
     Room findFirstByChannelOrderByRoomNumDesc(Channel ch);
+    boolean existsByChannelAndRoomNumAndStatusBetween(Channel channel, int roomNum, int status, int status2);
+    Room findByRoomNumAndStatusBetween(int roomNum, int status, int status2);
 }
