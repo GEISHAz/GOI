@@ -98,7 +98,7 @@ public class RoomService {
         gameRoom.getParticipants().add(
                 GameUser.builder()
                         .userId(user.getId())
-                        .isReady(false)
+                        .isReady(true) //현재 레디에서 문제가 생겨 참가하면 강제 레디로
                         .isManager(false)
                         .buyInfos(new ArrayList<>())
                         .build());
@@ -258,13 +258,13 @@ public class RoomService {
         room.setParticipants(gameUserList);
         redisGameRepository.updateGameRoom(room);
 
-        int status;
+        int status = 0;
         if(cnt == room.getParticipants().size()){
             status = 1;
         }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
             //ready를 요청한 사용자가 참가자 목록에 없다.
             if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-            status = flag;
+            //status = flag;
         }
 
         List<RoomPartInfo> rstList = new ArrayList<>();
@@ -281,11 +281,11 @@ public class RoomService {
                     .build());
         }
 
-        //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것
+        //flag = 0이면 레디를 한것, flag = -1이면 레디를 취소한 것
         //status = 1이면 전체가 레디를 완료한 것
         return ReadyResponse.builder()
                 .userId(user.getId())
-                .ready(status == 0)
+                .ready(flag == 0)
                 .start(status == 1)
                 .list(rstList)
                 .build();
