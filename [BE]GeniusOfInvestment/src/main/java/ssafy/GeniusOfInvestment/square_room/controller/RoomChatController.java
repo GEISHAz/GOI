@@ -41,10 +41,11 @@ public class RoomChatController {
         log.info("웹소켓 연결시 Event에서 sessionId: " + sessionId);
 //        StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
 //        String sessionId = headerAccesor.getSessionId();
-        String userId = event.getMessage().getHeaders().get("nativeHeaders").toString().split("User=\\[")[1].split("]")[0];
+        String userId = event.getMessage().getHeaders().get("nativeHeaders").toString();
+        //String userId = event.getMessage().getHeaders().get("nativeHeaders").toString().split("User=\\[")[1].split("]")[0];
         log.info("웹소켓 연결시 Event에서 userId: " + userId);
 
-        sessions.put(sessionId, userId);
+        //sessions.put(sessionId, userId);
         log.info("Received a new web socket connection");
     }
     @EventListener(SessionDisconnectEvent.class)
