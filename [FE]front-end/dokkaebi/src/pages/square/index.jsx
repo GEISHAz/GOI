@@ -59,6 +59,7 @@ export default function Square() {
 
       {/* 광장 메인 영역 (좌/우 컨테이너로 분리)*/}
       <div className={styles.mainContent}>
+        
         <div className={styles.leftContainer}>
           {/* 유저 리스트 */}
           <UserList />

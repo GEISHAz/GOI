@@ -1,4 +1,4 @@
-.PlayerContainer {
+.playerContainer {
   width: 840px;
   height: 420px;
   padding: 2% 3%;
@@ -8,35 +8,31 @@
   border-radius: 20px;
 }
 
-.PlayerBox {
+.playerBox {
   width: 340px;
   height: 160px;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 20px;
-  margin-left: 4px;
-  margin-right: 4px;
-  padding-left: 5%;
-  padding-bottom: 2%;
+  padding-left: 4%;
+  padding-bottom: 4%;
 }
 
-.playerComponents {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  direction: row;
-  align-items: center;
+.playerNickName {
+  font-family: DNFBitBitv2;
+  font-size: 24px;
 }
 
-.playerComponents > img {
-  width: 100px;
-  height: 100px;
-  /* margin: auto 16px auto 24px */
+.playerTotalMoney {
+  font-family: Galmuri11;
+  font-size: 24px;
 }
+
+/* 
 
 .playerInfo {
   display: flex;
   flex-direction: column;
-  /* margin: auto 8px; */
+  margin: auto 8px;
   margin-left: 20px;
   margin-top: 20px;
 }
@@ -45,12 +41,7 @@
   display: flex;
   flex-direction: column;
 }
-
-.playerNickName {
-  font-family: DNFBitBitv2;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
+*/
 
 .playerReady {
   font-family: DNFBitBitv2;
@@ -61,11 +52,6 @@
   color: gray;
 }
 
-.playerTotalMoney {
-  font-family: Galmuri11;
-  font-size: 24px;
-}
-
 .playerReadyActive {
   color: red;
-}
+}  

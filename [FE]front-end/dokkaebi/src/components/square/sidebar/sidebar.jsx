@@ -98,11 +98,14 @@ const Sidebar = ({ toggleSidebar }) => {
       const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
       client.current = Stomp.over(sock);
       
-      client.current.connect({}, () => { 
+      client.current.connect({
+        Authorization: `Bearer ${accessToken}`,
+      }, () => { 
         console.log("친구 채팅 연결됨!!")
         // 사용자의 모든 친구와의 채팅 채널에 구독
         isFriendList.forEach(friend => {
           const friendListId = friend.friendListId;
+          console.log("friendListId 확인 :", friendListId)
           subscriptionRef.current = client.current.subscribe(
             '/sub/friend/chat/' + `${friendListId}`,
             (message) => {
@@ -178,7 +181,7 @@ const Sidebar = ({ toggleSidebar }) => {
       // setIsFriendChat([...isFriendChat, {sender: userNickname, message: message}])
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빨라요 !");
-      console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
+      console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요",);
     }
   };
 

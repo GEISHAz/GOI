@@ -18,6 +18,7 @@ public enum ErrorType {
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다"),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다"),
     FAIL_TO_GENERATE_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "엑세스 토큰 생성에 실패했습니다"),
+    FAIL_TO_GET_USER_DISCONNECT(HttpStatus.BAD_REQUEST, "웹소켓 연결 해제시 map에서 유저 정보 얻기 실패"),
 
     //****************************Friend****************************//
     NOT_FOUND_FRIEND_ROOM(HttpStatus.BAD_REQUEST, "채팅하려는 친구 조회에 실패했습니다"),

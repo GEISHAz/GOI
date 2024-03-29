@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import ssafy.GeniusOfInvestment._common.exception.JwtException;
 import ssafy.GeniusOfInvestment._common.jwt.JwtUtil;
 
 @Slf4j
@@ -33,6 +34,9 @@ public class StompHandler implements ChannelInterceptor {
             String token = String.valueOf(accessor.getNativeHeader("Authorization").get(0));
             token = token.replace("Bearer ", "");
             log.info("presend에서 웹소켓 통신시 받아온 token 값: " + token);
+            if (!jwtUtil.validateToken(token)) {
+                throw new JwtException("Access Token 만료!");
+            }
 
             try {
                 String userId = jwtUtil.getUserId(token);

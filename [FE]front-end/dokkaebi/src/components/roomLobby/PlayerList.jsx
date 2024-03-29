@@ -31,46 +31,49 @@ export default function PlayerList({ userList }) {
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   }
 
+
   return (
-    <div className={styles.PlayerContainer}>
+    <div className={styles.playerContainer}>
+
+      {/* 컨테이너 4조각 분할 */}
+
       <div className="grid grid-cols-2 gap-4 p-4">
         {users.map((user, index) => {
           const userImage = findImageById(user.imageId);
           return (
+
+            // 플레이어 정보를 담은 컨테이너 playerBox
             <div
               key={index}
-              className={`${styles.PlayerBox} grid grid-cols-2 gap-5`}
+              className={`${styles.playerBox} flex flex-col justify-center items-center`}
             >
-              <div className={styles.playerComponents}>
-                <div className="flex flex-col items-center">
-                  <img
+              <div className="flex flex-row w-full justify-start items-center mt-4">
+                <img
+                    className="w-24 ml-2"
                     src={user.profileImg || (userImage ? userImage.src : "")}
                     alt="profile"
                     onError={onErrorProfileImg}
-                  />
-                  <p
-                    className={`${styles.playerReady} ${
-                      user.isReady ? styles.playerReadyActive : ""
-                    }`}
-                  >
-                    READY
-                  </p>
-                </div>
+                />
+                <p 
+                  className="font-Bit text-2xl mx-4">{user.userNick}</p>
+                <div>방장</div>
+              </div>
 
-                <div className={styles.playerInfo}>
-                  <div className={styles.player}>
-                    <p className={styles.playerNickName}>{user.userNick}</p>
-                    <div className="flex flex-row items-center">
-                      <img className="w-12 mr-2" src={coin} alt="coin icon" />
-                      <p className={styles.playerTotalMoney}>{user.exp}</p>
-                    </div>
-                  </div>
-                </div>
+              <div className="flex flex-row w-full justify-start items-center">
+                <p
+                  className={`${styles.playerReady} ${
+                  user.isReady ? styles.playerReadyActive : ""
+                  }`}
+                  >
+                  READY
+                </p>
+                <img className="w-12 mx-2" src={coin} alt="coin icon" />
+                <p className={styles.playerTotalMoney}>{user.exp}</p>
               </div>
             </div>
-          );
+            );
         })}
       </div>
     </div>
   );
-}
+  }
