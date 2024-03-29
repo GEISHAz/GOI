@@ -24,7 +24,7 @@ export default function Router() {
         <Route path="/signUp" element={<GetUserLogin />} />
         <Route path="/callBack" element={<CallBack />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/profile/:userNickname" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/game/:id" element={<GamePlay />} />
           <Route path="/channel" element={<Channel />} />
           <Route path="/square/:id" element={<Square />} />
