@@ -119,11 +119,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else if ("unlink".equalsIgnoreCase(mode)) {
             // TODO: DB 삭제
             // TODO: 리프레시 토큰 삭제
+            log.info("unlink 확인///////////");
             String accessToken = principal.getUserInfo().getAccessToken();
             OAuth2Provider provider = principal.getUserInfo().getProvider();
             oAuth2UserUnlinkManager.unlink(provider, accessToken);
             Optional<User> findMember = userService.findBySocialId(principal.getUserInfo().getId());
             authTokenService.removeRefreshTokenById(findMember.get().getId().toString());
+            log.info("unlink 확인///////////"+findMember.get().getId()+"//////"+principal.getUserInfo().getId());
             userService.deleteMember(findMember);
 
 
