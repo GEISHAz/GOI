@@ -94,6 +94,7 @@ public class RoomChatController {
                         Optional<User> user = userRepository.findById(uId);
                         if(user.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
                         user.get().updateChannel(null);
+                        userRepository.save(user.get());
 
                         delGameRoom(uId); //방 탈퇴 처리랑 같은 로직
                         redisUserRepository.deleteUser(uId); //유저 동선 저장 삭제(원래 광장으로 나오면 제거될 값)
