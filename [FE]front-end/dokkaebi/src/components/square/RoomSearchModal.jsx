@@ -41,7 +41,7 @@ export default function RoomSearchModal({ onClose }) {
       .then((response) => {
         console.log('방검색 리스폰스 확인:', response);
         const roomId = response.data[0].roomId;
-        console.log('룸아이디 확인:', roomId);
+        console.log('룸아이디 확인:', response.data[0].roomId);
         if (response.status === 200) {
           console.log('입장 성공:', response);
           navigate(`/room/${roomId}`,{
