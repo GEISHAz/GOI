@@ -3,6 +3,7 @@ spring:
         hibernate:
             naming:
                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+            ddl-auto: update
         properties:
             hibernate:
                 show_sql: true
