@@ -25,7 +25,7 @@ export default function LobbyTop({ userList, isStart }) {
         console.log("나는 방장 : ", amIManager);
       }
     });
-  }, [userList]);
+  }, [userList, amIManager]);
 
   useEffect(() => {
     if (isStart === true) {
