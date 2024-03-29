@@ -15,9 +15,8 @@ import SockJS from "sockjs-client";
 
 export default function GamePlay() {
   const dispatch = useDispatch();
-  const ready = useSelector((state) => state.game.ready);
-  const money = useSelector((state) => state.game.money);
-  const point = useSelector((state) => state.game.point);
+  const userNickname = useSelector((state) => state.auth.userNickname);
+  const accessToken = sessionStorage.getItem("accessToken");
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
@@ -25,6 +24,11 @@ export default function GamePlay() {
 
   const [stompClient, setStompClient] = useState(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
+
+  const [timerMin, setTimerMin] = useState(0);
+  const [timerSec, setTimerSec] = useState(0);
+  const [turn, setTurn] = useState(0);
+
 
   useEffect(() => {
     let reconnectInterval;
@@ -35,7 +39,9 @@ export default function GamePlay() {
       setStompClient(stompClient);
 
       stompClient.connect(
-        {},
+        {
+          Authorization: `Bearer ${accessToken}`,
+        },
         function (frame) {
           stompClient.subscribe("/sub/room/chat/1", function (message) {
             const receivedMessage = JSON.parse(message.body);
@@ -44,13 +50,19 @@ export default function GamePlay() {
               console.log(receivedMessage);
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.data.remainingTime);
+            } else if (receivedMessage.type === "TURN") {
+              console.log(receivedMessage.data.turn);
+            } else if (receivedMessage.type === "READY") {
+              console.log(receivedMessage.data.ready);
+            } else if (receivedMessage.type === "GAME_OVER") {
+              console.log(receivedMessage.data.winner);
             }
           });
         },
         function (error) {
           // 연결이 끊어졌을 때 재연결을 시도합니다.
           console.log("STOMP: Connection lost. Attempting to reconnect", error);
-          reconnectInterval = setTimeout(connect, 5000); // 5초 후 재연결 시도
+          reconnectInterval = setTimeout(connect, 2000); // 5초 후 재연결 시도
         }
       );
     };
