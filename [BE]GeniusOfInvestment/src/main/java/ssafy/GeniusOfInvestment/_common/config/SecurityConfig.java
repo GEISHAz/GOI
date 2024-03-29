@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -49,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 //                        .requestMatchers(antMatcher("/api"))
 //                        .anyRequest().authenticated())
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
                         configure.authorizationEndpoint(config -> config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
@@ -57,6 +58,7 @@ public class SecurityConfig {
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
+                //.anonymous(Customizer.withDefaults()) //혹시나 싶어서 임시로 추가
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class)
                 .build();

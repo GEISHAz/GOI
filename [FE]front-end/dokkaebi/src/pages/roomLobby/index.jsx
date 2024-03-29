@@ -81,7 +81,6 @@ export default function userReadyRoom() {
               setIsStart(receivedMessage.data.ready);
             } else if (receivedMessage.type === "START") {
               console.log(receivedMessage.data);
-              
             }
           });
         },

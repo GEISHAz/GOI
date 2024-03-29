@@ -24,6 +24,7 @@ export default function GamePlay() {
 
   const [stompClient, setStompClient] = useState(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
+  const roomId = sessionStorage.getItem("roomId");
 
   const [timerMin, setTimerMin] = useState(0);
   const [timerSec, setTimerSec] = useState(0);
@@ -43,8 +44,9 @@ export default function GamePlay() {
           Authorization: `Bearer ${accessToken}`,
         },
         function (frame) {
-          stompClient.subscribe("/sub/room/chat/1", function (message) {
+          stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
             const receivedMessage = JSON.parse(message.body);
+            console.log(receivedMessage);
 
             if (receivedMessage.type === "STOCK_MARKET") {
               console.log(receivedMessage);
@@ -65,9 +67,17 @@ export default function GamePlay() {
           reconnectInterval = setTimeout(connect, 2000); // 5초 후 재연결 시도
         }
       );
+
     };
 
     connect();
+
+    stompClient.current.send(
+      `/pub/room/list`,
+      {roomId: roomId},
+      JSON.stringify("리스트 요청")
+    );
+    console.log("리스트 요청 보냄");
 
     return () => {
       if (stompClient) {
@@ -78,6 +88,8 @@ export default function GamePlay() {
       }
     };
   }, []);
+
+
 
   // const accessToken = sessionStorage.getItem("accessToken");
 
