@@ -175,9 +175,7 @@ const Sidebar = ({ toggleSidebar }) => {
 
       client.current.send(
         `/pub/friend/chat/message`,
-        {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        {},
         JSON.stringify(newMsg)
       );
       // setIsFriendChat([...isFriendChat, {sender: userNickname, message: message}])
