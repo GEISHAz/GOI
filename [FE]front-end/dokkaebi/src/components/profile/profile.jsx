@@ -154,6 +154,11 @@ export default function Profile() {
   // 회원탈퇴
   const handleUserExit = () => {
     console.log("회원 탈퇴 클릭 확인");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("isLogin");
+    sessionStorage.removeItem('previousNickname');
+    window.location.reload()
     window.location.href = KAKAO_OUT_URL;
   }
 
