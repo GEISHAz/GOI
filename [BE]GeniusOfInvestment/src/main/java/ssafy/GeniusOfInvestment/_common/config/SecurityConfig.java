@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 //                        .requestMatchers(antMatcher("/api"))
 //                        .anyRequest().authenticated())
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
                         configure.authorizationEndpoint(config -> config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
