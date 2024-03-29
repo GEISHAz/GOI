@@ -6,6 +6,7 @@ import styles from "./TopButtons.module.css";
 import RoomCreateModal from "./RoomCreateModal";
 import RoomSearchModal from "./RoomSearchModal";
 import Sidebar from "./sidebar/sidebar";
+import Back from "../back/goChannel.jsx";
 // import RoomEnterModal from './RoomEnterModal';
 
 import messenger from "../../images/square/icon_messenger.png";
@@ -82,59 +83,22 @@ export default function TopButtons() {
               });
             }
           });
-        // .catch((error) => {
-        //   console.log('비번:', isPassword);
-        //   console.log('입장 실패:', error);
-        //   if (!error.response) {
-        //     alert('알 수 없는 오류가 발생했습니다.');
-        //     onClose();
-        //     return;
-        //   }
-        //   switch (error.response.data.statusCode) {
-        //     case 423: // 방 비밀번호 틀렸을 때
-        //       setShowRoomEnterModal(true)
-        //       break;
-
-        //     case 426: // 방이 가득 찼을 때
-        //       alert('방이 가득 차서 입장할 수 없어요!');
-        //       onClose(); // 모달 닫기
-        //       break;
-
-        //     case 404: // 방이 존재하지 않을 때
-        //       alert('존재하지 않는 방번호입니다!');
-        //       onClose(); // 모달 닫기
-        //       break;
-
-        //     default:
-        //       // 예외 처리
-        //       alert('알 수 없는 오류가 발생!');
-        //       onClose(); // 모달 닫기
-        //       break;
-        //     }
-        // });
-      } else {
-        // 서버로부터 적절한 응답을 받지 못한 경우
-        alert("빠른 입장 가능한 방을 찾을 수 없습니다.");
+        } else {
+          // 서버로부터 적절한 응답을 받지 못한 경우
+          alert("빠른 입장 가능한 방을 찾을 수 없습니다.");
+        }
+      } catch (error) {
+        // 요청 중 오류가 발생한 경우
+        console.error("빠른 입장 처리 중 오류 발생:", error);
+        alert("빠른 입장 처리 중 오류가 발생했습니다");
       }
-    } catch (error) {
-      // 요청 중 오류가 발생한 경우
-      console.error("빠른 입장 처리 중 오류 발생:", error);
-      alert("빠른 입장 처리 중 오류가 발생했습니다");
-    }
-  };
+    };
 
   return (
     <>
-      <div className="flex items-center justify-between p-5">
+      <div className="flex items-center justify-between mt-5">
         {/* 뒤로가기 버튼 */}
-        <div>
-          <button
-            onClick={() => navigate(`/channel`)}
-            className="font-bold text-white text-4xl"
-          >
-            Back
-          </button>
-        </div>
+        <Back />
 
         <div className="flex-grow flex justify-center gap-4 ml-20">
           {/* 방 만들기 버튼 */}
