@@ -87,15 +87,8 @@ export default function LobbyTop({ userList, isStart }) {
 
   const handleStartButtonClick = () => {
     axios
-<<<<<<< HEAD
-      .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
+      .put(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
         headers: { accessToken: `Bearer ${accessToken}` },
-=======
-      .put(`https://j10d202.p.ssafy.io/api/room/start/${roomId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
->>>>>>> 32d984e7266bf79816e79940f8dcf3518d2a5d1d
       })
       .then((res) => {
         console.log(res);
