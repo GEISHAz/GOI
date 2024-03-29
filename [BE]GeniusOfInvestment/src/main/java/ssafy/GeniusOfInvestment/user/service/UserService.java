@@ -3,6 +3,9 @@ package ssafy.GeniusOfInvestment.user.service;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -117,5 +120,17 @@ public class UserService {
         if (userRepository.existsByNickName(nickname)) {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_USER_NICKNAME);
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Optional<User> foundUser = userRepository.findById(Long.valueOf(userId));
+        //System.out.println(foundUser.get().getName());
+
+        if(foundUser.isPresent()){
+            log.info("loadUserByUsername메소드에서 유저 닉네임: " + foundUser.get().getNickName());
+            return foundUser.get();
+        }
+        throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
     }
 }

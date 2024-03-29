@@ -58,7 +58,9 @@ export default function userReadyRoom() {
       stompClientRef.current = stompClient;
 
       stompClient.connect(
-        {},
+        {
+          Authorization: `Bearer ${accessToken}`,
+        },
         function (frame) {
           stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
             console.log("방", roomId);
@@ -77,6 +79,9 @@ export default function userReadyRoom() {
               console.log(receivedMessage.data.list);
               setUserList(receivedMessage.data.list);
               setIsStart(receivedMessage.data.ready);
+            } else if (receivedMessage.type === "START") {
+              console.log(receivedMessage.data);
+              
             }
           });
         },
