@@ -3,14 +3,16 @@
   flex-direction: column;
   height: 100%;
 }
-  
+
 .mainContent {
   display: flex;
   flex: 100%;
 }
   
 .leftContainer {
-  margin: 0px 3%;
+  max-height: 700px;
+  max-width: 350px;
+  margin: 0% 0% 0% 3%; /* 상 우 하 좌 마진 */
 }
 
 .rightContainer {
@@ -18,6 +20,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  /* justify-content: center; */
+  align-items: center;
 }

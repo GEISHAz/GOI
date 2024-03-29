@@ -118,7 +118,7 @@ export default function RoomList() {
     return (
       <div>
         <div className={styles.pagination}>
-          <button onClick={prevPage} disabled={currentPage === 0}>
+          <button className="w-12" onClick={prevPage} disabled={currentPage === 0}>
             ◀
           </button>
           <div className={styles.roomContainer}>
@@ -155,6 +155,7 @@ export default function RoomList() {
             )}
           </div>
           <button
+            className="w-12"
             onClick={nextPage}
             disabled={currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1}
           >
