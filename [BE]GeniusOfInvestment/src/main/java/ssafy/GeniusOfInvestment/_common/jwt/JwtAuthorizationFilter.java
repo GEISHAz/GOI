@@ -35,7 +35,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String uri = request.getRequestURI();
-        return uri.contains("api/auth/");
+        return uri.contains("api/auth/") || uri.contains("/ws-stomp");
     }
 
     @Override
