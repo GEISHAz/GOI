@@ -120,6 +120,7 @@ public class RoomService {
                     .isManager(gu.isManager())
                     .exp(tmp.get().getExp())
                     .imageId(tmp.get().getImageId())
+                    .roomId(gameRoom.getId())
                     .build());
         }
         log.info("RoomService enterRoom end");
