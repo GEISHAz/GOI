@@ -1,6 +1,7 @@
 package ssafy.GeniusOfInvestment._common.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -11,10 +12,12 @@ import ssafy.GeniusOfInvestment._common.utils.StompHandler;
 
 import java.util.Arrays;
 
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
     private final StompHandler stompHandler;
 
     @Override
