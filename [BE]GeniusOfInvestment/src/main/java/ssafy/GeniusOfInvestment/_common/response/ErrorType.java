@@ -26,7 +26,7 @@ public enum ErrorType {
     //****************************Alarm****************************//
     NOT_FOUND_INVITE_USER(HttpStatus.BAD_REQUEST, "해당하는 유저가 없어요 !"),
     NOT_FOUND_INVITATION(HttpStatus.BAD_REQUEST, "초대 요청을 찾지 못했습니다"),
-
+    NOT_INVITE_YOURSELF(HttpStatus.BAD_REQUEST,"본인을 초대할 수 없어요 !"),
     //****************************Alarm****************************//
     NOT_FOUND_FRIEND(HttpStatus.BAD_REQUEST, "삭제할 친구 정보가 없습니다"),
     ALREADY_EXISTS_ALARM(HttpStatus.BAD_REQUEST,"이미 요청을 보낸 상태에요 !"),

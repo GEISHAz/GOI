@@ -38,6 +38,9 @@ public class AlarmService {
         if(fromUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         }
+        if(fromUser.get().getNickName().equals(sendFriendRequest.getFriendNickName())){
+            throw new CustomBadRequestException(ErrorType.NOT_INVITE_YOURSELF);
+        }
         Optional<User> toUser = userRepository.findByNickName(sendFriendRequest.getFriendNickName());
         if(toUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITE_USER);
