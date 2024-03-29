@@ -89,7 +89,10 @@ public class UserService implements UserDetailsService {
 
     public UserRankResponseDto getUserRank(Long userId) {
         User user = findUser(userId);
-        return UserRankResponseDto.of(userRepository.findRankByExp(user),user.getNickName(),user.getExp());
+        List<User> users = userRepository.findAllByOrderByExpDesc();
+        int index = users.indexOf(user);
+        List<Long> ranks = userRepository.findAllRankByExp();
+        return UserRankResponseDto.of(ranks.get(index),user.getNickName(),user.getExp());
     }
 
     public User getAuthenticationUser(String userId) {
