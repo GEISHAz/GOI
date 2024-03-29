@@ -59,7 +59,7 @@ export default function PlayerList({ userList }) {
                   className="font-Bit text-2xl mx-4">{user.userNick}</p>
                   {user.isManager && (
                     <img 
-                      className="w-8 mx-4" 
+                      className="w-8 mr-8" 
                       src={crown} 
                       alt="방장 아이콘" />
                   )}                
