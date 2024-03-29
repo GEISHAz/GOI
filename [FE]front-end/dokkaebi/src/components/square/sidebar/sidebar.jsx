@@ -98,11 +98,14 @@ const Sidebar = ({ toggleSidebar }) => {
       const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
       client.current = Stomp.over(sock);
       
-      client.current.connect({}, () => { 
+      client.current.connect({
+        Authorization: `Bearer ${accessToken}`,
+      }, () => { 
         console.log("친구 채팅 연결됨!!")
         // 사용자의 모든 친구와의 채팅 채널에 구독
         isFriendList.forEach(friend => {
           const friendListId = friend.friendListId;
+          console.log("friendListId 확인 :", friendListId)
           subscriptionRef.current = client.current.subscribe(
             '/sub/friend/chat/' + `${friendListId}`,
             (message) => {
