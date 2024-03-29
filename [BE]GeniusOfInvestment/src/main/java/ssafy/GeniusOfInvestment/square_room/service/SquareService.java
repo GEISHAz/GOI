@@ -128,8 +128,9 @@ public class SquareService {
                     num++;
                 }
                 throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
+            }else {
+                return num;
             }
-            return 0;
         }
     }
 
