@@ -39,8 +39,9 @@ export default function RoomSearchModal({ onClose }) {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
-        console.log('입장 성공:', response);
+        console.log('방검색 리스폰스 확인:', response);
         const roomId = response.data.data.roomId;
+        console.log('룸아이디 확인:', roomId);
         if (response.status === 200) {
           console.log('입장 성공:', response);
           navigate(`/room/${roomId}`,{
