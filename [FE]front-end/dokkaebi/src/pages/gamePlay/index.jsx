@@ -64,7 +64,7 @@ export default function GamePlay() {
         function (error) {
           // 연결이 끊어졌을 때 재연결을 시도합니다.
           console.log("STOMP: Connection lost. Attempting to reconnect", error);
-          reconnectInterval = setTimeout(connect, 2000); // 5초 후 재연결 시도
+          reconnectInterval = setTimeout(connect, 2000); // 초 후 재연결 시도
         }
       );
 
@@ -72,12 +72,12 @@ export default function GamePlay() {
 
     connect();
 
-    stompClient.current.send(
-      `/pub/room/list`,
-      {roomId: roomId},
-      JSON.stringify("리스트 요청")
-    );
-    console.log("리스트 요청 보냄");
+    // stompClient.current.send(
+    //   `/pub/room/list`,
+    //   {roomId: roomId},
+    //   JSON.stringify("리스트 요청")
+    // );
+    // console.log("리스트 요청 보냄");
 
     return () => {
       if (stompClient) {
