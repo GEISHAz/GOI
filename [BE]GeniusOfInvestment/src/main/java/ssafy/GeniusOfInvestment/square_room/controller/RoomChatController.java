@@ -24,7 +24,7 @@ public class RoomChatController {
     public void handleWebSocketConnectListener(SessionConnectEvent event) {
         log.info("Received a new web socket connection");
     }
-    @EventListener(SessionConnectEvent.class)
+    @EventListener(SessionDisconnectEvent.class)
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = headerAccesor.getSessionId();
