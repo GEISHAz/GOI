@@ -5,6 +5,7 @@ import styles from './friendItem.module.css';
 
 const FriendItem = ({ friend, onDeleteFriend, onFriendClick, newMessageCount }) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [isOpenMessenger, setIsOpenMessnger] = useState(false);
 
   // 우클릭
   const handleContextMenu = (e) => {

@@ -9,6 +9,7 @@ import RightB from '../../images/hub/rightB.png';
 import GameIMG from '../../images/hub/game.png';
 import ProfileIMG from '../../images/hub/profile.png';
 import RankIMG from '../../images/hub/rank.png';
+import { useSelector } from "react-redux";
 
 export default function hubBottom() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function hubBottom() {
   const [currentSlide, setCurrentSlide] = useState(slides[1]);
   const [prevButtonImage, setPrevButtonImage] = useState(LeftB);
   const [nextButtonImage, setNextButtonImage] = useState(RightB);
+  const userNickname = useSelector((state) => state.auth.userNickname);
   // 마우스 클릭 이벤트 핸들러
   const handleSlideClick = (slide) => {
     if (slide === currentSlide) {
@@ -45,7 +47,7 @@ export default function hubBottom() {
     let path = '';
     switch(slideName) {
       case 'Profile':
-        path = `/profile/userNickname`;
+        path = `/profile/${userNickname}`;
         break;
       case 'Game':
         path = `/channel`;
