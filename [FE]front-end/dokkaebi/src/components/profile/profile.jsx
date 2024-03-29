@@ -148,8 +148,13 @@ export default function Profile() {
     }
   };
 
-  const handleUserExit = () => {
+  const KAKAO_OUT_URL =
+  "https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://j10d202.p.ssafy.io/hub&mode=unlink";
 
+  // 회원탈퇴
+  const handleUserExit = () => {
+    console.log("회원 탈퇴 클릭 확인");
+    window.location.href = KAKAO_OUT_URL;
   }
 
   // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기
