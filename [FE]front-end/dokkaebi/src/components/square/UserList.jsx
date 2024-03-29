@@ -115,11 +115,8 @@ export default function UserList() {
               );
             })}
 
-          {/* <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          <div className="flex items-center justify-between p-2 border-b border-gray-200">
             프로필 닉네임6글자 게임중 
-          </div> */}
-          {/* <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
           </div>
           <div className="flex items-center justify-between p-2 border-b border-gray-200">
             더미데이터
@@ -168,7 +165,10 @@ export default function UserList() {
           </div>
           <div className="flex items-center justify-between p-2 border-b border-gray-200">
             더미데이터
-          </div> */}
+          </div>
+          <div className="flex items-center justify-between p-2 border-b border-gray-200">
+            더미데이터
+          </div>
 
         </div>
       </div>
