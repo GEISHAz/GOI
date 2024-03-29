@@ -14,6 +14,7 @@ import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
+import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomInfoResponse;
@@ -42,9 +43,18 @@ public class RoomService {
     @Transactional
     public List<RoomPartInfo> enterRoom(User user, RoomEnterRequest enterInfo) {
         log.info("RoomService enterRoom start");
-        Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
-        if(rtmp.isEmpty() || rtmp.get().getStatus() == 2) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
-        Room room = rtmp.get(); //들어가려는 방 정보를 얻는다.
+        Room room;
+        if(enterInfo.roomId() != null){
+            Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
+            if(rtmp.isEmpty() || rtmp.get().getStatus() == 2) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+            room = rtmp.get(); //들어가려는 방 정보를 얻는다.
+        }else {
+            room = roomRepository.findByRoomNumAndStatusBetween(enterInfo.roomNum(), 0, 1);
+            if(room == null || room.getId() == null){
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+            }
+        }
+        //Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
 
         if(room.getPassword() != null){ //방에 비밀번호가 설정되어 있다.
             if(!room.getPassword().equals(enterInfo.password())){
@@ -218,7 +228,8 @@ public class RoomService {
         return rstList;
     }
 
-    public int doingRoomReady(User user, Long grId){
+    @Transactional
+    public ReadyResponse doingRoomReady(User user, Long grId){
         GameRoom room = redisGameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -247,12 +258,36 @@ public class RoomService {
         room.setParticipants(gameUserList);
         redisGameRepository.updateGameRoom(room);
 
+        int status;
         if(cnt == room.getParticipants().size()){
-            return 1;
+            status = 1;
         }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
             //ready를 요청한 사용자가 참가자 목록에 없다.
             if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-            return flag;
+            status = flag;
         }
+
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        for(GameUser gu : room.getParticipants()){
+            Optional<User> tmp = userRepository.findById(gu.getUserId());
+            if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rstList.add(RoomPartInfo.builder()
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
+                    .build());
+        }
+
+        //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것
+        //status = 1이면 전체가 레디를 완료한 것
+        return ReadyResponse.builder()
+                .userId(user.getId())
+                .ready(status == 0)
+                .start(status == 1)
+                .list(rstList)
+                .build();
     }
 }

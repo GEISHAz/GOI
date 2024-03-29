@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
@@ -50,10 +51,11 @@ public class ChannelService {
     }
 
     //채널 들어가기
+    @Transactional
     public void enterChannel(User user, Long channelId) {
         log.info("enterChannelService in");
-        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
-            user.deleteChannel();
+//        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
+//            user.deleteChannel();
 
         log.info("유저 현 채널 : "+user.getChannel());
 
@@ -64,22 +66,23 @@ public class ChannelService {
         }
         channel = ochannel.get();
 
+        log.info(String.valueOf(channel.getParticipants().size()));
         // 채널을 들어갈 수 있는지 부터 확인해야함
         if (channel.getParticipants().size() > 100)
             throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
 
-        User enterUser;
-        // 채널을 들어가게되면 DB USER 수정 ch
-        Optional<User> u = userRepository.findById(user.getId());
-        if(u.isPresent()) {
-             enterUser = u.get();
-        }else{
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-        }
+//        User enterUser;
+//        // 채널을 들어가게되면 DB USER 수정 ch
+//        Optional<User> u = userRepository.findById(user.getId());
+//        if(u.isPresent()) {
+//             enterUser = u.get();
+//        }else{
+//            throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+//        }
 
-        enterUser.updateChannel(channel);
+        user.updateChannel(channel);
 
-        userRepository.save(enterUser);
+        userRepository.save(user);
         log.info("enterChannelService in");
     }
 

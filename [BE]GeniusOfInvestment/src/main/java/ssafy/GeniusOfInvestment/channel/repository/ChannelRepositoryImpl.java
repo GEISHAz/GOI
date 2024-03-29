@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import ssafy.GeniusOfInvestment.square_room.dto.response.SquareRoom;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ssafy.GeniusOfInvestment._common.entity.QRoom.room;
@@ -20,6 +21,7 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom{
         return jpaQueryFactory
                 .select(
                         room.id,
+                        room.roomNum,
                         room.title,
                         room.isPublic
                 )
@@ -34,8 +36,9 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom{
         return SquareRoom
                 .builder()
                     .id(tuple.get(0,Long.class))
-                    .title(tuple.get(1,String.class))
-                    .isPrivate(!Boolean.TRUE.equals(tuple.get(2, Boolean.class)))
+                    .roomNum(Objects.requireNonNullElse(tuple.get(1, Integer.class), 0))
+                    .title(tuple.get(2,String.class))
+                    .isPrivate(!Boolean.TRUE.equals(tuple.get(3, Boolean.class)))
                 .build();
     }
 }

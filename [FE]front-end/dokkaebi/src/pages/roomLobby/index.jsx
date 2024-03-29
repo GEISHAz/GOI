@@ -31,23 +31,14 @@ export default function userReadyRoom() {
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
-
-  const [isAllReady, setIsAllReady] = useState(false);
-
-  const toggleReady = (userId) => {
-    setUserList(
-      userList.map((user) =>
-        user.id === userId ? { ...user, isReady: !user.isReady } : user
-      )
-    );
-  };
+  const [isStart, setIsStart] = useState(false);
 
   useEffect(() => {
-    console.log("gkrltlfgek",response)
+    console.log("gkrltlfgek", response);
     if (response.userList) {
       setUserList(response.userList);
     } else {
-      setUserList(response)
+      setUserList(response);
     }
   }, [response]);
 
@@ -70,6 +61,7 @@ export default function userReadyRoom() {
         {},
         function (frame) {
           stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
+            console.log("방", roomId);
             const receivedMessage = JSON.parse(message.body);
             console.log(receivedMessage);
             console.log(receivedMessage.type);
@@ -81,6 +73,10 @@ export default function userReadyRoom() {
             } else if (receivedMessage.type === "ROOM_EXIT") {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
+            } else if (receivedMessage.type === "READY") {
+              console.log(receivedMessage.data.list);
+              setUserList(receivedMessage.data.list);
+              setIsStart(receivedMessage.data.ready);
             }
           });
         },
@@ -111,11 +107,7 @@ export default function userReadyRoom() {
 
   return (
     <div style={backgroundStyle}>
-      <LobbyTop
-        userList={userList}
-        toggleReady={toggleReady}
-        // isAllReady={isAllReady}
-      />
+      <LobbyTop userList={userList} isStart={isStart} />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
         <PlayerList userList={userList} />

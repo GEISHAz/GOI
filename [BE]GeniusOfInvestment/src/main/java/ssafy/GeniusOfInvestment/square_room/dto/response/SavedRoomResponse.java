@@ -7,7 +7,8 @@ import java.util.List;
 
 @Builder
 public record SavedRoomResponse(
-        Long roomnum,
+        Long roomId,
+        int roomnum,
         String title,
         boolean isPrivate,
         int status,

@@ -47,8 +47,24 @@ export default function UserList() {
         console.error("유저 정보 불러오기 실패", error);
       }
     };
+
+    // 새로고침 이벤트 리스너 추가
+    const handleRefresh = () => {
+      console.log("유저 정보 새로고침 확인");
+      fetchUserInfo();
+    };
+  
+    window.addEventListener('refreshUserList', handleRefresh);
+  
+    // 첫 로딩 시에도 데이터를 불러옴
     fetchUserInfo();
-  }, [accessToken]);
+  
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('refreshUserList', handleRefresh);
+    };
+  }, [accessToken]); // accessToken이 변경될 때도 데이터를 다시 불러옴
+
 
   return (
     // "접속 중인 유저" 컨테이너
@@ -59,13 +75,13 @@ export default function UserList() {
 
       {/* 유저 상태 표시 (게임 중/대기 중) 리스트 */}
       <div
-        className={`flex flex-col items-center text-center ${styles.userState}`
-      }
+        className={`flex flex-col items-center text-center ${styles.userState}`}
       >
-        {isUserInfo.map((user) => {
-          const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
-          let statusText = "알 수 없는 상태"; // 기본값 설정
-          let statusClass = ""; // 상태에 따른 클래스명 기본값
+        <div className={`overflow-y-auto ${styles.userListScroll}`}>
+          {isUserInfo.map((user) => {
+            const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
+            let statusText = "알 수 없는 상태"; // 기본값 설정
+            let statusClass = ""; // 상태에 따른 클래스명 기본값
 
             // user.status 값에 따라 statusText 및 statusClass 업데이트
             if (user.status === 0) {
@@ -81,22 +97,38 @@ export default function UserList() {
               statusClass = styles.playing;
             }
 
-          return (
-            <div key={user.id} className="flex items-center justify-between p-2 border-b border-gray-200 w-full ml-2 mr-2">
-              <div className="my-auto">
-                {image && (
-                  <img src={image.src} alt={image.alt} className="h-10 w-10" />
-                )}
+            return (
+              <div key={user.id} className="flex items-center justify-between p-2 border-b border-gray-200">
+                <div className="my-auto">
+                  {image && (
+                    <img src={image.src} alt={image.alt} className="h-10 w-10" />
+                  )}
+                </div>
+                <div className="my-auto ml-4">
+                  <span>{user.nickName}</span>
+                </div>
+                <div className={`my-auto flex justify-end ml-4 ${statusClass}`}>
+                  <span>{statusText}</span>
+                </div>
               </div>
-              <div className="my-auto ml-1">
-                <span>{user.nickName}</span>
-              </div>
-              <div className={`my-auto flex justify-end ml-2 ${statusClass}`}>
-                <span>{statusText}</span>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+          {/* <div>
+            더미데이터
+          </div>
+          <div>
+            더미데이터
+          </div>
+          <div>
+            더미데이터
+          </div>
+          <div>
+            더미데이터
+          </div>
+          <div>
+            더미데이터
+          </div> */}
+        </div>
       </div>
     </div>
   );

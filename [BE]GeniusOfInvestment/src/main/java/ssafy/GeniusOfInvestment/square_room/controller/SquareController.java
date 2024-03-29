@@ -35,19 +35,11 @@ public class SquareController {
     }
 
     @PostMapping("/fast") //빠른입장
-    public List<RoomPartInfo> fastEnterRoom(@AuthenticationPrincipal User user){
+    public SuccessResponse<Long> fastEnterRoom(@AuthenticationPrincipal User user){
         log.info("SquareController fastEnterRoom start");
         RoomEnterRequest res = squareService.fastEnter(user);
-        //websocket 들어감 보내주기
-        List<RoomPartInfo> rst = roomService.enterRoom(user, res);
-        messageTemplate.convertAndSend("/sub/room/chat/" + res.roomId(),
-                MessageDto
-                        .builder()
-                        .type(MessageDto.MessageType.ROOM_ENTER)
-                        .data(rst)
-                        .build());
         log.info("SquareController fastEnterRoom end");
-        return rst;
+        return SuccessResponse.of(SuccessType.ROOM_ENTER_REQUEST_SUCCESSFULLY,res.roomId());
     }
 
     @GetMapping("/list/{channelId}") //방 목록

@@ -11,3 +11,11 @@
   width: 100%;
   height: 50px;
 }
+
+.kakaoButton {
+  transition: transform 0.3s ease-in-out; /* 부드러운 변화 효과 */
+}
+
+.kakaoButton:hover {
+  transform: scale(1.1); /* 호버 시 버튼 크기 증가 */
+}
