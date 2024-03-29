@@ -3,6 +3,7 @@ package ssafy.GeniusOfInvestment.friend.service;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Alarm;
@@ -10,6 +11,8 @@ import ssafy.GeniusOfInvestment._common.entity.Friend;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment.friend.dto.FriendChatMessageDto;
+import ssafy.GeniusOfInvestment.friend.dto.FriendChatMessageDto.MessageType;
 import ssafy.GeniusOfInvestment.friend.dto.request.SendFriendRequest;
 import ssafy.GeniusOfInvestment.friend.dto.response.AlarmListResponse;
 import ssafy.GeniusOfInvestment.friend.repository.AlarmRepository;
@@ -23,6 +26,7 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
+    private final SimpMessageSendingOperations messageSendingOperations;
 
     /*
     1. 요청을 보낼 친구가 이미 친구추가 되어있는지 확인
@@ -109,6 +113,10 @@ public class AlarmService {
         Optional<Alarm> findAlarmSendFromMe = alarmRepository.findAlarmsByFromAndUser(findAlarm.getUser(),findAlarm.getFrom());
         findAlarmSendFromMe.ifPresent(value -> value.updateStatus(1));
         findAlarm.updateStatus(1);
+
+        FriendChatMessageDto friendChatMessageDto = FriendChatMessageDto.of(MessageType.ACCEPT, findAlarm.getId().toString(), findAlarm.getUser().getNickName(),findAlarm.getUser().getNickName() + "이 초대를 수락했습니다");
+        messageSendingOperations.convertAndSend("/sub/friend/chat/" + findAlarm.getId(),friendChatMessageDto);
+
         Friend friend = Friend.of(findAlarm.getUser(),findAlarm.getFrom());
         friendRepository.save(friend);
     }

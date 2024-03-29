@@ -33,7 +33,8 @@
 
 .messageIcon {
   width: 5%;
-  height: 10%;
+  height: auto;
+  margin-right: 3%;
 }
 
 .deleteButton, .deleteClose {

@@ -9,10 +9,19 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.redis.GameRoom;
+import ssafy.GeniusOfInvestment._common.redis.GameUser;
+import ssafy.GeniusOfInvestment._common.response.ErrorType;
+import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
+import ssafy.GeniusOfInvestment.game.dto.UserListRequest;
+import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.square_room.dto.RoomChatMessageDto;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
+import ssafy.GeniusOfInvestment.user.repository.UserRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +29,8 @@ import java.util.Map;
 public class RoomChatController {
 
     private final SimpMessageSendingOperations messageSendingOperations;
+    private final RedisGameRepository redisGameRepository;
+    private final UserRepository userRepository;
     private Map<String, String> sessions = new HashMap<>();
 
     // 새로운 사용자가 웹 소켓을 연결할 때 실행됨
@@ -47,5 +58,30 @@ public class RoomChatController {
     @MessageMapping("/room/chat/message/")
     public void message(RoomChatMessageDto roomChatMessageDto){
         messageSendingOperations.convertAndSend("/sub/room/chat/" + roomChatMessageDto.getRoomId(),roomChatMessageDto);
+    }
+
+    @MessageMapping("/room/list")
+    public void getUserList(UserListRequest request){
+        GameRoom gameRoom = redisGameRepository.getOneGameRoom(request.roomId());
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        for(GameUser gu : gameRoom.getParticipants()){
+            Optional<User> tmp = userRepository.findById(gu.getUserId());
+            if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rstList.add(RoomPartInfo.builder()
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
+                    .build());
+        }
+
+        messageSendingOperations.convertAndSend("/sub/room/chat/" + request.roomId(),
+                MessageDto
+                        .builder()
+                        .type(MessageDto.MessageType.ROOM_ENTER)
+                        .data(rstList)
+                        .build());
     }
 }
