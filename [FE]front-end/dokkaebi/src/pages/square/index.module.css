@@ -1,16 +1,18 @@
 .squareContainer {
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .mainContent {
   display: flex;
-  flex: 100%;
+  flex: 1;
 }
   
 .leftContainer {
-  max-height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 800px;
   max-width: 350px;
   margin: 0% 0% 0% 3%; /* 상 우 하 좌 마진 */
 }
@@ -20,6 +22,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
+  justify-content: space-evenly;
 }

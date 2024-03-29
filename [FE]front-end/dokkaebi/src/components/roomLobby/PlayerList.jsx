@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./PlayerList.module.css";
 import profile from "../../images/gamePlay/bat_slower.gif";
 import coin from "../../images/roomLobby/coin.png";
+import crown from "../../images/roomLobby/crown.png";
 import blue from "../../images/character/blue.gif";
 import brown from "../../images/character/brown.gif";
 import green from "../../images/character/green.gif";
@@ -56,10 +57,15 @@ export default function PlayerList({ userList }) {
                 />
                 <p 
                   className="font-Bit text-2xl mx-4">{user.userNick}</p>
-                <div>방장</div>
+                  {user.isManager && (
+                    <img 
+                      className="w-8 mx-4" 
+                      src={crown} 
+                      alt="방장 아이콘" />
+                  )}                
               </div>
 
-              <div className="flex flex-row w-full justify-start items-center">
+              <div className="flex flex-row w-full justify-between items-center">
                 <p
                   className={`${styles.playerReady} ${
                   user.isReady ? styles.playerReadyActive : ""
@@ -67,8 +73,10 @@ export default function PlayerList({ userList }) {
                   >
                   READY
                 </p>
-                <img className="w-12 mx-2" src={coin} alt="coin icon" />
-                <p className={styles.playerTotalMoney}>{user.exp}</p>
+                <div className="flex flex-row mr-8">
+                  <img className="w-12 mx-2" src={coin} alt="EXP 아이콘" />
+                  <p className={styles.playerTotalMoney}>{user.exp}</p>
+                </div>
               </div>
             </div>
             );
