@@ -72,7 +72,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
       
       {/* 선택된 친구의 이름 또는 정보를 표시 */}
       <nav>
-        <div className={`flex flex-col overflow-y-auto ${styles.chatList}`}> 
+        <div className={`flex flex-col ${styles.chatList}`}> 
           {/* 대화내역 */}
           <div className={styles.chatting}>
             {isFriendChat.map((chat, index) => (
@@ -93,8 +93,8 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
       </nav>
 
       {/* 채팅 칠 곳 */}
-      <nav>
-        <div className={`flex justify-center items-center ${styles.inputDiv}`}>
+      <nav className={styles.chatcont}>
+        <div className={`flex justify-center items-center my-auto ${styles.inputDiv}`}>
           <form onSubmit={handleSubmit}>
             <div className='flex justify-center'>
               <input
