@@ -27,7 +27,7 @@ const FriendItem = ({ friend, onDeleteFriend, onFriendClick, newMessageCount }) 
     <div className={styles.friendItem} onContextMenu={handleContextMenu}> 
       <div
         onClick={handleMessageRead}
-        className={`flex justify-between ${styles.friendList}`}
+        className={`flex justify-between mr-3 ${styles.friendList}`}
       >
         <span className='ml-2'>{friend.nickName}</span>
         {/* 메세지 수 띄우기 -> 누르면 읽음 처리하고 0으로 처리 -> 0이라면 msgOff 이미지 표기*/}

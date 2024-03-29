@@ -16,6 +16,7 @@ export default function ChatContainer() {
   const channelId = sessionStorage.getItem("channelId");
 
   useEffect(() => {
+    const accessToken = sessionStorage.getItem("accessToken");
     // console.log("유즈이펙트 확인!!!!")
     const socket = new SockJS("https://j10d202.p.ssafy.io/ws-stomp");
     // console.log('웹소켓 상태 확인 :', SockJS)
@@ -24,7 +25,9 @@ export default function ChatContainer() {
 
     // 유저 연결
     stompClient.current.connect(
-      {},
+      {
+        Authorization: `Bearer ${accessToken}`,
+      },
       () => {
         console.log("광장에서 채널 연결됨!!");
 
