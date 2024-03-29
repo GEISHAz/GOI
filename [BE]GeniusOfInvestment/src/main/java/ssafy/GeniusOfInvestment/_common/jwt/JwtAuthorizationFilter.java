@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,6 +20,7 @@ import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment.user.service.UserService;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -53,12 +57,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
             //SecurityContext에 저장할 User 객체 생성
             log.info("토큰값이 " + token);
-            User user = userService.getAuthenticationUser(jwtUtil.getUserId(token));
+            String userId = jwtUtil.getUserId(token);
+            log.info("필터속 token에서 얻어온 유저 아디디: " + userId);
+            UserDetails user = userService.loadUserByUsername(userId);
+            //User user = userService.getAuthenticationUser(jwtUtil.getUserId(token));
             log.info("jwt필터에서 유저: " + user);
-            log.info("필터에서 유저 아이디: " + user.getId());
+            //log.info("필터에서 유저 아이디: " + user.get);
 
-            Authentication authentication = jwtUtil.getAuthentication(user);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            Authentication authentication = jwtUtil.getAuthentication(user);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user, "", Collections.emptyList());
+
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         }
         filterChain.doFilter(request, response);
