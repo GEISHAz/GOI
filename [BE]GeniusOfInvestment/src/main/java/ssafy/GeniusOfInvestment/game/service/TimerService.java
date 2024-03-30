@@ -22,7 +22,7 @@ public class TimerService {
     public void setTimer(Long grId) {
         //System.out.println(message);
         Timer timer = new Timer();
-        TimerInfo tinfo = new TimerInfo(3, 0, 180000, 180000);
+        TimerInfo tinfo = new TimerInfo(3, "0", 190000, 180000);
 
         TimerTask task = new TimerTask() {
             @Override
@@ -34,7 +34,7 @@ public class TimerService {
                 int min = tsec / 60;
                 int sec = tsec % 60;
                 tinfo.setRemainingMin(min);
-                tinfo.setRemainingSec(sec);
+                tinfo.setRemainingSec(sec/10 > 0 ? String.valueOf(sec) : "0"+sec);
                 tinfo.setRemainingTime(remainMs);
                 messageTemplate.convertAndSend("/sub/room/chat/" + grId,
                         MessageDto.builder()
