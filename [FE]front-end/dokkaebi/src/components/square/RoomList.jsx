@@ -42,7 +42,6 @@ export default function RoomList() {
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
     // useRoomId(room.id);
-    // sessionStorage.setItem("roomId", room.id)
     console.log(room.isPrivate);
     if (room.isPrivate) {
       // setRoomId(room.id);
@@ -53,7 +52,7 @@ export default function RoomList() {
       axios
         .post(
           `https://j10d202.p.ssafy.io/api/room/enter`,
-          { roomId: room.Id, password: "" },
+          { roomId: room.id, password: "" },
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -146,13 +145,13 @@ export default function RoomList() {
                   src={room.isPrivate ? lock : unlocked}
                   alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
                 />
-                <p className="font-Bit">{room.roomNum}</p>
+                <p className="text-Bit">{room.roomNum}</p>
               </div>
               <div className="col-span-1 row-span-1"></div>
-              <div className="flex flex-row justify-between mt-2">
-                <div className="col-span-2 row-span-1 text-xl m-2 ">{`${room.title}`}</div>
+              <div className="flex flex-row justify-evenly">
+                <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
                 <div
-                  className={`col-span-1 row-span-1 text-2xl m-2 font-Bit ${
+                  className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
                     room.userCount === 4 ? "text-red-400" : ""
                   }`}
                 >
