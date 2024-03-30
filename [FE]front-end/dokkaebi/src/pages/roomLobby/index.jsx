@@ -23,6 +23,7 @@ export default function userReadyRoom() {
   };
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
+  const userId = sessionStorage.getItem("userId");
 
   let location = useLocation();
 
@@ -32,6 +33,7 @@ export default function userReadyRoom() {
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
   const [isStart, setIsStart] = useState(false);
+  const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
     console.log("gkrltlfgek", response);
@@ -47,6 +49,12 @@ export default function userReadyRoom() {
     console.log("방 유저 리스트 확인1", userList);
     // console.log("방 유저 리스트 확인", location.state.res.data);
     // console.log(location.state.content);
+    userList.forEach((user) => {
+      if (user.userId === userId) {
+        setAmIManager(user.isManager);
+      }
+      console.log("나는 방장 : ", amIManager);
+    });
   }, [userList]);
 
   useEffect(() => {
