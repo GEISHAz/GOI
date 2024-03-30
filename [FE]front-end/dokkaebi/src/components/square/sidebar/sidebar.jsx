@@ -108,13 +108,13 @@ const Sidebar = ({ toggleSidebar }) => {
         // 사용자의 모든 친구와의 채팅 채널에 구독
         isFriendList.forEach(friend => {
           const friendListId = friend.friendListId;
-          console.log("friendListId 확인 :", friendListId)
+          // console.log("friendListId 확인 :", friendListId)
           subscriptionRef.current = client.current.subscribe(
             '/sub/friend/chat/' + `${friendListId}`,
             (message) => {
               // 받은 메세지 처리할 곳
               const msg = JSON.parse(message.body);
-              console.log("메세지 확인", msg)
+              // console.log("메세지 확인", msg)
               if (msg.type && msg.type === "TALK") {
                 setIsFriendChat((prevMessages) => {
                   return prevMessages
@@ -123,6 +123,7 @@ const Sidebar = ({ toggleSidebar }) => {
               }
 
               if (msg.type && msg.type === "ACCEPT") {
+                console.log("상대가 친구를 수락함")
                 friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
               }
 

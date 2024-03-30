@@ -1,24 +1,47 @@
 .roomContainer {
-    width: 700px;
-    height: 280px;
-    /* max-height: 280px;
-    overflow-y: auto; */
-    padding: 2% 3%;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 20px; 
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2열 */
-    grid-template-rows: repeat(2, 1fr); /* 2행, 필요에 따라 자동으로 조정될 수 있음 */
-    gap: 20px;
-  }
+  width: 80%;
+  height: 100%;
+  max-height: 350px;
+  padding: 1.5% 1% 1.5% 1%; /* 상 우 하 좌 마진 */
+  /* background-color: #FFF3C7; */
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 90%;
+  /* border : 2px solid white; */
+  border-radius: 15px; 
+  margin-left: 2%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roomListContainer {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  /* border: 2px solid white; */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.defaultRoom {
+  width: 100%;
+  height: 100%;
+  display: flex; /* defaultRoom만의 flexbox 레이아웃 적용 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 중앙 정렬 */
+  text-align: center;
+}
   
 .roomBox {
-  width: 300px;
-  height: 110px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  max-height: 120px;
+  background-color: #FFF6F6;
+  opacity: 90%;
+  border-radius: 15px;
   padding: 5%;
   margin-left: 4px;
   margin-right: 4px;
@@ -29,11 +52,23 @@
   height: auto;
 }
 
-.pagination {
+.prevPagination {
+  height: 100%;
+  max-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 20px; */
-  gap: 0px;
+  /* cursor: pointer; */
+  /* border: 2px solid lightblue; */
+}
+
+.nextPagination {
+  height: 100%;
+  max-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* cursor: pointer; */
+  /* border: 2px solid lightblue; */
 }
   

@@ -99,7 +99,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
             <div className='flex justify-center'>
               <input
                 type="text"
-                className={styles.chatInput}
+                className={`${styles.chatInput}`}
                 maxLength={100}
                 value={inputMessage}
                 onChange={handleChange}
