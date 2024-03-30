@@ -32,6 +32,7 @@ export default function GamePlay() {
   const [stompClient, setStompClient] = useState(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
 
+  const isManager = sessionStorage.getItem("isManager");
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState();
   const [otherUsers, setOtherUsers] = useState([]);
@@ -72,9 +73,12 @@ export default function GamePlay() {
             console.log(receivedMessage);
 
             if (receivedMessage.type === "STOCK_MARKET") {
-              console.log(receivedMessage);
+              console.log("주식정보", receivedMessage);
             } else if (receivedMessage.type === "TIMER") {
-              console.log(receivedMessage.data.remainingTime);
+              console.log(receivedMessage.remainingMin);
+              console.log(receivedMessage.remainingSec);
+              setTimerMin(receivedMessage.remainingMin);
+              setTimerSec(receivedMessage.remainingSec);
             } else if (receivedMessage.type === "READY") {
               console.log(receivedMessage.data.ready);
             } else if (receivedMessage.type === "GAME_RESULT") {
@@ -109,26 +113,29 @@ export default function GamePlay() {
     };
   }, []);
 
-  // const accessToken = sessionStorage.getItem("accessToken");
-
   useEffect(() => {
-    // console.log(accessToken);
-    axios
-      .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("API 요청에 실패했습니다:", error);
-      });
-    return () => {
-      console.log("unmounting...");
-    };
-  }, []);
+    console.log("게임 시작 요청 보냄");
+
+    if (Boolean(isManager) === true) {
+      console.log("방장이므로 게임 시작 요청을 보냅니다.");
+      axios
+        .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
+          params: { id: roomId },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("API 요청에 실패했습니다:", error);
+        });
+      return () => {
+        console.log("unmounting...");
+      };
+    }
+  }, [isManager]);
 
   const openInfoStoreModal = () => {
     setInfoStoreModalOpen(true);
@@ -148,18 +155,18 @@ export default function GamePlay() {
       <div className={styles.views}>
         {/* 현재 유저의 정보를 전달합니다. */}
         <div className={styles.player1}>
-          <Players user={currentUser} />
+          <Players user={currentUser ? currentUser : null} />
         </div>
 
         {/* 나머지 유저들의 정보를 전달합니다. */}
         <div className={styles.player2}>
-          <Players user={otherUsers[0]} />
+          <Players user={otherUsers[0] ? otherUsers[0] : null} />
         </div>
         <div className={styles.player3}>
-          <Players user={otherUsers[1]} />
+          <Players user={otherUsers[1] ? otherUsers[1] : null} />
         </div>
         <div className={styles.player4}>
-          <Players user={otherUsers[2]} />
+          <Players user={otherUsers[2] ? otherUsers[2] : null} />
         </div>
       </div>
       <div className={styles.menubar}>
@@ -167,7 +174,10 @@ export default function GamePlay() {
           정보거래소
         </button>
         <div className={styles.timerAndTurn}>
-          <Timer />
+          {/* <Timer /> */}
+          <p className={styles.timer}>
+            {timerMin}:{timerSec}
+          </p>
           <p className={styles.turn}>{turn}턴</p>
         </div>
         <button className={styles.readyButton}>READY</button>
