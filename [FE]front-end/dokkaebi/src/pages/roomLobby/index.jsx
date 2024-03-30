@@ -51,10 +51,13 @@ export default function userReadyRoom() {
     // console.log("방 유저 리스트 확인", location.state.res.data);
     // console.log(location.state.content);
     userList.forEach((user) => {
-      if (user.userId === userId) {
-        setAmIManager(user.isManager);
-      }
-      console.log("나는 방장 : ", amIManager);
+      userList.forEach((user) => {
+        if (user.userId === Number(userId)) {
+          setAmIManager(user.isManager);
+        }
+        sessionStorage.setItem("isManager", user.isManager);
+        console.log("나는 방장 : ", amIManager);
+      });
     });
   }, [userList]);
 
