@@ -22,7 +22,7 @@ public class TimerService {
     public void setTimer(Long grId) {
         //System.out.println(message);
         Timer timer = new Timer();
-        TimerInfo tinfo = new TimerInfo(3, "0", 190000, 180000);
+        TimerInfo tinfo = new TimerInfo(3, "0", 181000, 180000);
 
         TimerTask task = new TimerTask() {
             @Override
