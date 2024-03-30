@@ -10,8 +10,10 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.exception.JwtException;
 import ssafy.GeniusOfInvestment._common.jwt.JwtUtil;
+import ssafy.GeniusOfInvestment._common.response.ErrorType;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,20 +33,25 @@ public class StompHandler implements ChannelInterceptor {
 //            if(checkToken != JwtCode.ACCESS){
 //                throw new InvalidTokenException("유효한 토큰이 아닙니다.");
 //            }
-            String token = String.valueOf(accessor.getNativeHeader("Authorization").get(0));
-            token = token.replace("Bearer ", "");
-            log.info("presend에서 웹소켓 통신시 받아온 token 값: " + token);
-            if (!jwtUtil.validateToken(token)) {
-                throw new JwtException("Access Token 만료!");
-            }
 
-            try {
-                String userId = jwtUtil.getUserId(token);
-                log.info("웹소켓 통신시 추출한 유저 아이디: " + userId);
-                accessor.addNativeHeader("User", userId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            if(accessor.getNativeHeader("Authorization") != null){
+//
+//            }
+//            String token = String.valueOf(accessor.getNativeHeader("Authorization").get(0));
+//            token = token.replace("Bearer ", "");
+//            log.info("presend에서 웹소켓 통신시 받아온 token 값: " + token);
+//            if (!jwtUtil.validateToken(token)) {
+//                throw new JwtException("Access Token 만료!");
+//            }
+//
+//            try {
+//                String userId = jwtUtil.getUserId(token);
+//                log.info("웹소켓 통신시 추출한 유저 아이디: " + userId);
+//                accessor.addNativeHeader("User", userId);
+//            } catch (Exception e) {
+//                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+//                //e.printStackTrace();
+//            }
 //            catch (JWTVerificationException e) {
 //                e.printStackTrace();
 //            }

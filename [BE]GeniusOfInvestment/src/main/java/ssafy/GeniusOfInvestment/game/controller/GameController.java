@@ -34,7 +34,16 @@ public class GameController {
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
         timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
         Map<String, String> json = new HashMap<>();
+        json.put("msg", "게임 초기 정보 세팅 완료");
+        return json;
+    }
+
+    //게임 시작시 페이지를 넘기기 위한 API
+    @GetMapping("")
+    public Map<String, String> startGame(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
+        Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 시작 완료");
+        sendMsg(grId, json, MessageDto.MessageType.START);
         return json;
     }
 
