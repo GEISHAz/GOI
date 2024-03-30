@@ -45,7 +45,8 @@ public class GameController {
             redisTemplate.opsForValue().set("future" + grId, result);
             //redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
         }
-        redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
+        String str = "ALREADY_START";
+        redisTemplate.opsForValue().set("refresh" + grId, str); //새로고침에 대한 기능을 막기 위해서
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 초기 정보 세팅 완료");
         return json;
