@@ -67,17 +67,9 @@ public class GameController {
     //다음 턴 넘기기(참가한 모든 유저에 대한 평가 금액도 모두 함께 계산)
     @GetMapping("/next")
     public Map<String, String> getNextStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
+        redisTemplate.opsForValue().set("thread" + grId, "STOP");
         TurnResponse rst = gameService.getNextStockInfo(grId);
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 다음 턴 주식 정보를 보낸다.
-//        if(Boolean.TRUE.equals(redisTemplate.hasKey("future" + grId))){
-//            CompletableFuture<Long> future = (CompletableFuture<Long>) redisTemplate.opsForValue().get(grId);
-//            log.info("future값은 " + future);
-//            if(future == null){
-//                log.info("start시 메소드에서 future객체 받아올 수 없음");
-//                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-//            }
-//            future.cancel(true);
-//        }
         timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
         Map<String, String> json = new HashMap<>();
         json.put("msg", "다음 턴 시작");

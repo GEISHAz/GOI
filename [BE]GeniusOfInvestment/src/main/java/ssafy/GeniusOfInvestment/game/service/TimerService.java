@@ -2,6 +2,7 @@ package ssafy.GeniusOfInvestment.game.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class TimerService {
     private final SimpMessageSendingOperations messageTemplate;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Async("threadPoolTaskExecutor")
     public CompletableFuture<Long> setTimer(Long grId) {
@@ -28,6 +30,9 @@ public class TimerService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                if(Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
+                    cancel();
+                }
                 log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
                 int remainMs = tinfo.getRemainingTime();
                 remainMs -= 1000;
