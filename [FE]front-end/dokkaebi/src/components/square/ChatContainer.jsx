@@ -130,10 +130,7 @@ export default function ChatContainer() {
       </div>
       <div className={styles.chatArea}>
         <select id="to" className={styles.chatTo}>
-          <option value="ALL">ALL</option>
-          <option value="1">A에게</option>
-          <option value="2">B에게</option>
-          <option value="3">C에게</option>
+          <option value="ALL">전체</option>
         </select>
         <form onSubmit={handleSendMessage}>
           <div className="flex">
@@ -141,6 +138,7 @@ export default function ChatContainer() {
               type="text"
               className={styles.chatInput}
               value={inputMessage}
+              maxLength={100}
               onChange={handleInputChange}
             />
             <button

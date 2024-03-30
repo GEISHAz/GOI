@@ -115,56 +115,67 @@ export default function RoomList() {
     }, []);  // 의존성 배열이 빈 배열이므로 -> 컴포넌트가 마운트될 때 한 번만 호출
 
     
-    return (
-      <div>
-        <div className={styles.pagination}>
-          <button className="w-12" onClick={prevPage} disabled={currentPage === 0}>
-            ◀
-          </button>
-          <div className={styles.roomContainer}>
-            {currentRooms.length > 0 ? (
-              currentRooms.map((room, index) => (
-                <div
-                  key={index}
-                  className={styles.roomBox}
-                  onClick={() => handleRoomClick(room)}
-                >
-                  <div className="flex items-center col-span-2 row-span-1 text-2xl">
-                    <img
-                      className={`${styles.lockIcon} mr-2`}
-                      src={room.isPrivate ? lock : unlocked}
-                      alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
-                    />
-                    <p className="text-Bit">{room.roomNum}</p>
-                  </div>
-                  <div className="col-span-1 row-span-1"></div>
-                  <div className="flex flex-row justify-evenly">
-                    <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
-                    <div
-                      className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
-                        room.userCount === 4 ? "text-red-500" : ""
-                      }`}
-                    >
-                      {room.userCount}/4
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-white text-lg mt-10 font-Galmuri11">방을 만들거나 새로고침 해주세요!</p>
-            )}
-          </div>
-          <button
-            className="w-12"
-            onClick={nextPage}
-            disabled={currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1}
-          >
-            ▶
-          </button>
-        </div>
-    
-        {/* 모달 함수 전달 */}
-        {EnterModal && 
-        <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />}
+  return (
+    <div className={styles.roomContainer}>
+      {/* 왼쪽 페이지네이션 버튼 */}
+      <div className={styles.prevPagination}>
+        <button
+          className="w-12 flex items-center justify-center text-white cursor-pointer text-2xl"
+          onClick={prevPage}
+          disabled={currentPage === 0}
+        >
+          ◀
+        </button>
       </div>
-    )};    
+      {/* ROOM 리스트 */}
+      <div className={`${styles.roomListContainer} ${currentRooms.length === 0 ? styles.defaultRoom : ''}`}>
+        {currentRooms.length > 0 ? (
+          currentRooms.map((room, index) => (
+            <div
+              key={index}
+              className={styles.roomBox}
+              onClick={() => handleRoomClick(room)}
+            >
+              <div className="flex items-center col-span-2 row-span-1 text-2xl">
+                <img
+                  className={`${styles.lockIcon} mr-2`}
+                  src={room.isPrivate ? lock : unlocked}
+                  alt={room.isPrivate ? "Lock Icon" : "Unlocked Icon"}
+                />
+                <p className="text-Bit">{room.roomNum}</p>
+              </div>
+              <div className="col-span-1 row-span-1"></div>
+              <div className="flex flex-row justify-evenly">
+                <div className="col-span-2 row-span-1 text-lg m-2">{`${room.title}`}</div>
+                <div
+                  className={`col-span-1 row-span-1 text-2xl m-2 text-Bit ${
+                    room.userCount === 4 ? "text-red-400" : ""
+                  }`}
+                >
+                  {room.userCount}/4
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className={`flex justify-center items-center my-auto ${styles.defaultRoom}`}>
+            <h1 className="text-white text-2xl font-Galmuri11 font-bold opacity-100">아직 방이 없어요 ! 방을 만들어보세요 !</h1>
+          </div>
+        )}
+      </div>
+      {/* 오른쪽 페이지네이션 버튼 */}
+      <div className={styles.nextPagination}>
+        <button
+          className="w-12 flex items-center justify-center text-white cursor-pointer text-2xl"
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1}
+        >
+          ▶
+        </button>
+      </div>
+  
+      {/* 모달 함수 전달 */}
+      {EnterModal && 
+      <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />}
+    </div>
+  )};    

@@ -95,7 +95,7 @@ export function useAuthCheck() {
 
       intervalIdRef.current = setInterval(() => {
         checkAccess(); // 여기에서 토큰 유효성 검사 실행 -> 15초마다 실시
-      }, 15000); // 60,000ms = 1분
+      }, 300000); // 60,000ms = 1분
     };
 
     startTokenValidationInterval();
