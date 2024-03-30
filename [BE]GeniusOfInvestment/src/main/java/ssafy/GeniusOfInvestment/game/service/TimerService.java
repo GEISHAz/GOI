@@ -10,6 +10,7 @@ import ssafy.GeniusOfInvestment.game.dto.TimerInfo;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -19,7 +20,7 @@ public class TimerService {
     private final SimpMessageSendingOperations messageTemplate;
 
     @Async("threadPoolTaskExecutor")
-    public void setTimer(Long grId) {
+    public CompletableFuture<Long> setTimer(Long grId) {
         //System.out.println(message);
         Timer timer = new Timer();
         TimerInfo tinfo = new TimerInfo(3, "0", 181000, 180000);
@@ -59,5 +60,6 @@ public class TimerService {
 
         // 3분 후 TimerTask 실행 취소
         //timer.schedule(endTask, 180000, TimeUnit.MILLISECONDS.ordinal());
+        return CompletableFuture.completedFuture(grId);
     }
 }

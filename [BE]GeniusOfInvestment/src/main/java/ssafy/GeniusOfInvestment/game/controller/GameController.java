@@ -2,10 +2,13 @@ package ssafy.GeniusOfInvestment.game.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
 import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
@@ -16,6 +19,7 @@ import ssafy.GeniusOfInvestment.game.dto.TurnResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -25,6 +29,7 @@ public class GameController {
     private final GameService gameService;
     private final SimpMessageSendingOperations messageTemplate;
     private final TimerService timerService;
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     //게임 시작시 초기 주식 정보를 넘겨준다.
     @GetMapping("/start")
@@ -34,7 +39,8 @@ public class GameController {
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
         log.info("이제 여기서 부터 타이머 시작 제바아아아알!!!");
-        timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+        CompletableFuture<Long> result = timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+        redisTemplate.opsForValue().set("future" + grId, result);
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 초기 정보 세팅 완료");
         return json;
@@ -55,6 +61,15 @@ public class GameController {
     public Map<String, String> getNextStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
         TurnResponse rst = gameService.getNextStockInfo(grId);
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 다음 턴 주식 정보를 보낸다.
+        if(Boolean.TRUE.equals(redisTemplate.hasKey("future" + grId))){
+            CompletableFuture<Long> future = (CompletableFuture<Long>) redisTemplate.opsForValue().get(grId);
+            log.info("future값은 " + future);
+            if(future == null){
+                log.info("start시 메소드에서 future객체 받아올 수 없음");
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
+            future.cancel(true);
+        }
         timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
         Map<String, String> json = new HashMap<>();
         json.put("msg", "다음 턴 시작");
