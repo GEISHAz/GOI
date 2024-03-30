@@ -32,6 +32,7 @@ public class GameController {
         TurnResponse rst = gameService.getInitStockInfo(user, grId);
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
+        log.info("이제 여기서 부터 타이머 시작 제바아아아알!!!");
         timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 초기 정보 세팅 완료");
@@ -41,6 +42,7 @@ public class GameController {
     //게임 시작시 페이지를 넘기기 위한 API
     @GetMapping("")
     public Map<String, String> startGame(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
+        gameService.startGame(user, grId);
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 시작 완료");
         sendMsg(grId, json, MessageDto.MessageType.START);

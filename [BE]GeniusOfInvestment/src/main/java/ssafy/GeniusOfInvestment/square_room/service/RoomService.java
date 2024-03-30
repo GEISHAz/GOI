@@ -98,7 +98,7 @@ public class RoomService {
         gameRoom.getParticipants().add(
                 GameUser.builder()
                         .userId(user.getId())
-                        .isReady(true) //현재 레디에서 문제가 생겨 참가하면 강제 레디로
+                        .isReady(false) //현재 레디에서 문제가 생겨 참가하면 강제 레디로
                         .isManager(false)
                         .buyInfos(new ArrayList<>())
                         .build());

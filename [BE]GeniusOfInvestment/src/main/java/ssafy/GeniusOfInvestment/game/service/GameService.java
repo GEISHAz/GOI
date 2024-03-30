@@ -31,6 +31,43 @@ public class GameService {
     private final InformationRepository informationRepository;
     private final RedisMyTradingInfoRepository myTradingInfoRepository;
 
+    public void startGame(User user, Long grId){
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        //방 상태 바꾸기
+        Optional<Room> rinfo = roomRepository.findById(grId);
+        if(rinfo.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+        //나중에 setter지우고 update 메소드 만들기
+        rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
+
+        GameUser gu = new GameUser();
+        gu.setUserId(user.getId());
+        int idx = room.getParticipants().indexOf(gu);
+        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+
+        gu = room.getParticipants().get(idx);
+        if(!gu.isManager()){ //요청을 한 사용자가 방장이 아니다.
+            throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
+        }
+
+        for(GameUser guser : room.getParticipants()){
+            if(!guser.isReady() && !guser.isManager()){ //방장이 아닌 사용자가 아직 레디를 누르지 않았다.
+                throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
+            }
+
+            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
+            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rdu.setStatus(true); //상태 true가 게임중
+            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+        }
+        roomRepository.save(rinfo.get());
+    }
+
     @Transactional
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
@@ -46,17 +83,17 @@ public class GameService {
         int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
         int turn = rinfo.get().getTurnNum(); //방에 설정된 총 턴수 불러오기
         //나중에 setter지우고 update 메소드 만들기
-        rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
+        //rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
 
         List<ParticipantInfo> parts = new ArrayList<>();
         List<GameUser> gameUserList = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
-            if(guser.isManager() && !Objects.equals(guser.getUserId(), user.getId())){ //요청을 한 사용자가 방장이 아니다.
-                throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
-            }
-            if(!guser.isReady() && !guser.isManager()){ //방장이 아닌 사용자가 아직 레디를 누르지 않았다.
-                throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
-            }
+//            if(guser.isManager() && !Objects.equals(guser.getUserId(), user.getId())){ //요청을 한 사용자가 방장이 아니다.
+//                throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
+//            }
+//            if(!guser.isReady() && !guser.isManager()){ //방장이 아닌 사용자가 아직 레디를 누르지 않았다.
+//                throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
+//            }
             Optional<User> unick = userRepository.findById(guser.getUserId());
             if(unick.isEmpty()){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
@@ -68,10 +105,10 @@ public class GameService {
                             .point(3)
                     .build()); //참가자들 초기 게임 정보를 저장(응답용)
 
-            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
-            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-            rdu.setStatus(true); //상태 true가 게임중
-            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+//            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
+//            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+//            rdu.setStatus(true); //상태 true가 게임중
+//            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);

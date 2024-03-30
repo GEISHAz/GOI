@@ -1,6 +1,7 @@
 package ssafy.GeniusOfInvestment.game.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TimerService {
@@ -25,6 +27,7 @@ public class TimerService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
                 int remainMs = tinfo.getRemainingTime();
                 remainMs -= 1000;
                 int tsec = remainMs / 1000;
