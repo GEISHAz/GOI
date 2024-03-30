@@ -39,6 +39,7 @@ export default function GamePlay() {
 
   const [timerMin, setTimerMin] = useState(0);
   const [timerSec, setTimerSec] = useState(0);
+  const [timerMSec, setTimerMSec] = useState(0);
   const [turn, setTurn] = useState(0);
 
   // useEffect(() => {
@@ -54,6 +55,10 @@ export default function GamePlay() {
     setCurrentUser(userList.find((user) => user.userId === userId));
     setOtherUsers(userList.filter((user) => user.userId !== userId));
   }, [userList]);
+
+  useEffect(() => {
+
+  },[timerMSec])
 
   useEffect(() => {
     let reconnectInterval;
@@ -75,10 +80,11 @@ export default function GamePlay() {
             if (receivedMessage.type === "STOCK_MARKET") {
               console.log("주식정보", receivedMessage);
             } else if (receivedMessage.type === "TIMER") {
-              console.log(receivedMessage.remainingMin);
-              console.log(receivedMessage.remainingSec);
-              setTimerMin(receivedMessage.remainingMin);
-              setTimerSec(receivedMessage.remainingSec);
+              console.log(receivedMessage.data.remainingMin);
+              console.log(receivedMessage.data.remainingSec);
+              setTimerMin(receivedMessage.data.remainingMin);
+              setTimerSec(receivedMessage.data.remainingSec);
+              setTimerMSec(receivedMessage.data.remainingTime)
             } else if (receivedMessage.type === "READY") {
               console.log(receivedMessage.data.ready);
             } else if (receivedMessage.type === "GAME_RESULT") {
@@ -116,11 +122,10 @@ export default function GamePlay() {
   useEffect(() => {
     console.log("게임 시작 요청 보냄");
 
-    if (Boolean(isManager) === true) {
+    if (isManager === "true") {
       console.log("방장이므로 게임 시작 요청을 보냅니다.");
       axios
         .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
-          params: { id: roomId },
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -131,9 +136,9 @@ export default function GamePlay() {
         .catch((error) => {
           console.error("API 요청에 실패했습니다:", error);
         });
-      return () => {
-        console.log("unmounting...");
-      };
+        return () => {
+          console.log("unmounting...");
+        };
     }
   }, [isManager]);
 
