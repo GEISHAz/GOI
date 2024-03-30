@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.game.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GameService {
@@ -85,6 +87,7 @@ public class GameService {
         //나중에 setter지우고 update 메소드 만들기
         //rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
 
+        log.info("rinfo here1!!!!");
         List<ParticipantInfo> parts = new ArrayList<>();
         List<GameUser> gameUserList = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
@@ -117,6 +120,7 @@ public class GameService {
             gameUserList.add(guser);
         }
 
+        log.info("주식 현황 저장하기 전!!!!");
         List<Items1> selectedOne = Stream.of(Items1.values()) //6개 중에서 4개 선택
                 .limit(4)
                 .toList();
@@ -153,6 +157,7 @@ public class GameService {
         //방 상태 변경 내역을 저장
         //roomRepository.save(rinfo.get());
 
+        log.info("start service에서 리턴하기 전");
         return TurnResponse.builder()
                 .remainTurn(turn-1)
                 .year(year)
