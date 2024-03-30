@@ -33,7 +33,7 @@ public class TimerService {
                 tinfo.setRemainingMin(min);
                 tinfo.setRemainingSec(sec);
                 tinfo.setRemainingTime(remainMs);
-                messageTemplate.convertAndSend("/sub/msg-to/" + grId,
+                messageTemplate.convertAndSend("/sub/room/chat/" + grId,
                         MessageDto.builder()
                                 .type(MessageDto.MessageType.TIMER)
                                 .data(tinfo)
