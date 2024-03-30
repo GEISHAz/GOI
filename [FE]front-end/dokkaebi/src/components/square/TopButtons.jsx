@@ -127,7 +127,7 @@ export default function TopButtons() {
         </div>
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}
-        <div className="flex">
+        <div className={`flex ${styles.rightButtons}`}>
           {/* 새로고침 버튼 */}
           <button
             onClick={handleRefreshClick}
