@@ -8,7 +8,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [showRoomEnterModal, setShowRoomEnterModal] = useState(false);
-
+  const propsRoomId = roomId
   useEffect(() => {
     console.log('비밀 번호:', isPassword);
   }, [isPassword]);
@@ -25,11 +25,15 @@ export default function RoomEnterModal({ onClose, roomId }) {
     }
   };
 
+  // 입장
   const handleEnterClick = () => {
+    console.log("props 받은 룸ID :", propsRoomId)
     console.log("비밀 :", isPassword)
+    const realRoomId = sessionStorage.getItem("roomId")
     axios
       .post('https://j10d202.p.ssafy.io/api/room/enter', {
-        roomId: roomId, password: isPassword,
+        roomId: propsRoomId ? propsRoomId : realRoomId,
+        password: isPassword,
       }, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -37,7 +41,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
         console.log('입장 성공:', response);
         if (response.status === 200) {
           console.log('입장 성공:', response);
-          navigate(`/room/${roomId}`, {
+          navigate(`/room/${propsRoomId}`, {
             state: JSON.parse(JSON.stringify({ response })),
           });
         }

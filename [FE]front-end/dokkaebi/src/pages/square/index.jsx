@@ -12,7 +12,7 @@ import axios from "axios";
 export default function Square() {
   const channelId = sessionStorage.getItem("channelId");
   const accessToken = sessionStorage.getItem("accessToken");
-  const roomId = sessionStorage.getItem("roomId");
+  // const roomId = sessionStorage.getItem("roomId");
   const navigate = useNavigate();
   // 배경 GIF 설정
   const backgroundStyle = {
@@ -27,7 +27,7 @@ export default function Square() {
   };
 
   useEffect(() => {
-    sessionStorage.getItem("roomId");
+    const roomId = sessionStorage.getItem("roomId");
     if (roomId) {
       axios
         .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {

@@ -8,6 +8,7 @@ import styles from './RoomSearchModal.module.css';
 export default function RoomSearchModal({ onClose }) {
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const [isReceiveRoomId, setIsReceiveRoomId] = useState(null);
 
   // 입력창에 입력된 방 번호를 관리하는 상태
   const [roomNum, setRoomNum] = useState('');
@@ -31,7 +32,6 @@ export default function RoomSearchModal({ onClose }) {
     //   onClose();
     //   return;
     // }
-
     axios
       .post('https://j10d202.p.ssafy.io/api/room/enter', {
         roomNum: roomNum, password: password,
@@ -40,24 +40,30 @@ export default function RoomSearchModal({ onClose }) {
       })
       .then((response) => {
         console.log('방검색 리스폰스 확인:', response);
-        const roomId = response.data[0].roomId;
-        console.log('룸아이디 확인:', response.data[0].roomId);
-        if (response.status === 200) {
-          console.log('입장 성공:', response);
-          navigate(`/room/${roomId}`,{
-            state: JSON.parse(JSON.stringify({ response })),
-          });
-        }
+        console.log('roomId 확인:', response.data[0].roomId);
+        sessionStorage.setItem("roomId", response.data[0].roomId)
+        // const roomId = response.data[0].roomId;
+        // const roomId = sessionStorage.setItem("roomId", response.data[0].roomId)
+        
+        // const roomId = response.data.data;
+        setIsReceiveRoomId(response.data[0].roomId)
+        console.log('입장 성공:', response);
+        navigate(`/room/${response.data[0].roomId}`, {
+          state: JSON.parse(JSON.stringify({ response })),
+        });
       })
       .catch((error) => {
         console.log('입장 실패:', error);
+        // console.log("입장 실패했을 때 roomId 확인 :", roomId)
         if (!error.response) {
           alert('알 수 없는 오류가 발생했습니다.');
           onClose();
           return;
         }
-        switch (error.response.data.statusCode) {
+        switch (error.response.data.statusCode && error.response.data.roomId) {
           case 423: // 방 비밀번호 틀렸을 때
+            // console.log('roomId @@@@@@@@@ :',  response.data.roomId)
+            sessionStorage.setItem("roomId", response.data.roomId)
             setShowRoomEnterModal(true)
             // retryCount++;
             break; // 이 break를 추가했습니다.
@@ -116,7 +122,7 @@ export default function RoomSearchModal({ onClose }) {
           </button>
           </div>
           {/* 조건부 렌더링을 사용하여 RoomEnterModal 표시 */}
-          {showRoomEnterModal && <RoomEnterModal roomId={roomId} onClose={() => setShowRoomEnterModal(false)} />}
+          {showRoomEnterModal && <RoomEnterModal roomId={isReceiveRoomId} onClose={() => setShowRoomEnterModal(false)} />}
         </div>
       </div>
     );
