@@ -14,7 +14,7 @@
   z-index: 1;
 }
 
-.player1 {
+.player2 {
   width: 345px;
   height: 120px;
   background-color: rgba(255, 255, 255, 0.6);
@@ -25,7 +25,7 @@
   top: 0px;
 }
 
-.player2 {
+.player1 {
   width: 345px;
   height: 120px;
   background-color: rgba(255, 255, 255, 0.6);
@@ -63,6 +63,9 @@
   height: 120px;
   /* justify-self: center; */
   z-index: 10;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
   background-color: rgba(255, 255, 255, 0.6);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;

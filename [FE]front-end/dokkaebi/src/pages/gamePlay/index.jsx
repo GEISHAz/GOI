@@ -8,6 +8,7 @@ import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
@@ -15,8 +16,14 @@ import SockJS from "sockjs-client";
 
 export default function GamePlay() {
   const dispatch = useDispatch();
-  const userNickname = useSelector((state) => state.auth.userNickname);
+  // let location = useLocation();
+
+  // const [response, setResponse] = useState(
+  //   location.state ? location.state.response.data : null
+  // );
   const accessToken = sessionStorage.getItem("accessToken");
+  const userId = sessionStorage.getItem("userId");
+  const roomId = sessionStorage.getItem("roomId");
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
@@ -24,12 +31,28 @@ export default function GamePlay() {
 
   const [stompClient, setStompClient] = useState(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
-  const roomId = sessionStorage.getItem("roomId");
+
+  const [userList, setUserList] = useState([]);
+  const [currentUser, setCurrentUser] = useState();
+  const [otherUsers, setOtherUsers] = useState([]);
 
   const [timerMin, setTimerMin] = useState(0);
   const [timerSec, setTimerSec] = useState(0);
   const [turn, setTurn] = useState(0);
 
+  // useEffect(() => {
+  //   console.log("준비 방에서 받아온 유저 리스트", response);
+  //   if (response.userList) {
+  //     setUserList(response.userList);
+  //   } else {
+  //     setUserList(response);
+  //   }
+  // }, [response]);
+
+  useEffect(() => {
+    setCurrentUser(userList.find((user) => user.userId === userId));
+    setOtherUsers(userList.filter((user) => user.userId !== userId));
+  }, [userList]);
 
   useEffect(() => {
     let reconnectInterval;
@@ -52,11 +75,9 @@ export default function GamePlay() {
               console.log(receivedMessage);
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.data.remainingTime);
-            } else if (receivedMessage.type === "TURN") {
-              console.log(receivedMessage.data.turn);
             } else if (receivedMessage.type === "READY") {
               console.log(receivedMessage.data.ready);
-            } else if (receivedMessage.type === "GAME_OVER") {
+            } else if (receivedMessage.type === "GAME_RESULT") {
               console.log(receivedMessage.data.winner);
             }
           });
@@ -67,7 +88,6 @@ export default function GamePlay() {
           reconnectInterval = setTimeout(connect, 2000); // 초 후 재연결 시도
         }
       );
-
     };
 
     connect();
@@ -89,26 +109,24 @@ export default function GamePlay() {
     };
   }, []);
 
-
-
   // const accessToken = sessionStorage.getItem("accessToken");
 
   useEffect(() => {
     // console.log(accessToken);
     axios
-      .get(`https://j10d202.p.ssafy.io/api/game/start?id=1111`, {
+      .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then((response) => {
-        console.log(response.data); // API 응답 데이터를 출력하거나 처리합니다.
+        console.log(response.data);
       })
       .catch((error) => {
-        console.error("API 요청에 실패했습니다:", error); // 오류를 콘솔에 출력하거나 처리합니다.
+        console.error("API 요청에 실패했습니다:", error);
       });
     return () => {
-      // console.log("unmounting...");
+      console.log("unmounting...");
     };
   }, []);
 
@@ -127,18 +145,22 @@ export default function GamePlay() {
   return (
     <div className={styles.views}>
       <img src={Background} alt="배경 이미지" className={styles.background} />
-      <div className={styles.player1}>
-        <Players />
-      </div>
-      {/* 내 정보 */}
-      <div className={styles.player2}>
-        <Players />
-      </div>
-      <div className={styles.player3}>
-        <Players />
-      </div>
-      <div className={styles.player4}>
-        <Players />
+      <div className={styles.views}>
+        {/* 현재 유저의 정보를 전달합니다. */}
+        <div className={styles.player1}>
+          <Players user={currentUser} />
+        </div>
+
+        {/* 나머지 유저들의 정보를 전달합니다. */}
+        <div className={styles.player2}>
+          <Players user={otherUsers[0]} />
+        </div>
+        <div className={styles.player3}>
+          <Players user={otherUsers[1]} />
+        </div>
+        <div className={styles.player4}>
+          <Players user={otherUsers[2]} />
+        </div>
       </div>
       <div className={styles.menubar}>
         <button className={styles.infoStore} onClick={openInfoStoreModal}>
@@ -146,7 +168,7 @@ export default function GamePlay() {
         </button>
         <div className={styles.timerAndTurn}>
           <Timer />
-          <p className={styles.turn}>1턴</p>
+          <p className={styles.turn}>{turn}턴</p>
         </div>
         <button className={styles.readyButton}>READY</button>
       </div>
