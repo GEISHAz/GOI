@@ -39,12 +39,13 @@ public class GameController {
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
         log.info("이제 여기서 부터 타이머 시작 제바아아아알!!!");
-        if(!Boolean.TRUE.equals(redisTemplate.hasKey("refresh" + grId))){
+        log.info("새로고침 막기 위한 값 " + redisTemplate.hasKey("refresh" + grId));
+        if(Boolean.FALSE.equals(redisTemplate.hasKey("refresh" + grId))){
             CompletableFuture<Long> result = timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
             redisTemplate.opsForValue().set("future" + grId, result);
-            redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
+            //redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
         }
-//        redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
+        redisTemplate.opsForValue().set("refresh" + grId, "ALREADY_START"); //새로고침에 대한 기능을 막기 위해서
         Map<String, String> json = new HashMap<>();
         json.put("msg", "게임 초기 정보 세팅 완료");
         return json;
