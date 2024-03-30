@@ -3,7 +3,7 @@ import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -21,6 +21,7 @@ export default function userReadyRoom() {
     top: 0,
     left: 0,
   };
+  const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
   const userId = sessionStorage.getItem("userId");
@@ -79,7 +80,7 @@ export default function userReadyRoom() {
             if (receivedMessage.type === "ROOM_ENTER") {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
-              console.log("받은 유저정보 확인", userList);
+              console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               console.log(receivedMessage.data);
               setUserList(receivedMessage.data);
@@ -89,6 +90,7 @@ export default function userReadyRoom() {
               setIsStart(receivedMessage.data.ready);
             } else if (receivedMessage.type === "START") {
               console.log(receivedMessage.data);
+              navigate(`/game/${roomId}`);
             }
           });
         },

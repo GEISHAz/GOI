@@ -14,7 +14,6 @@ import PrivateRoute from "./pages/privateLogin/index.jsx";
 import AuthWrapper from "./components/AuthWrapper.jsx";
 
 export default function Router() {
-
   return (
     <AuthWrapper>
       <Routes>
@@ -23,14 +22,14 @@ export default function Router() {
         <Route path="/join" element={<Login />} />
         <Route path="/signUp" element={<GetUserLogin />} />
         <Route path="/callBack" element={<CallBack />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/game/:id" element={<GamePlay />} />
-          <Route path="/channel" element={<Channel />} />
-          <Route path="/square/:id" element={<Square />} />
-          <Route path="/room/:id" element={<RoomLobby />}></Route>          
-          <Route path="/rank" element={<Rank />} />
-        </Route>
+        {/* <Route element={<PrivateRoute />}> */}
+        <Route path="/profile/:id" element={<Profile />} />
+        <Route path="/game/:id" element={<GamePlay />} />
+        <Route path="/channel" element={<Channel />} />
+        <Route path="/square/:id" element={<Square />} />
+        <Route path="/room/:id" element={<RoomLobby />}></Route>
+        <Route path="/rank" element={<Rank />} />
+        {/* </Route> */}
       </Routes>
     </AuthWrapper>
   );
