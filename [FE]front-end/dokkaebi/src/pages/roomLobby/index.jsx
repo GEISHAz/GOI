@@ -54,8 +54,8 @@ export default function userReadyRoom() {
       userList.forEach((user) => {
         if (user.userId === Number(userId)) {
           setAmIManager(user.isManager);
+          sessionStorage.setItem("isManager", user.isManager);
         }
-        sessionStorage.setItem("isManager", user.isManager);
         console.log("나는 방장 : ", amIManager);
       });
     });
@@ -112,11 +112,6 @@ export default function userReadyRoom() {
     return () => {
       console.log("unmounting...");
       console.log(stompClientRef.current);
-
-      if (stompClientRef.current) {
-        stompClientRef.current.disconnect();
-        console.log("STOMP: Disconnected");
-      }
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);

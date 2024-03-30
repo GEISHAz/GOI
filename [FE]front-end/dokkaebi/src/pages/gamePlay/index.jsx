@@ -7,7 +7,7 @@ import Investment from "../../components/gamePlay/mainStock/Investment";
 import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -29,7 +29,8 @@ export default function GamePlay() {
   const [myStockModal, setMyStockModal] = useState(false);
   const [myInfoModal, setMyInfoModal] = useState(false);
 
-  const [stompClient, setStompClient] = useState(null);
+  
+  const stompClientRef = useRef(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
 
   const isManager = sessionStorage.getItem("isManager");
@@ -37,10 +38,12 @@ export default function GamePlay() {
   const [currentUser, setCurrentUser] = useState();
   const [otherUsers, setOtherUsers] = useState([]);
 
-  const [timerMin, setTimerMin] = useState(0);
-  const [timerSec, setTimerSec] = useState(0);
+  const [stockInfoList, setStockInfoList] = useState([])
+
+  const [timerMin, setTimerMin] = useState("3");
+  const [timerSec, setTimerSec] = useState("00");
   const [timerMSec, setTimerMSec] = useState(0);
-  const [turn, setTurn] = useState(0);
+  const [year, setYear] = useState(0);
 
   // useEffect(() => {
   //   console.log("준비 방에서 받아온 유저 리스트", response);
@@ -66,7 +69,7 @@ export default function GamePlay() {
     const connect = () => {
       const socket = new SockJS(socketUrl);
       const stompClient = Stomp.over(() => socket);
-      setStompClient(stompClient);
+      stompClientRef.current = stompClient;
 
       stompClient.connect(
         {
@@ -79,6 +82,12 @@ export default function GamePlay() {
 
             if (receivedMessage.type === "STOCK_MARKET") {
               console.log("주식정보", receivedMessage);
+              setYear(receivedMessage.data.year)
+              console.log(year)
+              setUserList(receivedMessage.data.participants)
+              console.log(userList)
+              setStockInfoList(receivedMessage.data.stockInfo)
+              console.log(stockInfoList)
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.data.remainingMin);
               console.log(receivedMessage.data.remainingSec);
@@ -110,11 +119,9 @@ export default function GamePlay() {
     // console.log("리스트 요청 보냄");
 
     return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
-      if (reconnectInterval) {
-        clearTimeout(reconnectInterval);
+      if (stompClientRef.current) {
+        stompClientRef.current.disconnect();
+        console.log("STOMP: Disconnected");
       }
     };
   }, []);
@@ -183,7 +190,7 @@ export default function GamePlay() {
           <p className={styles.timer}>
             {timerMin}:{timerSec}
           </p>
-          <p className={styles.turn}>{turn}턴</p>
+          <p className={styles.turn}>{year}턴</p>
         </div>
         <button className={styles.readyButton}>READY</button>
       </div>
