@@ -26,7 +26,7 @@ export default function userReadyRoom() {
   const roomId = sessionStorage.getItem("roomId");
   const userId = sessionStorage.getItem("userId");
 
-  let location = useLocation();
+  const location = useLocation();
 
   const stompClientRef = useRef(null);
 
@@ -37,7 +37,7 @@ export default function userReadyRoom() {
   const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
-    console.log("gkrltlfgek", response);
+    // console.log("gkrltlfgek", response);
     if (response.userList) {
       setUserList(response.userList);
     } else {
@@ -46,8 +46,8 @@ export default function userReadyRoom() {
   }, [response]);
 
   useEffect(() => {
-    console.log("방 유저 리스트 확인0", response);
-    console.log("방 유저 리스트 확인1", userList);
+    // console.log("방 유저 리스트 확인0", response);
+    // console.log("방 유저 리스트 확인1", userList);
     // console.log("방 유저 리스트 확인", location.state.res.data);
     // console.log(location.state.content);
     userList.forEach((user) => {
@@ -64,48 +64,50 @@ export default function userReadyRoom() {
   useEffect(() => {
     let reconnectInterval;
 
-    const connect = () => {
-      const socket = new SockJS(socketUrl);
-      const stompClient = Stomp.over(() => socket);
-      stompClientRef.current = stompClient;
+    const socket = new SockJS(socketUrl);
+    // const stompClient = Stomp.over(socket);
+    stompClientRef.current = Stomp.over(socket)
+    console.log('스톰프 확인', stompClientRef.current);
 
-      stompClient.connect(
-        {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        function (frame) {
-          stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
-            console.log("방", roomId);
+    stompClientRef.current.connect(
+      {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      () =>  {
+        console.log("구독 시도")
+        console.log("방 번호 :", roomId);
+        stompClientRef.current.subscribe(
+          '/sub/room/chat/'+`${roomId}`,
+          (message) => {
+            console.log("구독 성공")
             const receivedMessage = JSON.parse(message.body);
             console.log(receivedMessage);
             console.log(receivedMessage.type);
 
             if (receivedMessage.type === "ROOM_ENTER") {
-              console.log(receivedMessage.data);
+              console.log("타입 확인", receivedMessage.type);
               setUserList(receivedMessage.data);
               console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
-              console.log(receivedMessage.data);
+              console.log(receivedMessage.type);
               setUserList(receivedMessage.data);
             } else if (receivedMessage.type === "READY") {
-              console.log(receivedMessage.data.list);
+              console.log(receivedMessage.type);
+              // console.log(receivedMessage.data.list);
               setUserList(receivedMessage.data.list);
               setIsStart(receivedMessage.data.ready);
             } else if (receivedMessage.type === "START") {
               console.log(receivedMessage.data);
               navigate(`/game/${roomId}`);
             }
-          });
-        },
-        function (error) {
-          // 연결이 끊어졌을 때 재연결을 시도합니다.
-          console.log("STOMP: Connection lost. Attempting to reconnect", error);
-          reconnectInterval = setTimeout(connect, 1000); // 1초 후 재연결 시도
-        }
-      );
-    };
-
-    connect();
+        });
+      },
+      (error) => {
+        // 연결이 끊어졌을 때 재연결을 시도합니다.
+        console.log("STOMP: Connection lost. Attempting to reconnect", error);
+        reconnectInterval = setTimeout(connect, 1000); // 1초 후 재연결 시도
+      }
+    );
 
     return () => {
       console.log("unmounting...");

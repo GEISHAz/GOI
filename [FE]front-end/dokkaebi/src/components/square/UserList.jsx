@@ -69,7 +69,7 @@ export default function UserList() {
   return (
     // "접속 중인 유저" 컨테이너
     <div className={styles.userContainer}>
-      <h1 className="font-Bit text-white text-2xl text-center m-4 font-bold">
+      <h1 className="font-Bit text-white text-2xl text-center m-4">
         채널<span className={styles.channelNumber}>&nbsp;{channelId}</span> 유저
       </h1>
       {/* 유저 상태 표시 (게임 중/대기 중) 리스트 */}
