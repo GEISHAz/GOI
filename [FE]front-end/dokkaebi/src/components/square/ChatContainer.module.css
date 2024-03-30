@@ -1,9 +1,14 @@
 /* 기존 스타일 */
 .chatComponents {
+  /* background-color: #FFF3C7; */
   background-color: rgba(0, 0, 0, 0.6);
-  width: 85%;
-  height: 250px;
-  margin-left: 1%;
+  opacity: 90%;
+  /* border: 2px solid white; */
+  padding: 0.5%;
+  width: 90%;
+  height: 100%;
+  max-height: 300px;
+  margin-left: 2%;
   border-radius: 20px;
   display: flex; 
   flex-direction: column; 
@@ -25,7 +30,7 @@
 .chatTo {
   width: 100px;
   height: 30px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   font-family: Galmuri11;
   background: rgb(255, 255, 255, 0.7);
