@@ -67,9 +67,9 @@ export default function RoomSearchModal({ onClose }) {
         // switch (error.response.data.statusCode && error.response.data.roomId) {
         switch (error.response.data.statusCode) {
           case 423: // 방 비밀번호 틀렸을 때
-            // console.log('roomId @@@@@@@@@ :',  response.data.roomId)
-            // sessionStorage.setItem("roomId", response.data.roomId)
-            setShowRoomEnterModal(true);
+            console.log('roomId @@@@@@@@@ :',  response.data.roomId)
+            sessionStorage.setItem("roomId", response.data.roomId)
+            setShowRoomEnterModal(true)
             // retryCount++;
             break; // 이 break를 추가했습니다.
 
