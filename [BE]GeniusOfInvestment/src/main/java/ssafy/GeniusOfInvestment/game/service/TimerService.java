@@ -51,7 +51,11 @@ public class TimerService {
                                 .type(MessageDto.MessageType.TIMER)
                                 .data(tinfo)
                                 .build());
-                if(remainMs == 0) cancel(); //타이머 종료
+                if(remainMs == 0 || Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
+                    redisTemplate.delete("thread" + grId);
+                    log.info("레디를 모두 눌러 타이머 취소");
+                    timer.cancel(); //타이머 종료
+                }
             }
         };
 //        TimerTask endTask = new TimerTask() {
