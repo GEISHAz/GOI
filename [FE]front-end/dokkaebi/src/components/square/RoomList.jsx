@@ -41,7 +41,7 @@ export default function RoomList() {
   // 방 클릭 핸들러 함수
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
-    useRoomId(room.id);
+    // useRoomId(room.id);
     console.log(room.isPrivate);
     if (room.isPrivate) {
       // setRoomId(room.id);
@@ -103,18 +103,17 @@ export default function RoomList() {
       fetchRoomList();
     };
 
-    window.addEventListener('refreshRoomList', handleRefresh);
+    window.addEventListener("refreshRoomList", handleRefresh);
 
     // 첫 로딩 시에도 데이터를 불러옴
     fetchRoomList();
 
     // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
-      window.removeEventListener('refreshRoomList', handleRefresh);
+      window.removeEventListener("refreshRoomList", handleRefresh);
     };
-    }, []);  // 의존성 배열이 빈 배열이므로 -> 컴포넌트가 마운트될 때 한 번만 호출
+  }, []); // 의존성 배열이 빈 배열이므로 -> 컴포넌트가 마운트될 때 한 번만 호출
 
-    
   return (
     <div className={styles.roomContainer}>
       {/* 왼쪽 페이지네이션 버튼 */}
@@ -128,7 +127,11 @@ export default function RoomList() {
         </button>
       </div>
       {/* ROOM 리스트 */}
-      <div className={`${styles.roomListContainer} ${currentRooms.length === 0 ? styles.defaultRoom : ''}`}>
+      <div
+        className={`${styles.roomListContainer} ${
+          currentRooms.length === 0 ? styles.defaultRoom : ""
+        }`}
+      >
         {currentRooms.length > 0 ? (
           currentRooms.map((room, index) => (
             <div
@@ -158,8 +161,12 @@ export default function RoomList() {
             </div>
           ))
         ) : (
-          <div className={`flex justify-center items-center my-auto ${styles.defaultRoom}`}>
-            <h1 className="text-white text-2xl font-Galmuri11 font-bold opacity-100">아직 방이 없어요 ! 방을 만들어보세요 !</h1>
+          <div
+            className={`flex justify-center items-center my-auto ${styles.defaultRoom}`}
+          >
+            <h1 className="text-white text-2xl font-Galmuri11 font-bold opacity-100">
+              아직 방이 없어요 ! 방을 만들어보세요 !
+            </h1>
           </div>
         )}
       </div>
@@ -168,14 +175,18 @@ export default function RoomList() {
         <button
           className="w-12 flex items-center justify-center text-white cursor-pointer text-2xl"
           onClick={nextPage}
-          disabled={currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1}
+          disabled={
+            currentPage === Math.ceil(totalRoomCount / roomsPerPage) - 1
+          }
         >
           ▶
         </button>
       </div>
-  
+
       {/* 모달 함수 전달 */}
-      {EnterModal && 
-      <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />}
+      {EnterModal && (
+        <RoomEnterModal onClose={() => setEnterModal(false)} roomId={roomId} />
+      )}
     </div>
-  )};    
+  );
+}

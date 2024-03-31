@@ -4,7 +4,7 @@ import InvestmentInfo from "./InvestmentInfo";
 import { useEffect } from "react";
 import axios from "axios";
 
-export default function Investment() {
+export default function Investment({ stockInfo }) {
   return (
     <div className={styles.container}>
       <div className={styles.listName}>
@@ -14,7 +14,7 @@ export default function Investment() {
         <p className={styles.sudo}>매수/매도</p>
       </div>
       <div className={styles.investmentInfoArea}>
-        <InvestmentInfo company="A IT" price="990866800" percent="-30" />
+        {/* <InvestmentInfo company="A IT" price="990866800" percent="-30" />
         <InvestmentInfo company="B 화학" price="2000" percent="25" />
         <InvestmentInfo company="C 식품" price="35000" percent="11" />
         <InvestmentInfo company="D 바이오" price="27000" percent="-5" />
@@ -22,7 +22,17 @@ export default function Investment() {
         <InvestmentInfo company="F 항공" price="982000" percent="300" />
         <InvestmentInfo company="G 뷰티" price="363820000" percent="-50" />
         <InvestmentInfo company="H 엔터" price="320000" percent="-45" />
-        <InvestmentInfo company="I 통신" price="54325380" percent="500" />
+        <InvestmentInfo company="I 통신" price="54325380" percent="500" /> */}
+
+        <InvestmentInfo stockInfo={stockInfo[0]} />
+        <InvestmentInfo stockInfo={stockInfo[1]} />
+        <InvestmentInfo stockInfo={stockInfo[2]} />
+        <InvestmentInfo stockInfo={stockInfo[3]} />
+        <InvestmentInfo stockInfo={stockInfo[4]} />
+        <InvestmentInfo stockInfo={stockInfo[5]} />
+        <InvestmentInfo stockInfo={stockInfo[6]} />
+        <InvestmentInfo stockInfo={stockInfo[7]} />
+        <InvestmentInfo stockInfo={stockInfo[8]} />
       </div>
     </div>
   );

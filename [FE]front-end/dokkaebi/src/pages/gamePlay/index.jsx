@@ -37,10 +37,12 @@ export default function GamePlay() {
   const [currentUser, setCurrentUser] = useState();
   const [otherUsers, setOtherUsers] = useState([]);
 
-  const [timerMin, setTimerMin] = useState(0);
-  const [timerSec, setTimerSec] = useState(0);
+  const [stockInfo, setStockInfo] = useState([]);
+
+  const [timerMin, setTimerMin] = useState("3");
+  const [timerSec, setTimerSec] = useState("00");
   const [timerMSec, setTimerMSec] = useState(0);
-  const [turn, setTurn] = useState(0);
+  const [year, setYear] = useState(0);
 
   // useEffect(() => {
   //   console.log("준비 방에서 받아온 유저 리스트", response);
@@ -56,13 +58,40 @@ export default function GamePlay() {
     setOtherUsers(userList.filter((user) => user.userId !== userId));
   }, [userList]);
 
-  useEffect(() => {
-
-  },[timerMSec])
+  useEffect(() => {}, [timerMSec]);
 
   useEffect(() => {
+    const initialize = async () => {
+      await stompConnect();
+      // await gameStart();
+      setTimeout(() => {
+        gameStart();
+      }, 50);
+    };
+
+    initialize();
+  }, []);
+
+  const gameStart = () => {
+    if (isManager === "true") {
+      console.log("방장이므로 게임 시작 요청을 보냅니다.");
+      axios
+        .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("API 요청에 실패했습니다:", error);
+        });
+    }
+  };
+
+  const stompConnect = () => {
     let reconnectInterval;
-
     const connect = () => {
       const socket = new SockJS(socketUrl);
       const stompClient = Stomp.over(() => socket);
@@ -78,13 +107,17 @@ export default function GamePlay() {
             console.log(receivedMessage);
 
             if (receivedMessage.type === "STOCK_MARKET") {
-              console.log("주식정보", receivedMessage);
+              console.log("????????????????????????????????", receivedMessage);
+              setYear(receivedMessage.data.year);
+              setStockInfo(receivedMessage.data.stockInfo);
+              setUserList(receivedMessage.data.participants);
             } else if (receivedMessage.type === "TIMER") {
+              console.log(receivedMessage);
               console.log(receivedMessage.data.remainingMin);
               console.log(receivedMessage.data.remainingSec);
               setTimerMin(receivedMessage.data.remainingMin);
               setTimerSec(receivedMessage.data.remainingSec);
-              setTimerMSec(receivedMessage.data.remainingTime)
+              setTimerMSec(receivedMessage.data.remainingTime);
             } else if (receivedMessage.type === "READY") {
               console.log(receivedMessage.data.ready);
             } else if (receivedMessage.type === "GAME_RESULT") {
@@ -99,17 +132,11 @@ export default function GamePlay() {
         }
       );
     };
-
     connect();
 
-    // stompClient.current.send(
-    //   `/pub/room/list`,
-    //   {roomId: roomId},
-    //   JSON.stringify("리스트 요청")
-    // );
-    // console.log("리스트 요청 보냄");
-
     return () => {
+      console.log("unmounting...");
+
       if (stompClient) {
         stompClient.disconnect();
       }
@@ -117,30 +144,104 @@ export default function GamePlay() {
         clearTimeout(reconnectInterval);
       }
     };
-  }, []);
+  };
 
-  useEffect(() => {
-    console.log("게임 시작 요청 보냄");
+  // useEffect(() => {
+  //   console.log("게임 시작 요청 보냄");
 
-    if (isManager === "true") {
-      console.log("방장이므로 게임 시작 요청을 보냅니다.");
-      axios
-        .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("API 요청에 실패했습니다:", error);
-        });
-        return () => {
-          console.log("unmounting...");
-        };
-    }
-  }, [isManager]);
+  //   if (isManager === "true") {
+  //     console.log("방장이므로 게임 시작 요청을 보냅니다.");
+  //     axios
+  //       .get(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       })
+  //       .then((response) => {
+  //         console.log(response);
+  //       })
+  //       .catch((error) => {
+  //         console.error("API 요청에 실패했습니다:", error);
+  //       });
+
+  //     let reconnectInterval;
+
+  //     const connect = () => {
+  //       const socket = new SockJS(socketUrl);
+  //       const stompClient = Stomp.over(() => socket);
+  //       setStompClient(stompClient);
+
+  //       stompClient.connect(
+  //         {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //         function (frame) {
+  //           stompClient.subscribe(
+  //             `/sub/room/chat/${roomId}`,
+  //             function (message) {
+  //               const receivedMessage = JSON.parse(message.body);
+  //               console.log(receivedMessage);
+
+  //               if (receivedMessage.type === "STOCK_MARKET") {
+  //                 console.log(
+  //                   "????????????????????????????????",
+  //                   receivedMessage
+  //                 );
+  //               } else if (receivedMessage.type === "TIMER") {
+  //                 console.log(receivedMessage);
+  //                 console.log(receivedMessage.data.remainingMin);
+  //                 console.log(receivedMessage.data.remainingSec);
+  //                 setTimerMin(receivedMessage.data.remainingMin);
+  //                 setTimerSec(receivedMessage.data.remainingSec);
+  //                 setTimerMSec(receivedMessage.data.remainingTime);
+  //               } else if (receivedMessage.type === "READY") {
+  //                 console.log(receivedMessage.data.ready);
+  //               } else if (receivedMessage.type === "GAME_RESULT") {
+  //                 console.log(receivedMessage.data.winner);
+  //               }
+  //             }
+  //           );
+  //         },
+  //         function (error) {
+  //           // 연결이 끊어졌을 때 재연결을 시도합니다.
+  //           console.log(
+  //             "STOMP: Connection lost. Attempting to reconnect",
+  //             error
+  //           );
+  //           reconnectInterval = setTimeout(connect, 2000); // 초 후 재연결 시도
+  //         }
+  //       );
+  //     };
+
+  //     connect();
+
+  //     // stompClient.current.send(
+  //     //   `/pub/room/list`,
+  //     //   {roomId: roomId},
+  //     //   JSON.stringify("리스트 요청")
+  //     // );
+  //     // console.log("리스트 요청 보냄");
+
+  //     // return () => {
+  //     //   if (stompClient) {
+  //     //     stompClient.disconnect();
+  //     //   }
+  //     //   if (reconnectInterval) {
+  //     //     clearTimeout(reconnectInterval);
+  //     //   }
+  //     // };
+  //     return () => {
+  //       console.log("unmounting...");
+
+  //       if (stompClient) {
+  //         stompClient.disconnect();
+  //       }
+  //       if (reconnectInterval) {
+  //         clearTimeout(reconnectInterval);
+  //       }
+  //     };
+  //   }
+  // }, [isManager]);
 
   const openInfoStoreModal = () => {
     setInfoStoreModalOpen(true);
@@ -183,7 +284,7 @@ export default function GamePlay() {
           <p className={styles.timer}>
             {timerMin}:{timerSec}
           </p>
-          <p className={styles.turn}>{turn}턴</p>
+          <p className={styles.turn}>{year}턴</p>
         </div>
         <button className={styles.readyButton}>READY</button>
       </div>
@@ -191,7 +292,7 @@ export default function GamePlay() {
         <Chat />
       </div>
       <div className={styles.investment}>
-        <Investment />
+        <Investment stockInfo={stockInfo} />
       </div>
       <div className={styles.myMenu}>
         <button onClick={openMyStockModal}>내 주식 확인</button>
