@@ -77,6 +77,7 @@ public class GameController {
     //유저가 레디를 눌렀다.
     @PutMapping("/ready/{id}")
     public Map<String, String> doingReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
+        log.info("ready Controller가 들어왔나???");
         ReadyResponse rsp = gameService.doingReady(user, grId);
         Map<String, String> json = new HashMap<>();
         if(!rsp.start()){ //아직 전체 참여자가 레디를 다 누르지 않았다.
