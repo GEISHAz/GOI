@@ -39,5 +39,5 @@
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.4"
   },
-  "proxy": "https://j10d202.p.ssafy.io"
+  "proxy": "http://j10d202.p.ssafy.io"
 }
