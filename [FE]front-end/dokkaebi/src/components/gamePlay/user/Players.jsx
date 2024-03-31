@@ -7,12 +7,13 @@ import green from "../../../images/character/green.gif";
 import yellow from "../../../images/character/yellow.gif";
 import pink from "../../../images/character/pink.gif";
 import orange from "../../../images/character/orange.gif";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Players({ user }) {
   if (!user) {
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   }
+  const [ready, setReady] = useState(false);
   const onErrorProfileImg = (e) => {
     e.target.src = profile;
   };
@@ -47,7 +48,13 @@ export default function Players({ user }) {
       <div className={styles.playerInfo}>
         <div className={styles.player}>
           <p className={styles.playerNickName}>{user.userNick}</p>
-          <p className={styles.playerReady}>READY</p>
+          <p
+            className={`${styles.playerReady} ${
+              user.isReady ? styles.playerReadyActive : ""
+            }`}
+          >
+            READY
+          </p>
         </div>
         <p className={styles.playerTotalMoney}>{user.totalCost}</p>
       </div>
