@@ -54,7 +54,7 @@ public class TimerService {
                                 .build());
                 if(remainMs == 0 || Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
 //                    redisTemplate.delete("thread" + grId);
-                    log.info("레디를 모두 눌러 타이머 취소");
+                    log.info("레디를 모두 눌러 타이머 취소2");
                     timer.cancel(); //타이머 종료
                 }
             }
