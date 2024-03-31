@@ -67,7 +67,7 @@ public class GameController {
     //다음 턴 넘기기(참가한 모든 유저에 대한 평가 금액도 모두 함께 계산)
     @GetMapping("/next")
     public Map<String, String> getNextStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
-        redisTemplate.opsForValue().set("thread" + grId, "STOP");
+//        redisTemplate.opsForValue().set("thread" + grId, "STOP");
         TurnResponse rst = gameService.getNextStockInfo(grId);
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 다음 턴 주식 정보를 보낸다.
         timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
@@ -91,6 +91,7 @@ public class GameController {
                     MessageDto.MessageType.READY);
             json.put("msg", "레디 완료");
         }else { //참여자 전체가 레디를 하였다.(바로 다음 턴으로 넘긴다.)
+            redisTemplate.opsForValue().set("thread" + grId, "STOP");
             TurnResponse rst = gameService.getNextStockInfo(grId);
             sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET);
             timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
