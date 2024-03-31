@@ -42,7 +42,8 @@ export default function Players({ user, userReady }) {
   }, [userReady]);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
+    setReady(user.isReady);
     // setUserProfileId(user.profileId);
   }, [user]);
 

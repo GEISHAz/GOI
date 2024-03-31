@@ -131,6 +131,21 @@ export default function GamePlay() {
       });
   };
 
+  const getMyInfoList = () => {
+    axios
+      .get(`https://j10d202.p.ssafy.io/api/stock/infolist?id=${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log("구매 정보 내역", response);
+      })
+      .catch((error) => {
+        console.error("구매 정보 확인 정보 요청에 실패했습니다:", error);
+      });
+  };
+
   const stompConnect = () => {
     let reconnectInterval;
     const connect = () => {
@@ -161,7 +176,7 @@ export default function GamePlay() {
               setTimerMSec(receivedMessage.data.remainingTime);
             } else if (receivedMessage.type === "READY") {
               console.log("레디 정보??????????????????", receivedMessage.data);
-              // setUserReadyList(receivedMessage.data.list);
+              setUserReadyList(receivedMessage.data.list);
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data.winner);
             }
@@ -310,19 +325,19 @@ export default function GamePlay() {
         <div className={styles.player2}>
           <Players
             user={otherUsers[0] ? otherUsers[0] : null}
-            ready={userReadyList[0] ? userReadyList[0] : null}
+            userReady={otherUsersReady[0] ? otherUsersReady[0] : null}
           />
         </div>
         <div className={styles.player3}>
           <Players
             user={otherUsers[1] ? otherUsers[1] : null}
-            ready={userReadyList[1] ? userReadyList[1] : null}
+            userReady={otherUsersReady[1] ? otherUsersReady[1] : null}
           />
         </div>
         <div className={styles.player4}>
           <Players
             user={otherUsers[2] ? otherUsers[2] : null}
-            ready={userReadyList[2] ? userReadyList[2] : null}
+            userReady={otherUsersReady[2] ? otherUsersReady[2] : null}
           />
         </div>
       </div>
@@ -349,11 +364,21 @@ export default function GamePlay() {
       </div>
       <div className={styles.myMenu}>
         <button onClick={openMyStockModal}>내 주식 확인</button>
-        <button onClick={openMyInfoModal}>구매 정보 확인</button>
+        <button
+          onClick={() => {
+            openMyInfoModal();
+            getMyInfoList();
+          }}
+        >
+          구매 정보 확인
+        </button>
       </div>
 
       {infoStoreModalOpen && (
-        <InfoStore setInfoStoreModalOpen={setInfoStoreModalOpen} />
+        <InfoStore
+          setInfoStoreModalOpen={setInfoStoreModalOpen}
+          stockInfo={stockInfo}
+        />
       )}
 
       {myStockModal && <MyStock setMyStockModal={setMyStockModal} />}

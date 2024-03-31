@@ -1,11 +1,30 @@
 // import React from 'react'
 import styles from "./MyStock.module.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import MyStockDetail from "./MyStockDetail";
+import axios from "axios";
 
 export default function MyStock(props) {
   const myStockBackground = useRef();
+  const accessToken = sessionStorage.getItem("accessToken");
+
+  useEffect(() => {
+    axios
+      .get("https://j10d202.p.ssafy.io/api/stock", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        console.log("내 보유 주식 정보 가져오기 성공");
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("내 보유 주식 정보 가져오기 실패");
+      });
+  }, []);
 
   return (
     <div
