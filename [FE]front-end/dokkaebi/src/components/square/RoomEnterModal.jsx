@@ -40,7 +40,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
       .then((response) => {
         console.log('입장 성공:', response);
         if (response.status === 200) {
-          console.log('입장 성공:', response);
+          console.log('입장 성공:', response);  
           navigate(`/room/${propsRoomId}`, {
             state: JSON.parse(JSON.stringify({ response })),
           });

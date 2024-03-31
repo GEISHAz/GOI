@@ -5,6 +5,10 @@
   z-index: 10;
 }
 
+.gamePageButton {
+  bottom: 15%; /* 또는 원하는 값으로 조절 */
+}
+
 .toggleButton {
   width: 100px;
   height: 100px;

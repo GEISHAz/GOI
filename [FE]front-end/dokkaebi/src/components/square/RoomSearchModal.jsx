@@ -62,7 +62,7 @@ export default function RoomSearchModal({ onClose }) {
         }
         switch (error.response.data.statusCode && error.response.data.roomId) {
           case 423: // 방 비밀번호 틀렸을 때
-            // console.log('roomId @@@@@@@@@ :',  response.data.roomId)
+            console.log('roomId @@@@@@@@@ :',  response.data.roomId)
             sessionStorage.setItem("roomId", response.data.roomId)
             setShowRoomEnterModal(true)
             // retryCount++;
