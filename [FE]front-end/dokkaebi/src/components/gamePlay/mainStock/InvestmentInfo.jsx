@@ -29,7 +29,7 @@ export default function InvestmentInfo({ stockInfo }) {
     } else {
       setColorClass(styles.upDownPercentColorBlack);
     }
-  }, [stockInfo]);
+  }, [stockInfo.percent]);
 
   return (
     <div className={styles.investmentInfo}>
