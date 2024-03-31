@@ -31,15 +31,16 @@ public class TimerService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
-//                    redisTemplate.delete("thread" + grId);
+                int remainMs = tinfo.getRemainingTime();
+                if(Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId)) && remainMs < 181000){
+                    redisTemplate.delete("thread" + grId);
                     log.info("레디를 모두 눌러 타이머 취소");
                     timer.cancel();
                     return;
                 }
 //                log.info("타이머 취소 안됐나??");
                 //log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
-                int remainMs = tinfo.getRemainingTime();
+//                int remainMs = tinfo.getRemainingTime();
                 remainMs -= 1000;
                 int tsec = remainMs / 1000;
                 int min = tsec / 60;
@@ -52,7 +53,7 @@ public class TimerService {
                                 .type(MessageDto.MessageType.TIMER)
                                 .data(tinfo)
                                 .build());
-                if(remainMs == 0 || Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
+                if(remainMs == 0){
 //                    redisTemplate.delete("thread" + grId);
                     log.info("레디를 모두 눌러 타이머 취소2");
                     timer.cancel(); //타이머 종료
