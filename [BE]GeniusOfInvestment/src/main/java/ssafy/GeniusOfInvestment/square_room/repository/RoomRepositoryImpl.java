@@ -42,6 +42,19 @@ public class RoomRepositoryImpl implements RoomRepositoryCustom{
                 .fetchOne();
     }
 
+
+
+    @Override
+    public Long findRoomIdByRoomNumAndStatusZero(int roomNum) {
+        return jpaQueryFactory
+                .select(room.id)
+                .from(room)
+                .where(room.roomNum.eq(roomNum).and(room.status.eq(0)))
+                .fetchOne();
+    }
+
+
+
 //    @Override
 //    public Long countRmNumByCh(Channel ch, int roomNum) {
 //        return jpaQueryFactory

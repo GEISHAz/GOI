@@ -10,4 +10,5 @@ public interface RoomRepositoryCustom {
     List<SquareRoom> findRoomCanEnter(Long channelId);
     Room findLargestRmNum(Channel ch);
     //Long countRmNumByCh(Channel ch, int roomNum);
+    Long findRoomIdByRoomNumAndStatusZero(int roomNum);
 }
