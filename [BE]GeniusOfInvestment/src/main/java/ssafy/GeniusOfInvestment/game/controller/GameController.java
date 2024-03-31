@@ -77,16 +77,11 @@ public class GameController {
     //유저가 레디를 눌렀다.
     @PutMapping("/ready/{id}")
     public Map<String, String> doingReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
-        int status = gameService.doingReady(user, grId);
+        ReadyResponse rsp = gameService.doingReady(user, grId);
         Map<String, String> json = new HashMap<>();
-        if(status == 0 || status == -1){ //아직 전체 참여자가 레디를 다 누르지 않았다.
+        if(!rsp.start()){ //아직 전체 참여자가 레디를 다 누르지 않았다.
             //status = 0이면 레디를 한것, status = -1이면 레디를 취소한 것
-            sendMsg(grId,
-                    ReadyResponse.builder()
-                            .userId(user.getId())
-                            .ready(status == 0)
-                            .build(),
-                    MessageDto.MessageType.READY);
+            sendMsg(grId, rsp, MessageDto.MessageType.READY);
             json.put("msg", "레디 완료");
         }else { //참여자 전체가 레디를 하였다.(바로 다음 턴으로 넘긴다.)
             redisTemplate.opsForValue().set("thread" + grId, "STOP");

@@ -14,7 +14,6 @@ import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
-import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;

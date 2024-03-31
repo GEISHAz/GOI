@@ -14,6 +14,7 @@ import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.dto.*;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
@@ -117,7 +118,7 @@ public class GameService {
         roomRepository.save(rinfo.get());
     }
 
-    //유저에게 정보 응답용
+    //유저에게 게임 정보 응답용
     @Transactional
     public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
         GameRoom room = gameRepository.getOneGameRoom(grId);
@@ -128,7 +129,7 @@ public class GameService {
         int turn = room.getRemainTurn(); //현재 남은 턴수(0이면 마지막 턴)
         int year = room.getYear(); //현재 년도
 
-        log.info("rinfo here1!!!!");
+        //참가자 목록 dto에 저장(응답용)
         List<ParticipantInfo> parts = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
             Optional<User> unick = userRepository.findById(guser.getUserId());
@@ -137,20 +138,25 @@ public class GameService {
             }
             parts.add(ParticipantInfo.builder()
                             .userId(guser.getUserId())
+                            .profileId(unick.get().getImageId())
                             .userNick(unick.get().getNickName())
                             .totalCost(guser.getTotalCost())
                             .point(guser.getPoint())
                     .build()); //참가자들 초기 게임 정보를 저장(응답용)
         }
 
+        //주식 현황 dto에 저장(응답용)
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         for(GameMarket gm : room.getMarket()){
             int size = gm.getCost().size();
             if(size == 0) throw new CustomBadRequestException(ErrorType.NOT_STORE_MARKET);
+            Long last = gm.getCost().get(Math.max(size - 2, 0));
+            Long cur = gm.getCost().get(size-1);
             stockInfos.add(StockInfoResponse.builder()
                             .item(gm.getItem())
-                            .lastCost(gm.getCost().get(Math.max(size - 2, 0)))
-                            .thisCost(gm.getCost().get(size-1)) //현재 값은 마지막 인덱스
+                            .lastCost(last)
+                            .thisCost(cur) //현재 값은 마지막 인덱스
+                            .percent(calRoiByVal(last, cur))
                     .build());
         }
 
@@ -241,7 +247,7 @@ public class GameService {
         Random random = new Random();
 
         // 범위 내에서 랜덤 숫자를 생성합니다.
-        return (random.nextInt(max - min) + min) / 100;
+        return ((random.nextInt(max - min) + min) / 100) * 100;
     }
 
     //redis에 대한 transactional을 걸게 되면 multi-exec가 걸리게 되므로 중간에 redis에 저장한 값을 메소드가 끝나기전에 get을 해올 수 없다.
@@ -339,6 +345,7 @@ public class GameService {
             int point = guser.getPoint() + 3;
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
+                    .profileId(unick.get().getImageId())
                     .userNick(unick.get().getNickName())
                     .totalCost(usrTotal + remain)
                     .point(point)
@@ -403,7 +410,7 @@ public class GameService {
         }
     }
 
-    public int doingReady(User user, Long grId){
+    public ReadyResponse doingReady(User user, Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -432,13 +439,36 @@ public class GameService {
         room.setParticipants(gameUserList);
         gameRepository.updateGameRoom(room);
 
+        int status = 0;
         if(cnt == room.getParticipants().size()){
-            return 1;
+            status = 1;
         }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+            //ready를 요청한 사용자가 참가자 목록에 없다.
             if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-            return flag;
-            //return 0;
         }
+
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        for(GameUser gu : room.getParticipants()){
+            Optional<User> tmp = userRepository.findById(gu.getUserId());
+            if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            rstList.add(RoomPartInfo.builder()
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
+                    .build());
+        }
+
+        //flag = 0이면 레디를 한것, flag = -1이면 레디를 취소한 것
+        //status = 1이면 전체가 레디를 완료한 것
+        return ReadyResponse.builder()
+                .userId(user.getId())
+                .ready(flag == 0)
+                .start(status == 1)
+                .list(rstList)
+                .build();
     }
 
     @Transactional
