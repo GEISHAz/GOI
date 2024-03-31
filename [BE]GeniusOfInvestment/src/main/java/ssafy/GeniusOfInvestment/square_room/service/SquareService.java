@@ -9,6 +9,7 @@ import ssafy.GeniusOfInvestment._common.entity.Channel;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.exception.CustomRoomEnterException;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
@@ -226,6 +227,9 @@ public class SquareService {
                 .roomId(99999999L)
                 .build();
         List<SquareRoom> list = roomRepository.findRoomCanEnter(user.getChannel().getId());
+        if(list.size()==0) {
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
         int number = list.size();
         log.info("in fastEnter list size = "+number);
         boolean stop = false;
