@@ -31,6 +31,7 @@ public class TimerService {
             @Override
             public void run() {
                 if(Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
+                    redisTemplate.delete("thread" + grId);
                     cancel();
                 }
                 log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
