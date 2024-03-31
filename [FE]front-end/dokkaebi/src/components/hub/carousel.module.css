@@ -21,7 +21,7 @@
 .cardHeader {
   color: white;
   /* font-family: DNFBitBitv2; */
-  font-size: 200%;
+  font-size: 220%;
   text-align: center;
   align-items: center;
   margin-top: 3%;
@@ -68,6 +68,11 @@
   width: 50%;
   height: 100%;
   margin: 0 auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cardImage:hover {
+  transform: scale(1.2);
 }
 
 .backButton {
