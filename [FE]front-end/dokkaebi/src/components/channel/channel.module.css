@@ -1,22 +1,40 @@
 .channelContainer {
   width: 70%;
+  height: 100%;
+  
   padding: 2% 5%;
   margin-top: 2%;
   margin-bottom: 5%;
   background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 20px; 
+  border-radius: 20px;
+  min-height: 80vh; 
 }
 
 .channelBox {
-  width: 100%;
+  width: 98%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 20px;
   margin-left: 4px;
   margin-right: 4px;
+  transition: all 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.channelBox:hover {
+  background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* 호버 시 박스 그림자 추가 */
+  transform: scale(1.05); /* 확대 효과 */
 }
 
 .backButton {
   width: 100%;
   height: 50px;
+}
+
+@media (max-width: 768px) {
+.channelContainer {
+    width: 90%;
+    padding: 10px; 
+    flex-direction: column; 
+  }
 }

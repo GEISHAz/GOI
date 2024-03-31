@@ -6,13 +6,16 @@ import musicOff from '../../images/bgm/musicOff.png';
 import styles from './bgmPlayer.module.css';
 import { useBGM } from './bgmContext.jsx';
 
-export default function BGMPlayer() {
+export default function BGMPlayer({ currentPath  }) {
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const { isPlaying } = useSelector((state) => state.bgm);
   const [showPrompt, setShowPrompt] = useState(true); // 안내문구 표시 상태
   const [buttonImage, setButtonImage] = useState(musicOff); // 노래 재생 상태 이미지
   const { isBGMVisible } = useBGM();
+
+  // 게임 플레이 페이지인지 확인
+  const isGamePage = currentPath.startsWith('/game/');
 
   // 음악 재생 상태에 따라 버튼 이미지 변경
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function BGMPlayer() {
   if (!isBGMVisible) return null;
 
   return (
-    <div className={styles.buttonContainer}>
+    <div className={`${styles.buttonContainer} ${isGamePage ? styles.gamePageButton : ''}`}>
       <audio ref={audioRef} src="/bgm/letsClean.mp3" loop />
       {showPrompt && <div className={`w-full ${styles.musicPrompt}`}>배경음악을 틀어보세요!</div>}
       <button

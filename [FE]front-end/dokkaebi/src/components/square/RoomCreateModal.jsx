@@ -122,7 +122,7 @@ export default function RoomCreateModal({ onClose, userName }) {
         <h1 className="font-Bit text-4xl mb-10">방 만들기</h1>
 
         {/* 방 만들기 인풋 그리드 */}
-        <div className="grid grid-cols-2 grid-rows-4 gap-2 w-full mb-4 mr-40">
+        <div className="grid grid-cols-2 grid-rows-3 gap-2 w-full mb-4 mr-40">
           {/* 방 번호 */}
           {/* 방 번호 생성창에서는 보여줄 필요 없으므로 일단 주석 처리 */}
           {/* <div className="flex justify-end items-center">

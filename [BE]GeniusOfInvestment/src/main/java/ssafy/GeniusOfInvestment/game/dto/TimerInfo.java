@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TimerInfo {
     private int remainingMin;
-    private int remainingSec;
+    private String remainingSec;
     private int remainingTime; //ms
     private int totalTime;
 }

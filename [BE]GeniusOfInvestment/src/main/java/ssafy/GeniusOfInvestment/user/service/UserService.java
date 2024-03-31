@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService {
     public void deleteMember(Optional<User> user) {
         if(user.isEmpty())
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-        userRepository.save(user.get());
+        userRepository.delete(user.get());
     }
 
     public UserInfoResponseDto getUser(Long userId) {

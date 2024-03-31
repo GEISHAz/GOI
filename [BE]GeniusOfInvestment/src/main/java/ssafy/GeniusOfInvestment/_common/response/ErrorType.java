@@ -18,6 +18,8 @@ public enum ErrorType {
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 리프레쉬 토큰입니다"),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 엑세스 토큰입니다"),
     FAIL_TO_GENERATE_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "엑세스 토큰 생성에 실패했습니다"),
+    FAIL_TO_GET_USER_DISCONNECT(HttpStatus.BAD_REQUEST, "웹소켓 연결 해제시 map에서 유저 정보 얻기 실패"),
+    NEED_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 필요합니다."),
 
     //****************************Friend****************************//
     NOT_FOUND_FRIEND_ROOM(HttpStatus.BAD_REQUEST, "채팅하려는 친구 조회에 실패했습니다"),
@@ -58,6 +60,7 @@ public enum ErrorType {
     INSUFFICIENT_BALANCE(HttpStatus.NOT_ACCEPTABLE, "잔고가 부족합니다."),
     NOT_FOUND_TRADINGINFO(HttpStatus.NOT_FOUND, "나의 거래 내역이 존재하지 않습니다."),
     NOT_FOUND_STOCK_ITEM(HttpStatus.NOT_FOUND, "해당하는 주식 종목을 찾을 수 없습니다."),
+    NOT_STORE_MARKET(HttpStatus.CONFLICT, "시장 상황이 제대로 저장되지 않았습니다."),
     END_GAME(HttpStatus.GONE, "게임이 종료되었습니다.")
     ;
 

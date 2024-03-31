@@ -1,5 +1,6 @@
 package ssafy.GeniusOfInvestment.game.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.dto.*;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
+import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
 import ssafy.GeniusOfInvestment.square_room.repository.RoomRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
@@ -21,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GameService {
@@ -31,8 +34,8 @@ public class GameService {
     private final InformationRepository informationRepository;
     private final RedisMyTradingInfoRepository myTradingInfoRepository;
 
-    @Transactional
-    public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
+    //게임 초기 세팅은 여기서
+    public void startGame(User user, Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -43,35 +46,43 @@ public class GameService {
         if(rinfo.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
-        int turn = rinfo.get().getTurnNum(); //방에 설정된 총 턴수 불러오기
         //나중에 setter지우고 update 메소드 만들기
         rinfo.get().updateStatus(1); //방 상태를 게임 중으로 바꾼다.(이걸로 바로 DB에 반영이 되나?)
+
+        //방장인지 아닌지 확인하는 로직
+        GameUser gu = new GameUser();
+        gu.setUserId(user.getId());
+        int idx = room.getParticipants().indexOf(gu);
+        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
+        gu = room.getParticipants().get(idx);
+        if(!gu.isManager()){ //요청을 한 사용자가 방장이 아니다.
+            throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
+        }
+
+        int year = rinfo.get().getFromYear(); //방에 설정된 시작년도 불러오기
+        int turn = rinfo.get().getTurnNum(); //방에 설정된 총 턴수 불러오기
 
         List<ParticipantInfo> parts = new ArrayList<>();
         List<GameUser> gameUserList = new ArrayList<>();
         for(GameUser guser : room.getParticipants()){
-            if(guser.isManager() && !Objects.equals(guser.getUserId(), user.getId())){ //요청을 한 사용자가 방장이 아니다.
-                throw new CustomBadRequestException(ErrorType.IS_NOT_MANAGER);
-            }
             if(!guser.isReady() && !guser.isManager()){ //방장이 아닌 사용자가 아직 레디를 누르지 않았다.
                 throw new CustomBadRequestException(ErrorType.NOT_YET_READY);
             }
-            Optional<User> unick = userRepository.findById(guser.getUserId());
-            if(unick.isEmpty()){
-                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-            }
-            parts.add(ParticipantInfo.builder()
-                            .userId(guser.getUserId())
-                            .userNick(unick.get().getNickName())
-                            .totalCost(500000L)
-                            .point(3)
-                    .build()); //참가자들 초기 게임 정보를 저장(응답용)
 
             RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
             if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             rdu.setStatus(true); //상태 true가 게임중
             redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+
+            //MyTradingInfo도 같이 초기화 수행
+            myTradingInfoRepository.saveMyTradingInfo(MyTradingInfo.builder()
+                            .id(guser.getUserId())
+                            .marketVal(500000L)
+                            .remainVal(500000L)
+                            .investVal(0L)
+                            .yoy(0L)
+                            .breakDowns(new ArrayList<>())
+                    .build());
 
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
@@ -80,6 +91,7 @@ public class GameService {
             gameUserList.add(guser);
         }
 
+        log.info("주식 현황 저장하기 전!!!!");
         List<Items1> selectedOne = Stream.of(Items1.values()) //6개 중에서 4개 선택
                 .limit(4)
                 .toList();
@@ -91,9 +103,9 @@ public class GameService {
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         selTwoItems(stockInfos, selectedTwo);
         selOneItems(stockInfos, selectedOne);
-        for(StockInfoResponse st : stockInfos){
-            System.out.print(st.getItem() + " ");
-        }
+//        for(StockInfoResponse st : stockInfos){
+//            System.out.print(st.getItem() + " ");
+//        }
 
         //redis의 GameMarket객체에 현재(초기) 시장 상황 저장하기
         List<GameMarket> gms = new ArrayList<>();
@@ -101,8 +113,8 @@ public class GameService {
             List<Long> tmp = new ArrayList<>();
             tmp.add(stok.getThisCost());
             gms.add(GameMarket.builder()
-                            .item(stok.getItem())
-                            .Cost(tmp)
+                    .item(stok.getItem())
+                    .Cost(tmp)
                     .build());
         }
 
@@ -113,11 +125,54 @@ public class GameService {
         room.setMarket(gms); //새로 생성된 시장 상황을 저장
         gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
 
-        //방 상태 변경 내역을 저장
-        //roomRepository.save(rinfo.get());
+        roomRepository.save(rinfo.get());
+    }
 
+    //유저에게 게임 정보 응답용
+    @Transactional
+    public TurnResponse getInitStockInfo(User user, Long grId){ //grId는 방 테이블의 아이디값
+        GameRoom room = gameRepository.getOneGameRoom(grId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        int turn = room.getRemainTurn(); //현재 남은 턴수(0이면 마지막 턴)
+        int year = room.getYear(); //현재 년도
+
+        //참가자 목록 dto에 저장(응답용)
+        List<ParticipantInfo> parts = new ArrayList<>();
+        for(GameUser guser : room.getParticipants()){
+            Optional<User> unick = userRepository.findById(guser.getUserId());
+            if(unick.isEmpty()){
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
+            parts.add(ParticipantInfo.builder()
+                            .userId(guser.getUserId())
+                            .profileId(unick.get().getImageId())
+                            .userNick(unick.get().getNickName())
+                            .totalCost(guser.getTotalCost())
+                            .point(guser.getPoint())
+                    .build()); //참가자들 초기 게임 정보를 저장(응답용)
+        }
+
+        //주식 현황 dto에 저장(응답용)
+        List<StockInfoResponse> stockInfos = new ArrayList<>();
+        for(GameMarket gm : room.getMarket()){
+            int size = gm.getCost().size();
+            if(size == 0) throw new CustomBadRequestException(ErrorType.NOT_STORE_MARKET);
+            Long last = gm.getCost().get(Math.max(size - 2, 0));
+            Long cur = gm.getCost().get(size-1);
+            stockInfos.add(StockInfoResponse.builder()
+                            .item(gm.getItem())
+                            .lastCost(last)
+                            .thisCost(cur) //현재 값은 마지막 인덱스
+                            .percent(calRoiByVal(last, cur))
+                    .build());
+        }
+
+        log.info("start service에서 리턴하기 전");
         return TurnResponse.builder()
-                .remainTurn(turn-1)
+                .remainTurn(turn)
                 .year(year)
                 .participants(parts)
                 .stockInfo(stockInfos)
@@ -202,7 +257,7 @@ public class GameService {
         Random random = new Random();
 
         // 범위 내에서 랜덤 숫자를 생성합니다.
-        return (random.nextInt(max - min) + min) / 100;
+        return ((random.nextInt(max - min) + min) / 100) * 100;
     }
 
     //redis에 대한 transactional을 걸게 되면 multi-exec가 걸리게 되므로 중간에 redis에 저장한 값을 메소드가 끝나기전에 get을 해올 수 없다.
@@ -300,6 +355,7 @@ public class GameService {
             int point = guser.getPoint() + 3;
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
+                    .profileId(unick.get().getImageId())
                     .userNick(unick.get().getNickName())
                     .totalCost(usrTotal + remain)
                     .point(point)
@@ -364,7 +420,7 @@ public class GameService {
         }
     }
 
-    public int doingReady(User user, Long grId){
+    public ReadyResponse doingReady(User user, Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -393,13 +449,41 @@ public class GameService {
         room.setParticipants(gameUserList);
         gameRepository.updateGameRoom(room);
 
+        int status = 0;
         if(cnt == room.getParticipants().size()){
-            return 1;
+            status = 1;
         }else { //아직 전체 참여자가 레디를 다 누르지 않았다.
+            //ready를 요청한 사용자가 참가자 목록에 없다.
             if(flag == 1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER_IN_ROOM);
-            return flag;
-            //return 0;
         }
+
+        List<RoomPartInfo> rstList = new ArrayList<>();
+        for(GameUser gu : room.getParticipants()){
+            log.info("ready속 참가자 목록에서 유저아이디: " + gu.getUserId());
+            Optional<User> tmp = userRepository.findById(gu.getUserId());
+            log.info("tmp의 현재 상태 비어있나?? " + tmp.isEmpty());
+            if(tmp.isEmpty()){
+                log.info("왜 에러가 나지???");
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
+            rstList.add(RoomPartInfo.builder()
+                    .userId(gu.getUserId())
+                    .userNick(tmp.get().getNickName())
+                    .isReady(gu.isReady())
+                    .isManager(gu.isManager())
+                    .exp(tmp.get().getExp())
+                    .imageId(tmp.get().getImageId())
+                    .build());
+        }
+
+        //flag = 0이면 레디를 한것, flag = -1이면 레디를 취소한 것
+        //status = 1이면 전체가 레디를 완료한 것
+        return ReadyResponse.builder()
+                .userId(user.getId())
+                .ready(flag == 0)
+                .start(status == 1)
+                .list(rstList)
+                .build();
     }
 
     @Transactional

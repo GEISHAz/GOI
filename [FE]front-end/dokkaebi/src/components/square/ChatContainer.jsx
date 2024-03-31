@@ -129,26 +129,26 @@ export default function ChatContainer() {
         ))}
       </div>
       <div className={styles.chatArea}>
-        <select id="to" className={styles.chatTo}>
-          <option value="ALL">ALL</option>
-          <option value="1">A에게</option>
-          <option value="2">B에게</option>
-          <option value="3">C에게</option>
-        </select>
+        {/* <div className={styles.chatTo}> */}
+          {/* <span className="flex justify-center my-auto text-center">채팅</span> */}
+        {/* </div> */}
         <form onSubmit={handleSendMessage}>
           <div className="flex">
             <input
               type="text"
               className={styles.chatInput}
               value={inputMessage}
+              maxLength={100}
               onChange={handleInputChange}
             />
-            <button
-              type="submit"
-              className={`${styles.chat_button} bg-blue-300 h-8`}
-            >
-              입력
-            </button>
+            <div className={styles.submitDiv}>
+              <button
+                type="submit"
+                className={`${styles.chat_button} h-8 text-white font-bold text-center`}
+              >
+                입력
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -1,9 +1,14 @@
 /* 기존 스타일 */
 .chatComponents {
+  /* background-color: #FB929E; */
   background-color: rgba(0, 0, 0, 0.6);
-  width: 85%;
-  height: 250px;
-  margin-left: 1%;
+  /* opacity: 90%; */
+  /* border: 2px solid white; */
+  padding: 0.5%;
+  width: 90%;
+  height: 100%;
+  max-height: 300px;
+  /* margin-left: 2%; */
   border-radius: 20px;
   display: flex; 
   flex-direction: column; 
@@ -12,7 +17,7 @@
 }
 
 .chatArea {
-  width: 95%;
+  width: 90%;
   display: flex;
   direction: row;
   justify-content: center;
@@ -23,16 +28,19 @@
 }
 
 .chatTo {
-  width: 100px;
+  width: 100%;
   height: 30px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
   font-family: Galmuri11;
-  background: rgb(255, 255, 255, 0.7);
+  background: rgb(255, 255, 255, 1);
   color: rgb(0, 0, 0);
   text-align: center;
   margin-left: 2%;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chatTo > option {
@@ -43,15 +51,18 @@
 }
 
 .chatInput {
-  width: 650px;
+  /* width: 100%; */
+  width: 50rem;
   height: 30px;
-  background-color: rgb(255, 255, 255, 0.7);
+  background-color: rgb(255, 255, 255, 1);
   font-family: Galmuri11;
   color: rgba(0, 0, 0);
   margin-left: 2%;
   padding-left: 12px;
   border-radius: 5px;
   outline: none;
+  border: 1px solid #FB929E;
+  /* padding: 1%; */
 }
 
 
@@ -79,8 +90,22 @@
 }
 
 .chat_button {
-  color: dark;
+  /* color: dark; */
   font-weight: bold;
+  /* padding: 2%; */
+}
+
+.submitDiv {
+  width: 5rem;
+  height: 30px;
+  background-color: #FB929E;
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-left: 2%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 1%; */
 }
 
 .messageArea {

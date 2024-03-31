@@ -48,9 +48,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/api/members/**").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/ws-stomp/**").permitAll()
 //                        .requestMatchers(antMatcher("/api"))
-//                        .anyRequest().authenticated())
                         .anyRequest().authenticated())
+//                        .anyRequest().permitAll())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
                         configure.authorizationEndpoint(config -> config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))

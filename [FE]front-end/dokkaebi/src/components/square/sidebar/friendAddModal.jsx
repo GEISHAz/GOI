@@ -42,7 +42,7 @@ const FriendAddModal = ({ onClose }) => {
           <input
             type="text"
             placeholder="추가할 유저를 입력 후 요청을 보내세요 !"
-            maxLength={10}
+            maxLength={14}
             value={searchTerm}
             onChange={handleSearchChange}
             className={`mb-1 ml-2 text-md ${styles.searchInput}`}

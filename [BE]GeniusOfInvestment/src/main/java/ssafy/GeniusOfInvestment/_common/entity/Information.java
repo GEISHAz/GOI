@@ -17,7 +17,7 @@ public class Information {
     private Long id;
 
     //종목의 아이디값
-    //(1: IT, 2: 자동차, 3: 바이오, 4: 통신, 5: 화학, 6: 엔터, 7: 식품, 8: 항공, 9: 건설, 10: 패션&뷰티)
+    //(1: IT, 2: 자동차, 3: 바이오, 4: 게임, 5: 화학, 6: 엔터, 7: 식품, 8: 항공, 9: 건설, 10: 패션&뷰티)
     private Long areaId;
 
     private String area;

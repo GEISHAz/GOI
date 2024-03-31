@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ParticipantInfo {
     private Long userId;
+    private int profileId;
     private String userNick;
     private Long totalCost;
     private int point;

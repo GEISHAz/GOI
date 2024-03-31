@@ -12,7 +12,7 @@ import axios from "axios";
 export default function Square() {
   const channelId = sessionStorage.getItem("channelId");
   const accessToken = sessionStorage.getItem("accessToken");
-  const roomId = sessionStorage.getItem("roomId");
+  // const roomId = sessionStorage.getItem("roomId");
   const navigate = useNavigate();
   // 배경 GIF 설정
   const backgroundStyle = {
@@ -27,7 +27,7 @@ export default function Square() {
   };
 
   useEffect(() => {
-    sessionStorage.getItem("roomId");
+    const roomId = sessionStorage.getItem("roomId");
     if (roomId) {
       axios
         .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {
@@ -59,16 +59,17 @@ export default function Square() {
 
       {/* 광장 메인 영역 (좌/우 컨테이너로 분리)*/}
       <div className={styles.mainContent}>
-        <div className={styles.leftContainer}>
-          {/* 유저 리스트 */}
-          <UserList />
-        </div>
-
-        <div className={styles.rightContainer}>
-          {/* 방 목록 컴포넌트 */}
-          <RoomList />
-          {/* 채팅창 컨테이너 */}
-          <ChatContainer />
+        <div className={styles.showContainer}> 
+          <div className={styles.leftContainer}>
+            {/* 유저 리스트 */}
+            <UserList />
+          </div>
+          <div className={styles.rightContainer}>
+            {/* 방 목록 컴포넌트 */}
+            <RoomList />
+            {/* 채팅창 컨테이너 */}
+            <ChatContainer />
+          </div>
         </div>
       </div>
     </div>

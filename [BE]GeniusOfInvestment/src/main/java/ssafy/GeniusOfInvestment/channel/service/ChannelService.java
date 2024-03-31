@@ -57,7 +57,7 @@ public class ChannelService {
 //        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
 //            user.deleteChannel();
 
-        log.info("유저 현 채널 : "+user.getChannel());
+        //log.info("유저 현 채널 : "+user.getChannel());
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;

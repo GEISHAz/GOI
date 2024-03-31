@@ -17,8 +17,9 @@ const Sidebar = ({ toggleSidebar }) => {
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 관리
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false); // 친구 추가 모달 관리
   const [isFriendAlarm, setIsFriendAlarm] = useState(false); // 친구 요청 알림 관리
-  const [isFriendChat, setIsFriendChat] = useState([]); // 받은 메시지 관리
+  const [isFriendChat, setIsFriendChat] = useState({}); // 받은 메시지 관리
   const [newMessageCounts, setNewMessageCounts ] = useState({}); // 새 메시지 알림 상태
+  const [openMessengerId, setOpenMessengerId] = useState(null); // 메신저가 열린 친구의 ID 관리
   const userNickname = useSelector((state) => state.auth.userNickname);
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
@@ -26,11 +27,19 @@ const Sidebar = ({ toggleSidebar }) => {
   // 친구를 클릭하면 메신저가 열기 -> friend 인자 전달
   const handleFriendClick = (friend) => {
     setSelectedFriend({ ...friend }); // 선택된 친구 상태 업데이트
+    setOpenMessengerId(friend.friendListId); // 메신저가 열린 친구의 ID 확인
+    if (selectedFriend) {
+      handleReadMessage(selectedFriend.friendListId); // 메시지 읽음 처리하여 메시지 수 0으로 초기화
+    }
   };
 
   // 메신저 닫기
   const toggleMessageBar = () => {
+    if (selectedFriend) {
+      handleReadMessage(selectedFriend.friendListId); // 메시지 읽음 처리하여 메시지 수 0으로 초기화
+    }
     setSelectedFriend(null); // 선택된 친구 상태를 null로 설정하여 메신저를 닫음
+    setOpenMessengerId(null); // 메신저가 닫혔으므로 친구리스트ID 초기호ㅏ
   };
 
   // 친구 목록 불러오기
@@ -41,6 +50,7 @@ const Sidebar = ({ toggleSidebar }) => {
       });
       console.log("친구 목록 불러오기 :", res)
       if (res.status === 200 && res.data.data) {
+        console.log("데이터 확인 :", res.data.data)
         console.log("메세지 확인 :", res.data.msg);
         const friends = res.data.data.map(friend => ({
           id: friend.friendId,
@@ -94,59 +104,62 @@ const Sidebar = ({ toggleSidebar }) => {
   // 친구와의 채팅 연결
   useEffect(() => {
     // 친구와의 1대1 채팅을 위해 새로운 독립적인 웹소켓 연결
-    const connectWebSocket = () => {
-      const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
-      client.current = Stomp.over(sock);
-      
-      client.current.connect({
-        Authorization: `Bearer ${accessToken}`,
-      }, () => { 
-        console.log("친구 채팅 연결됨!!")
-        // 사용자의 모든 친구와의 채팅 채널에 구독
-        isFriendList.forEach(friend => {
-          const friendListId = friend.friendListId;
-          console.log("friendListId 확인 :", friendListId)
-          subscriptionRef.current = client.current.subscribe(
-            '/sub/friend/chat/' + `${friendListId}`,
-            (message) => {
-              // 받은 메세지 처리할 곳
-              const msg = JSON.parse(message.body);
-              console.log("메세지 확인", msg)
-              if (msg.type && msg.type === "TALK") {
-                setIsFriendChat((prevMessages) => {
-                  return prevMessages
-                    ? [...prevMessages, msg] : null;
-                });
-              }
-
-              if (msg.type && msg.type === "ACCEPT") {
-                friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
-              }
-
-              if (msg.type === "TALK" && msg.sender !== userNickname) {
-                // 상대에게 받은 메시지 수 업데이트
-                setNewMessageCounts(prev => ({
-                  ...prev,
-                  [friendListId]: (prev[friendListId] || 0) + 1
-                }));
-              }
+    if (isFriendList.length > 0) {
+      const connectWebSocket = () => {
+        const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
+        client.current = Stomp.over(sock);
+  
+        client.current.connect({
+          Authorization: `Bearer ${accessToken}`,
+        }, () => { 
+          console.log("친구 채팅 연결됨!!")
+          // 사용자의 모든 친구와의 채팅 채널에 구독
+          isFriendList.forEach(friend => {
+            const friendListId = friend.friendListId;
+            // console.log("friendListId 확인 :", friendListId)
+            subscriptionRef.current = client.current.subscribe(
+              '/sub/friend/chat/' + `${friendListId}`,
+              (message) => {
+                // 받은 메세지 처리할 곳
+                const msg = JSON.parse(message.body);
+                // console.log("메세지 확인", msg)
+                if (msg.type && msg.type === "TALK") {
+                  setIsFriendChat((prevMessages) => ({
+                    ...prevMessages,
+                    [friendListId]: [...(prevMessages[friendListId] || []), msg],
+                  }));
+                }
+  
+                if (msg.type && msg.type === "ACCEPT") {
+                  console.log("상대가 친구를 수락함")
+                  friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
+                }
+  
+                if (msg.type === "TALK" && msg.sender !== userNickname && openMessengerId !== friendListId) {
+                  // 상대에게 받은 메시지 수 업데이트
+                  setNewMessageCounts(prev => ({
+                    ...prev,
+                    [friendListId]: (prev[friendListId] || 0) + 1
+                  }));
+                }
+              });
             });
+          }, (error) => {
+            console.error('친구 채팅 연결 에러', error);
           });
-        }, (error) => {
-          console.error('친구 채팅 연결 에러', error);
-        });
-
-        return () => {
-          if (subscriptionRef.current) {
-            subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
-          }
-
-          if (client.current && client.current.connected) {
-            client.current.disconnect();
-          }
+  
+          return () => {
+            if (subscriptionRef.current) {
+              subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
+            }
+  
+            if (client.current && client.current.connected) {
+              client.current.disconnect();
+            }
+          };
         };
-      };
-    connectWebSocket();
+      connectWebSocket();
+    }
   }, [isFriendList, userNickname]);
 
   // 메시지를 읽었을 때 호출되는 함수
@@ -208,6 +221,7 @@ const Sidebar = ({ toggleSidebar }) => {
                 handleReadMessage(friend.friendListId);  // 메시지 읽음 처리 추가
               }} // 메신저 토글 함수 props
               newMessageCount={newMessageCounts[friend.friendListId] || 0} // 메세지 수신을 숫자로 props
+              openMessengerId={openMessengerId} // 메신저가 열린 친구의 ID를 prop으로 전달
             />
           ))}
         </div>

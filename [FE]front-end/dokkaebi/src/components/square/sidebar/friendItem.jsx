@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import msgOff from '../../../images/square/mailOff.png';
 import styles from './friendItem.module.css'; 
 
-const FriendItem = ({ friend, onDeleteFriend, onFriendClick, newMessageCount }) => {
+const FriendItem = ({ friend, onDeleteFriend, onFriendClick, newMessageCount, openMessengerId }) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
-  const [isOpenMessenger, setIsOpenMessnger] = useState(false);
 
   // 우클릭
   const handleContextMenu = (e) => {
@@ -32,10 +31,12 @@ const FriendItem = ({ friend, onDeleteFriend, onFriendClick, newMessageCount }) 
       >
         <span className='ml-2'>{friend.nickName}</span>
         {/* 메세지 수 띄우기 -> 누르면 읽음 처리하고 0으로 처리 -> 0이라면 msgOff 이미지 표기*/}
-        {newMessageCount > 0 ? (
-          <span className={styles.newMessageCount}>{newMessageCount}</span>
+        {newMessageCount > 0 && openMessengerId !== friend.friendListId ? (
+          <span className={`mr-3 text-md font-bold text-center ${styles.newMessageCount}`}>
+            {newMessageCount}
+          </span>
         ) : (
-          <img src={msgOff} alt='메세지온거없음' className={styles.messageIcon}/>
+          <img src={msgOff} alt='메세지 없음' className={styles.messageIcon}/>
         )}
       </div>
       {showContextMenu && (

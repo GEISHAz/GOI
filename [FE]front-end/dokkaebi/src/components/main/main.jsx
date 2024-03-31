@@ -26,12 +26,13 @@ export default function Main() {
       </div>
       {/* 플레이 버튼 */}
       <div className="flex justify-center pb-60">
-        <img
-          src={image}
-          alt="Start Button"
-          onClick={handleClick}
-          className="cursor-pointer" // 마우스 포인터 변경
-        />
+        <button className={`h-auto w-auto flex justify-center ${styles.playButtons}`}>
+          <img
+            src={image}
+            alt="Start Button"
+            onClick={handleClick}
+          />
+        </button>
       </div>
     </div>
   );

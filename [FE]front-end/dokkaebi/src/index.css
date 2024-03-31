@@ -13,6 +13,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* min-height: 705px; */
   overflow: hidden;
+  cursor: url('/cursor/defaultCursor.png'), auto;
+}
+
+.cursor-pointer, button {
+  cursor: url('/cursor/buttonCursor.png'), pointer;
 }
 
 @font-face{
