@@ -47,7 +47,7 @@
   padding: 5%;
   margin-left: 4px;
   margin-right: 4px;
-  cursor: pointer;
+  cursor: url(/cursor/buttonCursor.png), pointer;
 }
 
 .lockIcon {

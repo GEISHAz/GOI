@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import LoginButton from '../../images/hub/loginButton.gif';
 import LogoutButton from '../../images/hub/logoutButton.gif';
+import GoBack from '../back/goMain.jsx';
 import BackA from '../../images/backButton/backA.png';
 import BackB from '../../images/backButton/backB.png';
 import styles from './button.module.css'
@@ -35,32 +36,27 @@ export default function HubTop() {
     }
   };
 
-  return (
-    <div className="flex flex-row items-center justify-between">
-      {/* 뒤로가기 */}
-      <div className='mt-5 my-auto'>
-        <button
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className='w-full my-auto mx-auto'
-          onClick={() => navigate("/")}
-        >
-          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
-        </button>
-      </div>
+  const handleLogIn = () => {
+    navigate('/join')
+  }
 
+  return (
+    <div className="flex items-center justify-between">
+      {/* 뒤로가기 */}
+      <GoBack />
+      
       {/* 로그인, 로그아웃 */}
-      <div className='mt-5 my-auto flex justify-end mr-10'>
+      <div className='mt-5 my-auto flex justify-end mr-5 '>
         {isLogin ? (
           // 로그인 상태일 때 "Logout" 버튼 표시
-          <button onClick={handleLogout}  className={`${styles.logoutButton}`}>
+          <button onClick={handleLogout} className={`px-5 ${styles.logoutButton}`}>
             <img src={LogoutButton} alt="로그인버튼"/>
           </button>
         ) : (
           // 로그아웃 상태일 때 "Login" 링크 표시
-          <Link to='/join' className='font-bold text-white text-xl'>
-            <img src={LoginButton} alt="로그인버튼" className={styles.loginButton}/>
-          </Link>
+          <button onClick={handleLogIn} className={` ${styles.loginButton}`}>
+            <img src={LoginButton} alt="로그인버튼" className='font-bold text-white'/>
+          </button>
         )}
       </div>
     </div>

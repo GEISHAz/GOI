@@ -8,6 +8,7 @@ export default function RoomSearchModal({ onClose }) {
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [isReceiveRoomId, setIsReceiveRoomId] = useState(null);
+  const [isErrorRoomId, setIsErrorRoomId] = useState(null);
 
   // 입력창에 입력된 방 번호를 관리하는 상태
   const [roomNum, setRoomNum] = useState("");
@@ -67,8 +68,9 @@ export default function RoomSearchModal({ onClose }) {
         // switch (error.response.data.statusCode && error.response.data.roomId) {
         switch (error.response.data.statusCode) {
           case 423: // 방 비밀번호 틀렸을 때
-            console.log('roomId @@@@@@@@@ :',  response.data.roomId)
-            sessionStorage.setItem("roomId", response.data.roomId)
+            console.log('roomId @@@@@@@@@ :', error.response.data.roomId)
+            setIsErrorRoomId(error.response.data.roomId)
+            sessionStorage.setItem("roomId", error.response.data.roomId)
             setShowRoomEnterModal(true)
             // retryCount++;
             break; // 이 break를 추가했습니다.
@@ -131,7 +133,7 @@ export default function RoomSearchModal({ onClose }) {
         {/* 조건부 렌더링을 사용하여 RoomEnterModal 표시 */}
         {showRoomEnterModal && (
           <RoomEnterModal
-            roomId={isReceiveRoomId}
+            roomId={isReceiveRoomId ? isReceiveRoomId : isErrorRoomId }
             onClose={() => setShowRoomEnterModal(false)}
           />
         )}

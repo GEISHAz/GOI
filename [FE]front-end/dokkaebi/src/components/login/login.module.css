@@ -4,7 +4,7 @@
 }
 
 .clickCursor {
-  cursor: pointer;
+  cursor: url(/cursor/buttonCursor.png), pointer;
 }
 
 .backButton {
