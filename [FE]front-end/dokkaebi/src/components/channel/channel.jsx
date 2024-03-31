@@ -91,7 +91,7 @@ export default function Channel() {
 
       {/* 채널 컨테이너 */}
       <div
-        className={`flex flex-col items-center justify-center mx-auto flex-grow  ${styles.channelContainer}`}
+        className={`flex flex-col items-center justify-center mx-auto flex-grow ${styles.channelContainer}`}
       >
         {/* 채널 헤더 */}
         <div className="flex items-center mb-4 pr-10">
