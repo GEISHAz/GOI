@@ -21,7 +21,7 @@ export default function TopButtons() {
 
   // 모달 상태변수
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchModal, setSearchModal] = useState(false);
+  const [searchModal, setSearchModal] = useState(false); // 방찾기 모달 관리
   // const [EnterModal, setEnterModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 사이드바 상태 관리
 
@@ -63,6 +63,7 @@ export default function TopButtons() {
       if (response.status === 200 && response.data.data) {
         // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동
         // navigate(`/room/${response.data.data.roomId}`);
+        console.log("빠른 입장 roomId 확인 :", response.data.data)
         const roomId = response.data.data;
         axios
           .post(
@@ -78,6 +79,7 @@ export default function TopButtons() {
             console.log("입장 성공:", response);
             if (response.status === 200) {
               console.log("입장 성공:", response);
+              sessionStorage.setItem("roomId", roomId)
               navigate(`/room/${roomId}`, {
                 state: JSON.parse(JSON.stringify({ response })),
               });
@@ -85,12 +87,12 @@ export default function TopButtons() {
           });
         } else {
           // 서버로부터 적절한 응답을 받지 못한 경우
-          alert("빠른 입장 가능한 방을 찾을 수 없습니다.");
+          alert("빠른 입장 가능한 공개 방을 찾을 수 없습니다.");
         }
       } catch (error) {
         // 요청 중 오류가 발생한 경우
         console.error("빠른 입장 처리 중 오류 발생:", error);
-        alert("빠른 입장 처리 중 오류가 발생했습니다");
+        alert("비공개 방 밖에 없어요 !");
       }
     };
 
@@ -127,7 +129,7 @@ export default function TopButtons() {
         </div>
 
         {/* 우측 상단 아이콘 이미지 버튼 2개 */}
-        <div className="flex">
+        <div className={`flex ${styles.rightButtons}`}>
           {/* 새로고침 버튼 */}
           <button
             onClick={handleRefreshClick}
@@ -149,8 +151,7 @@ export default function TopButtons() {
       {/* RoomCreateModal을 렌더링하고, props로 handleCloseModal 함수를 전달 */}
       {isModalOpen && <RoomCreateModal onClose={handleCloseModal} />}
 
-      {searchModal && <RoomSearchModal setSearchModal={setSearchModal} />}
-      {searchModal && <RoomSearchModal onClose={() => setSearchModal(false)} />}
+      {searchModal && <RoomSearchModal setSearchModal={setSearchModal} onClose={() => setSearchModal(false)} />}
 
       {isSidebarOpen && <Sidebar toggleSidebar={toggleSidebar} />}
     </>

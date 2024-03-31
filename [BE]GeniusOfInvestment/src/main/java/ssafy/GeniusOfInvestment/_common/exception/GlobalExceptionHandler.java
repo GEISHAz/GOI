@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import ssafy.GeniusOfInvestment._common.response.ErrorResponse;
+import ssafy.GeniusOfInvestment._common.response.ErrorRoomResponse;
 
 
 @Slf4j
@@ -45,6 +46,13 @@ public class GlobalExceptionHandler {
     protected ErrorResponse handleCustomBadRequestException(CustomBadRequestException e) {
         log.error("[CustomBadRequestException]");
         return ErrorResponse.from(e.getErrorType());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomRoomEnterException.class)
+    protected ErrorRoomResponse handleCustomRoomEnterException(CustomRoomEnterException e) {
+        log.error("[CustomRoomEnterException]");
+        return ErrorRoomResponse.of(e.getErrorType(),e.getRoomId());
     }
 
 }

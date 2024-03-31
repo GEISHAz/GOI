@@ -9,13 +9,13 @@ export default function backButton() {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <div className="flex">
-      <div className='mt-5 my-auto'>
+    <div className="flex flex-col mb-10">
+      <div className='my-auto flex items-center justify-start'>
         <button
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className='w-48 my-auto'
-          onClick={() => navigate("/")}
+          className='w-48'
+          onClick={() => navigate("/square")}
         >
           <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
         </button>

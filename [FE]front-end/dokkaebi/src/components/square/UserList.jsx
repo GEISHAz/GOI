@@ -11,6 +11,7 @@ import orange from "../../images/character/orange.gif";
 export default function UserList() {
   const accessToken = sessionStorage.getItem("accessToken");
   const [isUserInfo, setIsUserInfo] = useState([]);
+  const channelId = sessionStorage.getItem("channelId");
 
   const images = [
     { id: 1, src: blue, alt: "파랑도깨비" },
@@ -27,7 +28,6 @@ export default function UserList() {
 
   // 페이지 들어갔을 때 fetchUserInfo() 함수 실행 -> [accessToken] 토큰 발급 될 때마다 다시 함수 실행
   useEffect(() => {
-    const channelId = sessionStorage.getItem("channelId");
     const fetchUserInfo = async () => {
       console.log("channelId 확인", channelId);
       try {
@@ -70,107 +70,99 @@ export default function UserList() {
     // "접속 중인 유저" 컨테이너
     <div className={styles.userContainer}>
       <h1 className="font-Bit text-white text-2xl text-center m-4">
-        접속 중인 유저
+        채널<span className={styles.channelNumber}>&nbsp;{channelId}</span> 유저
       </h1>
-
       {/* 유저 상태 표시 (게임 중/대기 중) 리스트 */}
-      <div
-        className={`flex flex-col items-center text-center ${styles.userState}`}
-      >
-        <div className={`overflow-y-auto ${styles.userListScroll}`}>
+      <div className={`flex flex-col text-center ${styles.userState}`}>
+        {isUserInfo.map((user) => {
+          const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
+          let statusText = "알 수 없는 상태"; // 기본값 설정
+          let statusClass = ""; // 상태에 따른 클래스명 기본값
 
-            {isUserInfo.map((user) => {
-              const image = findImageById(user.imageId); // 유저의 imageId에 해당하는 이미지 객체 찾기
-              let statusText = "알 수 없는 상태"; // 기본값 설정
-              let statusClass = ""; // 상태에 따른 클래스명 기본값
+          // user.status 값에 따라 statusText 및 statusClass 업데이트
+          if (user.status === 0) {
+            statusText = "로비";
+            statusClass = styles.login; // CSS 모듈의 클래스명
+          } 
+          else if (user.status === 1) {
+            statusText = "대기중";
+            statusClass = styles.waiting;
+          } 
+          else if (user.status === 2) {
+            statusText = "게임중";
+            statusClass = styles.playing;
+          }
 
-              // user.status 값에 따라 statusText 및 statusClass 업데이트
-              if (user.status === 0) {
-                statusText = "로비";
-                statusClass = styles.login; // CSS 모듈의 클래스명
-              } 
-              else if (user.status === 1) {
-                statusText = "대기중";
-                statusClass = styles.waiting;
-              } 
-              else if (user.status === 2) {
-                statusText = "게임중";
-                statusClass = styles.playing;
-              }
-
-              return (
-                <div key={user.id} className="flex items-center justify-between p-1 border-b border-gray-200">
-                  <div className="my-auto">
-                    {image && (
-                      <img src={image.src} alt={image.alt} className="h-10 w-10" />
-                    )}
-                  </div>
-                  <div className="my-auto ml-4">
-                    <span>{user.nickName}</span>
-                  </div>
-                  <div className={`my-auto flex justify-end ml-4 mr-4 ${statusClass}`}>
-                    <span>{statusText}</span>
-                  </div>
-                </div>
-              );
-            })}
-
-          {/* <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            프로필 닉네임6글자 게임중 
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div>
-          <div className="flex items-center justify-between p-2 border-b border-gray-200">
-            더미데이터
-          </div> */}
-
+          return (
+            <div key={user.id} className="flex items-center justify-between p-1 border-b border-gray-200">
+              <div className="my-auto">
+                {image && (
+                  <img src={image.src} alt={image.alt} className="h-10 w-10" />
+                )}
+              </div>
+              <div className="my-auto ml-1 text-sm font-bold ">
+                <span>{user.nickName}</span>
+              </div>
+              <div className={`my-auto flex justify-end ml-1 ${statusClass}`}>
+                <span>{statusText}</span>
+              </div>
+            </div>
+          );
+        })}
+        {/* <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          프로필 닉네임6글자 게임중 
         </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div>
+        <div className="flex items-center justify-between p-2 border-b border-gray-200">
+          더미데이터
+        </div> */}
       </div>
     </div>
   );

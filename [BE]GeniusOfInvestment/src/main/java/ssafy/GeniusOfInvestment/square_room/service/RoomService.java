@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.exception.CustomRoomEnterException;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
-import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.dto.ReadyResponse;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.square_room.dto.request.RoomEnterRequest;
@@ -58,7 +58,8 @@ public class RoomService {
 
         if(room.getPassword() != null){ //방에 비밀번호가 설정되어 있다.
             if(!room.getPassword().equals(enterInfo.password())){
-                throw new CustomBadRequestException(ErrorType.INVALID_PASSWORD);
+                log.info("Room 비밀방 입장시 roomId"+room.getId());
+                throw new CustomRoomEnterException(ErrorType.INVALID_PASSWORD,room.getId());
             }
         }
         //gameRoom Redis 정보 가져오기
@@ -98,7 +99,7 @@ public class RoomService {
         gameRoom.getParticipants().add(
                 GameUser.builder()
                         .userId(user.getId())
-                        .isReady(true) //현재 레디에서 문제가 생겨 참가하면 강제 레디로
+                        .isReady(false) //현재 레디에서 문제가 생겨 참가하면 강제 레디로
                         .isManager(false)
                         .buyInfos(new ArrayList<>())
                         .build());

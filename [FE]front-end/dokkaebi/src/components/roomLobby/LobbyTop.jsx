@@ -20,12 +20,15 @@ export default function LobbyTop({ userList, isStart }) {
 
   useEffect(() => {
     userList.forEach((user) => {
-      if (user.userId === userId) {
+      if (user.userId === Number(userId)) {
         setAmIManager(user.isManager);
-        console.log("나는 방장 : ", amIManager);
       }
     });
   }, [userList]);
+
+  useEffect(() => {
+    console.log("나는 방장 : ", amIManager);
+  }, [amIManager]);
 
   useEffect(() => {
     if (isStart === true) {
@@ -65,7 +68,7 @@ export default function LobbyTop({ userList, isStart }) {
     axios
       .post(
         `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
-        {},
+        { roomId: roomId },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -87,7 +90,8 @@ export default function LobbyTop({ userList, isStart }) {
 
   const handleStartButtonClick = () => {
     axios
-      .put(`https://j10d202.p.ssafy.io/api/game/start?id=${roomId}`, {
+      .get(`https://j10d202.p.ssafy.io/api/game?id=${roomId}`, {
+        params: { id: roomId },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -120,7 +124,7 @@ export default function LobbyTop({ userList, isStart }) {
           {amIManager ? (
             <button
               onClick={handleStartButtonClick}
-              disabled={!isStart}
+              // disabled={!isStart}
               className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton} `}
             >
               START

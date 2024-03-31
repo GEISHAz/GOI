@@ -9,7 +9,7 @@
 .playerComponents > img {
   width: 100px;
   height: 100px;
-  margin: auto 16px auto 24px
+  margin: auto 16px auto 24px;
 }
 
 .playerInfo {
@@ -35,6 +35,10 @@
   align-items: center;
   margin-left: 12px;
   color: gray;
+}
+
+.playerReadyActive {
+  color: red;
 }
 
 .playerTotalMoney {

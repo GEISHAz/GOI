@@ -31,7 +31,7 @@ const AuthWrapper = ({ children }) => {
   return (
     <BGMProvider> {/* BGMProvider로 전체 앱을 감싸 BGM 상태 관리 가능하게 함 */}
       {children}
-      <BGMPlayer />
+      <BGMPlayer currentPath={location.pathname}/>
     </BGMProvider>
   );
 };

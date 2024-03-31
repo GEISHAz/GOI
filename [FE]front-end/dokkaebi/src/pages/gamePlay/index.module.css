@@ -1,3 +1,8 @@
+/* button:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
+} */
+
 .views {
   width: 100vw;
   height: 100vh;
@@ -63,6 +68,9 @@
   height: 120px;
   /* justify-self: center; */
   z-index: 10;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
   background-color: rgba(255, 255, 255, 0.6);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -90,6 +98,11 @@
   background-color: black;
   color: white;
   border-radius: 15px;
+}
+
+.timer {
+  font-size: 32px;
+  text-align: center;
 }
 
 .turn {

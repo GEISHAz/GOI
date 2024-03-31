@@ -152,12 +152,13 @@ export default function getUserLogin() {
         <div className={`${styles.loginBG} flex flex-col items-center justify-center w-1/3 bg-black/60 rounded-3xl p-10 mt-10`}>
           <h1 className='font-bold text-white text-3xl mb-10'>첫 도깨비 일원이신가요?</h1>
           <h2 className='font-bold text-white text-xl mb-20'>닉네임과 프로필을 설정해보세요 !</h2>
-          <img
-            src={signUp}
-            alt="카카오 로그인"
-            className={`${styles.clickCursor} w-1/2`}
-            onClick={handleSetInfo}
-          />
+            <button className='w-64 h-10'>
+              <img
+                src={signUp}
+                alt="카카오 로그인"
+                onClick={handleSetInfo}
+              />
+            </button>
           <div className='w-1/4 flex justify-center mt-5'>
             <img src={blue} alt="파랑도깨비" className='mt-3'/>
             <img src={brown} alt="밤색도깨비" />
