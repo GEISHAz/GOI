@@ -88,7 +88,9 @@ public class GameController {
             redisTemplate.opsForValue().set("thread" + grId, "STOP");
             TurnResponse rst = gameService.getNextStockInfo(grId);
             sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET);
+            log.info("새로운 타이머 생성 전");
             timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+            log.info("새로운 타이머 생성 후");
             json.put("msg", "다음 턴 넘기기 완료");
         }
         return json;
