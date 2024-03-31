@@ -66,6 +66,6 @@ public class TimerService {
 
         // 3분 후 TimerTask 실행 취소
         //timer.schedule(endTask, 180000, TimeUnit.MILLISECONDS.ordinal());
-        return CompletableFuture.completedFuture(grId);
+        //return CompletableFuture.completedFuture(grId);
     }
 }
