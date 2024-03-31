@@ -28,7 +28,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
 
   useEffect(() => {
     scrollToBottom();
-  }, [isFriendChat.length]);
+  }, [selectedFriend?.friendListId, isFriendChat[selectedFriend?.friendListId]?.length]);
 
   useEffect(() => {
     const chatHistory = async () => {
@@ -40,7 +40,10 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
           });
           if (response.status === 200) {
             console.log("이전 채팅 내역 불러옴!!", response);
-            setIsFriendChat(response.data.data); // 직접 상태 업데이트
+            setIsFriendChat(prev => ({
+              ...prev,
+              [friendListId]: response.data.data // 배열을 직접 할당
+            }));
           } else {
             console.error("채팅 기록 불러오기 실패:", response);
           }
@@ -75,7 +78,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
         <div className={`flex flex-col ${styles.chatList}`}> 
           {/* 대화내역 */}
           <div className={styles.chatting}>
-            {isFriendChat.map((chat, index) => (
+            {isFriendChat[selectedFriend.friendListId]?.map((chat, index) => (
               <div
                 key={index}
                 ref={recentMsg}
@@ -96,7 +99,7 @@ const Messenger = ({ selectedFriend, toggleMessageBar, handleSendMSG, isFriendCh
       <nav className={styles.chatcont}>
         <div className={`flex justify-center items-center my-auto ${styles.inputDiv}`}>
           <form onSubmit={handleSubmit}>
-            <div className='flex justify-center'>
+            <div className='flex justify-center my-5'>
               <input
                 type="text"
                 className={`${styles.chatInput}`}
