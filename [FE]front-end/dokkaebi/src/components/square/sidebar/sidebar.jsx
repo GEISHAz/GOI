@@ -105,9 +105,10 @@ const Sidebar = ({ toggleSidebar }) => {
   useEffect(() => {
     // 친구와의 1대1 채팅을 위해 새로운 독립적인 웹소켓 연결
     const connectWebSocket = () => {
+      
       const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
       client.current = Stomp.over(sock);
-      
+
       client.current.connect({
         Authorization: `Bearer ${accessToken}`,
       }, () => { 
