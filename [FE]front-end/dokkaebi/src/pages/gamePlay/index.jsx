@@ -32,15 +32,18 @@ export default function GamePlay() {
 
   const isManager = sessionStorage.getItem("isManager");
   const [userList, setUserList] = useState([]);
+  const [userReadyList, setUserReadyList] = useState([]);
+  const [ready, setReady] = useState(false);
   const [currentUser, setCurrentUser] = useState();
   const [otherUsers, setOtherUsers] = useState([]);
-  const [ready, setReady] = useState(false);
+  const [myReady, setMyReady] = useState(false);
+  const [otherUsersReady, setOtherUsersReady] = useState([]);
 
   const [stockInfo, setStockInfo] = useState([]);
 
   const [timerMin, setTimerMin] = useState("3");
   const [timerSec, setTimerSec] = useState("00");
-  const [timerMSec, setTimerMSec] = useState(0);
+  const [timerMSec, setTimerMSec] = useState(100);
   const [year, setYear] = useState(0);
 
   // useEffect(() => {
@@ -51,6 +54,10 @@ export default function GamePlay() {
   //     setUserList(response);
   //   }
   // }, [response]);
+  useEffect(() => {
+    setMyReady(userReadyList.find((user) => user.userId === userId));
+    setOtherUsersReady(userReadyList.filter((user) => user.userId !== userId));
+  }, [userReadyList]);
 
   useEffect(() => {
     setCurrentUser(userList.find((user) => user.userId === userId));
@@ -98,7 +105,7 @@ export default function GamePlay() {
           console.log(response);
         })
         .catch((error) => {
-          console.error("next 요청에 실패했습니다:", error);
+          console.error("요청에 실패했습니다:", error);
         });
     }
   };
@@ -141,12 +148,12 @@ export default function GamePlay() {
             // console.log(receivedMessage);
 
             if (receivedMessage.type === "STOCK_MARKET") {
-              // console.log("????????????????????????????????", receivedMessage);
+              console.log("주식 정보??????????????????????", receivedMessage);
               setYear(receivedMessage.data.year);
               setStockInfo(receivedMessage.data.stockInfo);
               setUserList(receivedMessage.data.participants);
             } else if (receivedMessage.type === "TIMER") {
-              // console.log(receivedMessage);
+              console.log(receivedMessage.type);
               // console.log(receivedMessage.data.remainingMin);
               // console.log(receivedMessage.data.remainingSec);
               setTimerMin(receivedMessage.data.remainingMin);
@@ -154,7 +161,7 @@ export default function GamePlay() {
               setTimerMSec(receivedMessage.data.remainingTime);
             } else if (receivedMessage.type === "READY") {
               console.log("레디 정보??????????????????", receivedMessage.data);
-              setUserList(receivedMessage.data.list);
+              // setUserReadyList(receivedMessage.data.list);
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data.winner);
             }
@@ -172,9 +179,9 @@ export default function GamePlay() {
     return () => {
       console.log("unmounting...");
 
-      if (stompClientRef.current) {
-        stompClientRef.current.disconnect();
-      }
+      // if (stompClientRef.current) {
+      //   stompClientRef.current.disconnect();
+      // }
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
       }
@@ -296,18 +303,27 @@ export default function GamePlay() {
       <div className={styles.views}>
         {/* 현재 유저의 정보를 전달합니다. */}
         <div className={styles.player1}>
-          <Players user={currentUser ? currentUser : null} />
+          <Players user={currentUser ? currentUser : null} ready={myReady} />
         </div>
 
         {/* 나머지 유저들의 정보를 전달합니다. */}
         <div className={styles.player2}>
-          <Players user={otherUsers[0] ? otherUsers[0] : null} />
+          <Players
+            user={otherUsers[0] ? otherUsers[0] : null}
+            ready={userReadyList[0] ? userReadyList[0] : null}
+          />
         </div>
         <div className={styles.player3}>
-          <Players user={otherUsers[1] ? otherUsers[1] : null} />
+          <Players
+            user={otherUsers[1] ? otherUsers[1] : null}
+            ready={userReadyList[1] ? userReadyList[1] : null}
+          />
         </div>
         <div className={styles.player4}>
-          <Players user={otherUsers[2] ? otherUsers[2] : null} />
+          <Players
+            user={otherUsers[2] ? otherUsers[2] : null}
+            ready={userReadyList[2] ? userReadyList[2] : null}
+          />
         </div>
       </div>
       <div className={styles.menubar}>
@@ -346,3 +362,5 @@ export default function GamePlay() {
     </div>
   );
 }
+
+GamePlay.__isStatic = true;

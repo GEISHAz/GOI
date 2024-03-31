@@ -9,7 +9,7 @@ import pink from "../../../images/character/pink.gif";
 import orange from "../../../images/character/orange.gif";
 import { useEffect, useState } from "react";
 
-export default function Players({ user }) {
+export default function Players({ user, userReady }) {
   // const [userProfileId, setUserProfileId] = useState("");
   if (!user) {
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
@@ -36,8 +36,13 @@ export default function Players({ user }) {
   //   return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   // }
   useEffect(() => {
-    // console.log(user);
-    setReady(user.isReady);
+    if (userReady) {
+      setReady(userReady.isReady);
+    }
+  }, [userReady]);
+
+  useEffect(() => {
+    console.log(user);
     // setUserProfileId(user.profileId);
   }, [user]);
 
@@ -54,7 +59,7 @@ export default function Players({ user }) {
           <p className={styles.playerNickName}>{user.userNick}</p>
           <p
             className={`${styles.playerReady} ${
-              user.isReady ? styles.playerReadyActive : ""
+              ready ? styles.playerReadyActive : ""
             }`}
           >
             READY

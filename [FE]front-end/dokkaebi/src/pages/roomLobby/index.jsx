@@ -85,19 +85,19 @@ export default function userReadyRoom() {
             // console.log(receivedMessage.type);
 
             if (receivedMessage.type === "ROOM_ENTER") {
-              console.log("타입 확인", receivedMessage.type);
+              // console.log("타입 확인", receivedMessage.type);
               setUserList(receivedMessage.data);
-              console.log("소켓으로 받은 유저정보 확인", userList);
+              // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
-              console.log(receivedMessage.type);
+              // console.log(receivedMessage.type);
               setUserList(receivedMessage.data);
             } else if (receivedMessage.type === "READY") {
-              console.log(receivedMessage.type);
+              // console.log(receivedMessage.type);
               // console.log(receivedMessage.data.list);
               setUserList(receivedMessage.data.list);
               setIsStart(receivedMessage.data.ready);
             } else if (receivedMessage.type === "START") {
-              console.log(receivedMessage.data);
+              // console.log(receivedMessage.data);
               navigate(`/game/${roomId}`);
             }
           }
