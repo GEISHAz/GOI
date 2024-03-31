@@ -451,7 +451,11 @@ public class GameService {
         for(GameUser gu : room.getParticipants()){
             log.info("ready속 참가자 목록에서 유저아이디: " + gu.getUserId());
             Optional<User> tmp = userRepository.findById(gu.getUserId());
-            if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            log.info("tmp의 현재 상태 비어있나?? " + tmp.isEmpty());
+            if(tmp.isEmpty()){
+                log.info("왜 에러가 나지???");
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
+            }
             rstList.add(RoomPartInfo.builder()
                     .userId(gu.getUserId())
                     .userNick(tmp.get().getNickName())
