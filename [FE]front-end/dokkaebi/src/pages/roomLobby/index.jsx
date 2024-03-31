@@ -2,7 +2,7 @@ import Background from "../../images/gamePlay/background6.gif";
 import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
-
+// import GoSqaure from '../../components/back/goSquare.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";

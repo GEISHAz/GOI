@@ -9,6 +9,7 @@ export function useAuthCheck() {
   const navigate = useNavigate();
   const intervalIdRef = useRef(null);
 
+  // 토큰 새로 못받았을 시 로그아웃 처리 함수
   const handleLogout = async () => {
     const accessToken = sessionStorage.getItem("accessToken");
     sessionStorage.removeItem("accessToken");
