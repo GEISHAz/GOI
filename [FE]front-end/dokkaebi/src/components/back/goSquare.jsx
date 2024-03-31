@@ -39,7 +39,7 @@ export default function backButton({ roomId }) {
           className='w-48'
           onClick={handleBackButtonClick}
         >
-          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.backButton}/>
+          <img src={isHovering ? BackB : BackA} alt="뒤로가기" className={styles.goSquare}/>
         </button>
       </div>
     </div>

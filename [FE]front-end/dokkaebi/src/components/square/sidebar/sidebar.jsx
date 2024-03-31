@@ -104,61 +104,62 @@ const Sidebar = ({ toggleSidebar }) => {
   // 친구와의 채팅 연결
   useEffect(() => {
     // 친구와의 1대1 채팅을 위해 새로운 독립적인 웹소켓 연결
-    const connectWebSocket = () => {
-      
-      const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
-      client.current = Stomp.over(sock);
-
-      client.current.connect({
-        Authorization: `Bearer ${accessToken}`,
-      }, () => { 
-        console.log("친구 채팅 연결됨!!")
-        // 사용자의 모든 친구와의 채팅 채널에 구독
-        isFriendList.forEach(friend => {
-          const friendListId = friend.friendListId;
-          // console.log("friendListId 확인 :", friendListId)
-          subscriptionRef.current = client.current.subscribe(
-            '/sub/friend/chat/' + `${friendListId}`,
-            (message) => {
-              // 받은 메세지 처리할 곳
-              const msg = JSON.parse(message.body);
-              // console.log("메세지 확인", msg)
-              if (msg.type && msg.type === "TALK") {
-                setIsFriendChat((prevMessages) => ({
-                  ...prevMessages,
-                  [friendListId]: [...(prevMessages[friendListId] || []), msg],
-                }));
-              }
-
-              if (msg.type && msg.type === "ACCEPT") {
-                console.log("상대가 친구를 수락함")
-                friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
-              }
-
-              if (msg.type === "TALK" && msg.sender !== userNickname && openMessengerId !== friendListId) {
-                // 상대에게 받은 메시지 수 업데이트
-                setNewMessageCounts(prev => ({
-                  ...prev,
-                  [friendListId]: (prev[friendListId] || 0) + 1
-                }));
-              }
+    if (isFriendList.length > 0) {
+      const connectWebSocket = () => {
+        const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
+        client.current = Stomp.over(sock);
+  
+        client.current.connect({
+          Authorization: `Bearer ${accessToken}`,
+        }, () => { 
+          console.log("친구 채팅 연결됨!!")
+          // 사용자의 모든 친구와의 채팅 채널에 구독
+          isFriendList.forEach(friend => {
+            const friendListId = friend.friendListId;
+            // console.log("friendListId 확인 :", friendListId)
+            subscriptionRef.current = client.current.subscribe(
+              '/sub/friend/chat/' + `${friendListId}`,
+              (message) => {
+                // 받은 메세지 처리할 곳
+                const msg = JSON.parse(message.body);
+                // console.log("메세지 확인", msg)
+                if (msg.type && msg.type === "TALK") {
+                  setIsFriendChat((prevMessages) => ({
+                    ...prevMessages,
+                    [friendListId]: [...(prevMessages[friendListId] || []), msg],
+                  }));
+                }
+  
+                if (msg.type && msg.type === "ACCEPT") {
+                  console.log("상대가 친구를 수락함")
+                  friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
+                }
+  
+                if (msg.type === "TALK" && msg.sender !== userNickname && openMessengerId !== friendListId) {
+                  // 상대에게 받은 메시지 수 업데이트
+                  setNewMessageCounts(prev => ({
+                    ...prev,
+                    [friendListId]: (prev[friendListId] || 0) + 1
+                  }));
+                }
+              });
             });
+          }, (error) => {
+            console.error('친구 채팅 연결 에러', error);
           });
-        }, (error) => {
-          console.error('친구 채팅 연결 에러', error);
-        });
-
-        return () => {
-          if (subscriptionRef.current) {
-            subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
-          }
-
-          if (client.current && client.current.connected) {
-            client.current.disconnect();
-          }
+  
+          return () => {
+            if (subscriptionRef.current) {
+              subscriptionRef.current.unsubscribe(); // 구독 식별자 번호 찾아서 구독 취소
+            }
+  
+            if (client.current && client.current.connected) {
+              client.current.disconnect();
+            }
+          };
         };
-      };
-    connectWebSocket();
+      connectWebSocket();
+    }
   }, [isFriendList, userNickname]);
 
   // 메시지를 읽었을 때 호출되는 함수
