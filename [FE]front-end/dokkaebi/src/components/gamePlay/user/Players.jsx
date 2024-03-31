@@ -24,9 +24,9 @@ export default function Players({ user }) {
     { id: 5, src: orange, alt: "오렌지도깨비" },
     { id: 6, src: green, alt: "초록도깨비" },
   ];
-  // const findImageById = (imageId) =>
-  //   images.find((image) => image.id === imageId);
-  // const userImage = findImageById(user.imageId);
+  const findImageById = (imageId) =>
+    images.find((image) => image.id === imageId);
+  const userImage = findImageById(user.imageId);
 
   // const users = Array.isArray(user) ? user : [user];
 
@@ -37,7 +37,7 @@ export default function Players({ user }) {
     console.log(user);
   }, [user]);
 
-  return (
+  return user ? (
     <div className={styles.playerComponents}>
       <img
         src={user.profileImg || (userImage ? userImage.src : "")}
@@ -52,5 +52,7 @@ export default function Players({ user }) {
         <p className={styles.playerTotalMoney}>{user.totalCost}</p>
       </div>
     </div>
+  ) : (
+    <div>유저 없으면 뭐넣지</div>
   );
 }

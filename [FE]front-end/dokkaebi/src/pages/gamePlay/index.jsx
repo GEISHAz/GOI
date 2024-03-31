@@ -36,6 +36,7 @@ export default function GamePlay() {
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState();
   const [otherUsers, setOtherUsers] = useState([]);
+  const [ready, setReady] = useState(false);
 
   const [stockInfo, setStockInfo] = useState([]);
 
@@ -66,9 +67,8 @@ export default function GamePlay() {
       // await gameStart();
       setTimeout(() => {
         gameStart();
-      }, 50);
+      }, 200);
     };
-
     initialize();
   }, []);
 
@@ -88,6 +88,22 @@ export default function GamePlay() {
           console.error("API 요청에 실패했습니다:", error);
         });
     }
+  };
+
+  const onClickReady = () => {
+    axios
+      .get(`https://j10d202.p.ssafy.io/api/game/ready?${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setReady(!ready);
+      })
+      .catch((error) => {
+        console.error("API 요청에 실패했습니다:", error);
+      });
   };
 
   const stompConnect = () => {
@@ -112,23 +128,24 @@ export default function GamePlay() {
               setStockInfo(receivedMessage.data.stockInfo);
               setUserList(receivedMessage.data.participants);
             } else if (receivedMessage.type === "TIMER") {
-              console.log(receivedMessage);
-              console.log(receivedMessage.data.remainingMin);
-              console.log(receivedMessage.data.remainingSec);
+              // console.log(receivedMessage);
+              // console.log(receivedMessage.data.remainingMin);
+              // console.log(receivedMessage.data.remainingSec);
               setTimerMin(receivedMessage.data.remainingMin);
               setTimerSec(receivedMessage.data.remainingSec);
               setTimerMSec(receivedMessage.data.remainingTime);
             } else if (receivedMessage.type === "READY") {
-              console.log(receivedMessage.data.ready);
+              console.log("레디 정보", receivedMessage.data);
+              setUserList(receivedMessage.data.list);
             } else if (receivedMessage.type === "GAME_RESULT") {
-              console.log(receivedMessage.data.winner);
+              console.log("결과 정보", receivedMessage.data.winner);
             }
           });
         },
         function (error) {
           // 연결이 끊어졌을 때 재연결을 시도합니다.
           console.log("STOMP: Connection lost. Attempting to reconnect", error);
-          reconnectInterval = setTimeout(connect, 2000); // 초 후 재연결 시도
+          reconnectInterval = setTimeout(connect, 3000); // 초 후 재연결 시도
         }
       );
     };
@@ -286,7 +303,9 @@ export default function GamePlay() {
           </p>
           <p className={styles.turn}>{year}턴</p>
         </div>
-        <button className={styles.readyButton}>READY</button>
+        <button className={styles.readyButton} onClick={onClickReady}>
+          {ready ? "CANCEL" : "READY"}
+        </button>
       </div>
       <div className={styles.chat}>
         <Chat />
