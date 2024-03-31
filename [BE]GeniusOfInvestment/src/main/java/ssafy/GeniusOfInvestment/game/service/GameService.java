@@ -74,6 +74,16 @@ public class GameService {
             rdu.setStatus(true); //상태 true가 게임중
             redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
 
+            //MyTradingInfo도 같이 초기화 수행
+            myTradingInfoRepository.saveMyTradingInfo(MyTradingInfo.builder()
+                            .id(guser.getUserId())
+                            .marketVal(500000L)
+                            .remainVal(500000L)
+                            .investVal(0L)
+                            .yoy(0L)
+                            .breakDowns(new ArrayList<>())
+                    .build());
+
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
             guser.setTotalCost(500000L);
