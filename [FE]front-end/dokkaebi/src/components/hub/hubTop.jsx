@@ -45,7 +45,7 @@ export default function HubTop() {
       {/* 뒤로가기 */}
       <GoBack />
       
-      {/* 로그인, 로그아웃 */}
+      {/* 로그인, 로그아웃ddd */}
       <div className='mt-5 my-auto flex justify-end mr-5 '>
         {isLogin ? (
           // 로그인 상태일 때 "Logout" 버튼 표시
