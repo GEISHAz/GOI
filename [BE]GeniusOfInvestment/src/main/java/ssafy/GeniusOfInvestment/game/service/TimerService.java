@@ -22,7 +22,7 @@ public class TimerService {
     private final RedisTemplate<Object, Object> redisTemplate;
 
     @Async("threadPoolTaskExecutor")
-    public CompletableFuture<Long> setTimer(Long grId) {
+    public void setTimer(Long grId) {
         //System.out.println(message);
         Timer timer = new Timer();
         TimerInfo tinfo = new TimerInfo(3, "0", 181000, 180000);
@@ -34,7 +34,7 @@ public class TimerService {
                     redisTemplate.delete("thread" + grId);
                     cancel();
                 }
-                log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
+                //log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
                 int remainMs = tinfo.getRemainingTime();
                 remainMs -= 1000;
                 int tsec = remainMs / 1000;

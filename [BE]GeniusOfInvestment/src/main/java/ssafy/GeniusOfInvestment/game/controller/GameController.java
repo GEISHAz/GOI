@@ -40,7 +40,7 @@ public class GameController {
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
         if(!Boolean.TRUE.equals(redisTemplate.hasKey("refresh" + grId))){
-            CompletableFuture<Long> result = timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+            timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
             //redisTemplate.opsForValue().set("future" + grId, result);
             String str = "ALREADY_START";
             redisTemplate.opsForValue().set("refresh" + grId, str, Duration.ofMinutes(3)); //새로고침에 대한 기능을 막기 위해서
