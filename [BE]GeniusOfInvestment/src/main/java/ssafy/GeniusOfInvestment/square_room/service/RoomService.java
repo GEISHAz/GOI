@@ -58,7 +58,7 @@ public class RoomService {
 
         if(room.getPassword() != null){ //방에 비밀번호가 설정되어 있다.
             if(!room.getPassword().equals(enterInfo.password())){
-                log.info("Room 비밀방 입장시 roomId"+enterInfo.roomId());
+                log.info("Room 비밀방 입장시 roomId"+enterInfo.roomNum());
                 throw new CustomRoomEnterException(ErrorType.INVALID_PASSWORD, enterInfo.roomId());
             }
         }
