@@ -16,7 +16,7 @@ body {
   cursor: url('/cursor/defaultCursor.png'), auto;
 }
 
-button {
+.cursor-pointer, button {
   cursor: url('/cursor/buttonCursor.png'), pointer;
 }
 

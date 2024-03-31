@@ -9,8 +9,8 @@ export default function backButton() {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className='mt-5 my-auto flex items-center justify-start'>
+    <div className="flex">
+      <div className='mt-5 my-auto'>
         <button
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}

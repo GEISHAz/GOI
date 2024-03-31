@@ -10,26 +10,26 @@ export default function RoomEnterModal({ onClose, roomId }) {
   const [showRoomEnterModal, setShowRoomEnterModal] = useState(false);
   const propsRoomId = roomId;
   useEffect(() => {
-    console.log("비밀 번호:", isPassword);
+    // console.log("비밀 번호:", isPassword);
   }, [isPassword]);
 
   // 비밀번호 숫자 4자리로 제한
   const handlePasswordChange = (e) => {
     // 입력값이 숫자이고 4자리 이하인지 확인
     const value = e.target.value;
-    console.log("입력 값:", value); // 입력 필드의 값을 출력
+    // console.log("입력 값:", value);
     if (/^\d{0,4}$/.test(value)) {
       // 정규표현식을 사용하여 검증
       // 상태 업데이트 로직
       setIsPassword(value); // 상태 업데이트
-      console.log("비밀 번호:", isPassword);
+      // console.log("비밀 번호:", isPassword);
     }
   };
 
   // 입장
   const handleEnterClick = () => {
     console.log("props 받은 룸ID :", propsRoomId);
-    console.log("비밀 :", isPassword);
+    console.log("입력한 비밀번호 :", isPassword);
     const realRoomId = sessionStorage.getItem("roomId");
     axios
       .post(
@@ -46,6 +46,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
         console.log("입장 성공:", response);
         if (response.status === 200) {
           console.log("입장 성공:", response);
+          sessionStorage.setItem("roomId", propsRoomId)
           navigate(`/room/${propsRoomId}`, {
             state: JSON.parse(JSON.stringify({ response })),
           });

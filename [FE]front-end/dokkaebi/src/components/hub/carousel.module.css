@@ -40,7 +40,7 @@
   opacity: 1;
   transform: scale(1.5);
   z-index: 1;
-  cursor: pointer;
+  cursor: url(/cursor/buttonCursor.png), pointer;
   transition: transform 0.9s ease;
 }
 
@@ -60,7 +60,7 @@
   height: 100px;
   background-size: cover;
   border: none;
-  cursor: pointer;
+  /* cursor: pointer; */
   z-index: 10;
 }
 

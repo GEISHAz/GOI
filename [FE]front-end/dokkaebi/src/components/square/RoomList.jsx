@@ -42,13 +42,14 @@ export default function RoomList() {
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
     // useRoomId(room.id);
-    console.log(room.isPrivate);
+    console.log("비공개 상태 확인 :", room.isPrivate);
     if (room.isPrivate) {
-      // setRoomId(room.id);
-      console.log("?????");
+      console.log("roomId 확인 111:", room.id);
+      const roomId = room.id
+      useRoomId(roomId)
       setEnterModal(true);
-      console.log(room.id);
     } else {
+      console.log("roomId 확인 222:", room.id);
       axios
         .post(
           `https://j10d202.p.ssafy.io/api/room/enter`,

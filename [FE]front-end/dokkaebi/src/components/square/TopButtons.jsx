@@ -63,6 +63,7 @@ export default function TopButtons() {
       if (response.status === 200 && response.data.data) {
         // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동
         // navigate(`/room/${response.data.data.roomId}`);
+        console.log("빠른 입장 roomId 확인 :", response.data.data)
         const roomId = response.data.data;
         axios
           .post(
