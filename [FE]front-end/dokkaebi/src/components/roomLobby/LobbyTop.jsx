@@ -68,7 +68,7 @@ export default function LobbyTop({ userList, isStart }) {
     axios
       .post(
         `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
-        { roomId: roomId },
+        {},
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

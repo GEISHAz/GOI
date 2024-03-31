@@ -1,21 +1,19 @@
 import Background from "../../images/gamePlay/background6.gif";
 import styles from "./index.module.css";
 import Players from "../../components/gamePlay/user/Players";
-import Timer from "../../components/gamePlay/Timer";
+// import Timer from "../../components/gamePlay/Timer";
 import Chat from "../../components/gamePlay/chat/Chat";
 import Investment from "../../components/gamePlay/mainStock/Investment";
 import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import { connect, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
 export default function GamePlay() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // let location = useLocation();
 
   // const [response, setResponse] = useState(
@@ -59,7 +57,22 @@ export default function GamePlay() {
     setOtherUsers(userList.filter((user) => user.userId !== userId));
   }, [userList]);
 
-  useEffect(() => {}, [timerMSec]);
+  useEffect(() => {
+    if (timerMSec === 0 && isManager === "true") {
+      axios
+        .get(`https://j10d202.p.ssafy.io/api/game/next?id=${roomId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("API 요청에 실패했습니다:", error);
+        });
+    }
+  }, [timerMSec]);
 
   useEffect(() => {
     const initialize = async () => {
@@ -67,7 +80,7 @@ export default function GamePlay() {
       // await gameStart();
       setTimeout(() => {
         gameStart();
-      }, 200);
+      }, 300);
     };
     initialize();
   }, []);
@@ -85,7 +98,7 @@ export default function GamePlay() {
           console.log(response);
         })
         .catch((error) => {
-          console.error("API 요청에 실패했습니다:", error);
+          console.error("next 요청에 실패했습니다:", error);
         });
     }
   };
@@ -125,10 +138,10 @@ export default function GamePlay() {
         function (frame) {
           stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
             const receivedMessage = JSON.parse(message.body);
-            console.log(receivedMessage);
+            // console.log(receivedMessage);
 
             if (receivedMessage.type === "STOCK_MARKET") {
-              console.log("????????????????????????????????", receivedMessage);
+              // console.log("????????????????????????????????", receivedMessage);
               setYear(receivedMessage.data.year);
               setStockInfo(receivedMessage.data.stockInfo);
               setUserList(receivedMessage.data.participants);
@@ -140,7 +153,7 @@ export default function GamePlay() {
               setTimerSec(receivedMessage.data.remainingSec);
               setTimerMSec(receivedMessage.data.remainingTime);
             } else if (receivedMessage.type === "READY") {
-              console.log("레디 정보", receivedMessage.data);
+              console.log("레디 정보??????????????????", receivedMessage.data);
               setUserList(receivedMessage.data.list);
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data.winner);
@@ -306,7 +319,7 @@ export default function GamePlay() {
           <p className={styles.timer}>
             {timerMin}:{timerSec}
           </p>
-          <p className={styles.turn}>{year}턴</p>
+          <p className={styles.turn}>{year}년</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
           {ready ? "CANCEL" : "READY"}

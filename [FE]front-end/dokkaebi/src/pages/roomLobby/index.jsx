@@ -79,10 +79,10 @@ export default function userReadyRoom() {
         stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
           (message) => {
-            console.log("구독 성공");
+            // console.log("구독 성공");
             const receivedMessage = JSON.parse(message.body);
-            console.log(receivedMessage);
-            console.log(receivedMessage.type);
+            // console.log(receivedMessage);
+            // console.log(receivedMessage.type);
 
             if (receivedMessage.type === "ROOM_ENTER") {
               console.log("타입 확인", receivedMessage.type);

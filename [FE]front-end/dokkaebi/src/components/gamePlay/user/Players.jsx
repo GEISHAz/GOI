@@ -10,6 +10,7 @@ import orange from "../../../images/character/orange.gif";
 import { useEffect, useState } from "react";
 
 export default function Players({ user }) {
+  // const [userProfileId, setUserProfileId] = useState("");
   if (!user) {
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   }
@@ -27,7 +28,7 @@ export default function Players({ user }) {
   ];
   const findImageById = (imageId) =>
     images.find((image) => image.id === imageId);
-  const userImage = findImageById(user.imageId);
+  const userImage = findImageById(user.profileId);
 
   // const users = Array.isArray(user) ? user : [user];
 
@@ -35,13 +36,16 @@ export default function Players({ user }) {
   //   return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   // }
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
+    setReady(user.isReady);
+    // setUserProfileId(user.profileId);
   }, [user]);
 
   return user ? (
     <div className={styles.playerComponents}>
       <img
-        src={user.profileImg || (userImage ? userImage.src : "")}
+        src={userImage ? userImage.src : ""}
+        // src={userProfileId}
         alt="profile"
         onError={onErrorProfileImg}
       ></img>
