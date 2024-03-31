@@ -32,8 +32,10 @@ public class TimerService {
             public void run() {
                 if(Boolean.TRUE.equals(redisTemplate.hasKey("thread" + grId))){
                     redisTemplate.delete("thread" + grId);
+                    log.info("레디를 모두 눌러 타이머 취소");
                     cancel();
                 }
+                log.info("타이머 취소 안됐나??");
                 //log.info("타이머에서 남은 시간: " + tinfo.getRemainingTime());
                 int remainMs = tinfo.getRemainingTime();
                 remainMs -= 1000;
