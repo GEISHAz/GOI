@@ -116,7 +116,7 @@ export default function LobbyTop({ userList, isStart }) {
         {/* 뒤로가기 버튼 */}
         <GoSqaure roomId={roomId}/>
 
-        <div className="flex-grow flex justify-center gap-4">
+        <div className="flex justify-center mx-auto">
           {/* 레디 버튼 */}
           {amIManager ? (
             <button
