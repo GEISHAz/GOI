@@ -92,7 +92,7 @@ export default function TopButtons() {
       } catch (error) {
         // 요청 중 오류가 발생한 경우
         console.error("빠른 입장 처리 중 오류 발생:", error);
-        alert("비공개 방 밖에 없어요 !");
+        alert("방이 없거나, 비공개 방 밖에 없어요 !");
       }
     };
 
