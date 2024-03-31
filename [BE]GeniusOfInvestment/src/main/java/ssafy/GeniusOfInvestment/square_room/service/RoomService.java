@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssafy.GeniusOfInvestment._common.entity.Room;
 import ssafy.GeniusOfInvestment._common.entity.User;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
+import ssafy.GeniusOfInvestment._common.exception.CustomRoomEnterException;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
 import ssafy.GeniusOfInvestment._common.redis.RedisUser;
@@ -58,7 +59,7 @@ public class RoomService {
 
         if(room.getPassword() != null){ //방에 비밀번호가 설정되어 있다.
             if(!room.getPassword().equals(enterInfo.password())){
-                throw new CustomBadRequestException(ErrorType.INVALID_PASSWORD);
+                throw new CustomRoomEnterException(ErrorType.INVALID_PASSWORD, enterInfo.roomId());
             }
         }
         //gameRoom Redis 정보 가져오기
