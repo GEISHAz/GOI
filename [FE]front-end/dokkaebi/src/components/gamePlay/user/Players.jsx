@@ -60,6 +60,8 @@ export default function Players({ user }) {
       </div>
     </div>
   ) : (
-    <div>유저 없으면 뭐넣지</div>
+    <div className={styles.playerComponents}>
+      <div>유저 없으면 뭐넣지</div>
+    </div>
   );
 }
