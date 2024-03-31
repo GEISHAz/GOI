@@ -66,20 +66,20 @@ export default function userReadyRoom() {
 
     const socket = new SockJS(socketUrl);
     // const stompClient = Stomp.over(socket);
-    stompClientRef.current = Stomp.over(socket)
-    console.log('스톰프 확인', stompClientRef.current);
+    stompClientRef.current = Stomp.over(socket);
+    console.log("스톰프 확인", stompClientRef.current);
 
     stompClientRef.current.connect(
       {
         Authorization: `Bearer ${accessToken}`,
       },
-      () =>  {
-        console.log("구독 시도")
+      () => {
+        console.log("구독 시도");
         console.log("방 번호 :", roomId);
         stompClientRef.current.subscribe(
-          '/sub/room/chat/'+`${roomId}`,
+          "/sub/room/chat/" + `${roomId}`,
           (message) => {
-            console.log("구독 성공")
+            console.log("구독 성공");
             const receivedMessage = JSON.parse(message.body);
             console.log(receivedMessage);
             console.log(receivedMessage.type);
@@ -100,7 +100,8 @@ export default function userReadyRoom() {
               console.log(receivedMessage.data);
               navigate(`/game/${roomId}`);
             }
-        });
+          }
+        );
       },
       (error) => {
         // 연결이 끊어졌을 때 재연결을 시도합니다.

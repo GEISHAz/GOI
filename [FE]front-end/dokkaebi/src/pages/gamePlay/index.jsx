@@ -91,12 +91,17 @@ export default function GamePlay() {
   };
 
   const onClickReady = () => {
+    console.log("레디 버튼 클릭 방 번호 : ", roomId);
     axios
-      .get(`https://j10d202.p.ssafy.io/api/game/ready?${roomId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .put(
+        `https://j10d202.p.ssafy.io/api/game/ready/${roomId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         setReady(!ready);
