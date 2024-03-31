@@ -50,9 +50,9 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomRoomEnterException.class)
-    protected ErrorRoomResponse handleCustomRoomEnterException(CustomRoomEnterException e,Long roomId) {
+    protected ErrorRoomResponse handleCustomRoomEnterException(CustomRoomEnterException e) {
         log.error("[CustomRoomEnterException]");
-        return ErrorRoomResponse.of(e.getErrorType(),roomId);
+        return ErrorRoomResponse.of(e.getErrorType(),e.getRoomId());
     }
 
 }
