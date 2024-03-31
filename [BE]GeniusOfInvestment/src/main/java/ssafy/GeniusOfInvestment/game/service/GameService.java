@@ -449,6 +449,7 @@ public class GameService {
 
         List<RoomPartInfo> rstList = new ArrayList<>();
         for(GameUser gu : room.getParticipants()){
+            log.info("ready속 참가자 목록에서 유저아이디: " + gu.getUserId());
             Optional<User> tmp = userRepository.findById(gu.getUserId());
             if(tmp.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             rstList.add(RoomPartInfo.builder()
