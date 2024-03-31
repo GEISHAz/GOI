@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RoomEnterModal from "./RoomEnterModal";
 import styles from "./RoomSearchModal.module.css";
-import RoomEnterModal from "./RoomEnterModal";
-import styles from "./RoomSearchModal.module.css";
 
 export default function RoomSearchModal({ onClose }) {
   const accessToken = sessionStorage.getItem("accessToken");
@@ -16,7 +14,6 @@ export default function RoomSearchModal({ onClose }) {
 
   // 비밀방이라면 -> 입력창에 입력된 비밀번호 관리
   const [password, setPassword] = useState("");
-  const [password, setPassword] = useState("");
 
   // 비밀방 입장 모달 표시 상태
   const [showRoomEnterModal, setShowRoomEnterModal] = useState(false);
@@ -27,7 +24,6 @@ export default function RoomSearchModal({ onClose }) {
   };
   let retryCount = 0;
   const MAX_RETRY_COUNT = 5;
-  const MAX_RETRY_COUNT = 5;
 
   const handleEnterClick = () => {
     // if (retryCount >= MAX_RETRY_COUNT) {
@@ -36,16 +32,6 @@ export default function RoomSearchModal({ onClose }) {
     //   return;
     // }
     axios
-      .post(
-        "https://j10d202.p.ssafy.io/api/room/enter",
-        {
-          roomNum: roomNum,
-          password: password,
-        },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      )
       .post(
         "https://j10d202.p.ssafy.io/api/room/enter",
         {
@@ -87,52 +73,26 @@ export default function RoomSearchModal({ onClose }) {
             // retryCount++;
             break; // 이 break를 추가했습니다.
 
-
           case 426: // 방이 가득 찼을 때
-            alert("방이 가득 차서 입장할 수 없어요!");
             alert("방이 가득 차서 입장할 수 없어요!");
             onClose(); // 모달 닫기
             break;
-
 
           case 404: // 방이 존재하지 않을 때
             alert("존재하지 않는 방번호입니다!");
-            alert("존재하지 않는 방번호입니다!");
             onClose(); // 모달 닫기
             break;
-
 
           default:
             // 예외 처리
             alert("알 수 없는 오류가 발생!");
-            alert("알 수 없는 오류가 발생!");
             onClose(); // 모달 닫기
             break;
-        }
         }
       });
   };
 
-  };
-
   return (
-    <div className={styles.background}>
-      {/* 모달 컨테이너 */}
-      <div
-        className={`${styles.container} flex flex-col items-center justify-center`}
-      >
-        {/* 모달 타이틀 */}
-        <h1 className="font-Bit text-5xl mb-10">방 찾기</h1>
-        <input
-          type="text"
-          value={roomNum}
-          onChange={handleRoomNumChange} // 입력 변화를 처리하는 함수 연결
-          placeholder="방 번호 입력"
-          className="border-2 border-gray-300 p-1 w-48"
-        />
-
-        {/* 버튼 그룹 */}
-        <div className="flex justify-center w-full mt-5">
     <div className={styles.background}>
       {/* 모달 컨테이너 */}
       <div

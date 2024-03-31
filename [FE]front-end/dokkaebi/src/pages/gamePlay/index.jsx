@@ -137,8 +137,8 @@ export default function GamePlay() {
     return () => {
       console.log("unmounting...");
 
-      if (stompClient) {
-        stompClient.disconnect();
+      if (stompClientRef.current) {
+        stompClientRef.current.disconnect();
       }
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
