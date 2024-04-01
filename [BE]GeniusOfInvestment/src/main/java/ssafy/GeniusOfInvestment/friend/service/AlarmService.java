@@ -15,6 +15,7 @@ import ssafy.GeniusOfInvestment.friend.dto.FriendChatMessageDto;
 import ssafy.GeniusOfInvestment.friend.dto.FriendChatMessageDto.MessageType;
 import ssafy.GeniusOfInvestment.friend.dto.request.SendFriendRequest;
 import ssafy.GeniusOfInvestment.friend.dto.response.AlarmListResponse;
+import ssafy.GeniusOfInvestment.friend.dto.response.SendFriendInvitationResponse;
 import ssafy.GeniusOfInvestment.friend.repository.AlarmRepository;
 import ssafy.GeniusOfInvestment.friend.repository.FriendRepository;
 import ssafy.GeniusOfInvestment.user.repository.UserRepository;
@@ -36,7 +37,7 @@ public class AlarmService {
     5. 보낸 요청이 없다면 요청 생성
      */
     @Transactional
-    public void sendFriendInvitation(SendFriendRequest sendFriendRequest) {
+    public SendFriendInvitationResponse sendFriendInvitation(SendFriendRequest sendFriendRequest) {
 
         Optional<User> fromUser = userRepository.findById(sendFriendRequest.getId());
         if(fromUser.isEmpty()){
@@ -48,9 +49,6 @@ public class AlarmService {
         Optional<User> toUser = userRepository.findByNickName(sendFriendRequest.getFriendNickName());
         if(toUser.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_INVITE_USER);
-        }
-        if(fromUser.equals(toUser)){
-//            throw new CustomBadRequestException(Error)
         }
 
         Optional<Friend> friendsByUserAndFriend = friendRepository.findFriendsByUserAndFriend(fromUser.get(), toUser.get());
@@ -76,8 +74,10 @@ public class AlarmService {
             User fUser = fromUser.get();
 
             Alarm alarm = Alarm.of(tUser,fUser,0);
-            alarmRepository.save(alarm);
+            return SendFriendInvitationResponse.builder().alarmId(alarmRepository.save(alarm).getId()).build();
+
         }
+        return null;
     }
 
     public List<AlarmListResponse> getAlarmList(Long userId) {
