@@ -28,6 +28,7 @@ export default function Square() {
 
   useEffect(() => {
     const roomId = sessionStorage.getItem("roomId");
+    const isManager = sessionStorage.getItem("isManager");
     if (roomId) {
       axios
         .delete(`https://j10d202.p.ssafy.io/api/room/exit/${roomId}`, {
@@ -59,7 +60,7 @@ export default function Square() {
 
       {/* 광장 메인 영역 (좌/우 컨테이너로 분리)*/}
       <div className={styles.mainContent}>
-        <div className={styles.showContainer}> 
+        <div className={styles.showContainer}>
           <div className={styles.leftContainer}>
             {/* 유저 리스트 */}
             <UserList />
