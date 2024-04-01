@@ -77,6 +77,11 @@ public class StockService {
                 }else {
                     log.info("처음 정보를 구매하는 조건문으로....");
                     Long itemId = gameService.getIdForItem(item);
+                    log.info("아이템 아이디: " + itemId);
+                    log.info("방의 년도: " + room.getYear());
+                    for(Long t : purchased){
+                        log.info("구매 목록: " + t);
+                    }
                     List<Information> infoList = informationRepository.findByAreaIdAndYearAndIdNotIn(itemId, room.getYear(), purchased);
                     for(Information t : infoList){
                         log.info(t.getLowLv());
