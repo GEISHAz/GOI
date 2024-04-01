@@ -38,10 +38,15 @@ public class StockService {
         BreakDown bd = new BreakDown();
         bd.setItem(item);
         int idx = mine.getBreakDowns().indexOf(bd); //내 거래내역에서 해당 주식 종목을 찾는다.
-        if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_TRADINGINFO);
-        bd = mine.getBreakDowns().get(idx);
+        int share;
+        if(idx == -1) {
+            share = 0;
+        }else {
+            bd = mine.getBreakDowns().get(idx);
+            share = bd.getShares();
+        }
         return MyItemInfo.builder()
-                .shares(bd.getShares())
+                .shares(share)
                 .remainVal(mine.getRemainVal())
                 .build();
     }
