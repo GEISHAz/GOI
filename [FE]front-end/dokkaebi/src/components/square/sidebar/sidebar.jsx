@@ -205,13 +205,14 @@ const Sidebar = ({ toggleSidebar }) => {
     //   return;
     // }
 
+
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
   
     alarmClient.current.connect({
       Authorization: `Bearer ${accessToken}`,
     }, () => {
-      console.log("친구 요청 알림 웹소켓 연결@");
+      console.log(">>친구 요청 알림 웹소켓 연결<<");
       console.log("alarmId 확인 :", alarmId)
   
       // 친구 요청 알림에 대해 구독
