@@ -112,7 +112,7 @@
 }
 
 .chat {
-  z-index: 10;
+  z-index: 1000;
   position: absolute;
   bottom: 0px;
 }
