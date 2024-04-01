@@ -76,6 +76,7 @@ public class SquareService {
                 .userId(user.getId())
                 .isReady(true)
                 .isManager(true)
+                .buyInfos(new ArrayList<>())
                 .build());
 
         //Redis GameRoom 생성
