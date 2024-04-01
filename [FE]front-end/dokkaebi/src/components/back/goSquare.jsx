@@ -31,7 +31,7 @@ export default function backButton({ roomId }) {
   };
 
   return (
-    <div className="flex flex-col mb-10">
+    <div className="flex mb-10">
       <div className='my-auto flex items-center justify-start'>
         <button
           onMouseEnter={() => setIsHovering(true)}
