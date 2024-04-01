@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./StockExchange.module.css";
 import chart from '../../../images/gamePlay/StockChart.jpg'
+import ChartComponent from "./ChartComponent";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 
@@ -123,12 +124,15 @@ export default function StockExchange(props) {
         <div className={styles.companyInfoArea}>
           <h1 className={styles.companyName}>{props.item}</h1>
           {/* 주식차트 예시 */}
-          <img
+          <div className={styles.chartArea}>
+            <ChartComponent item={props.item}/>
+          </div>
+          {/* <img
             src=""
             alt="chart"
             onError={onErrorChartImg}
             className={styles.chartImg}
-          />
+          /> */}
         </div>
         <div className={styles.myStockInfo}>
           <div className={styles.displayInfo}>
