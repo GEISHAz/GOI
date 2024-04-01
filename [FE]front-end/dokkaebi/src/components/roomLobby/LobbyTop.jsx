@@ -115,25 +115,26 @@ export default function LobbyTop({ userList, isStart }) {
       <div className="flex items-center justify-between p-5">
         {/* 뒤로가기 버튼 */}
         <GoSqaure roomId={roomId}/>
-
-        <div className="flex justify-center mx-auto">
-          {/* 레디 버튼 */}
-          {amIManager ? (
-            <button
-              onClick={handleStartButtonClick}
-              // disabled={!isStart}
-              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton} `}
-            >
-              START
-            </button>
-          ) : (
-            <button
-              onClick={handleReadyButtonClick}
-              className={`flex items-center justify-center font-Bit text-4xl ${styles.textButton}`}
-            >
-              {isReady ? "Cancel" : "Ready"}
-            </button>
-          )}
+        <div className="w-48 mr-36">
+          <div className="flex justify-center">
+            {/* 레디 버튼 */}
+            {amIManager ? (
+              <button
+                onClick={handleStartButtonClick}
+                // disabled={!isStart}
+                className={`flex items-center justify-center font-Bit text-3xl ${styles.textButton} `}
+              >
+                START
+              </button>
+            ) : (
+              <button
+                onClick={handleReadyButtonClick}
+                className={`flex items-center justify-center font-Bit text-3xl ${styles.textButton}`}
+              >
+                {isReady ? "Cancel" : "Ready"}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* 메신저 버튼 */}

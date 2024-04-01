@@ -2,11 +2,12 @@ import Background from "../../images/gamePlay/background6.gif";
 import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
-
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import styles from './index.module.css'
 import axios from "axios";
 
 export default function userReadyRoom() {
@@ -25,19 +26,17 @@ export default function userReadyRoom() {
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
   const userId = sessionStorage.getItem("userId");
-
   const location = useLocation();
-
   const stompClientRef = useRef(null);
-
+  const userNickname = useSelector((state) => state.auth.userNickname);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
+  const [chatList, setChatList] = useState([]);
   const [isStart, setIsStart] = useState(false);
   const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
-    // console.log("gkrltlfgek", response);
     if (response.userList) {
       setUserList(response.userList);
     } else {
@@ -46,10 +45,6 @@ export default function userReadyRoom() {
   }, [response]);
 
   useEffect(() => {
-    // console.log("방 유저 리스트 확인0", response);
-    // console.log("방 유저 리스트 확인1", userList);
-    // console.log("방 유저 리스트 확인", location.state.res.data);
-    // console.log(location.state.content);
     userList.forEach((user) => {
       userList.forEach((user) => {
         if (user.userId === Number(userId)) {
@@ -75,7 +70,7 @@ export default function userReadyRoom() {
       },
       () => {
         console.log("구독 시도");
-        console.log("방 번호 :", roomId);
+        console.log("roomLobby 방 번호 :", roomId);
         stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
           (message) => {
@@ -83,6 +78,12 @@ export default function userReadyRoom() {
             const receivedMessage = JSON.parse(message.body);
             // console.log(receivedMessage);
             // console.log(receivedMessage.type);
+            if (receivedMessage.type && receivedMessage.type === "TALK") {
+              setChatList((chatList) => [
+                ...chatList,
+                { sender: receivedMessage.sender, message: receivedMessage.message },
+              ]);
+            }
 
             if (receivedMessage.type === "ROOM_ENTER") {
               console.log("타입 확인", receivedMessage.type);
@@ -120,13 +121,46 @@ export default function userReadyRoom() {
     };
   }, []);
 
+  // 메세지 보내기 함수
+  const handleSendMessages = (message) => {
+    if (
+      stompClientRef.current &&
+      stompClientRef.current.connected &&
+      message.trim() !== ""
+    ) {
+      const newMessages = {
+        roomId: roomId,
+        sender: userNickname,
+        message: message,
+        type: "TALK",
+      };
+      console.log("메시지 채팅 하나를 보냈어요.");
+      console.log("sender 확인 :", newMessages.sender);
+
+      stompClientRef.current.send(
+        `/pub/room/chat/message/`,
+        {},
+        JSON.stringify(newMessages)
+      );
+    } else {
+      alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
+      console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
+    }
+  };
+
   return (
     <div style={backgroundStyle}>
       <LobbyTop userList={userList} isStart={isStart} />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
         <PlayerList userList={userList} />
-        <LobbyChat />
+        <div className={`flex justify-center ${styles.chatSuperCont}`}>
+          <LobbyChat 
+            handleSendMessages={handleSendMessages} // 메세지 보내기 함수
+            chatList={chatList} // 채팅 내역 props
+            userNickname={userNickname}
+          />
+        </div>
       </div>
     </div>
   );
