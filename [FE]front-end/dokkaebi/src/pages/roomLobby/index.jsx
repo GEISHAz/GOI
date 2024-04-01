@@ -94,7 +94,17 @@ export default function userReadyRoom() {
                // 강퇴된 유저가 자신인지 확인
               const isKicked = !receivedMessage.data.some(user => user.userId === Number(userId));
               if (isKicked) {
-                alert("당신은 우리와 함께 할 수 없게되었습니다..");
+                alert("당신은 우리와 함께 할 수 없게 되었습니다..");
+                
+                if (stompClientRef.current && stompClientRef.current.connected) {
+                  stompClientRef.current.unsubscribe(); // 현재 구독 해제
+                  
+                  stompClientRef.current.disconnect(() => { // WebSocket 연결 끊기
+                    console.log("강퇴 당하여 연결이 끊어집니다!");
+                  });
+                }
+
+                sessionStorage.removeItem("roomId"); // 방 ID 세션에서 제거
                 navigate(`/square/${channelId}`);
               }
             }
@@ -128,6 +138,8 @@ export default function userReadyRoom() {
     return () => {
       console.log("unmounting...");
       console.log(stompClientRef.current);
+
+
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
