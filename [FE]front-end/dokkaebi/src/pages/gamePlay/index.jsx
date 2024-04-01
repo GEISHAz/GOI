@@ -45,6 +45,7 @@ export default function GamePlay() {
   const [timerMin, setTimerMin] = useState("3");
   const [timerSec, setTimerSec] = useState("00");
   const [timerMSec, setTimerMSec] = useState(100);
+  const [remainTurn, setRemainTurn] = useState(99);
   const [year, setYear] = useState(0);
 
   useEffect(() => {
@@ -54,8 +55,8 @@ export default function GamePlay() {
   useEffect(() => {
     console.log("유저 레디 정보", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
-    console.log("내 레디 상태", myReady.isReady ? myReady.isReady : myReady);
-    setReady(myReady.isReady ? myReady.isReady : ready);
+    console.log("myReady 상태", myReady);
+    setReady(myReady.isReady);
     // setReady(myReady.isReady ? myReady.isReady : ready);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
@@ -74,6 +75,20 @@ export default function GamePlay() {
     if (timerMSec === 0 && isManager === "true") {
       axios
         .get(`https://j10d202.p.ssafy.io/api/game/next?id=${roomId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("API 요청에 실패했습니다:", error);
+        });
+    }
+    if (timerMSec === 0 && isManager === "true" && remainTurn === 0) {
+      axios
+        .get(`https://j10d202.p.ssafy.io/api/game/end/${roomId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -129,8 +144,8 @@ export default function GamePlay() {
         }
       )
       .then((response) => {
-        console.log("dkdk",response);
-        // setMyReady(!myReady);
+        console.log("dkdk", response);
+        setMyReady(false);
       })
       .catch((error) => {
         console.error("API 요청에 실패했습니다:", error);
@@ -174,6 +189,7 @@ export default function GamePlay() {
               setYear(receivedMessage.data.year);
               setStockInfo(receivedMessage.data.stockInfo);
               setUserList(receivedMessage.data.participants);
+              setRemainTurn(receivedMessage.data.remainTurn);
               console.log("유저 정보", receivedMessage.data.participants);
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.type);
@@ -267,7 +283,7 @@ export default function GamePlay() {
           <p className={styles.turn}>{year}년</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
-          {myReady ? "CANCEL" : "READY"}
+          {ready ? "CANCEL" : "READY"}
         </button>
       </div>
       <div className={styles.chat}>
@@ -297,7 +313,9 @@ export default function GamePlay() {
 
       {myStockModal && <MyStock setMyStockModal={setMyStockModal} />}
 
-      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal} myInfoList={myInfoList} />}
+      {myInfoModal && (
+        <MyInfo setMyInfoModal={setMyInfoModal} myInfoList={myInfoList} />
+      )}
     </div>
   );
 }
