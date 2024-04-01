@@ -403,7 +403,7 @@ public class GameService {
             return 2L;
         } else if (itemName.contains("바이오")) {
             return 3L;
-        } else if (itemName.contains("통신")) {
+        } else if (itemName.contains("게임")) {
             return 4L;
         } else if (itemName.contains("화학")) {
             return 5L;

@@ -14,22 +14,21 @@ export default function InfoLIst(props) {
     setInfoStoreDetailModalOpen(true);
   };
 
-  const [info, setInfo] = useState("가나다라마바사아자차카타파하");
+  const [info, setInfo] = useState("정보가 가져오기에 실패했습니다.");
 
   const getLowStockInfo = () => {
     axios
       .get(
         `https://j10d202.p.ssafy.io/api/stock/info?id=${roomId}&item=${company}&level=1`,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          headers: { Authorization: `Bearer ${accessToken}` },
         }
       )
       .then((response) => {
         console.log(response);
         console.log("1단계 정보 가져오기 성공");
-        // setInfo(response.data.info)
+        setInfo(response.data)
+        openInfoStoreDetailModal();
       })
       .catch((error) => {
         console.log(error);
@@ -42,19 +41,21 @@ export default function InfoLIst(props) {
       .get(
         `https://j10d202.p.ssafy.io/api/stock/info?id=${roomId}&item=${company}&level=2`,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          headers: { Authorization: `Bearer ${accessToken}` },
         }
       )
       .then((response) => {
         console.log(response);
         console.log("2단계 정보 요청 성공");
-        // setInfo(response.data.info);
+        setInfo(response.data);
+        openInfoStoreDetailModal();
       })
       .catch((error) => {
         console.log(error);
         console.log("2단계 정보 요청 실패");
+        if (error.response.data.statusCode === 406) {
+          alert("보유하신 포인트가 부족합니다")
+        }
       });
   };
 
@@ -67,7 +68,6 @@ export default function InfoLIst(props) {
         <button
           className={styles.levelOneButtons}
           onClick={() => {
-            openInfoStoreDetailModal();
             getLowStockInfo();
           }}
         >
@@ -77,7 +77,6 @@ export default function InfoLIst(props) {
         <button
           className={styles.levelTwoButtons}
           onClick={() => {
-            openInfoStoreDetailModal();
             getHighStockInfo();
           }}
         >
@@ -87,7 +86,6 @@ export default function InfoLIst(props) {
       {infoStoreDetailModalOpen && (
         <InfoStoreDetail
           setInfoStoreDetailModalOpen={setInfoStoreDetailModalOpen}
-          company={company}
           info={info}
         />
       )}

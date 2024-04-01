@@ -38,7 +38,7 @@ export default function PlayerList({ userList }) {
 
       {/* 컨테이너 4조각 분할 */}
 
-      <div className="grid grid-cols-2 gap-4 p-4">
+      <div className="grid grid-cols-2 gap-4 p-1">
         {users.map((user, index) => {
           const userImage = findImageById(user.imageId);
           return (
@@ -48,15 +48,14 @@ export default function PlayerList({ userList }) {
               key={index}
               className={`${styles.playerBox} flex flex-col justify-center items-center`}
             >
-              <div className="flex flex-row w-full justify-start items-center mt-4">
+              <div className="flex flex-row w-full justify-start items-center">
                 <img
-                    className="w-24 ml-2"
+                    className="w-20 ml-2"
                     src={user.profileImg || (userImage ? userImage.src : "")}
                     alt="profile"
                     onError={onErrorProfileImg}
                 />
-                <p 
-                  className="font-Bit text-2xl mx-4">{user.userNick}</p>
+                <p className="font-Bit text-xl mx-4">{user.userNick}</p>
                   {user.isManager && (
                     <img 
                       className="w-8 mr-8" 

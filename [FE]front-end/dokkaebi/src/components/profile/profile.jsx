@@ -154,12 +154,12 @@ export default function Profile() {
   // 회원탈퇴
   const handleUserExit = () => {
     console.log("회원 탈퇴 클릭 확인");
+    window.location.href = KAKAO_OUT_URL;
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("isLogin");
     sessionStorage.removeItem('previousNickname');
     window.location.reload();
-    window.location.href = KAKAO_OUT_URL;
   }
 
   // 렌더링될 때 로컬 스토리지에서 이전 닉네임 불러오기

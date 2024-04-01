@@ -125,7 +125,7 @@ public class RoomChatController {
             gameUser.setUserId(userId);
             int idx = gr.getParticipants().indexOf(gameUser);
             if(idx != -1){
-                if(gr.getParticipants().size() != 1){ //남아있는 인원이 2명 이상
+                if(gr.getParticipants().size() > 1){ //남아있는 인원이 2명 이상
                     //log.info("방 나가기 전 방 안의 유저 수"+gr.getParticipants().size());
                     gr.getParticipants().remove(idx);
                     if(gameUser.isManager()){ //방장 권한을 가장 먼저 들어온 유저에게 위임

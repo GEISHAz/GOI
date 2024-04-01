@@ -1,16 +1,16 @@
 import React from "react";
 import styles from "./MyInfoList.module.css";
 
-export default function MyInfoList() {
+export default function MyInfoList({info}) {
   return (
     <div className={styles.myInfoListBackground}>
       <div className={styles.infoListTitleArea}>
-        <h1>A 바이오</h1>
-        <p>1턴</p>
+        <h1>{info.item}</h1>
+        <p>{info.year}</p>
       </div>
       <div className={styles.infoListMainArea}>
         <p>
-          가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하
+          {info.content}
         </p>
       </div>
     </div>

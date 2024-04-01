@@ -9,6 +9,7 @@ import ssafy.GeniusOfInvestment._common.redis.MyTradingInfo;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
 import ssafy.GeniusOfInvestment.game.dto.BuySellRequest;
 import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
+import ssafy.GeniusOfInvestment.game.dto.MyItemInfo;
 import ssafy.GeniusOfInvestment.game.service.StockService;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class StockController {
     @GetMapping("")
     public MyTradingInfo getTradingInfo(@AuthenticationPrincipal User user){
         return stockService.getTradingInfo(user);
+    }
+
+    @GetMapping("/{item}")
+    public MyItemInfo getInfoByItem(@AuthenticationPrincipal User user, @PathVariable("item") String item){
+        return stockService.getInfoByItem(user, item);
     }
 
     //정보를 구매한다.

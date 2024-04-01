@@ -10,6 +10,7 @@ import ssafy.GeniusOfInvestment._common.redis.*;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
 import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
+import ssafy.GeniusOfInvestment.game.dto.MyItemInfo;
 import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
@@ -32,18 +33,36 @@ public class StockService {
         return myTradingInfoRepository.getOneMyTradingInfo(user.getId());
     }
 
+    public MyItemInfo getInfoByItem(User user, String item){
+        MyTradingInfo mine = myTradingInfoRepository.getOneMyTradingInfo(user.getId());
+        BreakDown bd = new BreakDown();
+        bd.setItem(item);
+        int idx = mine.getBreakDowns().indexOf(bd); //내 거래내역에서 해당 주식 종목을 찾는다.
+        int share;
+        if(idx == -1) {
+            share = 0;
+        }else {
+            bd = mine.getBreakDowns().get(idx);
+            share = bd.getShares();
+        }
+        return MyItemInfo.builder()
+                .shares(share)
+                .remainVal(mine.getRemainVal())
+                .build();
+    }
+
     public BuyInfoResponse buyInformation(User user, Long grId, String item, int level){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
 
-        List<Long> purchased = new ArrayList<>(); //이 게임에서 구매된 정보 목록들
-        for(GameMarket mk : room.getMarket()){
-            if(mk.getDependencyInfo() != null){
-                purchased.add(mk.getDependencyInfo());
-            }
-        }
+//        List<Long> purchased = new ArrayList<>(); //이 게임에서 구매된 정보 목록들
+//        for(GameMarket mk : room.getMarket()){
+//            if(mk.getDependencyInfo() != null){
+//                purchased.add(mk.getDependencyInfo());
+//            }
+//        }
 
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
@@ -77,7 +96,9 @@ public class StockService {
                 }else {
                     log.info("처음 정보를 구매하는 조건문으로....");
                     Long itemId = gameService.getIdForItem(item);
-                    List<Information> infoList = informationRepository.findByAreaIdAndYearAndIdNotIn(itemId, room.getYear(), purchased);
+                    log.info("아이템 아이디: " + itemId);
+                    log.info("방의 년도: " + room.getYear());
+                    List<Information> infoList = informationRepository.findByAreaIdAndYear(itemId, room.getYear());
                     for(Information t : infoList){
                         log.info(t.getLowLv());
                     }
@@ -145,7 +166,7 @@ public class StockService {
                             .content(own.getLevel() == 1 ? info.get().getLowLv() : info.get().getHighLv())
                     .build());
         }
-        log.info(result.get(0).content());
+        //log.info(result.get(0).content());
         return result;
     }
 

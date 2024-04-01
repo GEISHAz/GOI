@@ -1,25 +1,30 @@
 .textButton {
-    width: 240px;
-    height: 80px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
-  
-  .messengerButton {
-    width: 70px;
-    height: auto;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 15px;
-    padding: 15%;
-    margin-left: 4px;
-    margin-right: 30px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
+  width: 100%;
+  max-width: 200px;
+  padding: 10%;
+  height: 100%;
+  max-height: 80px;
+  background-color : #FFF3C7;
+  color : #F7418F;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  border-radius: 15px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
-  .textButton:hover, .messengerButton:hover {
-    background-color: #ffffff; /* 호버 시 배경색 변경 */
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* 호버 시 박스 그림자 추가 */
-    transform: scale(1.05); /* 약간 확대 효과 */
-    transition: all 0.3s ease;
-  }
+.messengerButton {
+  width: 100%;
+  max-width: 70px;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 15%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.textButton:hover, .messengerButton:hover {
+  background-color: #FFF3C7;
+  color: #F7418F;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
