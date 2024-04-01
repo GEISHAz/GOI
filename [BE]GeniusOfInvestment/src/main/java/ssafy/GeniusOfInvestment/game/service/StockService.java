@@ -145,6 +145,7 @@ public class StockService {
                             .content(own.getLevel() == 1 ? info.get().getLowLv() : info.get().getHighLv())
                     .build());
         }
+        log.info(result.get(0).content());
         return result;
     }
 
