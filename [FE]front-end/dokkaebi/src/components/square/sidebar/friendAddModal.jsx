@@ -24,9 +24,9 @@ const FriendAddModal = ({ onClose }) => {
           Authorization: `Bearer ${accessToken}`
         }
       });
-      console.log("친구 요청 데이터 확인 :", response.data); // 응답 로그 출력
-      console.log("친구 요청에 대한 alarmId 확인 :", response.data.alarmId) // 
-      dispatch(setAlarmId(response.data.alarmId)); // alarmId 리덕스 스토어에 저장
+      console.log("친구 요청 데이터 확인 :", response); // 응답 로그 출력
+      console.log("친구 요청에 대한 alarmId 확인 :", response.data.data.alarmId) // 
+      dispatch(setAlarmId(response.data.data.alarmId)); // alarmId 리덕스 스토어에 저장
       alert('친구 요청을 성공적으로 보냈어요 !');
       onClose(); // 모달 닫기
     } catch (error) {
