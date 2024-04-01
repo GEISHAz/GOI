@@ -16,11 +16,14 @@ import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.jwt.JwtUtil;
 import ssafy.GeniusOfInvestment._common.redis.GameRoom;
 import ssafy.GeniusOfInvestment._common.redis.GameUser;
+import ssafy.GeniusOfInvestment._common.redis.RedisUser;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
+import ssafy.GeniusOfInvestment.game.dto.ParticipantInfo;
 import ssafy.GeniusOfInvestment.game.dto.UserListRequest;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
+import ssafy.GeniusOfInvestment.game.service.GameService;
 import ssafy.GeniusOfInvestment.square_room.dto.RoomChatMessageDto;
 import ssafy.GeniusOfInvestment.square_room.dto.response.RoomPartInfo;
 import ssafy.GeniusOfInvestment.square_room.repository.RedisUserRepository;
@@ -42,6 +45,8 @@ public class RoomChatController {
     private final RedisUserRepository redisUserRepository;
     private final RedisMyTradingInfoRepository myTradingInfoRepository;
     private final RoomRepository roomRepository;
+    private final GameService gameService;
+    private final SimpMessageSendingOperations messageTemplate;
     private Map<String, String> sessions = new HashMap<>();
 
     // 새로운 사용자가 웹 소켓을 연결할 때 실행됨
@@ -90,16 +95,16 @@ public class RoomChatController {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    log.info("유저 아직 재접속 안했지롱");
                     if(Boolean.TRUE.equals(redisTemplate.hasKey(userId))){ //5초안에 재접속 실패
+                        log.info("유저 아직 재접속 안했지롱");
                         Long uId = Long.valueOf(userId);
 
                         Optional<User> user = userRepository.findById(uId);
                         if(user.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
                         user.get().updateChannel(null);
-                        userRepository.save(user.get());
 
-                        delGameRoom(uId); //방 탈퇴 처리랑 같은 로직
+                        delGameRoom(user.get(), uId); //방 탈퇴 처리랑 같은 로직
+                        userRepository.save(user.get());
                         redisUserRepository.deleteUser(uId); //유저 동선 저장 삭제(원래 광장으로 나오면 제거될 값)
                         myTradingInfoRepository.deleteMyTradingInfo(uId); //유저의 게임에서의 거래내역 삭제
                         redisTemplate.delete(userId);
@@ -109,7 +114,7 @@ public class RoomChatController {
             };
 
             // 1초 간격으로 작업 실행
-            timer.scheduleAtFixedRate(task, 5000, 1000); //5초뒤에 task 작업 실행
+            timer.scheduleAtFixedRate(task, 3000, 1000); //5초뒤에 task 작업 실행
         }else {
             throw new CustomBadRequestException(ErrorType.FAIL_TO_GET_USER_DISCONNECT);
         }
@@ -117,7 +122,7 @@ public class RoomChatController {
         log.info("sessionId Disconnected : " + sessionId);
     }
 
-    public void delGameRoom(Long userId){
+    public void delGameRoom(User user, Long userId){
         Map<Long, GameRoom> tmp = redisGameRepository.getAllGameRooms();
         List<GameRoom> rlist = new ArrayList<>(tmp.values());
         for(GameRoom gr : rlist){
@@ -125,13 +130,24 @@ public class RoomChatController {
             gameUser.setUserId(userId);
             int idx = gr.getParticipants().indexOf(gameUser);
             if(idx != -1){
-                if(gr.getParticipants().size() > 1){ //남아있는 인원이 2명 이상
+                if(gr.getParticipants().size() > 1){ //삭제하기전 남아있는 인원이 2명 이상
                     //log.info("방 나가기 전 방 안의 유저 수"+gr.getParticipants().size());
                     gr.getParticipants().remove(idx);
                     if(gameUser.isManager()){ //방장 권한을 가장 먼저 들어온 유저에게 위임
                         gr.getParticipants().get(0).setManager(true);
                         gr.getParticipants().get(0).setReady(true);
                     }
+                    gameService.rewardByRank(user, 4, 0L);
+                    RedisUser ru = redisUserRepository.getOneRedisUser(userId);
+//                    //유저가 나가기전 상태가 게임 중이고, 나간 후에 게임방에 남은 인원이 1명일 경우(게임 종료 로직 수행)
+//                    if(ru.isStatus() && gr.getParticipants().size() == 1){
+//                        List<ParticipantInfo> rst = gameService.endGame(gr.getId());
+//                        messageTemplate.convertAndSend("/sub/room/chat/" + gr.getId(),
+//                                MessageDto.builder()
+//                                        .type(MessageDto.MessageType.GAME_RESULT)
+//                                        .data(rst)
+//                                        .build());
+//                    }
                     redisGameRepository.updateGameRoom(gr);
                 }else { //한명이 남아있었으므로 방 삭제까지 같이 수행
                     redisGameRepository.deleteGameRoom(gr.getId());
