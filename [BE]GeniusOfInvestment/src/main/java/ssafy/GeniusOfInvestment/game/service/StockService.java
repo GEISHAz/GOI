@@ -10,6 +10,7 @@ import ssafy.GeniusOfInvestment._common.redis.*;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment.game.dto.BuyInfoResponse;
 import ssafy.GeniusOfInvestment.game.dto.ChartResponse;
+import ssafy.GeniusOfInvestment.game.dto.MyItemInfo;
 import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
@@ -30,6 +31,24 @@ public class StockService {
 
     public MyTradingInfo getTradingInfo(User user){
         return myTradingInfoRepository.getOneMyTradingInfo(user.getId());
+    }
+
+    public MyItemInfo getInfoByItem(User user, String item){
+        MyTradingInfo mine = myTradingInfoRepository.getOneMyTradingInfo(user.getId());
+        BreakDown bd = new BreakDown();
+        bd.setItem(item);
+        int idx = mine.getBreakDowns().indexOf(bd); //내 거래내역에서 해당 주식 종목을 찾는다.
+        int share;
+        if(idx == -1) {
+            share = 0;
+        }else {
+            bd = mine.getBreakDowns().get(idx);
+            share = bd.getShares();
+        }
+        return MyItemInfo.builder()
+                .shares(share)
+                .remainVal(mine.getRemainVal())
+                .build();
     }
 
     public BuyInfoResponse buyInformation(User user, Long grId, String item, int level){

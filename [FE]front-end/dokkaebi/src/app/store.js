@@ -6,11 +6,12 @@ import authReducer from '../features/login/authSlice.js';
 import bgmReducer from '../features/bgm/bgmSlice.js';
 import channelReducer from '../features/channel/channelSlice.js';
 import gameReducer from '../features/game/gameSlice.js';
+import addFriendReducer from '../features/addFriend/addFriendSlice.js'
 
 const persistConfig = {
   key : 'root',
   storage,
-  whitelist : ['auth', 'game', 'channel', 'bgm']
+  whitelist : ['auth', 'game', 'channel', 'bgm', 'addFriend']
 };
 
 const rootReducer = combineReducers({
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   // access : accessReducer
   game: gameReducer,
   channel: channelReducer,
-  bgm: bgmReducer
+  bgm: bgmReducer,
+  addFriend: addFriendReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

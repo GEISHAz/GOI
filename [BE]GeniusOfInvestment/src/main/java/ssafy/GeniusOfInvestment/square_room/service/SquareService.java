@@ -271,6 +271,7 @@ public class SquareService {
                 .channelId(channelId)
                 .title(room.getTitle())
                 .isPrivate(!room.isPublic())
+                .turnNum(room.getEndYear()-room.getFromYear()+1)
                 .status(room.getStatus())
                 .userList(userList)
                 .build();

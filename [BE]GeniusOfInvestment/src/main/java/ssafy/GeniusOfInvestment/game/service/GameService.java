@@ -251,7 +251,7 @@ public class GameService {
 
     public long createRandCost(){
         int min = 3000;
-        int max = 300001;
+        int max = 210001;
 
         // Random 객체를 생성합니다.
         Random random = new Random();

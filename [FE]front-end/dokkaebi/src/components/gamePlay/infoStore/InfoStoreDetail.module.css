@@ -7,8 +7,8 @@
 
 .container {
   background: rgba(255, 255, 255);
-  width: 540px;
-  height: 240px;
+  width: 560px;
+  height: 300px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -18,20 +18,33 @@
   justify-content: center;
   align-items: center;
   border-radius: 20px;
+  padding: 4%;
+}
+
+.newsHeader {
+  background: rgb(174, 174, 174);
+  font-size: 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
 }
 
 .infoHTag {
   font-family: DNFBitBitv2;
   font-size: 24px;
   text-align: center;
-  padding: 12px; 
+  margin-top: 5%;
 }
 
 .infoPTag {
   font-family: Galmuri11;
-  padding: 12px;
-  width: 90%;
+  padding: 2% 5%;
+  width: 100%;
   height: 75%;
   word-wrap: break-word;
   text-align: center;
+  margin-bottom: 5%;
 }

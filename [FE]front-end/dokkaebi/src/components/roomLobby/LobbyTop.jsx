@@ -100,6 +100,7 @@ export default function LobbyTop({ userList, isStart }) {
       .catch((err) => {
         console.log(err);
         console.log("게임 시작 실패");
+        alert("아직 준비가 덜 된거 같아요 !")
       });
   };
 

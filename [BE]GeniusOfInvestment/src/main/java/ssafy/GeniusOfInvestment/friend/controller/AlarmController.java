@@ -14,6 +14,7 @@ import ssafy.GeniusOfInvestment._common.response.SuccessResponse;
 import ssafy.GeniusOfInvestment._common.response.SuccessType;
 import ssafy.GeniusOfInvestment.friend.dto.request.SendFriendRequest;
 import ssafy.GeniusOfInvestment.friend.dto.response.AlarmListResponse;
+import ssafy.GeniusOfInvestment.friend.dto.response.SendFriendInvitationResponse;
 import ssafy.GeniusOfInvestment.friend.service.AlarmService;
 
 @RestController
@@ -29,9 +30,8 @@ public class AlarmController {
     }
 
     @PostMapping("/send/invitation")
-    public SuccessResponse<Void> sendFriendInvitation(@RequestBody SendFriendRequest sendFriendRequest){
-        alarmService.sendFriendInvitation(sendFriendRequest);
-        return SuccessResponse.from(SuccessType.SEND_FRIEND_INVITATION);
+    public SuccessResponse<SendFriendInvitationResponse> sendFriendInvitation(@RequestBody SendFriendRequest sendFriendRequest){
+        return SuccessResponse.of(SuccessType.SEND_FRIEND_INVITATION, alarmService.sendFriendInvitation(sendFriendRequest));
     }
 
     @PutMapping("/accept/{id}/invitation")

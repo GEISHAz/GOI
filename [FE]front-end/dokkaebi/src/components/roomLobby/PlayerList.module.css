@@ -36,4 +36,9 @@
 
 .playerReadyActive {
   color: red;
-}  
+}
+
+.kickButton {
+  color : #F7418F;
+  background-color: #FFF3C7;
+}
