@@ -131,7 +131,7 @@
 
 .myMenu {
   z-index: 9;
-  height: 110px;
+  height: 160px;
   position: absolute;
   display: flex;
   flex-direction: column;
