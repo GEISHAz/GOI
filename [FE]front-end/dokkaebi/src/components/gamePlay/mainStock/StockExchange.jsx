@@ -1,26 +1,86 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./StockExchange.module.css";
 import chart from '../../../images/gamePlay/StockChart.jpg'
 import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
 
 
 export default function StockExchange(props) {
+  const accessToken = sessionStorage.getItem("accessToken");
+  const roomId = sessionStorage.getItem("roomId");
   const dispatch = useDispatch();
-  const myStock = props.myStock
-  const myCash = useSelector((state) => state.game.money);
+  const [myStock, setMyStock] = useState(0);
+  const [myCash, setMyCash] = useState(0);
   const [quantity, setQuantity] = useState(0); // 매수 또는 매도할 주 수 상태
   const [myStocks, setMyStocks] = useState(0); // 보유 주 수 상태
-  const [cash, setCash] = useState(myCash); // 보유 현금 상태
+  const [cash, setCash] = useState(0); // 보유 현금 상태
   const stockExchangeBackground = useRef();
   const onErrorChartImg = (e) => {
     e.target.src = chart;
   };
 
+  useEffect(() => {
+    axios
+      .get(`https://j10d202.p.ssafy.io/api/stock/${props.item}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        console.log("내 주식 가져오기 성공");
+        setMyStock(response.data.shares);
+        setMyCash(response.data.remainVal);
+        setCash(response.data.remainVal);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("내 주식 가져오기 실패");
+      });
+  }, []);
+
   // 매수 또는 매도 버튼 클릭 시 실행되는 함수
   const handleTransaction = () => {
-    dispatch(setMoney(cash))
+    // dispatch(setMoney(cash))
+    if (props.transactionType === "buy") {
+      axios
+        .put(`https://j10d202.p.ssafy.io/api/stock/buy`,
+        { grId: roomId, item: props.item, share: quantity},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          console.log("주식 구매 성공");
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("주식 구매 실패");
+        });
+    } else if (props.transactionType === "sell") {
+      axios
+        .put(`https://j10d202.p.ssafy.io/api/stock/sell`, 
+        { grId: roomId, item: props.item, share: quantity},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          console.log("주식 판매 성공");
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("주식 판매 실패");
+        });
+    }
+
     // 모달 닫기
     props.setStockExchangeModal(false);
+    // if
   };
 
   // 입력란에 숫자가 변경될 때마다 상태 업데이트
@@ -39,6 +99,7 @@ export default function StockExchange(props) {
       setMyStocks(parseInt(myStock) - inputQuantity);
       setCash(myCash + (props.price * inputQuantity));
       // console.log(myStock)
+
     }
   };
 
@@ -60,7 +121,7 @@ export default function StockExchange(props) {
     >
       <div className={styles.container}>
         <div className={styles.companyInfoArea}>
-          <h1 className={styles.companyName}>{props.company}</h1>
+          <h1 className={styles.companyName}>{props.item}</h1>
           {/* 주식차트 예시 */}
           <img
             src=""
@@ -111,9 +172,9 @@ export default function StockExchange(props) {
               onClick={handleTransaction}
               disabled={
                 (props.transactionType === "buy" && props.price * quantity > myCash) ||
-                (props.transactionType === "sell" && (quantity > myStocks || myStocks === 0))
+                (props.transactionType === "sell" && (quantity > myStock || myStocks < 0))
               }
-              style={{ opacity: (props.transactionType === "buy" && props.price * quantity > myCash) || (props.transactionType === "sell" && (quantity > myStocks || myStocks === 0)) ? 0.5 : 1 }}
+              style={{ opacity: (props.transactionType === "buy" && props.price * quantity > myCash) || (props.transactionType === "sell" && (quantity > myStock || myStocks < 0)) ? 0.5 : 1 }}
             >
               {props.transactionType === "buy" ? "매수" : "매도"}
             </button>
