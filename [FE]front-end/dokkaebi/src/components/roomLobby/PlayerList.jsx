@@ -10,7 +10,7 @@ import yellow from "../../images/character/yellow.gif";
 import pink from "../../images/character/pink.gif";
 import orange from "../../images/character/orange.gif";
 
-export default function PlayerList({ userList }) {
+export default function PlayerList({ userList, amIManager, handleKick }) {
   // 이미지 로드 실패 시 대체 이미지를 설정하는 함수
   const onErrorProfileImg = (e) => {
     e.target.src = profile;
@@ -32,7 +32,6 @@ export default function PlayerList({ userList }) {
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   }
 
-
   return (
     <div className={styles.playerContainer}>
 
@@ -40,7 +39,7 @@ export default function PlayerList({ userList }) {
 
       <div className="grid grid-cols-2 gap-4 p-1">
         {users.map((user, index) => {
-          const userImage = findImageById(user.imageId);
+          const userImage = findImageById(user?.imageId);
           return (
 
             // 플레이어 정보를 담은 컨테이너 playerBox
@@ -51,17 +50,22 @@ export default function PlayerList({ userList }) {
               <div className="flex flex-row w-full justify-start items-center">
                 <img
                     className="w-20 ml-2"
-                    src={user.profileImg || (userImage ? userImage.src : "")}
+                    src={user?.profileImg || (userImage ? userImage.src : "")}
                     alt="profile"
                     onError={onErrorProfileImg}
                 />
-                <p className="font-Bit text-xl mx-4">{user.userNick}</p>
+                <p className="font-Bit text-xl mx-4">{user?.userNick}</p>
                   {user.isManager && (
                     <img 
                       className="w-8 mr-8" 
                       src={crown} 
                       alt="방장 아이콘" />
-                  )}                
+                  )}
+                  {amIManager && !user.isManager && (
+                    <button onClick={() => handleKick(user?.userId)} className={styles.kickButton}>
+                      강퇴
+                    </button>
+                  )}          
               </div>
 
               <div className="flex flex-row w-full justify-between items-center">

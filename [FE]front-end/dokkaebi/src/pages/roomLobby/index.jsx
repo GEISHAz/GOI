@@ -29,6 +29,7 @@ export default function userReadyRoom() {
   const location = useLocation();
   const stompClientRef = useRef(null);
   const userNickname = useSelector((state) => state.auth.userNickname);
+  const channelId = sessionStorage.getItem("channelId");
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
   const [response, setResponse] = useState(location.state.response.data);
   const [userList, setUserList] = useState([]);
@@ -38,6 +39,7 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     if (response.userList) {
+      console.log('유저 리스트 확인 :', response.userList)
       setUserList(response.userList);
     } else {
       setUserList(response);
@@ -62,14 +64,14 @@ export default function userReadyRoom() {
     const socket = new SockJS(socketUrl);
     // const stompClient = Stomp.over(socket);
     stompClientRef.current = Stomp.over(socket);
-    console.log("스톰프 확인", stompClientRef.current);
+    // console.log("스톰프 확인", stompClientRef.current);
 
     stompClientRef.current.connect(
       {
         Authorization: `Bearer ${accessToken}`,
       },
       () => {
-        console.log("구독 시도");
+        // console.log("구독 시도");
         console.log("roomLobby 방 번호 :", roomId);
         stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
@@ -84,9 +86,21 @@ export default function userReadyRoom() {
                 { sender: receivedMessage.sender, message: receivedMessage.message },
               ]);
             }
+            
+            if (receivedMessage.type && receivedMessage.type === "ROOM_KICK") {
+              console.log("강퇴 로직 실행된 후 새로 받은 데아터 확인", receivedMessage.data);
+              setUserList(receivedMessage.data);
+
+               // 강퇴된 유저가 자신인지 확인
+              const isKicked = !receivedMessage.data.some(user => user.userId === Number(userId));
+              if (isKicked) {
+                alert("당신은 우리와 함께 할 수 없게되었습니다..");
+                navigate(`/square/${channelId}`);
+              }
+            }
 
             if (receivedMessage.type === "ROOM_ENTER") {
-              // console.log("타입 확인", receivedMessage.type);
+              console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
@@ -119,7 +133,7 @@ export default function userReadyRoom() {
         clearTimeout(reconnectInterval);
       }
     };
-  }, []);
+  }, [accessToken, roomId]);
 
   // 메세지 보내기 함수
   const handleSendMessages = (message) => {
@@ -148,12 +162,39 @@ export default function userReadyRoom() {
     }
   };
 
+  // 유저 강퇴 함수
+  const handleKick = async (userIdToKick) => {
+    try {
+      console.log("내보내려는 유저 id :", userIdToKick)
+      console.log("현재 방 번호 :", roomId)
+      await axios.put('https://j10d202.p.ssafy.io/api/room/kick', {
+        userId: userIdToKick,
+        roomId: roomId,
+      }, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      alert('강퇴했어요');
+      // 강퇴 처리 후유저 리스트를 다시 업데이트
+      // setUserList(response.data); 
+
+    } catch (error) {
+      console.error('강퇴 처리 중 에러 발생', error);
+      alert('강퇴 처리 중 문제가 발생했습니다.');
+    }
+  };
+
   return (
     <div style={backgroundStyle}>
       <LobbyTop userList={userList} isStart={isStart} />
       {/* 로비에 들어온 유저 리스트와 로비 채팅 컨테이너 */}
       <div className="flex flex-col items-center">
-        <PlayerList userList={userList} />
+        <PlayerList
+          userList={userList}
+          amIManager={amIManager}
+          handleKick={handleKick}
+        />
         <div className={`flex justify-center ${styles.chatSuperCont}`}>
           <LobbyChat 
             handleSendMessages={handleSendMessages} // 메세지 보내기 함수
