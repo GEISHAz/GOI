@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface InformationRepository extends JpaRepository<Information, Long> {
     List<Information> findByAreaIdAndYear(Long id, int year);
-    List<Information> findByAreaIdAndYear(Long id, int year, List<Long> list);
+    //List<Information> findByAreaIdAndYear(Long id, int year, List<Long> list);
 }
