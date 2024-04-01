@@ -60,11 +60,10 @@ export default function InvestmentInfo({ stockInfo }) {
       {stockExchangeModal && (
         <StockExchange
           setStockExchangeModal={setStockExchangeModal}
-          company={stockInfo.item}
+          item={stockInfo.item}
           price={stockInfo.thisCost}
           percent={stockInfo.percent}
           transactionType={transactionType}
-          myStock={0}
         />
       )}
     </div>

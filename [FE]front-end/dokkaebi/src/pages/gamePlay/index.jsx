@@ -33,7 +33,7 @@ export default function GamePlay() {
   const isManager = sessionStorage.getItem("isManager");
   const [userList, setUserList] = useState([]);
   const [userReadyList, setUserReadyList] = useState([]);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
   const [myReady, setMyReady] = useState([]);
   const [ready, setReady] = useState(false);
@@ -48,24 +48,26 @@ export default function GamePlay() {
   const [year, setYear] = useState(0);
 
   useEffect(() => {
-    setReady(false);
+    setMyReady(false);
   }, [year]);
 
   useEffect(() => {
     console.log("유저 레디 정보", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
-    console.log("내 레디 상태", myReady);
-    setReady(myReady ? myReady.isReady : false);
+    console.log("내 레디 상태", myReady.isReady ? myReady.isReady : myReady);
+    setReady(myReady.isReady ? myReady.isReady : ready);
+    // setReady(myReady.isReady ? myReady.isReady : ready);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
   }, [userReadyList]);
 
   useEffect(() => {
-    console.log("유저 정보", userList);
+    // console.log("유저 정보", userList);
     setCurrentUser(userList.find((user) => user.userId == userId));
-    console.log("현재 유저 정보", currentUser);
+    // setReady(currentUser.isReady? currentUser.isReady : ready);
+    // console.log("현재 유저 정보", currentUser);
     setOtherUsers(userList.filter((user) => user.userId != userId));
-    console.log("나머지 유저 정보", otherUsers);
+    // console.log("나머지 유저 정보", otherUsers);
   }, [userList]);
 
   useEffect(() => {
@@ -127,8 +129,8 @@ export default function GamePlay() {
         }
       )
       .then((response) => {
-        console.log(response);
-        // setReady(!ready);
+        console.log("dkdk",response);
+        // setMyReady(!myReady);
       })
       .catch((error) => {
         console.error("API 요청에 실패했습니다:", error);
@@ -265,7 +267,7 @@ export default function GamePlay() {
           <p className={styles.turn}>{year}년</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
-          {ready ? "CANCEL" : "READY"}
+          {myReady ? "CANCEL" : "READY"}
         </button>
       </div>
       <div className={styles.chat}>
