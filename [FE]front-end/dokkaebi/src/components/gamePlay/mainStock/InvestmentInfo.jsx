@@ -37,7 +37,7 @@ export default function InvestmentInfo({ stockInfo }) {
         <p>{stockInfo.item}</p>
       </div>
       <div className={styles.jusu}>
-        <p>{stockInfo.thisCost}/주</p>
+        <p>{stockInfo.thisCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/주</p>
       </div>
       <div className={`${styles.upDown} ${colorClass}`}>
         <p>{stockInfo.percent}%</p>

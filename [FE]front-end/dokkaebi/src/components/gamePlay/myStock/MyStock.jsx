@@ -45,17 +45,19 @@ export default function MyStock(props) {
     >
       <div className={styles.container}>
         <h1 className={styles.title}>내 보유 주식</h1>
-        <div className={styles.total}>
-          <p className={styles.totalText}>평가 금액</p>
-          <p className={styles.totalValue}>{total}</p>
-        </div>
-        <div className={styles.rest}>
-          <p className={styles.restText}>현금</p>
-          <p className={styles.restValue}>{rest}</p>
-        </div>
-        <div className={styles.yoy}>
-          <p className={styles.yoyText}>작년대비 수익률</p>
-          <p className={styles.yoyValue}>{yoy}</p>
+        <div className={styles.myInfors}>
+          <div className={styles.total}>
+            <p className={styles.totalText}>평가 금액</p>
+            <p className={styles.totalValue}>{total}</p>
+          </div>
+          <div className={styles.yoy}>
+            <p className={styles.yoyText}>작년대비 수익률</p>
+            <p className={styles.yoyValue}>{yoy}</p>
+          </div>
+          <div className={styles.rest}>
+            <p className={styles.restText}>현금</p>
+            <p className={styles.restValue}>{rest}</p>
+          </div>
         </div>
         <div className={styles.myStockDetail}>
           {myStocks.map((stock, index) => (
