@@ -62,8 +62,9 @@ public class RoomController {
         return json;
     }
 
-    @PostMapping("/kick")
-    public Map<String, String> kickUser(@AuthenticationPrincipal User user, @RequestBody KickRequest kinfo){
+    @PutMapping("/kick")
+    public List<RoomPartInfo> kickUser(@AuthenticationPrincipal User user, @RequestBody KickRequest kinfo){
+        log.info("RoomController kickUser start");
         List<RoomPartInfo> rInfo = roomService.kickUser(user, kinfo.userId(), kinfo.roomId());
         messageTemplate.convertAndSend("/sub/room/chat/" + kinfo.roomId(),
                 MessageDto
@@ -74,7 +75,7 @@ public class RoomController {
 
         Map<String, String> json = new HashMap<>();
         json.put("msg", "유저 강퇴 완료");
-        return json;
+        return rInfo;
     }
 
     @PostMapping("/ready/{id}")

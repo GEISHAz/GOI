@@ -199,7 +199,9 @@ public class RoomService {
 
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
+        log.info("gameuser의 Id" + gameUser.getUserId());
         int idx = room.getParticipants().indexOf(gameUser);
+        log.info("삭제할 redis gameuser 안 idx 값 ="+idx);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         gameUser = room.getParticipants().get(idx); //강퇴를 요청한 유저의 객체
         if(!gameUser.isManager()){
@@ -208,6 +210,7 @@ public class RoomService {
         GameUser target = new GameUser();
         target.setUserId(targetId);
         idx = room.getParticipants().indexOf(target);
+        log.info("강퇴 요청한 유저 id"+target.getUserId()+"  포인트 =="+target.getPoint());
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         room.getParticipants().remove(idx); //강퇴 당할 유저를 redis 참가자 리스트에서 삭제
         redisGameRepository.updateGameRoom(room);
