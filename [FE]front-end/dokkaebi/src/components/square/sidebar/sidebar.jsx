@@ -200,10 +200,10 @@ const Sidebar = ({ toggleSidebar }) => {
   // 친구 요청 알림에 대한 새로운 웹소켓 연결
   useEffect(() => {
     // alarmId가 null이면 연결안함
-    if (!alarmId) {
-      console.log("친구 요청 온 거 없음@");
-      return;
-    }
+    // if (!alarmId) {
+    //   console.log("친구 요청 온 거 없음@");
+    //   return;
+    // }
 
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
@@ -242,7 +242,7 @@ const Sidebar = ({ toggleSidebar }) => {
         console.log("친구요청알림 웹소켓 연결 해제");
       }
     };
-  }, [accessToken, alarmId]);
+  }, [alarmId]);
 
   return (
     <aside className={styles.sidebar}>
