@@ -7,7 +7,9 @@ import Investment from "../../components/gamePlay/mainStock/Investment";
 import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
+import Result from "../../components/gamePlay/Result";
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -19,13 +21,17 @@ export default function GamePlay() {
   // const [response, setResponse] = useState(
   //   location.state ? location.state.response.data : null
   // );
+
+  const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   const roomId = sessionStorage.getItem("roomId");
+  const channel = sessionStorage.getItem("channel");
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
   const [myInfoModal, setMyInfoModal] = useState(false);
+  const [resultModal, setResultModal] = useState(false);
 
   const stompClientRef = useRef(null);
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
@@ -47,6 +53,8 @@ export default function GamePlay() {
   const [timerMSec, setTimerMSec] = useState(100);
   const [remainTurn, setRemainTurn] = useState(99);
   const [year, setYear] = useState(0);
+
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
     setMyReady(false);
@@ -73,32 +81,38 @@ export default function GamePlay() {
 
   useEffect(() => {
     if (timerMSec === 0 && isManager === "true") {
-      axios
-        .get(`https://j10d202.p.ssafy.io/api/game/next?id=${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("API 요청에 실패했습니다:", error);
-        });
-    }
-    if (timerMSec === 0 && isManager === "true" && remainTurn === 0) {
-      axios
-        .get(`https://j10d202.p.ssafy.io/api/game/end/${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error("API 요청에 실패했습니다:", error);
-        });
+      if (remainTurn === 0) {
+        axios
+          .put(
+            `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            setResultModal(true);
+          })
+          .catch((error) => {
+            console.error("게임 종료 요청에 실패했습니다:", error);
+          });
+      } else {
+        axios
+          .get(`https://j10d202.p.ssafy.io/api/game/next?id=${roomId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("턴넘기기 요청에 실패했습니다:", error);
+          });
+      }
     }
   }, [timerMSec]);
 
@@ -126,7 +140,7 @@ export default function GamePlay() {
           console.log(response);
         })
         .catch((error) => {
-          console.error("요청에 실패했습니다:", error);
+          console.error("게임 시작요청에 실패했습니다:", error);
         });
     }
   };
@@ -148,7 +162,7 @@ export default function GamePlay() {
         setMyReady(false);
       })
       .catch((error) => {
-        console.error("API 요청에 실패했습니다:", error);
+        console.error("레디 요청에 실패했습니다:", error);
       });
   };
 
@@ -165,6 +179,24 @@ export default function GamePlay() {
       })
       .catch((error) => {
         console.error("구매 정보 확인 정보 요청에 실패했습니다:", error);
+      });
+  };
+
+  const exitGame = () => {
+    axios
+      .delete(`https://j10d202.p.ssafy.io/api/game/exit/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        sessionStorage.removeItem("roomId");
+        sessionStorage.removeItem("isManager");
+        navigate(`/square/${channel}`);
+      })
+      .catch((error) => {
+        console.error("나가기 요청에 실패했습니다:", error);
       });
   };
 
@@ -202,7 +234,8 @@ export default function GamePlay() {
               console.log("레디 정보??????????????????", receivedMessage.data);
               setUserReadyList(receivedMessage.data.list);
             } else if (receivedMessage.type === "GAME_RESULT") {
-              console.log("결과 정보", receivedMessage.data.winner);
+              console.log("결과 정보", receivedMessage.data);
+              setResult(receivedMessage.data);
             }
           });
         },
@@ -287,12 +320,13 @@ export default function GamePlay() {
         </button>
       </div>
       <div className={styles.chat}>
-        <Chat roomId={roomId}/>
+        <Chat roomId={roomId} />
       </div>
       <div className={styles.investment}>
         <Investment stockInfo={stockInfo} />
       </div>
       <div className={styles.myMenu}>
+        <button onClick={exitGame}>나가기</button>
         <button onClick={openMyStockModal}>내 주식 확인</button>
         <button
           onClick={() => {
@@ -315,6 +349,10 @@ export default function GamePlay() {
 
       {myInfoModal && (
         <MyInfo setMyInfoModal={setMyInfoModal} myInfoList={myInfoList} />
+      )}
+
+      {resultModal && (
+        <Result setResultModal={setResultModal} result={result} />
       )}
     </div>
   );
