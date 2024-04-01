@@ -18,8 +18,11 @@ export default function InfoStoreDetail(props) {
     style={{position:'fixed', top:"50%", left:"50%", transform: "translate(-50%, -50%)"}}
     >
       <div className={styles.container}>
-        <h1 className={styles.infoHTag}>{props.company}</h1>
-        <p className={styles.infoPTag}>{props.info}</p>
+        <div className={styles.newsHeader}>투귀일보</div>
+        <div className="w-full border-2 border-black mt-2">
+          <h1 className={styles.infoHTag}>{props.company}</h1>
+          <p className={styles.infoPTag}>{props.info}</p>
+        </div>
       </div>
     </div>
   )
