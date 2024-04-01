@@ -287,7 +287,7 @@ export default function GamePlay() {
         </button>
       </div>
       <div className={styles.chat}>
-        <Chat />
+        <Chat roomId={roomId}/>
       </div>
       <div className={styles.investment}>
         <Investment stockInfo={stockInfo} />

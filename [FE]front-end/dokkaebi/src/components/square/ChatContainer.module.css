@@ -1,14 +1,10 @@
 /* 기존 스타일 */
 .chatComponents {
-  /* background-color: #FB929E; */
   background-color: rgba(0, 0, 0, 0.6);
-  /* opacity: 90%; */
-  /* border: 2px solid white; */
   padding: 0.5%;
   width: 90%;
   height: 100%;
   max-height: 300px;
-  /* margin-left: 2%; */
   border-radius: 20px;
   display: flex; 
   flex-direction: column; 
