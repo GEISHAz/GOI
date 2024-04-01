@@ -47,9 +47,14 @@ export default function GamePlay() {
   const [year, setYear] = useState(0);
 
   useEffect(() => {
+    setReady(false);
+  }, [year]);
+
+  useEffect(() => {
     console.log("유저 레디 정보", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
     console.log("내 레디 상태", myReady);
+    setReady(myReady ? myReady.isReady : false);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
   }, [userReadyList]);
@@ -258,7 +263,7 @@ export default function GamePlay() {
           <p className={styles.turn}>{year}년</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
-          {myReady ? "CANCEL" : "READY"}
+          {ready ? "CANCEL" : "READY"}
         </button>
       </div>
       <div className={styles.chat}>
