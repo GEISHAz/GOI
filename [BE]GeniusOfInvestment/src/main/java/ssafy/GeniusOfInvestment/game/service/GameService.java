@@ -103,9 +103,43 @@ public class GameService {
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         selTwoItems(stockInfos, selectedTwo);
         selOneItems(stockInfos, selectedOne);
-//        for(StockInfoResponse st : stockInfos){
-//            System.out.print(st.getItem() + " ");
-//        }
+        //종목명 A, B, C, D, E, F, G, H, I, J로 바꾸는 로직
+        for(int i=0; i<10; i++){
+            StringBuilder sb = new StringBuilder(stockInfos.get(i).getItem());
+            switch (i){
+                case 0:
+                    sb.replace(0, 1, "A");
+                    break;
+                case 1:
+                    sb.replace(0, 1, "B");
+                    break;
+                case 2:
+                    sb.replace(0, 1, "C");
+                    break;
+                case 3:
+                    sb.replace(0, 1, "D");
+                    break;
+                case 4:
+                    sb.replace(0, 1, "E");
+                    break;
+                case 5:
+                    sb.replace(0, 1, "F");
+                    break;
+                case 6:
+                    sb.replace(0, 1, "G");
+                    break;
+                case 7:
+                    sb.replace(0, 1, "H");
+                    break;
+                case 8:
+                    sb.replace(0, 1, "I");
+                    break;
+                case 9:
+                    sb.replace(0, 1, "J");
+                    break;
+            }
+            stockInfos.get(i).setItem(sb.toString());
+        }
 
         //redis의 GameMarket객체에 현재(초기) 시장 상황 저장하기
         List<GameMarket> gms = new ArrayList<>();
