@@ -40,6 +40,7 @@ export default function GamePlay() {
   const [otherUsersReady, setOtherUsersReady] = useState([]);
 
   const [stockInfo, setStockInfo] = useState([]);
+  const [myInfoList, setMyInfoList] = useState([]);
 
   const [timerMin, setTimerMin] = useState("3");
   const [timerSec, setTimerSec] = useState("00");
@@ -143,6 +144,7 @@ export default function GamePlay() {
       })
       .then((response) => {
         console.log("구매 정보 내역", response);
+        setMyInfoList(response.data);
       })
       .catch((error) => {
         console.error("구매 정보 확인 정보 요청에 실패했습니다:", error);
@@ -293,7 +295,7 @@ export default function GamePlay() {
 
       {myStockModal && <MyStock setMyStockModal={setMyStockModal} />}
 
-      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal} />}
+      {myInfoModal && <MyInfo setMyInfoModal={setMyInfoModal} myInfoList={myInfoList} />}
     </div>
   );
 }
