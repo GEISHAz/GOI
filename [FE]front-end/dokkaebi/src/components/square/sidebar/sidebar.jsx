@@ -11,7 +11,9 @@ import styles from './sidebar.module.css';
 
 const Sidebar = ({ toggleSidebar }) => {
   const client = useRef(null); // 구독할 클라이언트
-  const subscriptionRef = useRef(null); // 구독할 때 고유 식별자 지정
+  const alarmClient = useRef(null); // 친구 요청 알림용 클라이언트
+  const subscriptionRef = useRef(null); // 채팅 구독할 때 고유 식별자 지정
+  const subAlarmRef = useRef(null);
   const [selectedFriend, setSelectedFriend] = useState(null); // 친구 목록 중 친구 1명을 선택했을 때 상태 관리
   const [isFriendList, setIsFriendList] = useState([]); // 친구 목록 관리
   const [showPrompt, setShowPrompt] = useState(true); // 음악 멈춤 안내 관리
@@ -20,7 +22,9 @@ const Sidebar = ({ toggleSidebar }) => {
   const [isFriendChat, setIsFriendChat] = useState({}); // 받은 메시지 관리
   const [newMessageCounts, setNewMessageCounts ] = useState({}); // 새 메시지 알림 상태
   const [openMessengerId, setOpenMessengerId] = useState(null); // 메신저가 열린 친구의 ID 관리
+  const [newFriendRequest, setNewFriendRequest] = useState(false); // 새로운 친구 요청에 대한 상태 관리
   const userNickname = useSelector((state) => state.auth.userNickname);
+  const alarmId = useSelector((state) => state.addFriend.alarmId);
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   
@@ -130,11 +134,6 @@ const Sidebar = ({ toggleSidebar }) => {
                   }));
                 }
   
-                if (msg.type && msg.type === "ACCEPT") {
-                  console.log("상대가 친구를 수락함")
-                  friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
-                }
-  
                 if (msg.type === "TALK" && msg.sender !== userNickname && openMessengerId !== friendListId) {
                   // 상대에게 받은 메시지 수 업데이트
                   setNewMessageCounts(prev => ({
@@ -198,13 +197,63 @@ const Sidebar = ({ toggleSidebar }) => {
     }
   };
 
+  // 친구 요청 알림에 대한 새로운 웹소켓 연결
+  useEffect(() => {
+    // alarmId가 null이면 연결안함
+    if (!alarmId) {
+      console.log("친구 요청 온 거 없음@");
+      return;
+    }
+
+    const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
+    alarmClient.current = Stomp.over(sock);
+  
+    alarmClient.current.connect({
+      Authorization: `Bearer ${accessToken}`,
+    }, () => {
+      console.log("친구 요청 알림 웹소켓 연결@");
+      console.log("alarmId 확인 :", alarmId)
+  
+      // 친구 요청 알림에 대해 구독
+      subAlarmRef.current = alarmClient.current.subscribe(
+        '/sub/friend/alarm/' + `${alarmId}`,
+        (message) => {
+          const receivedMsg = JSON.parse(message.body);
+          console.log("새로운 친구 요청 받음:", receivedMsg);
+          setNewFriendRequest(true); // 새로운 친구 요청이 수신되었다면 상태 업데이트
+
+          if (msg.type && msg.type === "ACCEPT") {
+            console.log("상대가 친구를 수락함")
+            friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
+          }
+        });
+      }, (error) => {
+        console.error('친구 요청 알림 웹소켓 연결 에러:', error);
+      });
+  
+    return () => {
+      if (subAlarmRef.current) {
+        subAlarmRef.current.unsubscribe();
+        console.log("친구요청알림 웹소켓 구독 해제");
+      }
+
+      if (alarmClient.current && alarmClient.current.connected) {
+        alarmClient.current.disconnect();
+        console.log("친구요청알림 웹소켓 연결 해제");
+      }
+    };
+  }, [accessToken, alarmId]);
+
   return (
     <aside className={styles.sidebar}>
       {/* 사이드바 내용 */}
       <nav>
         <div className={`flex flex-row p-4 ${styles.menuBox}`}>
           <button className={`text-center text-white text-2xl font-bold ${styles.menu}`} onClick={openAddFriendModal}>친구 추가</button>
-          <button className={`text-center text-white text-2xl font-bold ${styles.menu}`} onClick={openAlarmModal}>알림</button>
+          <button className={`text-center text-white text-2xl font-bold ${styles.menu}`} onClick={openAlarmModal}>
+            {newFriendRequest && <span className={styles.newFriendRequest}>New</span>}
+            알림
+          </button>
         </div>
       </nav>
 
