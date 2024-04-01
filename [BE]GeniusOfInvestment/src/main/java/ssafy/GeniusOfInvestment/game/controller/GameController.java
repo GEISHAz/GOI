@@ -119,7 +119,7 @@ public class GameController {
             return json;
         }else {
             //임시(얘기 해봐야 될듯)
-            sendMsg(grId, num, MessageDto.MessageType.GAME_RESULT);
+            sendMsg(grId, num, MessageDto.MessageType.ROOM_EXIT);
             json.put("msg", "게임 탈퇴");
             return json;
         }
