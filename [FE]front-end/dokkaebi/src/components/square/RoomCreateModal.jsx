@@ -23,8 +23,8 @@ export default function RoomCreateModal({ onClose, userName }) {
   const channelId = sessionStorage.getItem("channelId");
 
   // startYear와 endYear를 위한 상태 추가
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
+  const [startYear, setStartYear] = useState(2011);
+  const [endYear, setEndYear] = useState(2015);
   const [endYearOptions, setEndYearOptions] = useState([]);
 
 
