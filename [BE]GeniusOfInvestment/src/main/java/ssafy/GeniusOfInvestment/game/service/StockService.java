@@ -1,6 +1,7 @@
 package ssafy.GeniusOfInvestment.game.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssafy.GeniusOfInvestment._common.entity.Information;
 import ssafy.GeniusOfInvestment._common.entity.User;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StockService {
@@ -73,13 +75,18 @@ public class StockService {
                             .build());
                     mine.setPoint(myPoint);
                 }else {
+                    log.info("처음 정보를 구매하는 조건문으로....");
                     Long itemId = gameService.getIdForItem(item);
                     List<Information> infoList = informationRepository.findByAreaIdAndYearAndIdNotIn(itemId, room.getYear(), purchased);
+                    for(Information t : infoList){
+                        log.info(t.getLowLv());
+                    }
                     Random random = new Random();
                     int randIdx = random.nextInt(infoList.size());
                     Information ranInfo = infoList.get(randIdx);
                     if(level == 1){
                         if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        log.info("1단계 정보를 구매하는 조건문");
                         content = ranInfo.getLowLv();
                         myPoint -= 2;
                     }else {
@@ -104,6 +111,8 @@ public class StockService {
         room.getParticipants().set(idx, mine);
         gameRepository.updateGameRoom(room);
 
+        log.info("구매한 정보: " + content);
+        log.info("구매 완료!!!");
         return BuyInfoResponse.builder()
                 .item(item)
                 .level(level)
@@ -136,6 +145,7 @@ public class StockService {
                             .content(own.getLevel() == 1 ? info.get().getLowLv() : info.get().getHighLv())
                     .build());
         }
+        log.info(result.get(0).content());
         return result;
     }
 
