@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./RoomCreateModal.module.css";
@@ -10,7 +10,7 @@ import {
   setRoomPassword,
   setRoomYears,
 } from "../../features/square/roomSlice.js";
-import RangeSlider from "./RangeSlider.jsx";
+
 
 export default function RoomCreateModal({ onClose, userName }) {
   const dispatch = useDispatch();
@@ -23,14 +23,33 @@ export default function RoomCreateModal({ onClose, userName }) {
   const channelId = sessionStorage.getItem("channelId");
 
   // startYear와 endYear를 위한 상태 추가
-  const [startYear, setStartYear] = useState(2011);
-  const [endYear, setEndYear] = useState(2015);
+  const [startYear, setStartYear] = useState('');
+  const [endYear, setEndYear] = useState('');
+  const [endYearOptions, setEndYearOptions] = useState([]);
+
+
+  // 시작 연도가 변경될 때 종료 연도의 옵션을 업데이트하는 효과
+  useEffect(() => {
+    if (startYear) {
+      const minEndYear = Math.max(Number(startYear) + 4, 2015); // 최소 종료 연도는 시작 연도 + 4년, 2015년부터 시작
+      const options = [];
+      for (let year = minEndYear; year <= 2023; year++) {
+        options.push(year);
+      }
+      setEndYearOptions(options);
+      setEndYear(minEndYear); // 자동으로 최소 가능한 종료 연도를 설정
+    } else {
+      setEndYearOptions([]);
+      setEndYear('');
+    }
+  }, [startYear]);
+
 
   // RangeSlider에서 startYear와 endYear가 변경될 때 부모 컴포넌트의 상태를 업데이트하는 콜백 함수
-  const handleYearChange = (start, end) => {
-    setStartYear(start);
-    setEndYear(end);
-  };
+  // const handleYearChange = (start, end) => {
+  //   setStartYear(start);
+  //   setEndYear(end);
+  // };
 
   const handlePrivateChange = (e) => {
     // 체크박스 상태 변경 함수
@@ -121,23 +140,9 @@ export default function RoomCreateModal({ onClose, userName }) {
         {/* 모달 타이틀 */}
         <h1 className="font-Bit text-4xl mb-10">방 만들기</h1>
 
+
         {/* 방 만들기 인풋 그리드 */}
-        <div className="grid grid-cols-2 grid-rows-3 gap-2 w-full mb-4 mr-40">
-          {/* 방 번호 */}
-          {/* 방 번호 생성창에서는 보여줄 필요 없으므로 일단 주석 처리 */}
-          {/* <div className="flex justify-end items-center">
-            <label htmlFor="roomNumber" className="text-2xl mr-2">방 번호</label>
-          </div>
-          <div>
-            <input
-              type="text"
-              id="roomNumber"
-              name="roomNumber"
-              value="1001"
-              disabled
-              className="border-2 border-gray-300 p-1"
-            />
-          </div> */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-2 w-full mb-4 mr-40">
 
           {/* 방 제목 */}
           <div className="flex justify-end items-center">
@@ -189,20 +194,52 @@ export default function RoomCreateModal({ onClose, userName }) {
               />
             )}
           </div>
-
-          {/* 연도 선택 */}
-          <div className="flex justify-end items-center">
-            <label htmlFor="roomNumber" className="text-2xl mr-2">
-              연도 선택
-            </label>
-          </div>
-          {/* RangeSlider에 새로운 props 전달
-            handleYearChange를 RangeSlider에 prop으로 전달 */}
-          <RangeSlider onYearChange={handleYearChange} />
         </div>
 
+
+        <div className="flex justify-center w-full">
+          {/* 연도 선택 div */}
+          <div className="flex flex-row items-center justify-center">
+            {/* 연도 선택 - 시작 연도 */}
+            <div className="flex items-center mr-4">
+              <label htmlFor="startYear" className="text-2xl">시작 연도</label>
+              <select
+                id="startYear"
+                name="startYear"
+                value={startYear}
+                onChange={(e) => setStartYear(e.target.value)}
+                className="border-2 border-gray-300 p-1 ml-2"
+              >
+                <option value="">선택</option>
+                {[...Array(2019 - 2011 + 1).keys()].map((year) => (
+                  <option key={year} value={year + 2011}>{year + 2011}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* 연도 선택 - 종료 연도 */}
+            <div className="flex items-center">
+              <label htmlFor="endYear" className="text-2xl">종료 연도</label>
+              <select
+                id="endYear"
+                name="endYear"
+                value={endYear}
+                onChange={(e) => setEndYear(e.target.value)}
+                className="border-2 border-gray-300 p-1 ml-2"
+                disabled={!startYear} // 시작 연도가 선택되지 않으면 비활성화
+              >
+                <option value="">선택</option>
+                {endYearOptions.map((year) => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+          
+
         {/* 버튼 그룹 */}
-        <div className="flex justify-center w-full mt-5">
+        <div className="flex justify-center w-full mt-10">
           {/* 확인 버튼 */}
           <button
             className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
