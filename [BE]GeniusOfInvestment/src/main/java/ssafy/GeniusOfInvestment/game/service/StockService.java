@@ -38,12 +38,12 @@ public class StockService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
 
-        List<Long> purchased = new ArrayList<>(); //이 게임에서 구매된 정보 목록들
-        for(GameMarket mk : room.getMarket()){
-            if(mk.getDependencyInfo() != null){
-                purchased.add(mk.getDependencyInfo());
-            }
-        }
+//        List<Long> purchased = new ArrayList<>(); //이 게임에서 구매된 정보 목록들
+//        for(GameMarket mk : room.getMarket()){
+//            if(mk.getDependencyInfo() != null){
+//                purchased.add(mk.getDependencyInfo());
+//            }
+//        }
 
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
@@ -79,10 +79,7 @@ public class StockService {
                     Long itemId = gameService.getIdForItem(item);
                     log.info("아이템 아이디: " + itemId);
                     log.info("방의 년도: " + room.getYear());
-                    for(Long t : purchased){
-                        log.info("구매 목록: " + t);
-                    }
-                    List<Information> infoList = informationRepository.findByAreaIdAndYearAndIdNotIn(itemId, room.getYear(), purchased);
+                    List<Information> infoList = informationRepository.findByAreaIdAndYear(itemId, room.getYear());
                     for(Information t : infoList){
                         log.info(t.getLowLv());
                     }
