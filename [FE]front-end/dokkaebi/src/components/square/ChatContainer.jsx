@@ -130,7 +130,7 @@ export default function ChatContainer() {
       </div>
       <div className={styles.chatArea}>
         {/* <div className={styles.chatTo}> */}
-          {/* <span className="flex justify-center my-auto text-center">채팅</span> */}
+        {/* <span className="flex justify-center my-auto text-center">채팅</span> */}
         {/* </div> */}
         <form onSubmit={handleSendMessage}>
           <div className="flex">

@@ -26,7 +26,7 @@ export default function GamePlay() {
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   const roomId = sessionStorage.getItem("roomId");
-  const channel = sessionStorage.getItem("channel");
+  const channelId = sessionStorage.getItem("channelId");
   // const [modalOpen, setModalOpen] = useState(false);
   const [infoStoreModalOpen, setInfoStoreModalOpen] = useState(false);
   const [myStockModal, setMyStockModal] = useState(false);
@@ -118,13 +118,15 @@ export default function GamePlay() {
 
   useEffect(() => {
     const initialize = async () => {
-      await stompConnect();
+      // await stompConnect();
       // await gameStart();
       setTimeout(() => {
         gameStart();
       }, 300);
     };
     initialize();
+
+    return () => {};
   }, []);
 
   const gameStart = () => {
@@ -193,26 +195,49 @@ export default function GamePlay() {
         console.log(response);
         sessionStorage.removeItem("roomId");
         sessionStorage.removeItem("isManager");
-        navigate(`/square/${channel}`);
+        if (stompClientRef.current) {
+          stompClientRef.current.disconnect(() => {
+            console.log("소켓 끊겨라아아아아아 임마 Disconnected");
+          });
+        }
+        if (stompClientRef.current && stompClientRef.current.connected) {
+          stompClientRef.current.unsubscribe(); // 현재 구독 해제
+          console.log("소켓 구취함");
+          stompClientRef.current.disconnect(() => {
+            // WebSocket 연결 끊기
+            console.log("소켓 왜 안 끊어짐?");
+            navigate(`/square/${channelId}`);
+          });
+        }
+        // if (stompClientRef.current && stompClientRef.current.connected) {
+        //   stompClientRef.current.disconnect(() => {
+        //     console.log("Disconnected from WebSocket server");
+        //     navigate(`/square/${channelId}`);
+        //   });
+        // }
+        else {
+          console.log("Not connected to WebSocket server");
+          // navigate(`/square/${channelId}`);
+        }
       })
       .catch((error) => {
         console.error("나가기 요청에 실패했습니다:", error);
       });
   };
 
-  const stompConnect = () => {
+  useEffect(() => {
     let reconnectInterval;
-    const connect = () => {
-      const socket = new SockJS(socketUrl);
-      const stompClient = Stomp.over(() => socket);
-      stompClientRef.current = stompClient;
+    const socket = new SockJS(socketUrl);
+    stompClientRef.current = Stomp.over(socket);
 
-      stompClient.connect(
-        {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        function (frame) {
-          stompClient.subscribe(`/sub/room/chat/${roomId}`, function (message) {
+    stompClientRef.current.connect(
+      {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      () => {
+        stompClientRef.current.subscribe(
+          `/sub/room/chat/${roomId}`,
+          function (message) {
             const receivedMessage = JSON.parse(message.body);
             // console.log(receivedMessage);
 
@@ -237,28 +262,31 @@ export default function GamePlay() {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
             }
-          });
-        },
-        function (error) {
-          // 연결이 끊어졌을 때 재연결을 시도합니다.
-          console.log("STOMP: Connection lost. Attempting to reconnect", error);
-          reconnectInterval = setTimeout(connect, 3000); // 초 후 재연결 시도
-        }
-      );
-    };
-    connect();
+          }
+        );
+      },
+      (error) => {
+        // 연결이 끊어졌을 때 재연결을 시도합니다.
+        console.log("STOMP: Connection lost. Attempting to reconnect", error);
+        // reconnectInterval = setTimeout(connect, 3000); // 초 후 재연결 시도
+      }
+    );
 
     return () => {
       console.log("unmounting...");
+      console.log(stompClientRef.current);
 
       if (stompClientRef.current) {
-        stompClientRef.current.disconnect();
+        stompClientRef.current.disconnect(() => {
+          console.log("소켓 끊겨라아아아아아 임마 Disconnected");
+        });
       }
+
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
       }
     };
-  };
+  }, []);
 
   const openInfoStoreModal = () => {
     setInfoStoreModalOpen(true);
