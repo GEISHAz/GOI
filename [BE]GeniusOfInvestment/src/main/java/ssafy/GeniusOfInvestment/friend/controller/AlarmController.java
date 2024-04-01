@@ -31,9 +31,7 @@ public class AlarmController {
 
     @PostMapping("/send/invitation")
     public SuccessResponse<SendFriendInvitationResponse> sendFriendInvitation(@RequestBody SendFriendRequest sendFriendRequest){
-        alarmService.sendFriendInvitation(sendFriendRequest);
-        return SuccessResponse.of(SuccessType.SEND_FRIEND_INVITATION,
-                alarmService.sendFriendInvitation(sendFriendRequest));
+        return SuccessResponse.of(SuccessType.SEND_FRIEND_INVITATION, alarmService.sendFriendInvitation(sendFriendRequest));
     }
 
     @PutMapping("/accept/{id}/invitation")
