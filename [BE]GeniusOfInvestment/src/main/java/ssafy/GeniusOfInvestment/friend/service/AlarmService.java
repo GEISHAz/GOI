@@ -74,6 +74,10 @@ public class AlarmService {
             User fUser = fromUser.get();
 
             Alarm alarm = Alarm.of(tUser,fUser,0);
+
+            messageSendingOperations.convertAndSend("/sub/alarm/chat/" + tUser.getId(), FriendChatMessageDto.of(MessageType.SEND,
+                    String.valueOf(tUser.getId()),tUser.getNickName(),tUser.getNickName() + "이 초대를 보냈습니다"));
+
             return SendFriendInvitationResponse.builder().alarmId(alarmRepository.save(alarm).getId()).build();
 
         }
@@ -114,8 +118,10 @@ public class AlarmService {
         findAlarmSendFromMe.ifPresent(value -> value.updateStatus(1));
         findAlarm.updateStatus(1);
 
-        FriendChatMessageDto friendChatMessageDto = FriendChatMessageDto.of(MessageType.ACCEPT, findAlarm.getId().toString(), findAlarm.getUser().getNickName(),findAlarm.getUser().getNickName() + "이 초대를 수락했습니다");
-        messageSendingOperations.convertAndSend("/sub/friend/chat/" + findAlarm.getId(),friendChatMessageDto);
+        FriendChatMessageDto friendChatMessageDto = FriendChatMessageDto.of(MessageType.ACCEPT,
+                String.valueOf(findAlarm.getFrom().getId()), findAlarm.getUser().getNickName(),findAlarm.getUser().getNickName() + "이 초대를 수락했습니다");
+
+        messageSendingOperations.convertAndSend("/sub/alarm/chat/" + findAlarm.getFrom().getId(), friendChatMessageDto);
 
         Friend friend = Friend.of(findAlarm.getUser(),findAlarm.getFrom());
         friendRepository.save(friend);

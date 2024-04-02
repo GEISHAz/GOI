@@ -48,7 +48,7 @@ export default function GamePlay() {
 
   const [stockInfo, setStockInfo] = useState([]);
   const [myInfoList, setMyInfoList] = useState([]);
-
+  const [userNicks, setUserNicks] = useState([]);
   const [timerMin, setTimerMin] = useState("3");
   const [timerSec, setTimerSec] = useState("00");
   const [timerMSec, setTimerMSec] = useState(100);
@@ -248,6 +248,9 @@ export default function GamePlay() {
               setUserList(receivedMessage.data.participants);
               setRemainTurn(receivedMessage.data.remainTurn);
               console.log("유저 정보", receivedMessage.data.participants);
+
+              const nicks = receivedMessage.data.participants.map(participant => participant.userNick);
+              setUserNicks(nicks);
             } else if (receivedMessage.type === "TIMER") {
               console.log(receivedMessage.type);
               // console.log(receivedMessage.data.remainingMin);
@@ -354,7 +357,7 @@ export default function GamePlay() {
         </button>
       </div>
       <div className={styles.chat}>
-        <Chat roomId={roomId} />
+        <Chat roomId={roomId} userNicks={userNicks}/>
       </div>
       <div className={styles.investment}>
         <Investment stockInfo={stockInfo} />

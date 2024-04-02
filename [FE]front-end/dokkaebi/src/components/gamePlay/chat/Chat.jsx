@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import ToggleUp from '../../../images/gamePlay/toggleUp.gif';
 import ToggleDown from '../../../images/gamePlay/toggleDown.gif';
 
-export default function Chat({ roomId }) {
+export default function Chat({ roomId, userNicks }) {
   const accessToken = sessionStorage.getItem("accessToken");
   const client = useRef(null);
   const subGameRef = useRef(null); // 구독 식별 번호
@@ -14,6 +14,7 @@ export default function Chat({ roomId }) {
   const sender = useSelector((state) => state.auth.userNickname); // 보내는 이
   const [chatList, setChatList] = useState([]); // 채팅 내역 관리
   const [inputMessage, setInputMessage] = useState(""); // 입력 메세지 관리
+  const [targetNick, setTargetNick] = useState(''); // 귓속말 보낼 대상 관리
   const [chatHeight, setChatHeight] = useState("120px"); // 채팅창 높이 조절 관리
 
   // 채팅창 토글 버튼 클릭 핸들러
@@ -65,39 +66,106 @@ export default function Chat({ roomId }) {
     };
   }, [roomId]);
 
-  // 메세지 보내기 조작할 함수
-  const SendMsg = (event) => {
-    // 새로고침 방지
+  // 메시지 보내기 조작할 함수
+  const SendMessage = (event) => {
     if (event) {
       event.preventDefault();
     }
 
-    if (
-      client.current &&
-      client.current.connected &&
-      inputMessage.trim() !== ""
-    ) {
-      const newMessage = {
+    if (client.current && client.current.connected && inputMessage.trim() !== "") {
+      let newMessage = {
         roomId: roomId,
         sender: sender,
         message: inputMessage,
-        type: "TALK",
+        type: targetNick !== '' ? "WHISPER" : "TALK",
       };
-      console.log("메시지 채팅 하나를 보냈어요.");
-      console.log("sender 확인 :", newMessage.sender);
-
-      client.current.send(
-        `/pub/game/chat/message/`,
-        {},
-        JSON.stringify(newMessage)
-      );
-      // setChatList([...chatList, newMessage]);
+  
+      // 귓속말을 보낼 경우 receiver 추가
+      if (targetNick !== '') {
+        newMessage = { ...newMessage, receiver: targetNick };
+      }
+  
+      // 메시지 전송
+      client.current.send(`/pub/game/chat/message`, {}, JSON.stringify(newMessage));
+  
+      // UI에 메시지 반영
+      setChatList([...chatList, newMessage]);
+  
+      // 입력 필드 초기화
       setInputMessage("");
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
       console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
     }
   };
+
+  // // 메세지 보내기 조작할 함수
+  // const SendMsg = (event) => {
+  //   // 새로고침 방지
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+
+  //   if (
+  //     client.current &&
+  //     client.current.connected &&
+  //     inputMessage.trim() !== ""
+  //   ) {
+  //     const newMessage = {
+  //       roomId: roomId,
+  //       sender: sender,
+  //       message: inputMessage,
+  //       type: "TALK",
+  //       receiver: null,
+  //     };
+  //     console.log("메시지 채팅 하나를 보냈어요.");
+  //     console.log("sender 확인 :", newMessage.sender);
+
+  //     client.current.send(
+  //       `/pub/game/chat/message/`,
+  //       {},
+  //       JSON.stringify(newMessage)
+  //     );
+  //     // setChatList([...chatList, newMessage]);
+  //     setInputMessage("");
+  //   } else {
+  //     alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
+  //     console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
+  //   }
+  // };
+
+  // // 귓속말 보내기 로직
+  // const sendWhisper = () => {
+  //   if (event) {
+  //     event.preventDefault();
+  //   }
+
+  //   if (
+  //     client.current &&
+  //     client.current.connected &&
+  //     inputMessage.trim() !== ""
+  //   ) {
+  //     const messageData = {
+  //       roomId: roomId,
+  //       sender: sender,
+  //       message: inputMessage,
+  //       type: "WHISPER",
+  //       receiver: userNicks,
+  //     };
+  //     console.log("귓속말을 보냈어요")
+  //     console.log("sender 확인 :", messageData.sender);
+  //     // 메시지 전송 로직
+  //     client.current.send(
+  //       "/pub/game/chat/message/",
+  //        {},
+  //        JSON.stringify(messageData)
+  //     );
+  //     setInputMessage("");
+  //   } else {
+  //     alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
+  //     console.error("귓속말 연결 에러");
+  //   }
+  // };
 
   // 메시지 input 작동
   const handleInputChanges = (e) => {
@@ -146,8 +214,14 @@ export default function Chat({ roomId }) {
 
       {/* 메세지 보내는 영역 */}
       <div className={styles.gameChatArea}>
-        <form onSubmit={SendMsg}>
+        <form onSubmit={SendMessage}>
           <div className="flex">
+            <select className={styles.whisperSelect} value={targetNick} onChange={e => setTargetNick(e.target.value)}>
+              <option value="">전체</option>
+              {userNicks.map((nick, index) => (
+                <option key={index} value={nick}>{nick}에게</option>
+              ))}
+            </select>
             <input
               type="text"
               className={styles.gameInput}
