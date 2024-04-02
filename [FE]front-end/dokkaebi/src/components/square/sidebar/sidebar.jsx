@@ -205,7 +205,6 @@ const Sidebar = ({ toggleSidebar }) => {
     //   return;
     // }
 
-
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
   
@@ -217,7 +216,7 @@ const Sidebar = ({ toggleSidebar }) => {
   
       // 친구 요청 알림에 대해 구독
       subAlarmRef.current = alarmClient.current.subscribe(
-        '/sub/friend/alarm/' + `${alarmId}`,
+        '/sub/friend/alarm/' + `${userId}`,
         (message) => {
           const receivedMsg = JSON.parse(message.body);
           console.log("새로운 친구 요청 받음:", receivedMsg);
