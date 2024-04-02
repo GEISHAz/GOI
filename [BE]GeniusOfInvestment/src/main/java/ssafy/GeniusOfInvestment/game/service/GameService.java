@@ -331,6 +331,7 @@ public class GameService {
                 int randIdx = random.nextInt(infos.size());
                 Information ranInfo = infos.get(randIdx);
                 roi = ranInfo.getRoi();
+                log.info("db에서 받아온 수익률: " + roi);
                 cur = calMarketVal(last, roi);
                 log.info("새로 계산된 가격: " + cur);
             }
