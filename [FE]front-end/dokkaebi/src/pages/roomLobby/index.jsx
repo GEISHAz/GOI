@@ -28,6 +28,7 @@ export default function userReadyRoom() {
   const userId = sessionStorage.getItem("userId");
   const location = useLocation();
   const stompClientRef = useRef(null);
+  const roomStompRef= useRef(null);
   const userNickname = useSelector((state) => state.auth.userNickname);
   const channelId = sessionStorage.getItem("channelId");
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
@@ -73,7 +74,7 @@ export default function userReadyRoom() {
       () => {
         // console.log("구독 시도");
         console.log("roomLobby 방 번호 :", roomId);
-        stompClientRef.current.subscribe(
+        roomStompRef.current = stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
           (message) => {
             // console.log("구독 성공");
@@ -124,12 +125,23 @@ export default function userReadyRoom() {
             } else if (receivedMessage.type === "START") {
               // 게임이 시작했으므로 끊어주고 넘어가기
               if (stompClientRef.current && stompClientRef.current.connected) {
-                stompClientRef.current.unsubscribe(); // 현재 구독 해제
+                // 구독 해제
+                if (roomStompRef.current) {
+                  roomStompRef.current.unsubscribe();
+                  roomStompRef.current = null; // 구독 참조 초기화
+                }
                 
-                stompClientRef.current.disconnect(() => { // WebSocket 연결 끊기
-                  console.log("강퇴 당하여 연결이 끊어집니다!");
+                // WebSocket 연결 끊기
+                stompClientRef.current.disconnect(() => {
+                  console.log("게임을 시작하여 연결을 끊습니다. gamePlay 페이지에서 새로 연결합니다.");
+                  
+                  // 연결이 완전히 끊긴 후 navigate 실행
+                  navigate(`/game/${roomId}`);
                 });
+            
+                return; // 이 부분을 추가하여 연결 해제 후 navigate가 실행되기 전에 함수 실행을 멈춤
               }
+              // 만약 연결이 이미 끊겼다면 바로 navigate 실행
               navigate(`/game/${roomId}`);
             }
           }
@@ -143,8 +155,14 @@ export default function userReadyRoom() {
     );
 
     return () => {
-      // console.log("unmounting...");
-      // console.log(stompClientRef.current);
+      if (roomStompRef.current) {
+        roomStompRef.current.unsubscribe(); // 구독 해제
+      }
+      if (stompClientRef.current && stompClientRef.current.connected) {
+        stompClientRef.current.disconnect(() => {
+          console.log("WebSocket 연결이 종료되었습니다.");
+        });
+      }
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);

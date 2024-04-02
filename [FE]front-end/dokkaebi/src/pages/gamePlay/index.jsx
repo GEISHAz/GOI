@@ -33,7 +33,8 @@ export default function GamePlay() {
   const [myInfoModal, setMyInfoModal] = useState(false);
   const [resultModal, setResultModal] = useState(false);
 
-  const stompClientRef = useRef(null);
+  const stompClientRef = useRef(null); // 구독하는 사람
+  const gameStompRef= useRef(null); // 구독 식별자 번호
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
 
   const isManager = sessionStorage.getItem("isManager");
@@ -196,24 +197,23 @@ export default function GamePlay() {
         sessionStorage.removeItem("roomId");
         sessionStorage.removeItem("isManager");
 
+        console.log("나갈 때 연결되어있는지 확인 :", stompClientRef.current.connected)
+
         if (stompClientRef.current && stompClientRef.current.connected) {
-          stompClientRef.current.unsubscribe(); // 현재 구독 해제
-          console.log("게임 나가버려서 구독 풀어버리기~");
+          if (gameStompRef.current) {
+            console.log("게임을 나가서 구독을 끊을게요");
+            gameStompRef.current.unsubscribe();
+            gameStompRef.current = null;
+          }
+
+          // WebSocket 연결 끊기
           stompClientRef.current.disconnect(() => {
-            // WebSocket 연결 끊기
-            console.log("웹소켓 연결도 끊어버리기~");
+            console.log("게임을 나가서 확실하게 연결을 끊을게요");
             navigate(`/square/${channelId}`);
           });
         }
-        // if (stompClientRef.current && stompClientRef.current.connected) {
-        //   stompClientRef.current.disconnect(() => {
-        //     console.log("Disconnected from WebSocket server");
-        //     navigate(`/square/${channelId}`);
-        //   });
-        // }
         else {
           console.log("Not connected to WebSocket server");
-          // navigate(`/square/${channelId}`);
         }
       })
       .catch((error) => {
@@ -226,7 +226,8 @@ export default function GamePlay() {
     const socket = new SockJS(socketUrl);
     stompClientRef.current = Stomp.over(socket);
 
-    stompClientRef.current.connect(
+ 
+    gameStompRef.current = stompClientRef.current.connect(
       {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -264,23 +265,25 @@ export default function GamePlay() {
       (error) => {
         // 연결이 끊어졌을 때 재연결을 시도합니다.
         console.log("STOMP: Connection lost. Attempting to reconnect", error);
-        // reconnectInterval = setTimeout(connect, 3000); // 초 후 재연결 시도
+        reconnectInterval = setTimeout(connect, 1000); // 1초 후 재연결 시도
       }
     );
 
+
     return () => {
       // console.log("unmounting...");
-      console.log(stompClientRef.current);
-      if (stompClientRef.current) {
-        stompClientRef.current.unsubscribe();
-        console.log("구독 해제!!!!!!!!!!")
-      }
+      // console.log(stompClientRef.current);
 
-      if (stompClientRef.current) {
+      if (gameStompRef.current) {
+        gameStompRef.current.unsubscribe(); // 구독 해제
+      }
+      
+      if (stompClientRef.current && stompClientRef.current.connected) {
         stompClientRef.current.disconnect(() => {
-        console.log("소켓 끊겨라아아아아아 임마 Disconnected");
+          console.log("WebSocket 연결이 종료되었습니다.");
         });
       }
+
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
