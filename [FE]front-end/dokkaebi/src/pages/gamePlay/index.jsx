@@ -58,13 +58,13 @@ export default function GamePlay() {
   const [result, setResult] = useState([]);
 
   useEffect(() => {
-    setMyReady(false);
+    setOhMyReady(false)
   }, [year]);
 
   useEffect(() => {
+    console.log("ohMyReady 상태", ohMyReady);
     console.log("유저 레디 정보1", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
-    console.log("myReady 상태", myReady);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
   }, [userReadyList]);
@@ -271,7 +271,9 @@ export default function GamePlay() {
             } else if (receivedMessage.type === "READY") {
               console.log("레디 정보??????????????????", receivedMessage.data);
               setUserReadyList(receivedMessage.data.list);
-              setOhMyReady(receivedMessage.data.ready);
+              if (receivedMessage.data.userId == userId) {
+                setOhMyReady(receivedMessage.data.ready);
+              }
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
