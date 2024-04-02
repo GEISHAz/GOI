@@ -215,7 +215,7 @@ const Sidebar = ({ toggleSidebar }) => {
           console.log("새로운 친구 요청 받음:", receivedMsg);
           setNewFriendRequest(true); // 새로운 친구 요청이 수신되었다면 상태 업데이트
 
-          if (msg.type && msg.type === "ACCEPT") {
+          if (receivedMsg.type && receivedMsg.type === "ACCEPT") {
             console.log("상대가 친구요청을 수락함")
             friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
           }
