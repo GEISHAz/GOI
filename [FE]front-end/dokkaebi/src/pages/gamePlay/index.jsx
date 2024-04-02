@@ -277,6 +277,9 @@ export default function GamePlay() {
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
+            } else if (receivedMessage.type === "ROOM_EXIT") {
+              console.log("게임 종료 정보", receivedMessage.data);
+              setUserList(receivedMessage.data);
             }
           }
         );
