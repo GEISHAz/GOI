@@ -42,7 +42,7 @@ export default function GamePlay() {
   const [userReadyList, setUserReadyList] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
-  const [myReady, setMyReady] = useState([]);
+  const [myReady, setMyReady] = useState(false);
   const [ready, setReady] = useState(false);
   const [otherUsersReady, setOtherUsersReady] = useState([]);
 
@@ -62,9 +62,9 @@ export default function GamePlay() {
   }, [year]);
 
   useEffect(() => {
-    console.log("유저 레디 정보", userReadyList);
+    console.log("유저 레디 정보1", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
-    console.log("myReady 상태", myReady);
+    console.log("myReady 상태", myReady.isReady);
     setReady(myReady.isReady);
     // setReady(myReady.isReady ? myReady.isReady : ready);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
@@ -72,7 +72,7 @@ export default function GamePlay() {
   }, [userReadyList]);
 
   useEffect(() => {
-    // console.log("유저 정보", userList);
+    console.log("유저 정보1", userList);
     setCurrentUser(userList.find((user) => user.userId == userId));
     // setReady(currentUser.isReady? currentUser.isReady : ready);
     // console.log("현재 유저 정보", currentUser);
@@ -166,6 +166,9 @@ export default function GamePlay() {
       })
       .catch((error) => {
         console.error("레디 요청에 실패했습니다:", error);
+        if (error.response.data.statusCode === 410) {
+          // 게임 종료 요청
+        }
       });
   };
 

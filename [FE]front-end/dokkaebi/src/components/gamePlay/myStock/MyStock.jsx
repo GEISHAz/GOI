@@ -25,6 +25,7 @@ export default function MyStock(props) {
         console.log("내 보유 주식 정보 가져오기 성공");
         setTotal(response.data.marketVal);
         setRest(response.data.remainVal);
+        setYoy(response.data.yoy);
         setMyStocks(response.data.breakDowns)
       })
       .catch((error) => {
@@ -48,15 +49,15 @@ export default function MyStock(props) {
         <div className={styles.myInfors}>
           <div className={styles.total}>
             <p className={styles.totalText}>평가 금액</p>
-            <p className={styles.totalValue}>{total}</p>
+            <p className={styles.totalValue}>{total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
           <div className={styles.yoy}>
-            <p className={styles.yoyText}>작년대비 수익률</p>
-            <p className={styles.yoyValue}>{yoy}</p>
+            <p className={styles.yoyText}>작년 대비</p>
+            <p className={styles.yoyValue}>{yoy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
           <div className={styles.rest}>
             <p className={styles.restText}>현금</p>
-            <p className={styles.restValue}>{rest}</p>
+            <p className={styles.restValue}>{rest.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
         </div>
         <div className={styles.myStockDetail}>

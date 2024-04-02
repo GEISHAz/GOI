@@ -78,7 +78,7 @@ export default function PlayerList({ userList, amIManager, handleKick }) {
                 </p>
                 <div className="flex flex-row mr-8">
                   <img className="w-12 mx-2" src={coin} alt="EXP 아이콘" />
-                  <p className={styles.playerTotalMoney}>{user.exp}</p>
+                  <p className={styles.playerTotalMoney}>{user.exp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                 </div>
               </div>
             </div>

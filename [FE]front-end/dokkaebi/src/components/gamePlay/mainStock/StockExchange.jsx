@@ -44,6 +44,7 @@ export default function StockExchange(props) {
   const handleTransaction = () => {
     // dispatch(setMoney(cash))
     if (props.transactionType === "buy") {
+      console.log("매수할 주 수:", quantity);
       axios
         .put(`https://j10d202.p.ssafy.io/api/stock/buy`,
         { grId: roomId, item: props.item, share: quantity},
@@ -55,6 +56,7 @@ export default function StockExchange(props) {
         .then((response) => {
           console.log(response);
           console.log("주식 구매 성공");
+          console.log(quantity)
         })
         .catch((error) => {
           console.log(error);
@@ -71,6 +73,7 @@ export default function StockExchange(props) {
         })
         .then((response) => {
           console.log(response);
+          console.log(quantity)
           console.log("주식 판매 성공");
         })
         .catch((error) => {
