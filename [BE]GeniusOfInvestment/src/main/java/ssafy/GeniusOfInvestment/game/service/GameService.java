@@ -317,6 +317,7 @@ public class GameService {
             Long cur; //현재(새로운) 가격
             int size = mk.getCost().size();
             Long last = mk.getCost().get(size-1); //마지막 인덱스에 있는 것이 가장 최근의 가격
+            log.info("가장 최근 가격은 " + last);
             int roi; //수익률
             if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
                 Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
@@ -331,6 +332,7 @@ public class GameService {
                 Information ranInfo = infos.get(randIdx);
                 roi = ranInfo.getRoi();
                 cur = calMarketVal(last, roi);
+                log.info("새로 계산된 가격: " + cur);
             }
             mk.getCost().add(cur); //새로 계산된 가격을 원래의 가격 리스트에 추가
             //redis에 저장될 시장 상황을 업데이트
@@ -422,6 +424,7 @@ public class GameService {
             System.out.println((long) (cost + (cost * (roi/100d))));
             return (long) (cost + (cost * (roi/100d)));
         }else {
+            System.out.println("-수익률은 " + (long) (cost - (cost * (roi/100d))));
             return (long) (cost - (cost * (roi/100d)));
         }
     }
