@@ -227,7 +227,7 @@ public class GameService {
                     sb.append(" 엔터");
                     break;
                 case "TELECOM":
-                    sb.append(" 통신");
+                    sb.append(" 게임");
                     break;
                 case "AIR":
                     sb.append(" 항공");
@@ -359,15 +359,15 @@ public class GameService {
             List<BreakDown> bdowns = myInfo.getBreakDowns();
             //List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
             Long usrTotal = 0L;
-            for(BreakDown bd : bdowns){
-                for(StockInfoResponse totalInfo : stockInfos){
+            for(BreakDown bd : bdowns){ //내 거래내역 탐색
+                for(StockInfoResponse totalInfo : stockInfos){ //전체 주식 현황 탐색
                     if(bd.getItem().equals(totalInfo.getItem())){ //내가 산 주식 종목에 해당하는 수익률 정보를 전체 주식 정보에서 얻는다.
                         //산 금액과 이전 턴에서의 금액을 분리??
                         Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent()); //평가금액을 주식 상황에 맞게 업데이트
                         bd.setNowVal(nowVal);
                         Long buy = bd.getBuyVal();
                         bd.setRoi(calRoiByVal(buy, nowVal));
-                        usrTotal += nowVal; //투자한 종목들의 업데이트된 평가 금액의 합
+                        usrTotal += nowVal * bd.getShares(); //투자한 종목들의 업데이트된 평가 금액의 합
                         break;
                     }
                 }
@@ -427,7 +427,12 @@ public class GameService {
     }
 
     public int calRoiByVal(Long last, Long cur){ //지난(매입) 금액과 현재 금액으로 수익률을 계산
-        return (int) (Math.abs(1 - (cur/(double)last)) * 100);
+        int val = (int) (Math.abs(1 - (cur/(double)last)) * 100);
+        if(last <= cur){
+            return val;
+        }else {
+            return val * -1;
+        }
     }
 
     public Long getIdForItem(String itemName){
