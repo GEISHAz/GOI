@@ -270,7 +270,7 @@ export default function GamePlay() {
 
     return () => {
       // console.log("unmounting...");
-      // console.log(stompClientRef.current);
+      console.log(stompClientRef.current);
       if (stompClientRef.current) {
         stompClientRef.current.unsubscribe();
         console.log("구독 해제!!!!!!!!!!")
