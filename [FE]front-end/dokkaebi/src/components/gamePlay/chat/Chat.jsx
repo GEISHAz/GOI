@@ -41,6 +41,7 @@ export default function Chat({ roomId, userNicks }) {
             const msg = JSON.parse(message.body);
             // console.log(msg);
             // 귓속말 메시지이고 현재 사용자가 발신자 또는 수신자일 경우에만 추가
+            console.log("현재 메세지 타입 :", msg.type)
             if (msg.type === "WHISPER" && (msg.sender === sender || msg.receiver === targetNick)) {
               setChatList((chatList) => [...chatList, msg]);
             } else if (msg.type === "TALK") {
@@ -90,7 +91,7 @@ export default function Chat({ roomId, userNicks }) {
       client.current.send(`/pub/game/chat/message`, {}, JSON.stringify(newMessage));
   
       // UI에 메시지 반영
-      setChatList([...chatList, newMessage]);
+      // setChatList([...chatList, newMessage]);
   
       // 입력 필드 초기화
       setInputMessage("");
@@ -99,74 +100,6 @@ export default function Chat({ roomId, userNicks }) {
       console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
     }
   };
-
-  // // 메세지 보내기 조작할 함수
-  // const SendMsg = (event) => {
-  //   // 새로고침 방지
-  //   if (event) {
-  //     event.preventDefault();
-  //   }
-
-  //   if (
-  //     client.current &&
-  //     client.current.connected &&
-  //     inputMessage.trim() !== ""
-  //   ) {
-  //     const newMessage = {
-  //       roomId: roomId,
-  //       sender: sender,
-  //       message: inputMessage,
-  //       type: "TALK",
-  //       receiver: null,
-  //     };
-  //     console.log("메시지 채팅 하나를 보냈어요.");
-  //     console.log("sender 확인 :", newMessage.sender);
-
-  //     client.current.send(
-  //       `/pub/game/chat/message/`,
-  //       {},
-  //       JSON.stringify(newMessage)
-  //     );
-  //     // setChatList([...chatList, newMessage]);
-  //     setInputMessage("");
-  //   } else {
-  //     alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
-  //     console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
-  //   }
-  // };
-
-  // // 귓속말 보내기 로직
-  // const sendWhisper = () => {
-  //   if (event) {
-  //     event.preventDefault();
-  //   }
-
-  //   if (
-  //     client.current &&
-  //     client.current.connected &&
-  //     inputMessage.trim() !== ""
-  //   ) {
-  //     const messageData = {
-  //       roomId: roomId,
-  //       sender: sender,
-  //       message: inputMessage,
-  //       type: "WHISPER",
-  //       receiver: userNicks,
-  //     };
-  //     console.log("귓속말을 보냈어요")
-  //     console.log("sender 확인 :", messageData.sender);
-  //     // 메시지 전송 로직
-  //     client.current.send(
-  //       "/pub/game/chat/message/",
-  //        {},
-  //        JSON.stringify(messageData)
-  //     );
-  //     setInputMessage("");
-  //   } else {
-  //     alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
-  //     console.error("귓속말 연결 에러");
-  //   }
-  // };
 
   // 메시지 input 작동
   const handleInputChanges = (e) => {
@@ -197,20 +130,22 @@ export default function Chat({ roomId, userNicks }) {
       </div>
       {/* 게임 채팅창 내역 */}
       <div className={styles.msgCont}>
-        {chatList.map((message, index) => (
-          <div
-            key={index}
-            ref={recentMessage}
-            className={
-              message.sender === sender ? styles.chat_end : styles.chat_start
-            }
-          >
-            <div className={styles.chat_bubs}>
-              <strong className="ml-2">{message.sender} : </strong>
-              <span className={styles.showMessage}>{message.message}</span>
-            </div>
-          </div>
-        ))}
+        {chatList.map((message, index) => {
+          const isWhisper = message.type === 'WHISPER';
+          const isForCurrentUser = isWhisper && (message.sender === sender || message.receiver === sender);
+          const messageClass = isWhisper ? styles.whisperMessage : (message.sender === sender ? styles.chat_end : styles.chat_start);
+
+          return (
+            // 귓속말인 경우, 발신자와 수신자만 메시지를 보여줌
+            isForCurrentUser || !isWhisper ? (
+              <div key={index} ref={recentMessage} className={messageClass}>
+                <div>
+                  <strong>{message.sender}:</strong> {message.message}
+                </div>
+              </div>
+            ) : null
+          );
+        })}
       </div>
 
       {/* 메세지 보내는 영역 */}
