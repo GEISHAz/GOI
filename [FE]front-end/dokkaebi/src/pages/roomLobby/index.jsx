@@ -23,6 +23,8 @@ export default function userReadyRoom() {
     left: 0,
   };
   const navigate = useNavigate();
+  const roomNum = useSelector((state) => state.room.roomNum);
+  const userCnt = useSelector((state) => state.room.userCnt);
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
   const userId = sessionStorage.getItem("userId");
@@ -227,8 +229,11 @@ export default function userReadyRoom() {
       <div className="flex flex-col items-center">
         <PlayerList
           userList={userList}
+          isStart={isStart}
           amIManager={amIManager}
           handleKick={handleKick}
+          roomNum={roomNum}
+          userCnt={userCnt}
         />
         <div className={`flex justify-center ${styles.chatSuperCont}`}>
           <LobbyChat 
