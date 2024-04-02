@@ -195,17 +195,13 @@ export default function GamePlay() {
         console.log(response);
         sessionStorage.removeItem("roomId");
         sessionStorage.removeItem("isManager");
-        if (stompClientRef.current) {
-          stompClientRef.current.disconnect(() => {
-            console.log("소켓 끊겨라아아아아아 임마 Disconnected");
-          });
-        }
+
         if (stompClientRef.current && stompClientRef.current.connected) {
           stompClientRef.current.unsubscribe(); // 현재 구독 해제
-          console.log("소켓 구취함");
+          console.log("게임 나가버려서 구독 풀어버리기~");
           stompClientRef.current.disconnect(() => {
             // WebSocket 연결 끊기
-            console.log("소켓 왜 안 끊어짐?");
+            console.log("웹소켓 연결도 끊어버리기~");
             navigate(`/square/${channelId}`);
           });
         }
@@ -273,12 +269,16 @@ export default function GamePlay() {
     );
 
     return () => {
-      console.log("unmounting...");
-      console.log(stompClientRef.current);
+      // console.log("unmounting...");
+      // console.log(stompClientRef.current);
+      if (stompClientRef.current) {
+        stompClientRef.current.unsubscribe();
+        console.log("구독 해제!!!!!!!!!!")
+      }
 
       if (stompClientRef.current) {
         stompClientRef.current.disconnect(() => {
-          console.log("소켓 끊겨라아아아아아 임마 Disconnected");
+        console.log("소켓 끊겨라아아아아아 임마 Disconnected");
         });
       }
 

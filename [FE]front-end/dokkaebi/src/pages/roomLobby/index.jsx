@@ -39,7 +39,7 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     if (response.userList) {
-      console.log('유저 리스트 확인 :', response.userList)
+      // console.log('유저 리스트 확인 :', response.userList)
       setUserList(response.userList);
     } else {
       setUserList(response);
@@ -53,7 +53,7 @@ export default function userReadyRoom() {
           setAmIManager(user.isManager);
           sessionStorage.setItem("isManager", user.isManager);
         }
-        console.log("나는 방장 : ", amIManager);
+        // console.log("나는 방장 : ", amIManager);
       });
     });
   }, [userList]);
@@ -88,13 +88,13 @@ export default function userReadyRoom() {
             }
             
             if (receivedMessage.type && receivedMessage.type === "ROOM_KICK") {
-              console.log("강퇴 로직 실행된 후 새로 받은 데아터 확인", receivedMessage.data);
+              // console.log("강퇴 로직 실행된 후 새로 받은 데아터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
 
                // 강퇴된 유저가 자신인지 확인
               const isKicked = !receivedMessage.data.some(user => user.userId === Number(userId));
               if (isKicked) {
-                alert("당신은 우리와 함께 할 수 없게 되었습니다..");
+                alert("강퇴당했어요 !");
                 
                 if (stompClientRef.current && stompClientRef.current.connected) {
                   stompClientRef.current.unsubscribe(); // 현재 구독 해제
@@ -110,7 +110,7 @@ export default function userReadyRoom() {
             }
 
             if (receivedMessage.type === "ROOM_ENTER") {
-              console.log("받는 데이터 확인", receivedMessage.data);
+              // console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
@@ -122,7 +122,14 @@ export default function userReadyRoom() {
               setUserList(receivedMessage.data.list);
               setIsStart(receivedMessage.data.ready);
             } else if (receivedMessage.type === "START") {
-              // console.log(receivedMessage.data);
+              // 게임이 시작했으므로 끊어주고 넘어가기
+              if (stompClientRef.current && stompClientRef.current.connected) {
+                stompClientRef.current.unsubscribe(); // 현재 구독 해제
+                
+                stompClientRef.current.disconnect(() => { // WebSocket 연결 끊기
+                  console.log("강퇴 당하여 연결이 끊어집니다!");
+                });
+              }
               navigate(`/game/${roomId}`);
             }
           }
@@ -130,16 +137,14 @@ export default function userReadyRoom() {
       },
       (error) => {
         // 연결이 끊어졌을 때 재연결을 시도합니다.
-        console.log("STOMP: Connection lost. Attempting to reconnect", error);
+        // console.log("STOMP: Connection lost. Attempting to reconnect", error);
         reconnectInterval = setTimeout(connect, 1000); // 1초 후 재연결 시도
       }
     );
 
     return () => {
-      console.log("unmounting...");
-      console.log(stompClientRef.current);
-
-
+      // console.log("unmounting...");
+      // console.log(stompClientRef.current);
 
       if (reconnectInterval) {
         clearTimeout(reconnectInterval);
@@ -160,8 +165,8 @@ export default function userReadyRoom() {
         message: message,
         type: "TALK",
       };
-      console.log("메시지 채팅 하나를 보냈어요.");
-      console.log("sender 확인 :", newMessages.sender);
+      // console.log("메시지 채팅 하나를 보냈어요.");
+      // console.log("sender 확인 :", newMessages.sender);
 
       stompClientRef.current.send(
         `/pub/room/chat/message/`,
@@ -170,15 +175,15 @@ export default function userReadyRoom() {
       );
     } else {
       alert("잠시 후에 시도해주세요. 채팅이 너무 빠릅니다.");
-      console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
+      // console.error("STOMP 클라이언트 연결이 원활하지 못합니다. 기다려주세요");
     }
   };
 
   // 유저 강퇴 함수
   const handleKick = async (userIdToKick) => {
     try {
-      console.log("내보내려는 유저 id :", userIdToKick)
-      console.log("현재 방 번호 :", roomId)
+      // console.log("내보내려는 유저 id :", userIdToKick)
+      // console.log("현재 방 번호 :", roomId)
       await axios.put('https://j10d202.p.ssafy.io/api/room/kick', {
         userId: userIdToKick,
         roomId: roomId,
