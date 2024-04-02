@@ -24,7 +24,6 @@ const Sidebar = ({ toggleSidebar }) => {
   const [openMessengerId, setOpenMessengerId] = useState(null); // 메신저가 열린 친구의 ID 관리
   const [newFriendRequest, setNewFriendRequest] = useState(false); // 새로운 친구 요청에 대한 상태 관리
   const userNickname = useSelector((state) => state.auth.userNickname);
-  const alarmId = useSelector((state) => state.addFriend.alarmId);
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   
@@ -199,12 +198,6 @@ const Sidebar = ({ toggleSidebar }) => {
 
   // 친구 요청 알림에 대한 새로운 웹소켓 연결
   useEffect(() => {
-    // alarmId가 null이면 연결안함
-    // if (!alarmId) {
-    //   console.log("친구 요청 온 거 없음@");
-    //   return;
-    // }
-
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
   
@@ -212,18 +205,18 @@ const Sidebar = ({ toggleSidebar }) => {
       Authorization: `Bearer ${accessToken}`,
     }, () => {
       console.log(">>친구 요청 알림 웹소켓 연결<<");
-      console.log("alarmId 확인 :", alarmId)
+      console.log("본인 유저ID 확인 :", userId)
   
       // 친구 요청 알림에 대해 구독
       subAlarmRef.current = alarmClient.current.subscribe(
-        '/sub/friend/alarm/' + `${userId}`,
+        '/sub/alarm/chat/' + `${userId}`,
         (message) => {
           const receivedMsg = JSON.parse(message.body);
           console.log("새로운 친구 요청 받음:", receivedMsg);
           setNewFriendRequest(true); // 새로운 친구 요청이 수신되었다면 상태 업데이트
 
           if (msg.type && msg.type === "ACCEPT") {
-            console.log("상대가 친구를 수락함")
+            console.log("상대가 친구요청을 수락함")
             friendList(); // 상대가 친구 수락하면 친구목록 불러오는 실행 함수 다시 실행
           }
         });
@@ -242,7 +235,7 @@ const Sidebar = ({ toggleSidebar }) => {
         console.log("친구요청알림 웹소켓 연결 해제");
       }
     };
-  }, [alarmId]);
+  }, [userId]);
 
   return (
     <aside className={styles.sidebar}>
