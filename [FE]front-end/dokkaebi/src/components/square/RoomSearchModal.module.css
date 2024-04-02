@@ -1,22 +1,49 @@
 .background {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 30;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .container {
-    width: 600px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    /* margin-left: 8%; */
-  }
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 30;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  max-height: 265px;
+  background-color: #FFF6F6;
+  /* background: rgba(255, 255, 255, 0.8); */
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border : 1px solid white;
+  padding: 1%;
+}
+
+.searchHeader {
+  color: #FB929E;
+}
+
+.searchInput {
+  width: 80%;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid #FB929E;
+}
+
+.searchInput:focus {
+  outline: 1px solid red;
+}
+
+.roomButton {
+  background-color: #FB929E;
+}
+
+.roomButton:hover {
+  background-color: #FA7070;
+}

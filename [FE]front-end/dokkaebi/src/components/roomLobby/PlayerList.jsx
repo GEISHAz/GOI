@@ -34,9 +34,7 @@ export default function PlayerList({ userList, amIManager, handleKick }) {
 
   return (
     <div className={styles.playerContainer}>
-
       {/* 컨테이너 4조각 분할 */}
-
       <div className="grid grid-cols-2 gap-4 p-1">
         {users.map((user, index) => {
           const userImage = findImageById(user?.imageId);
