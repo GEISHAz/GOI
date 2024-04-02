@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './friendAlarm.module.css'; 
 import axios from 'axios';
 
-const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
+const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList, setNewFriendRequest  }) => {
   const accessToken = sessionStorage.getItem("accessToken");
   const userId = sessionStorage.getItem("userId");
   const [friendRequests, setFriendRequests] = useState([]);
@@ -17,8 +17,8 @@ const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
       });
       console.log(response.data);
       alert('성공적으로 친구가 맺어졌어요 !');
-      onRefreshFriendList(); // 친구 목록 다시 업데이트해주기 
-      onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
+      onRefreshFriendList(); // 친구 목록 다시 업데이트해주기
+      handleAlarmClose();
     } catch (error) {
       console.error('친구 요청 수락 실패:', error.response);
       alert('수락을 할 수 없어요 ! 다시 시도해보세요 !');
@@ -36,12 +36,18 @@ const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
       console.log(response.data);
       alert('친구 요청을 거절했어요 !');
       onRefreshFriendList(); // 친구 목록 다시 업데이트해주기 
-      onAlarmClose(); // 예시로 모달을 닫는 동작을 추가
+      handleAlarmClose();
     } catch (error) {
       console.error('거절 요청 실패:', error.response);
       alert('거절을 할 수 없어요 ! 다시 시도해보세요 !');
     }
   };
+
+  // 알림 모달 닫는 함수
+  const handleAlarmClose = () => {
+    setNewFriendRequest(false);
+    onAlarmClose();
+  }
 
   useEffect(() => {
     const fetchFriendRequests = async () => {
@@ -96,7 +102,7 @@ const FriendAlarmModal = ({ onAlarmClose, onRefreshFriendList  }) => {
           )}
         </div>
         <div className='flex justify-center mb-2'>
-          <button onClick={onAlarmClose} className={styles.closeButton}>닫기</button>
+          <button onClick={handleAlarmClose} className={styles.closeButton}>닫기</button>
         </div>
       </div>
     </div>

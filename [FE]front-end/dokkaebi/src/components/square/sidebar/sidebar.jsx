@@ -213,7 +213,9 @@ const Sidebar = ({ toggleSidebar }) => {
         (message) => {
           const receivedMsg = JSON.parse(message.body);
           console.log("새로운 친구 요청 받음:", receivedMsg);
-          setNewFriendRequest(true); // 새로운 친구 요청이 수신되었다면 상태 업데이트
+          if (receivedMsg.type && receivedMsg.type === "SEND") {
+            setNewFriendRequest(true); // 새로운 친구 요청이 수신되었다면 상태 업데이트
+          }
 
           if (receivedMsg.type && receivedMsg.type === "ACCEPT") {
             console.log("상대가 친구요청을 수락함")
@@ -294,7 +296,7 @@ const Sidebar = ({ toggleSidebar }) => {
       {isAddFriendModalOpen && <FriendAddModal onClose={closeAddFriendModal} />}
 
       {/* 친구 요청 알림 모달 열고 닫기 */}
-      {isFriendAlarm && <FriendAlarm onRefreshFriendList={refreshFriendList} onAlarmClose={closeAlarmModal} />}
+      {isFriendAlarm && <FriendAlarm onRefreshFriendList={refreshFriendList} onAlarmClose={closeAlarmModal} setNewFriendRequest={setNewFriendRequest} />}
     </aside>
   );
 };
