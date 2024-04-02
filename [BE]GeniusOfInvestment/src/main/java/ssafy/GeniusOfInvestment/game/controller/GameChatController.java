@@ -14,7 +14,7 @@ public class GameChatController {
 
     private final SimpMessageSendingOperations messageSendingOperations;
 
-    @MessageMapping("/game/chat/message/")
+    @MessageMapping("/game/chat/message")
     public void message(GameChatMessageDto gameChatMessageDto){
         log.info("////////////////////////////////////////"+gameChatMessageDto.getReceiver());
         messageSendingOperations.convertAndSend("/sub/game/chat/" + gameChatMessageDto.getRoomId(),gameChatMessageDto);
