@@ -331,9 +331,9 @@ public class GameService {
                 int randIdx = random.nextInt(infos.size());
                 Information ranInfo = infos.get(randIdx);
                 roi = ranInfo.getRoi();
-                log.info("db에서 받아온 수익률: " + roi);
+                //log.info("db에서 받아온 수익률: " + roi);
                 cur = calMarketVal(last, roi);
-                log.info("새로 계산된 가격: " + cur);
+                //log.info("새로 계산된 가격: " + cur);
             }
             mk.getCost().add(cur); //새로 계산된 가격을 원래의 가격 리스트에 추가
             //redis에 저장될 시장 상황을 업데이트
@@ -425,8 +425,8 @@ public class GameService {
             System.out.println((long) (cost + (cost * (roi/100d))));
             return (long) (cost + (cost * (roi/100d)));
         }else {
-            System.out.println("-수익률은 " + (long) (cost - (cost * (roi/100d))));
-            return (long) (cost - (cost * (roi/100d)));
+            //System.out.println("-수익률은 " + (long) (cost - (cost * (roi/100d))));
+            return (long) (cost + (cost * (roi/100d)));
         }
     }
 
