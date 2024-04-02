@@ -12,9 +12,14 @@ p {
   margin: 6px auto;
 }
 
+.investmentInfo:hover {
+  transform: scale(1.1, 1.1);
+  transition-duration: 0.5s;
+}
+
 .bunya {
   width: 180px;
-  height: 40px;
+  height: 35px;
   background: black;
   color: white;
   border-bottom-left-radius: 8px;
@@ -41,8 +46,19 @@ p {
   justify-content: center;
   align-items: center;
   width: 150px;
+  height: 36px;
   font-family: DNFBitBitv2;
   color: white;
+}
+
+.buyButtons:hover {
+  transform: scale(1.3, 1.3);
+  transition-duration: 0.5s;
+}
+
+.sellButtons:hover {
+  transform: scale(1.3, 1.3);
+  transition-duration: 0.5s;
 }
 
 hr {

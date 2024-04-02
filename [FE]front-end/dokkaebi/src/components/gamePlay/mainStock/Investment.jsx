@@ -9,7 +9,7 @@ export default function Investment({ stockInfo }) {
     <div className={styles.container}>
       <div className={styles.listName}>
         <p>회사</p>
-        <p className={styles.juGa}>주가</p>
+        <p className={styles.juGa}>시장가</p>
         <p className={styles.gap}>등락폭</p>
         <p className={styles.sudo}>매수/매도</p>
       </div>
@@ -24,15 +24,9 @@ export default function Investment({ stockInfo }) {
         <InvestmentInfo company="H 엔터" price="320000" percent="-45" />
         <InvestmentInfo company="I 통신" price="54325380" percent="500" /> */}
 
-        <InvestmentInfo stockInfo={stockInfo[0]} />
-        <InvestmentInfo stockInfo={stockInfo[1]} />
-        <InvestmentInfo stockInfo={stockInfo[2]} />
-        <InvestmentInfo stockInfo={stockInfo[3]} />
-        <InvestmentInfo stockInfo={stockInfo[4]} />
-        <InvestmentInfo stockInfo={stockInfo[5]} />
-        <InvestmentInfo stockInfo={stockInfo[6]} />
-        <InvestmentInfo stockInfo={stockInfo[7]} />
-        <InvestmentInfo stockInfo={stockInfo[8]} />
+        {stockInfo.map((info, index) => (
+          <InvestmentInfo key={index} className={styles.investmentInfo} stockInfo={info} />
+        ))}
       </div>
     </div>
   );

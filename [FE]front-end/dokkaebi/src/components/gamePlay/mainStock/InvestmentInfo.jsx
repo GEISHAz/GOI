@@ -36,7 +36,7 @@ export default function InvestmentInfo({ stockInfo }) {
       <div className={styles.bunya}>
         <p>{stockInfo.item}</p>
       </div>
-      <div className={styles.jusu}>
+      <div className={`${styles.jusu} ${colorClass}`}>
         <p>{stockInfo.thisCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/주</p>
       </div>
       <div className={`${styles.upDown} ${colorClass}`}>

@@ -90,6 +90,11 @@
   border-radius: 15px;
 }
 
+.infoStore:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
+}
+
 .readyButton {
   width: 160px;
   height: 64px;
@@ -146,4 +151,19 @@
   color: white;
   margin-bottom: 12px;
   font-size: 24px;
+}
+
+.myMenu1:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
+}
+
+.myMenu2:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
+}
+
+.myMenu3:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
 }

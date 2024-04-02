@@ -149,15 +149,15 @@ export default function StockExchange(props) {
           <div className={styles.displayInfo}>
             <p className={styles.boldText}>주당 가격</p>
             <div className={styles.text}>
-              <p>{props.price}</p>
+              <p>{props.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
             </div>
           </div>
           <div className={styles.displayInfo}>
             <p className={styles.boldText}>보유 현금</p>
             <div className={styles.text}>
-              <p>{myCash}</p>
+              <p>{myCash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
               <span>▶</span>
-              <p>{cash}</p>
+              <p>{cash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
             </div>
           </div>
           <div className={styles.buyAndSellButton}>

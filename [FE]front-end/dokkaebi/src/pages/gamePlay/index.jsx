@@ -65,7 +65,7 @@ export default function GamePlay() {
     console.log("유저 레디 정보1", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
     console.log("myReady 상태", myReady.isReady);
-    setReady(myReady.isReady);
+    setReady(myReady?.isReady);
     // setReady(myReady.isReady ? myReady.isReady : ready);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
@@ -168,6 +168,23 @@ export default function GamePlay() {
         console.error("레디 요청에 실패했습니다:", error);
         if (error.response.data.statusCode === 410) {
           // 게임 종료 요청
+          axios
+            .put(
+              `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              setResultModal(true);
+            })
+            .catch((error) => {
+              console.error("게임 종료 요청에 실패했습니다:", error);
+            });
         }
       });
   };
@@ -350,7 +367,7 @@ export default function GamePlay() {
           <p className={styles.timer}>
             {timerMin}:{timerSec}
           </p>
-          <p className={styles.turn}>{year}년</p>
+          <p className={styles.turn}>{year}년 증시</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
           {ready ? "CANCEL" : "READY"}
@@ -363,9 +380,10 @@ export default function GamePlay() {
         <Investment stockInfo={stockInfo} />
       </div>
       <div className={styles.myMenu}>
-        <button onClick={exitGame}>나가기</button>
-        <button onClick={openMyStockModal}>내 주식 확인</button>
+        <button className={styles.myMenu1} onClick={exitGame}>나가기</button>
+        <button className={styles.myMenu2} onClick={openMyStockModal}>내 주식 확인</button>
         <button
+          className={styles.myMenu3}
           onClick={() => {
             openMyInfoModal();
             getMyInfoList();

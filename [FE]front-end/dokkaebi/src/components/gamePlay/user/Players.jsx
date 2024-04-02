@@ -66,7 +66,7 @@ export default function Players({ user, userReady }) {
             READY
           </p>
         </div>
-        <p className={styles.playerTotalMoney}>{user.totalCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+        <p className={styles.playerTotalMoney}>{user.totalCost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
       </div>
     </div>
   ) : (
