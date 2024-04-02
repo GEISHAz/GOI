@@ -45,14 +45,14 @@ export default function AAA() {
         }
       )
       .then((response) => {
-        console.log("입장 성공:", response);
+        // console.log("입장 성공:", response);
         if (response.status === 200) {
-          console.log("입장 성공:", response);
+          // console.log("입장 성공:", response);
           navigate(`/room/${roomId}`);
         }
       })
       .catch((error) => {
-        console.log("입장 실패:", error);
+        // console.log("입장 실패:", error);
         if (!error.response) {
           alert("알 수 없는 오류가 발생했습니다.");
           onClose();

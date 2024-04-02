@@ -37,14 +37,14 @@ export default function Square() {
           },
         })
         .then((res) => {
-          console.log(res);
-          console.log("방 나가기 성공");
+          // console.log(res);
+          // console.log("방 나가기 성공");
           sessionStorage.removeItem("roomId");
           navigate(`/square/${channelId}`);
         })
         .catch((err) => {
-          console.log(err);
-          console.log("방 나가기 실패");
+          console.log("방 나가기 실패",err);
+          // console.log("방 나가기 실패");
         });
     }
 

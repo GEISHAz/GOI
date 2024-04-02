@@ -15,7 +15,7 @@ const PrivateRoute = () => {
         checkLoginStatus();
     }, []);
 
-    console.log(isLogin);
+    // console.log(isLogin);
 
     return isLogin ? <Outlet /> : <Navigate to="/join" />;
 };
