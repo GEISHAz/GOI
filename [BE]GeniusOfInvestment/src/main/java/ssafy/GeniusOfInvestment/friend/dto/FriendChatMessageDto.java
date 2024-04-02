@@ -3,15 +3,13 @@ package ssafy.GeniusOfInvestment.friend.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto;
-import ssafy.GeniusOfInvestment._common.stomp.dto.MessageDto.MessageType;
 
 @Getter
 @Setter
 public class FriendChatMessageDto {
 
     public enum MessageType {
-        ENTER, TALK, ACCEPT
+        ENTER, TALK, ACCEPT, SEND
     }
     private MessageType type; // 메시지 타입
     private String roomId; // 방번호
