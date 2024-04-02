@@ -50,6 +50,11 @@
   font-weight: bold;
 }
 
+.whisperMessage {
+  color: #e0bbe4; // 보라색
+  font-weight: bold; 
+}
+
 .gameChatArea {
   width: 100%;
   display: flex;
