@@ -49,15 +49,15 @@ export default function MyStock(props) {
         <div className={styles.myInfors}>
           <div className={styles.total}>
             <p className={styles.totalText}>평가 금액</p>
-            <p className={styles.totalValue}>{total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            <p className={styles.totalValue}>{total?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
           <div className={styles.yoy}>
             <p className={styles.yoyText}>작년 대비</p>
-            <p className={styles.yoyValue}>{yoy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            <p className={styles.yoyValue}>{yoy?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
           <div className={styles.rest}>
             <p className={styles.restText}>현금</p>
-            <p className={styles.restValue}>{rest.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            <p className={styles.restValue}>{rest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
           </div>
         </div>
         <div className={styles.myStockDetail}>

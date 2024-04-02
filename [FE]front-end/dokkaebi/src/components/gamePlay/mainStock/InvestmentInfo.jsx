@@ -32,40 +32,42 @@ export default function InvestmentInfo({ stockInfo }) {
   }, [stockInfo.percent]);
 
   return (
-    <div className={styles.investmentInfo}>
-      <div className={styles.bunya}>
-        <p>{stockInfo.item}</p>
+    <div>
+      <div className={styles.investmentInfo}>
+        <div className={styles.bunya}>
+          <p>{stockInfo.item}</p>
+        </div>
+        <div className={`${styles.jusu} ${colorClass}`}>
+          <p>{stockInfo.thisCost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/주</p>
+        </div>
+        <div className={`${styles.upDown} ${colorClass}`}>
+          <p>{stockInfo.percent}%</p>
+        </div>
+        <div className={styles.buttons}>
+          <button
+            className={styles.buyButtons}
+            onClick={() => stockExchangeModalOpen("buy")}
+          >
+            매수
+          </button>
+          <hr />
+          <button
+            className={styles.sellButtons}
+            onClick={() => stockExchangeModalOpen("sell")}
+          >
+            매도
+          </button>
+        </div>
       </div>
-      <div className={`${styles.jusu} ${colorClass}`}>
-        <p>{stockInfo.thisCost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/주</p>
-      </div>
-      <div className={`${styles.upDown} ${colorClass}`}>
-        <p>{stockInfo.percent}%</p>
-      </div>
-      <div className={styles.buttons}>
-        <button
-          className={styles.buyButtons}
-          onClick={() => stockExchangeModalOpen("buy")}
-        >
-          매수
-        </button>
-        <hr />
-        <button
-          className={styles.sellButtons}
-          onClick={() => stockExchangeModalOpen("sell")}
-        >
-          매도
-        </button>
-      </div>
-      {stockExchangeModal && (
-        <StockExchange
-          setStockExchangeModal={setStockExchangeModal}
-          item={stockInfo.item}
-          price={stockInfo.thisCost}
-          percent={stockInfo.percent}
-          transactionType={transactionType}
-        />
-      )}
+        {stockExchangeModal && (
+          <StockExchange
+            setStockExchangeModal={setStockExchangeModal}
+            item={stockInfo.item}
+            price={stockInfo.thisCost}
+            percent={stockInfo.percent}
+            transactionType={transactionType}
+          />
+        )}
     </div>
   );
 }
