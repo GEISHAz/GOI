@@ -39,12 +39,13 @@ export default function Chat({ roomId, userNicks }) {
           (message) => {
             // console.log("구독 성공");
             const msg = JSON.parse(message.body);
-            console.log(msg);
-            if (msg.type && msg.type === "TALK") {
-              setChatList((chatList) => [
-                ...chatList,
-                { sender: msg.sender, message: msg.message },
-              ]);
+            // console.log(msg);
+            // 귓속말 메시지이고 현재 사용자가 발신자 또는 수신자일 경우에만 추가
+            if (msg.type === "WHISPER" && (msg.sender === sender || msg.receiver === targetNick)) {
+              setChatList((chatList) => [...chatList, msg]);
+            } else if (msg.type === "TALK") {
+              // 일반 채팅 메시지는 모두에게 표시
+              setChatList((chatList) => [...chatList, msg]);
             }
           }
         );
