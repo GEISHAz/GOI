@@ -103,7 +103,7 @@ public class RoomChatController {
                         if(user.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
                         user.get().updateChannel(null);
 
-                        delGameRoom(user.get(), uId); //방 탈퇴 처리랑 같은 로직
+                        delGameRoom(user.get()); //방 탈퇴 처리랑 같은 로직
                         userRepository.save(user.get());
                         redisUserRepository.deleteUser(uId); //유저 동선 저장 삭제(원래 광장으로 나오면 제거될 값)
                         myTradingInfoRepository.deleteMyTradingInfo(uId); //유저의 게임에서의 거래내역 삭제
@@ -122,12 +122,12 @@ public class RoomChatController {
         log.info("sessionId Disconnected : " + sessionId);
     }
 
-    public void delGameRoom(User user, Long userId){
+    public void delGameRoom(User user){
         Map<Long, GameRoom> tmp = redisGameRepository.getAllGameRooms();
         List<GameRoom> rlist = new ArrayList<>(tmp.values());
         for(GameRoom gr : rlist){
             GameUser gameUser = new GameUser();
-            gameUser.setUserId(userId);
+            gameUser.setUserId(user.getId());
             int idx = gr.getParticipants().indexOf(gameUser);
             if(idx != -1){
                 if(gr.getParticipants().size() > 1){ //삭제하기전 남아있는 인원이 2명 이상
@@ -138,7 +138,7 @@ public class RoomChatController {
                         gr.getParticipants().get(0).setReady(true);
                     }
                     gameService.rewardByRank(user, 4, 0L);
-                    RedisUser ru = redisUserRepository.getOneRedisUser(userId);
+                    RedisUser ru = redisUserRepository.getOneRedisUser(user.getId());
 //                    //유저가 나가기전 상태가 게임 중이고, 나간 후에 게임방에 남은 인원이 1명일 경우(게임 종료 로직 수행)
 //                    if(ru.isStatus() && gr.getParticipants().size() == 1){
 //                        List<ParticipantInfo> rst = gameService.endGame(gr.getId());
