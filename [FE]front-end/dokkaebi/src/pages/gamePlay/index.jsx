@@ -148,10 +148,10 @@ export default function GamePlay() {
     }
   };
 
-  const onClickReady = () => {
+  const onClickReady = async () => {
     console.log("레디 버튼 클릭 방 번호 : ", roomId);
-    axios
-      .put(
+    try {
+      const response = await axios.put(
         `https://j10d202.p.ssafy.io/api/game/ready/${roomId}`,
         {},
         {
@@ -159,34 +159,30 @@ export default function GamePlay() {
             Authorization: `Bearer ${accessToken}`,
           },
         }
-      )
-      .then((response) => {
-        console.log("dkdk", response);
-        setMyReady(false);
-      })
-      .catch((error) => {
-        console.error("레디 요청에 실패했습니다:", error);
-        if (error.response.data.statusCode === 410) {
-          // 게임 종료 요청
-          axios
-            .put(
-              `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
-              {},
-              {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-              }
-            )
-            .then((response) => {
-              console.log(response);
-              setResultModal(true);
-            })
-            .catch((error) => {
-              console.error("게임 종료 요청에 실패했습니다:", error);
-            });
+      );
+      console.log("dkdk", response);
+      setMyReady(false);
+    } catch (error) {
+      console.error("레디 요청에 실패했습니다:", error);
+      if (error.response && error.response.data.statusCode === 410) {
+        // 게임 종료 요청
+        try {
+          const response = await axios.put(
+            `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          console.log(response);
+          setResultModal(true);
+        } catch (error) {
+          console.error("게임 종료 요청에 실패했습니다:", error);
         }
-      });
+      }
+    }
   };
 
   const getMyInfoList = () => {
@@ -407,7 +403,7 @@ export default function GamePlay() {
       )}
 
       {resultModal && (
-        <Result setResultModal={setResultModal} result={result} />
+        <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef}/>
       )}
     </div>
   );
