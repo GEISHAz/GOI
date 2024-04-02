@@ -138,7 +138,7 @@ export default function RoomCreateModal({ onClose, userName }) {
         className={`${styles.container} flex flex-col items-center justify-center`}
       >
         {/* 모달 타이틀 */}
-        <h1 className="font-Bit text-4xl mb-10">방 만들기</h1>
+        <h1 className={`font-Bit text-4xl mb-10 mt-5 ${styles.createHeader}`}>도깨비 방 만들기</h1>
 
 
         {/* 방 만들기 인풋 그리드 */}
@@ -146,15 +146,15 @@ export default function RoomCreateModal({ onClose, userName }) {
 
           {/* 방 제목 */}
           <div className="flex justify-end items-center">
-            <label htmlFor="roomTitle" className="text-2xl mr-2">
-              방 제목
+            <label htmlFor="roomTitle" className="text-2xl font-bold mr-5">
+              방 이름
             </label>
           </div>
           <div>
             <input
               type="text"
               value={isRoomTitle}
-              className="border-2 border-gray-300 p-1"
+              className={`text-center my-auto font-bold ${styles.roomCreateInput}`}
               maxLength={10}
               onChange={(e) => setIsRoomTitle(e.target.value)}
               // defaultValue={userNickname + "의 방"}
@@ -163,7 +163,7 @@ export default function RoomCreateModal({ onClose, userName }) {
 
           {/* 비공개 */}
           <div className="flex justify-end items-center">
-            <label htmlFor="roomPrivate" className="text-2xl mr-2">
+            <label htmlFor="roomPrivate" className="text-2xl mr-5 font-bold">
               비공개
             </label>
           </div>
@@ -180,83 +180,83 @@ export default function RoomCreateModal({ onClose, userName }) {
               className="mr-2"
               onChange={handlePrivateChange}
             />
-
             {isPrivate && (
               <input
                 type="text"
                 id="roomPassword"
                 name="roomPassword"
-                placeholder="비밀번호 입력"
+                placeholder="비밀번호를 입력해주세요"
                 maxLength={4}
                 value={isPassword} // 입력 상태와 바인딩
                 onChange={handlePasswordChange} // 입력 처리 함수
-                className="border-2 border-gray-300 p-1 w-32"
+                className={`text-center text-md font-bold ${styles.roomPrivateInput}`}
               />
             )}
           </div>
         </div>
 
+        {/* 연도 선택 div */}
+        <div className={`flex flex-col items-center ${styles.yearContainer}}`}>
+          {/* 연도 선택 - 시작 연도 */}
+          <div className={`flex items-center mb-2 ${styles.playCont}`}>
+            <label htmlFor="startYear" className={`text-2xl font-bold ${styles.playYear}`}>시작 연도</label>
+            <select
+              id="startYear"
+              name="startYear"
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
+              className={`font-bold text-center ${styles.selectY}`}
+            >
+              <option value="">선택</option>
+              {[...Array(2019 - 2011 + 1).keys()].map((year) => (
+                <option key={year} value={year + 2011}>{year + 2011}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className="flex justify-center w-full">
-          {/* 연도 선택 div */}
-          <div className="flex flex-row items-center justify-center">
-            {/* 연도 선택 - 시작 연도 */}
-            <div className="flex items-center mr-4">
-              <label htmlFor="startYear" className="text-2xl">시작 연도</label>
-              <select
-                id="startYear"
-                name="startYear"
-                value={startYear}
-                onChange={(e) => setStartYear(e.target.value)}
-                className="border-2 border-gray-300 p-1 ml-2"
-              >
-                <option value="">선택</option>
-                {[...Array(2019 - 2011 + 1).keys()].map((year) => (
-                  <option key={year} value={year + 2011}>{year + 2011}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* 연도 선택 - 종료 연도 */}
-            <div className="flex items-center">
-              <label htmlFor="endYear" className="text-2xl">종료 연도</label>
-              <select
-                id="endYear"
-                name="endYear"
-                value={endYear}
-                onChange={(e) => setEndYear(e.target.value)}
-                className="border-2 border-gray-300 p-1 ml-2"
-                disabled={!startYear} // 시작 연도가 선택되지 않으면 비활성화
-              >
-                <option value="">선택</option>
-                {endYearOptions.map((year) => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
+          {/* 연도 선택 - 종료 연도 */}
+          <div className={`flex items-center ${styles.playCont}`}>
+            <label htmlFor="endYear" className={`text-2xl font-bold ${styles.playYear}`}>종료 연도</label>
+            <select
+              id="endYear"
+              name="endYear"
+              value={endYear}
+              onChange={(e) => setEndYear(e.target.value)}
+              className={`font-bold text-center ${styles.selectY}`}
+              disabled={!startYear} // 시작 연도가 선택되지 않으면 비활성화
+            >
+              <option value="">선택</option>
+              {endYearOptions.map((year) => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
           </div>
         </div>
-          
+        <h1 className={`font-bold mt-5 ${styles.selectYears}`}>게임의 기간을 설정해주세요 !</h1>  
 
         {/* 버튼 그룹 */}
-        <div className="flex justify-center w-full mt-10">
+        <div className="flex justify-center w-full mt-10 mb-5">
           {/* 확인 버튼 */}
-          <button
-            className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-            onClick={handleCreateRoom}
-          >
-            생성
-          </button>
+          <div className={`rounded-xl mr-5 ${styles.roomButtons}`}>
+            <button
+              className={`w-28 h-12 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline`}
+              type="button"
+              onClick={handleCreateRoom}
+            >
+              만들기
+            </button>
+          </div>
 
           {/* 취소 버튼 */}
-          <button
-            onClick={onClose}
-            className="w-24 h-12 bg-red-500 hover:bg-red-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            취소
-          </button>
+          <div className={`rounded-xl ${styles.roomButtons}`}>
+            <button
+              onClick={onClose}
+              className="w-28 h-12 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
+              type="button"
+            >
+              취소
+            </button>
+          </div>
         </div>
       </div>
     </div>

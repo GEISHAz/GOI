@@ -1,6 +1,46 @@
+.roomPlayerContainer {
+  width: 100%;
+  max-width: 1500px;
+}
+
+.playerInfoContainer {
+  width: 15%;
+  height: auto;
+  max-width: 350px;
+  max-height: 160px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 15px;
+  margin-bottom: 1%;
+  padding: 1%;
+}
+
+.roomInfo {
+  color: #F7418F;
+}
+
+.roomNumInfo {
+  font-size: 17.5px;
+}
+
+.roomNum {
+  color: red;
+}
+
+.userCntInfo {
+  font-size: 17.5px;
+}
+
+.userCnt {
+  color: red;
+}
+
+.allReadyAlarm {
+  color: #F7418F;
+}
+
 .playerContainer {
   width: 100%;
-  max-width: 850px;
+  max-width: 1000px;
   height: 320px;
   max-height: 320px;
   padding: 1%;
@@ -8,6 +48,7 @@
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 15px;
 }
+
 
 .playerBox {
   width: 100%;

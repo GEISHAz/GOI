@@ -91,35 +91,39 @@ export default function RoomEnterModal({ onClose, roomId }) {
         className={`${styles.container} flex flex-col items-center justify-center`}
       >
         {/* 모달 타이틀 */}
-        <h1 className="font-Bit text-5xl mb-10">비밀방 입장</h1>
+        <h1 className={`font-Bit text-5xl mb-10 ${styles.passwordHeader}`}>비밀방 입장</h1>
         <input
           type="text"
-          placeholder="비밀번호 입력"
+          placeholder="비공개 방이에요 ! 비밀번호를 입력하세요"
           maxLength={4}
           value={isPassword || ""} // 입력 상태를 value와 바인딩
           onChange={handlePasswordChange} // 입력 처리 함수를 이벤트 핸들러로 지정
-          className="border-2 border-gray-300 p-1 w-48"
+          className={`text-center font-bold text-lg ${styles.passwordInput}`}
         />
 
         {/* 버튼 그룹 */}
         <div className="flex justify-center w-full mt-5">
           {/* 입장 버튼 */}
-          <button
-            onClick={handleEnterClick} // 입장 버튼 클릭 시 handleEnterClick 함수 호출
-            className="w-24 h-12 bg-blue-500 hover:bg-blue-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            입장
-          </button>
+          <div className={`rounded-xl mr-5 ${styles.roomBtn}`}>
+            <button
+              onClick={handleEnterClick} // 입장 버튼 클릭 시 handleEnterClick 함수 호출
+              className="w-28 h-12 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
+              type="button"
+            >
+              입 장
+            </button>
+          </div>
 
           {/* 취소 버튼 */}
-          <button
-            onClick={onClose}
-            className="w-24 h-12 bg-red-500 hover:bg-red-600 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            취소
-          </button>
+          <div className={`rounded-xl ${styles.roomBtn}`}>
+            <button
+              onClick={onClose}
+              className="w-28 h-12 text-white text-2xl px-4 rounded-xl focus:outline-none focus:shadow-outline"
+              type="button"
+            >
+              취 소
+            </button>
+          </div>
         </div>
       </div>
     </div>
