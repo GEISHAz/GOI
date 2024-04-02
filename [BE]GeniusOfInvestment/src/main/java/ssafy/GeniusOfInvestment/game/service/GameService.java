@@ -560,10 +560,7 @@ public class GameService {
 
             rewardByRank(unick.get(), i, guser.getTotalCost()); //순위에 따른 경험치 적립
 
-            RedisUser rdu = redisUserRepository.getOneRedisUser(guser.getUserId());
-            if(rdu == null) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
-            rdu.setStatus(false); //상태 false가 대기
-            redisUserRepository.updateUserStatusGameing(rdu); //각 유저마다의 상태값을 변경
+            redisUserRepository.deleteUser(guser.getUserId());
 
             //나의 거래내역을 삭제한다.
             myTradingInfoRepository.deleteMyTradingInfo(guser.getUserId());
@@ -585,14 +582,10 @@ public class GameService {
         if(rinfo.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        rinfo.get().updateStatus(0); //방 상태를 대기로 바꾼다.
 
-        //GameRoom(redis)에 정보 초기화(게임이 끝났으므로)
-        room.setRemainTurn(0); //남은 턴수 설정
-        room.setYear(0); //게임의 현재 년도 설정
-        room.setParticipants(gameUserList); //상태값이 변경된 새로운 리스트를 저장
-        room.setMarket(null);
-        gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
+        rinfo.get().updateStatus(2); //방 상태를 삭제 상태로 바꾼다.
+        roomRepository.save(rinfo.get());
+        gameRepository.deleteGameRoom(grId); //redis에 게임 방 정보를 삭제(게임이 끝나면 바로 광장으로 갈 것이기 떄문)
 
         return parts;
     }
