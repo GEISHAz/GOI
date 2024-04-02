@@ -96,15 +96,19 @@ public class GameService {
         log.info("주식 현황 저장하기 전!!!!");
         //6개 중에서 4개 선택
         List<Items1> values1 = Arrays.asList(Items1.values());
-        List<Items1> selectedOne = random.ints(4, 0, values1.size())
-                .mapToObj(values1::get)
-                .collect(Collectors.toList());
+        Collections.shuffle(values1);
+        List<Items1> selectedOne = values1.subList(0, 4);
+//        List<Items1> selectedOne = random.ints(4, 0, values1.size())
+//                .mapToObj(values1::get)
+//                .collect(Collectors.toList());
 
         //4개 중에서 3개 선택
         List<Items2> values2 = Arrays.asList(Items2.values());
-        List<Items2> selectedTwo = random.ints(3, 0, values2.size())
-                .mapToObj(values2::get)
-                .collect(Collectors.toList());
+        Collections.shuffle(values2);
+        List<Items2> selectedTwo = values2.subList(0, 3);
+//        List<Items2> selectedTwo = random.ints(3, 0, values2.size())
+//                .mapToObj(values2::get)
+//                .collect(Collectors.toList());
 
         List<StockInfoResponse> stockInfos = new ArrayList<>();
         selTwoItems(stockInfos, selectedTwo);
