@@ -227,7 +227,7 @@ public class GameService {
                     sb.append(" 엔터");
                     break;
                 case "TELECOM":
-                    sb.append(" 통신");
+                    sb.append(" 게임");
                     break;
                 case "AIR":
                     sb.append(" 항공");
@@ -317,6 +317,7 @@ public class GameService {
             Long cur; //현재(새로운) 가격
             int size = mk.getCost().size();
             Long last = mk.getCost().get(size-1); //마지막 인덱스에 있는 것이 가장 최근의 가격
+            log.info("가장 최근 가격은 " + last);
             int roi; //수익률
             if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
                 Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
@@ -331,6 +332,7 @@ public class GameService {
                 Information ranInfo = infos.get(randIdx);
                 roi = ranInfo.getRoi();
                 cur = calMarketVal(last, roi);
+                log.info("새로 계산된 가격: " + cur);
             }
             mk.getCost().add(cur); //새로 계산된 가격을 원래의 가격 리스트에 추가
             //redis에 저장될 시장 상황을 업데이트
@@ -359,15 +361,15 @@ public class GameService {
             List<BreakDown> bdowns = myInfo.getBreakDowns();
             //List<BreakDown> newbdowns = new ArrayList<>(); //새로운 BreakDown 정보를 저장할 리스트
             Long usrTotal = 0L;
-            for(BreakDown bd : bdowns){
-                for(StockInfoResponse totalInfo : stockInfos){
+            for(BreakDown bd : bdowns){ //내 거래내역 탐색
+                for(StockInfoResponse totalInfo : stockInfos){ //전체 주식 현황 탐색
                     if(bd.getItem().equals(totalInfo.getItem())){ //내가 산 주식 종목에 해당하는 수익률 정보를 전체 주식 정보에서 얻는다.
                         //산 금액과 이전 턴에서의 금액을 분리??
                         Long nowVal = calMarketVal(bd.getNowVal(), totalInfo.getPercent()); //평가금액을 주식 상황에 맞게 업데이트
                         bd.setNowVal(nowVal);
                         Long buy = bd.getBuyVal();
                         bd.setRoi(calRoiByVal(buy, nowVal));
-                        usrTotal += nowVal; //투자한 종목들의 업데이트된 평가 금액의 합
+                        usrTotal += nowVal * bd.getShares(); //투자한 종목들의 업데이트된 평가 금액의 합
                         break;
                     }
                 }
@@ -422,12 +424,18 @@ public class GameService {
             System.out.println((long) (cost + (cost * (roi/100d))));
             return (long) (cost + (cost * (roi/100d)));
         }else {
+            System.out.println("-수익률은 " + (long) (cost - (cost * (roi/100d))));
             return (long) (cost - (cost * (roi/100d)));
         }
     }
 
     public int calRoiByVal(Long last, Long cur){ //지난(매입) 금액과 현재 금액으로 수익률을 계산
-        return (int) (Math.abs(1 - (cur/(double)last)) * 100);
+        int val = (int) (Math.abs(1 - (cur/(double)last)) * 100);
+        if(last <= cur){
+            return val;
+        }else {
+            return val * -1;
+        }
     }
 
     public Long getIdForItem(String itemName){

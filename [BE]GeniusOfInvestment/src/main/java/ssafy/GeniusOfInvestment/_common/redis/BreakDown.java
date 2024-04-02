@@ -14,7 +14,7 @@ public class BreakDown implements Serializable {
     private String item;
     private Long buyVal; //샀을때 금액(내가 구매한 1주당 평균)
     private int shares; // 주식 수(몇 주)
-    private Long nowVal;
+    private Long nowVal; //현재 이 종목의 1주당 가격
     private int roi; //수익률
 
     @Override
