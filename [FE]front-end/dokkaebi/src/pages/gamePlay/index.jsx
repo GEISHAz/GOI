@@ -43,7 +43,7 @@ export default function GamePlay() {
   const [currentUser, setCurrentUser] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
   const [myReady, setMyReady] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [ohMyReady, setOhMyReady] = useState(false);
   const [otherUsersReady, setOtherUsersReady] = useState([]);
 
   const [stockInfo, setStockInfo] = useState([]);
@@ -64,9 +64,7 @@ export default function GamePlay() {
   useEffect(() => {
     console.log("유저 레디 정보1", userReadyList);
     setMyReady(userReadyList.find((user) => user.userId == userId));
-    console.log("myReady 상태", myReady.isReady);
-    setReady(myReady?.isReady);
-    // setReady(myReady.isReady ? myReady.isReady : ready);
+    console.log("myReady 상태", myReady);
     setOtherUsersReady(userReadyList.filter((user) => user.userId != userId));
     console.log("나머지 유저 레디 상태", otherUsersReady);
   }, [userReadyList]);
@@ -161,7 +159,6 @@ export default function GamePlay() {
         }
       );
       console.log("dkdk", response);
-      setMyReady(false);
     } catch (error) {
       console.error("레디 요청에 실패했습니다:", error);
       if (error.response && error.response.data.statusCode === 410) {
@@ -274,6 +271,7 @@ export default function GamePlay() {
             } else if (receivedMessage.type === "READY") {
               console.log("레디 정보??????????????????", receivedMessage.data);
               setUserReadyList(receivedMessage.data.list);
+              setOhMyReady(receivedMessage.data.ready);
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
@@ -369,7 +367,7 @@ export default function GamePlay() {
           <p className={styles.turn}>{year}년 증시</p>
         </div>
         <button className={styles.readyButton} onClick={onClickReady}>
-          {ready ? "CANCEL" : "READY"}
+          {ohMyReady ? "CANCEL" : "READY"}
         </button>
       </div>
       <div className={styles.chat}>
