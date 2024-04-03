@@ -87,7 +87,7 @@ public class GameService {
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
             guser.setTotalCost(500000L);
-            guser.setPoint(3);
+            guser.setPoint(10);
             gameUserList.add(guser);
         }
 
@@ -400,7 +400,7 @@ public class GameService {
             if(unick.isEmpty()){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             }
-            int point = guser.getPoint() + 3;
+            int point = guser.getPoint() + 10;
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
                     .profileId(unick.get().getImageId())
