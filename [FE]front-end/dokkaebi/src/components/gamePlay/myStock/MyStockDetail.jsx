@@ -14,7 +14,7 @@ export default function MyStockDetail(props) {
   useEffect(() => {
     setTimeout(() => {
       props.setMyStockModal(false);
-    });
+    }, 10);
   }, []);
 
   return (
