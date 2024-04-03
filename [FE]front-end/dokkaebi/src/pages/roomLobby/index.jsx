@@ -2,13 +2,13 @@ import Background from "../../images/gamePlay/background6.gif";
 import LobbyTop from "../../components/roomLobby/LobbyTop.jsx";
 import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setUserCnt } from '../../features/square/roomSlice.js'
+import { setUserCnt } from "../../features/square/roomSlice.js";
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import styles from './index.module.css'
+import styles from "./index.module.css";
 import axios from "axios";
 
 export default function userReadyRoom() {
@@ -31,7 +31,7 @@ export default function userReadyRoom() {
   const userId = sessionStorage.getItem("userId");
   const location = useLocation();
   const stompClientRef = useRef(null);
-  const roomStompRef= useRef(null);
+  const roomStompRef = useRef(null);
   const userNickname = useSelector((state) => state.auth.userNickname);
   const channelId = sessionStorage.getItem("channelId");
   const socketUrl = "https://j10d202.p.ssafy.io/ws-stomp";
@@ -43,7 +43,7 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     if (response.userList) {
-      console.log('유저 리스트 확인 :', response.userList)
+      console.log("유저 리스트 확인 :", response.userList);
       setUserList(response.userList);
     } else {
       setUserList(response);
@@ -87,23 +87,32 @@ export default function userReadyRoom() {
             if (receivedMessage.type && receivedMessage.type === "TALK") {
               setChatList((chatList) => [
                 ...chatList,
-                { sender: receivedMessage.sender, message: receivedMessage.message },
+                {
+                  sender: receivedMessage.sender,
+                  message: receivedMessage.message,
+                },
               ]);
             }
-            
+
             if (receivedMessage.type && receivedMessage.type === "ROOM_KICK") {
               // console.log("강퇴 로직 실행된 후 새로 받은 데아터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
 
-               // 강퇴된 유저가 자신인지 확인
-              const isKicked = !receivedMessage.data.some(user => user.userId === Number(userId));
+              // 강퇴된 유저가 자신인지 확인
+              const isKicked = !receivedMessage.data.some(
+                (user) => user.userId === Number(userId)
+              );
               if (isKicked) {
                 alert("강퇴당했어요 !");
-                
-                if (stompClientRef.current && stompClientRef.current.connected) {
+
+                if (
+                  stompClientRef.current &&
+                  stompClientRef.current.connected
+                ) {
                   stompClientRef.current.unsubscribe(); // 현재 구독 해제
-                  
-                  stompClientRef.current.disconnect(() => { // WebSocket 연결 끊기
+
+                  stompClientRef.current.disconnect(() => {
+                    // WebSocket 연결 끊기
                     console.log("강퇴 당하여 연결이 끊어집니다!");
                   });
                 }
@@ -117,7 +126,7 @@ export default function userReadyRoom() {
               // console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
               // Redux 스토어의 userCnt 업데이트
-              console.log("유저 수 확인 :", receivedMessage.data.userList)
+              console.log("유저 수 확인 :", receivedMessage.data.userList);
               const newUserCnt = receivedMessage.data.userList.length;
               dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
@@ -139,15 +148,17 @@ export default function userReadyRoom() {
                   roomStompRef.current.unsubscribe();
                   roomStompRef.current = null; // 구독 참조 초기화
                 }
-                
+
                 // WebSocket 연결 끊기
                 stompClientRef.current.disconnect(() => {
-                  console.log("게임을 시작하여 연결을 끊습니다. gamePlay 페이지에서 새로 연결합니다.");
-                  
+                  console.log(
+                    "게임을 시작하여 연결을 끊습니다. gamePlay 페이지에서 새로 연결합니다."
+                  );
+
                   // 연결이 완전히 끊긴 후 navigate 실행
                   navigate(`/game/${roomId}`);
                 });
-            
+
                 return; // 이 부분을 추가하여 연결 해제 후 navigate가 실행되기 전에 함수 실행을 멈춤
               }
               // 만약 연결이 이미 끊겼다면 바로 navigate 실행
@@ -211,21 +222,24 @@ export default function userReadyRoom() {
     try {
       // console.log("내보내려는 유저 id :", userIdToKick)
       // console.log("현재 방 번호 :", roomId)
-      await axios.put('https://j10d202.p.ssafy.io/api/room/kick', {
-        userId: userIdToKick,
-        roomId: roomId,
-      }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      await axios.put(
+        "https://j10d202.p.ssafy.io/api/room/kick",
+        {
+          userId: userIdToKick,
+          roomId: roomId,
         },
-      });
-      alert('강퇴했어요');
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      alert("강퇴했어요");
       // 강퇴 처리 후유저 리스트를 다시 업데이트
-      // setUserList(response.data); 
-
+      // setUserList(response.data);
     } catch (error) {
-      console.error('강퇴 처리 중 에러 발생', error);
-      alert('강퇴 처리 중 문제가 발생했습니다.');
+      console.error("강퇴 처리 중 에러 발생", error);
+      alert("강퇴 처리 중 문제가 발생했습니다.");
     }
   };
 
@@ -243,7 +257,7 @@ export default function userReadyRoom() {
           userCnt={userCnt}
         />
         <div className={`flex justify-center ${styles.chatSuperCont}`}>
-          <LobbyChat 
+          <LobbyChat
             handleSendMessages={handleSendMessages} // 메세지 보내기 함수
             chatList={chatList} // 채팅 내역 props
             userNickname={userNickname}
