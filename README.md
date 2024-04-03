@@ -5,11 +5,11 @@
 
 ### 청소년을 위한 모의투자 서비스
 
-## 소개 영상
+## 🎥 소개 영상
 
 - [https://www.youtube.com/watch?v=1bM2wbN2ajA](https://www.youtube.com/watch?v=1bM2wbN2ajA)
 
-## 시연 영상
+## 🎥 시연 영상
 
 - [https://www.youtube.com/watch?v=xtrJIBw8ABU](https://www.youtube.com/watch?v=xtrJIBw8ABU)
 
