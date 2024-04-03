@@ -43,7 +43,7 @@ public class GameController {
             timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
             //redisTemplate.opsForValue().set("future" + grId, result);
             String str = "ALREADY_START";
-            redisTemplate.opsForValue().set("refresh" + grId, str, Duration.ofMinutes(3)); //새로고침에 대한 기능을 막기 위해서
+            redisTemplate.opsForValue().set("refresh" + grId, str, Duration.ofMinutes(20)); //새로고침에 대한 기능을 막기 위해서
         }
 //        String str = "ALREADY_START";
 //        redisTemplate.opsForValue().set("refresh" + grId, str); //새로고침에 대한 기능을 막기 위해서
@@ -67,8 +67,12 @@ public class GameController {
     public Map<String, String> getNextStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
 //        redisTemplate.opsForValue().set("thread" + grId, "STOP");
         TurnResponse rst = gameService.getNextStockInfo(grId);
-        sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 다음 턴 주식 정보를 보낸다.
-        timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+        if(rst.getRemainTurn() <= -1){
+            sendMsg(grId, rst, MessageDto.MessageType.END_GAME);
+        }else {
+            sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 다음 턴 주식 정보를 보낸다.
+            timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+        }
         Map<String, String> json = new HashMap<>();
         json.put("msg", "다음 턴 시작");
         return json;
@@ -77,7 +81,7 @@ public class GameController {
     //유저가 레디를 눌렀다.
     @PutMapping("/ready/{id}")
     public Map<String, String> doingReady(@AuthenticationPrincipal User user, @PathVariable("id") Long grId){
-        log.info("ready Controller가 들어왔나???");
+        //log.info("ready Controller가 들어왔나???");
         ReadyResponse rsp = gameService.doingReady(user, grId);
         Map<String, String> json = new HashMap<>();
         if(!rsp.start()){ //아직 전체 참여자가 레디를 다 누르지 않았다.
@@ -87,10 +91,14 @@ public class GameController {
         }else { //참여자 전체가 레디를 하였다.(바로 다음 턴으로 넘긴다.)
             redisTemplate.opsForValue().set("thread" + grId, "STOP");
             TurnResponse rst = gameService.getNextStockInfo(grId);
-            sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET);
-            log.info("새로운 타이머 생성 전");
-            timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
-            log.info("새로운 타이머 생성 후");
+            if(rst.getRemainTurn() <= -1){
+                sendMsg(grId, rst, MessageDto.MessageType.END_GAME);
+            }else {
+                sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET);
+//                log.info("새로운 타이머 생성 전");
+                timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
+//                log.info("새로운 타이머 생성 후");
+            }
             json.put("msg", "다음 턴 넘기기 완료");
         }
         return json;
