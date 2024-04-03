@@ -114,7 +114,7 @@ public class RoomChatController {
             };
 
             // 1초 간격으로 작업 실행
-            timer.scheduleAtFixedRate(task, 3000, 1000); //5초뒤에 task 작업 실행
+            timer.scheduleAtFixedRate(task, 5000, 1000); //5초뒤에 task 작업 실행
         }else {
             throw new CustomBadRequestException(ErrorType.FAIL_TO_GET_USER_DISCONNECT);
         }
