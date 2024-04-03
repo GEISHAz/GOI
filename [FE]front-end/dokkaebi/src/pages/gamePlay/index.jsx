@@ -8,7 +8,7 @@ import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import Result from "../../components/gamePlay/Result";
-import ChangeTurn from "../../components/gamePlay/ChangeTurn";
+import ChangeTurn from "../../components/gamePlay/ChangeTurn"
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
