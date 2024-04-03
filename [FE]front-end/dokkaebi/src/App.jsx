@@ -7,7 +7,7 @@ function App() {
   const location = useLocation();
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   
-  seEffect(() => {
+  useEffect(() => {
     const handleBeforeUnload = (e) => {
       const message = '새로고침 시 문제가 발생할 수 있어요 ! 조심해주세요 !';
       e.returnValue = message;
