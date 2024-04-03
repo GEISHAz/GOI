@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Explanation from "../hub/Explanation";
 import Logo from "../../images/main/logo.gif";
 import playButton from "../../images/main/button_play1.png";
 import playButtonClicked from "../../images/main/button_play2.png";
-import Explanation from "../../images/main/Frame 2431.png";
+import questionMark from "../../images/main/questionMark.png";
 import styles from "./main.module.css";
 
 export default function Main() {
@@ -33,7 +34,6 @@ export default function Main() {
           <img src={image} alt="Start Button" onClick={handleClick} />
         </button>
       </div>
-      {/* <img src={Explanation} alt="설명서" /> */}
     </div>
   );
 }

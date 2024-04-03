@@ -13,3 +13,22 @@
 .playButtons {
   width: 100%;
 }
+
+.questionMark {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  z-index: 150;
+}
+
+/* .explanationModal {
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
