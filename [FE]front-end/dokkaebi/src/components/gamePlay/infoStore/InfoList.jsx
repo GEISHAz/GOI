@@ -27,6 +27,7 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log(response);
         console.log("1단계 정보 가져오기 성공");
         setInfo(response.data)
+        setMyPoint(myPoint - 2);
         openInfoStoreDetailModal();
       })
       .catch((error) => {
@@ -47,6 +48,7 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log(response);
         console.log("2단계 정보 요청 성공");
         setInfo(response.data);
+        setMyPoint(myPoint - 4);
         openInfoStoreDetailModal();
       })
       .catch((error) => {
@@ -68,7 +70,6 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
           className={styles.levelOneButtons}
           onClick={() => {
             getLowStockInfo();
-            setMyPoint(myPoint - 2);
           }}
         >
           1단계
@@ -78,7 +79,6 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
           className={styles.levelTwoButtons}
           onClick={() => {
             getHighStockInfo();
-            setMyPoint(myPoint - 4);
           }}
         >
           2단계
