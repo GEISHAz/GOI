@@ -4,8 +4,7 @@ import styles from "./InfoList.module.css";
 import InfoStoreDetail from "./InfoStoreDetail";
 import axios from "axios";
 
-export default function InfoLIst(props) {
-  const company = props.company;
+export default function InfoLIst({company, myPoint, setMyPoint}) {
   const roomId = sessionStorage.getItem("roomId");
   const accessToken = sessionStorage.getItem("accessToken");
   const [infoStoreDetailModalOpen, setInfoStoreDetailModalOpen] =
@@ -69,6 +68,7 @@ export default function InfoLIst(props) {
           className={styles.levelOneButtons}
           onClick={() => {
             getLowStockInfo();
+            setMyPoint(myPoint - 2);
           }}
         >
           1단계
@@ -78,6 +78,7 @@ export default function InfoLIst(props) {
           className={styles.levelTwoButtons}
           onClick={() => {
             getHighStockInfo();
+            setMyPoint(myPoint - 4);
           }}
         >
           2단계

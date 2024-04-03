@@ -44,6 +44,7 @@ export default function GamePlay() {
   const [otherUsers, setOtherUsers] = useState([]);
   const [myReady, setMyReady] = useState(false);
   const [ohMyReady, setOhMyReady] = useState(false);
+  const [myPoint, setMyPoint] = useState(0);
   const [otherUsersReady, setOtherUsersReady] = useState([]);
 
   const [stockInfo, setStockInfo] = useState([]);
@@ -72,6 +73,8 @@ export default function GamePlay() {
   useEffect(() => {
     console.log("유저 정보1", userList);
     setCurrentUser(userList.find((user) => user.userId == userId));
+    console.log("현재 유저 정보1", currentUser);
+    setMyPoint(currentUser?.point);
     // setReady(currentUser.isReady? currentUser.isReady : ready);
     // console.log("현재 유저 정보", currentUser);
     setOtherUsers(userList.filter((user) => user.userId != userId));
@@ -277,6 +280,7 @@ export default function GamePlay() {
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
+              setResultModal(true);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               console.log("게임 종료 정보", receivedMessage.data);
               setUserList(receivedMessage.data);
@@ -334,6 +338,7 @@ export default function GamePlay() {
           <Players
             user={currentUser ? currentUser : null}
             userReady={myReady}
+            myPoint={myPoint}
           />
         </div>
 
@@ -396,6 +401,8 @@ export default function GamePlay() {
         <InfoStore
           setInfoStoreModalOpen={setInfoStoreModalOpen}
           stockInfo={stockInfo}
+          myPoint={myPoint}
+          setMyPoint={setMyPoint}
         />
       )}
 
@@ -406,7 +413,7 @@ export default function GamePlay() {
       )}
 
       {resultModal && (
-        <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef}/>
+        <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef} />
       )}
     </div>
   );
