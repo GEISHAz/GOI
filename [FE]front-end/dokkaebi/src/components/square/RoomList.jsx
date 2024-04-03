@@ -49,7 +49,7 @@ export default function RoomList() {
       console.log("roomId 확인 111:", room.id);
       const roomId = room.id
       useRoomId(roomId)
-      dispatch(setRoomNum(response.data.roomNum));
+      dispatch(setRoomNum(room.roomNum));
       setEnterModal(true);
     } else {
       console.log("roomId 확인 222:", room.id);
@@ -66,7 +66,7 @@ export default function RoomList() {
         .then((response) => {
           console.log(response);
           console.log("방 접속 성공");
-          dispatch(setRoomNum(response.data.roomNum));
+          dispatch(setRoomNum(room.roomNum));
           sessionStorage.setItem("roomId", room.id);
           navigate(`/room/${room.id}`, {
             state: JSON.parse(JSON.stringify({ response })),

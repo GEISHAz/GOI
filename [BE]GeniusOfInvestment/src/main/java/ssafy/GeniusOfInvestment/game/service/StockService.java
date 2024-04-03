@@ -15,10 +15,7 @@ import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -167,6 +164,7 @@ public class StockService {
                     .build());
         }
         //log.info(result.get(0).content());
+        Collections.reverse(result);
         return result;
     }
 

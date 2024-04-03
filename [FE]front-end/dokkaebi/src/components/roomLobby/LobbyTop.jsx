@@ -22,6 +22,12 @@ export default function LobbyTop({ userList, isStart }) {
   const [isReady, setIsReady] = useState(false);
   const [amIManager, setAmIManager] = useState(false);
 
+  // 효과음 재생 함수
+  const playGameStartSound = () => {
+    const sound = new Audio('/public/bgm/gameStart.mp3');
+    sound.play();
+  };
+
   useEffect(() => {
     userList.forEach((user) => {
       if (user.userId === Number(userId)) {
@@ -62,6 +68,7 @@ export default function LobbyTop({ userList, isStart }) {
   // };
 
   const handleReadyButtonClick = () => {
+    playGameStartSound();
     axios
       .post(
         `https://j10d202.p.ssafy.io/api/room/ready/${roomId}`,
@@ -86,6 +93,7 @@ export default function LobbyTop({ userList, isStart }) {
   };
 
   const handleStartButtonClick = () => {
+    playGameStartSound();
     axios
       .get(`https://j10d202.p.ssafy.io/api/game?id=${roomId}`, {
         params: { id: roomId },

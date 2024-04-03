@@ -8,7 +8,7 @@ import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import Result from "../../components/gamePlay/Result";
-import ChangeTurn from "../../components/gamePlay/ChangeTurn";
+import ChangeTurn from "../../components/gamePlay/ChangeTurn"
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -155,7 +155,13 @@ export default function GamePlay() {
     }
   };
 
+  const playSound = () => {
+    const sound = new Audio('/public/bgm/gameStart.mp3');
+    sound.play();
+  };
+
   const onClickReady = async () => {
+    playSound();
     console.log("레디 버튼 클릭 방 번호 : ", roomId);
     try {
       const response = await axios.put(
