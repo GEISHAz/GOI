@@ -308,23 +308,24 @@ export default function GamePlay() {
               setLastTurnStock(receivedMessage.data.stockInfo);
               setLastTurnStockModal(true);
               setTimeout(() => {
-                axios
-                  .put(
-                    `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
-                    {},
-                    {
-                      headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                      },
-                    }
-                  )
-                  .then((response) => {
-                    console.log(response);
-                    setLastTurnStockModal(false);
-                  })
-                  .catch((error) => {
-                    console.error("게임 종료 요청에 실패했습니다:", error);
-                  });
+                if (isManager === "true")
+                  axios
+                    .put(
+                      `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
+                      {},
+                      {
+                        headers: {
+                          Authorization: `Bearer ${accessToken}`,
+                        },
+                      }
+                    )
+                    .then((response) => {
+                      console.log(response);
+                      setLastTurnStockModal(false);
+                    })
+                    .catch((error) => {
+                      console.error("게임 종료 요청에 실패했습니다:", error);
+                    });
               }, 5000);
             }
           }

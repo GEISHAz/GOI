@@ -1,0 +1,12 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../../images/main/2431.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
