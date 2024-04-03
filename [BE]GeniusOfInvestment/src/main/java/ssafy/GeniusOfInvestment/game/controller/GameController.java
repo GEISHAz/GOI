@@ -43,7 +43,7 @@ public class GameController {
             timerService.setTimer(grId); //비동기적으로(멀티 쓰레드 환경)으로 타이머 실행(100ms 뒤에 타이머 실행)
             //redisTemplate.opsForValue().set("future" + grId, result);
             String str = "ALREADY_START";
-            redisTemplate.opsForValue().set("refresh" + grId, str, Duration.ofMinutes(3)); //새로고침에 대한 기능을 막기 위해서
+            redisTemplate.opsForValue().set("refresh" + grId, str, Duration.ofMinutes(20)); //새로고침에 대한 기능을 막기 위해서
         }
 //        String str = "ALREADY_START";
 //        redisTemplate.opsForValue().set("refresh" + grId, str); //새로고침에 대한 기능을 막기 위해서
