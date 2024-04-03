@@ -30,7 +30,7 @@ public class StockService {
         return myTradingInfoRepository.getOneMyTradingInfo(user.getId());
     }
 
-    public MyItemInfo getInfoByItem(User user, String item){
+    public MyItemInfo getInfoByItem(User user, String item, Long rId){
         MyTradingInfo mine = myTradingInfoRepository.getOneMyTradingInfo(user.getId());
         BreakDown bd = new BreakDown();
         bd.setItem(item);
@@ -42,9 +42,26 @@ public class StockService {
             bd = mine.getBreakDowns().get(idx);
             share = bd.getShares();
         }
+
+        GameRoom room = gameRepository.getOneGameRoom(rId);
+        if(room == null){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
+        }
+
+        GameMarket gm = new GameMarket();
+        gm.setItem(item);
+        int mkIdx = room.getMarket().indexOf(gm);
+        if(mkIdx == -1){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_STOCK_ITEM);
+        }
+        gm = room.getMarket().get(mkIdx);
+        int size = gm.getCost().size();
+        Long curVal = gm.getCost().get(size-1);
+
         return MyItemInfo.builder()
                 .shares(share)
                 .remainVal(mine.getRemainVal())
+                .curCost(curVal)
                 .build();
     }
 
