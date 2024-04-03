@@ -10,9 +10,9 @@ import yellow from "../../images/character/yellow.gif";
 import pink from "../../images/character/pink.gif";
 import orange from "../../images/character/orange.gif";
 
-export default function PlayerList({ userList, isStart, amIManager, handleKick, roomNum, userCnt }) {
-  const [start, setStart] = useState(isStart);
-
+export default function PlayerList({ userList, isStart, amIManager, handleKick, roomNum }) {
+  const allReady = userList.every(user => user.isReady);
+  const userCount = userList.length;
   // 이미지 로드 실패 시 대체 이미지를 설정하는 함수
   const onErrorProfileImg = (e) => {
     e.target.src = profile;
@@ -34,14 +34,6 @@ export default function PlayerList({ userList, isStart, amIManager, handleKick, 
     return null; // 또는 로딩 스피너, 에러 메시지 등을 반환할 수 있습니다.
   }
 
-  useEffect(() => {
-    if (isStart === true) {
-      setStart(true);
-    } else if (isStart === false) {
-      setStart(false);
-    }
-  }, [isStart]);
-
   return (
     <div className={`flex justify-center ${styles.roomPlayerContainer}`}>
       <div className={`flex flex-col justify-center items-center my-auto mr-5 ${styles.playerInfoContainer}`}>
@@ -50,14 +42,22 @@ export default function PlayerList({ userList, isStart, amIManager, handleKick, 
           <h1 className={`text-center font-bold text-2xl mr-2 ${styles.roomNumInfo}`}>방 번호 :</h1>
           <span className={`text-center font-bold text-2xl ${styles.roomNum}`}> {roomNum}</span>
         </div>
-        <div className="flex mt-2">
-          <h1 className={`text-center font-bold text-2xl mr-2 ${styles.userCntInfo}`}>현재 인원 :</h1>
-          <span className={`text-center font-bold text-2xl ${styles.userCnt}`}>{userCnt}</span>
-          <h1 className="text-center font-bold text-2xl">/4</h1>
-        </div>
-        {start && (
+        {userCount <= 1 ? (
+          // 유저가 혼자일 경우
+          <div className="flex flex-col mt-2">
+            <h1 className={`text-center text-xl font-Bit ${styles.allReadyAlarm}`}>혼자 게임을</h1>
+            <h1 className={`text-center text-xl font-Bit ${styles.allReadyAlarm}`}>진행할 수 없어요!</h1>
+          </div>
+        ) : allReady ? (
+          // 모든 유저가 준비된 경우
           <div className="flex mt-2">
             <h1 className={`text-center text-xl font-Bit ${styles.allReadyAlarm}`}>모두 준비가 되었어요!</h1>
+          </div>
+        ) : (
+          // 준비되지 않은 유저가 있는 경우
+          <div className="flex flex-col mt-2">
+            <h1 className={`text-center text-xl font-Bit ${styles.allReadyAlarm}`}>아직 준비가 덜 된</h1>
+            <h1 className={`text-center text-xl font-Bit ${styles.allReadyAlarm}`}>도깨비가 있어요!</h1>
           </div>
         )}
       </div>
