@@ -350,6 +350,7 @@ public class GameService {
             gms.add(GameMarket.builder()
                     .item(mk.getItem())
                     .Cost(mk.getCost())
+                    .dependencyInfo(null) //다음 턴 넘어갈때 이 종목에 대한 의존 정보를 초기화하기 위해
                     .build());
 
             //응답을 줄 dto에 정보 업데이트

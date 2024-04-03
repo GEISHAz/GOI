@@ -69,20 +69,32 @@ public class StockService {
         String content = "";
         for(GameMarket mk : room.getMarket()){
             if(mk.getItem().equals(item)){
+                if(mine.getBuyInfos() == null){
+                    mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
+                }
                 if(mk.getDependencyInfo() != null){ //이미 다른 사용자가 이 종목에 대해서 정보를 구매했다.
                     Optional<Information> info = informationRepository.findById(mk.getDependencyInfo());
                     if(info.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_INFO);
                     if(level == 1){
+                        MyOwnInfo own = new MyOwnInfo();
+                        own.setInfoId(mk.getDependencyInfo());
+                        own.setLevel(level);
+                        if(mine.getBuyInfos().contains(own)){
+                            throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
+                        }
                         if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getLowLv();
                         myPoint -= 2;
                     }else {
+                        MyOwnInfo own = new MyOwnInfo();
+                        own.setInfoId(mk.getDependencyInfo());
+                        own.setLevel(level);
+                        if(mine.getBuyInfos().contains(own)){
+                            throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
+                        }
                         if(myPoint < 4) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getHighLv();
                         myPoint -= 4;
-                    }
-                    if(mine.getBuyInfos() == null){
-                        mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
                     }
                     mine.getBuyInfos().add(MyOwnInfo.builder()
                                     .item(item)
@@ -113,9 +125,6 @@ public class StockService {
                         myPoint -= 4;
                     }
                     mk.setDependencyInfo(ranInfo.getId());
-                    if(mine.getBuyInfos() == null){
-                        mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
-                    }
                     mine.getBuyInfos().add(MyOwnInfo.builder()
                                     .item(item)
                                     .infoId(ranInfo.getId())

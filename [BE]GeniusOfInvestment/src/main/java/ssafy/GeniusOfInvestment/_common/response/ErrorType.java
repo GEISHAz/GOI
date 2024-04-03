@@ -61,6 +61,7 @@ public enum ErrorType {
     NOT_FOUND_TRADINGINFO(HttpStatus.NOT_FOUND, "나의 거래 내역이 존재하지 않습니다."),
     NOT_FOUND_STOCK_ITEM(HttpStatus.NOT_FOUND, "해당하는 주식 종목을 찾을 수 없습니다."),
     NOT_STORE_MARKET(HttpStatus.CONFLICT, "시장 상황이 제대로 저장되지 않았습니다."),
+    ALREADY_BUY_INFO(HttpStatus.FAILED_DEPENDENCY, "이미 구매한 정보입니다."),
     END_GAME(HttpStatus.GONE, "게임이 종료되었습니다.")
     ;
 
