@@ -1,7 +1,7 @@
 
 # ”투귀”(투자의 귀재들)
 
-[인트로페이지](/uploads/cd0fdd67ba9dd687f6333fa98affce64/인트로페이지.jpg)
+![Untitled](/uploads/6cbe5dabb73ba2059ce4bd12d5517e28/Untitled.png)
 
 ### 청소년을 위한 모의투자 서비스
 
