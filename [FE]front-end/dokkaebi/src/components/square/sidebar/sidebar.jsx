@@ -124,9 +124,7 @@ const Sidebar = ({ toggleSidebar }) => {
         const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
         client.current = Stomp.over(sock);
   
-        client.current.connect({
-          Authorization: `Bearer ${accessToken}`,
-        }, () => {
+        client.current.connect({}, () => {
           console.log("친구 채팅 연결됨!!");
           // 사용자의 모든 친구와의 채팅 채널에 구독
           isFriendList.forEach(friend => {
@@ -211,9 +209,7 @@ const Sidebar = ({ toggleSidebar }) => {
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
   
-    alarmClient.current.connect({
-      Authorization: `Bearer ${accessToken}`,
-    }, () => {
+    alarmClient.current.connect({}, () => {
       console.log(">>친구 요청 알림 웹소켓 연결<<");
       console.log("본인 유저ID 확인 :", userId)
   
