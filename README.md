@@ -134,22 +134,20 @@
 <br/>
 ## 아키텍처
 
-![Untitled_1](/uploads/f2a6aedd74399bdf32502a73fedd9dec/Untitled_1.png)
+![아키텍쳐](/uploads/4134896867f6ac71ee184fcc076c80e7/아키텍쳐.jpg)
 
 ## ERD
 
-![Untitled_2](/uploads/6963e37a70594ed318b7f8f432ac3f0f/Untitled_2.png)
+![ERD](/uploads/eef24377b77598b28af58c22963a4dc2/ERD.jpg)
 
 ## 프로젝트 산출물
 
-- [기획서](https://www.notion.so/287226729deb4d6381a625983ac01f7f?pvs=21)
-- [기능명세서](https://evanescent-kilometer-a6e.notion.site/41409e39742e42228f03f991f4fbc3f2?pvs=4)
-- [API 명세서](https://www.notion.so/API-a4763cc8c23a4a52a533925a1c9c96c6?pvs=21)
-- [와이어프레임](https://www.figma.com/file/5q8NMpF6gTAb0tVW6MnV8g/D209?type=design&node-id=272-1672&mode=design)
-- [커밋 컨벤션](https://www.notion.so/0df7f1a472544bce8ad6fb136dde5225?pvs=21)
-- [backend 코드 컨벤션](https://www.notion.so/10b0f128142f4b43b121d4992c8ecb1b?pvs=21)
-- [frontend 코드 컨벤션](https://www.notion.so/c5b5da87eefd41c9b5caddf04ca0605f?pvs=21)
-- [회의록](https://evanescent-kilometer-a6e.notion.site/d0ac7f4325ce4beab9db1061d08a85df?pvs=4)
+- [기획서](https://www.notion.so/158802e9106c44508fea12ced27fb67b)
+- [요구사항명세서](https://www.notion.so/0d97404efe6440a1be555b1bb6761981)
+- [기능명세서](https://www.notion.so/e866ff1c630643aeb2d0fad8122fee56)
+- [API 명세서](https://www.notion.so/API-2e415e6c97104d90adfb6e495316ad14)
+- [와이어프레임]
+- [커밋 컨벤션]
 
 ## ”투귀”(투자의 귀재들) 서비스 화면
 
