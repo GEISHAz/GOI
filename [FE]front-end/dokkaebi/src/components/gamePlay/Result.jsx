@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 export default function Result({ setResultModal, result, stompClientRef, gameStompRef }) {
   const modalBackGround = useRef();
   const navigate = useNavigate();
-  const roomId = sessionStorage.getItem("roomId");
-  const isManager = sessionStorage.getItem("isManager");
+  // const roomId = sessionStorage.getItem("roomId");
+  // const isManager = sessionStorage.getItem("isManager");
   const channelId = sessionStorage.getItem("channelId");
   return (
     <div
