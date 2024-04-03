@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MyStockDetail.module.css";
 import StockExchange from "../mainStock/StockExchange";
 
@@ -10,6 +10,12 @@ export default function MyStockDetail(props) {
     setTransactionType(type);
     setStockExchangeModal(true);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      props.setMyStockModal(false);
+    });
+  }, []);
 
   return (
     <div className={styles.background}>

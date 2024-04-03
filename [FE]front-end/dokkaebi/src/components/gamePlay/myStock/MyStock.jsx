@@ -26,7 +26,7 @@ export default function MyStock(props) {
         setTotal(response.data.marketVal);
         setRest(response.data.remainVal);
         setYoy(response.data.yoy);
-        setMyStocks(response.data.breakDowns)
+        setMyStocks(response.data.breakDowns);
       })
       .catch((error) => {
         console.log(error);
@@ -51,33 +51,40 @@ export default function MyStock(props) {
           <div className={styles.myInfos}>
             <div className={styles.total}>
               <p className={styles.totalText}>평가 금액</p>
-              <p className={styles.totalValue}>{total?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+              <p className={styles.totalValue}>
+                {total?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </p>
             </div>
             <div className={styles.yoy}>
               <p className={styles.yoyText}>작년 대비</p>
-              <p className={styles.yoyValue}>{yoy?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+              <p className={styles.yoyValue}>
+                {yoy?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </p>
             </div>
             <div className={styles.rest}>
               <p className={styles.restText}>현금</p>
-              <p className={styles.restValue}>{rest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+              <p className={styles.restValue}>
+                {rest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </p>
             </div>
           </div>
         </div>
         <hr className={styles.myInfosHr} />
-         <div className={styles.myInfosHeader}>
+        <div className={styles.myInfosHeader}>
           <p className={styles.itemHeader}>회사</p>
           <p className={styles.averagePriceHeader}>평단가</p>
           <p className={styles.havingHeader}>보유주</p>
           <p className={styles.roiHeader}>수익률</p>
-         </div>
+        </div>
         <div className={styles.myStockDetail}>
           {myStocks.map((stock, index) => (
-            <MyStockDetail 
+            <MyStockDetail
               key={index}
               item={stock.item} // 주식 이름
               nowVal={stock.nowVal} // 현재 가격
               shares={stock.shares} // 보유 주 수
               roi={stock.roi} // 수익률
+              setMyStockModal={props.setMyStockModal}
             />
           ))}
         </div>
