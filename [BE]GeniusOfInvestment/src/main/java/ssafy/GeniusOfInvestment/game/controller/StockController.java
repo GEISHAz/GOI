@@ -27,9 +27,9 @@ public class StockController {
         return stockService.getTradingInfo(user);
     }
 
-    @GetMapping("/{item}")
-    public MyItemInfo getInfoByItem(@AuthenticationPrincipal User user, @PathVariable("item") String item){
-        return stockService.getInfoByItem(user, item);
+    @GetMapping("/{item}/{rId}")
+    public MyItemInfo getInfoByItem(@AuthenticationPrincipal User user, @PathVariable("item") String item, @PathVariable("rId") Long rId){
+        return stockService.getInfoByItem(user, item, rId);
     }
 
     //정보를 구매한다.

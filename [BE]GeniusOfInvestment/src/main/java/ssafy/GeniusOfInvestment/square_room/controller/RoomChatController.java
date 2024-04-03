@@ -58,7 +58,8 @@ public class RoomChatController {
 //        StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
 //        String sessionId = headerAccesor.getSessionId();
         if(event.getMessage().getHeaders().get("nativeHeaders") == null){
-            throw new CustomBadRequestException(ErrorType.NEED_TOKEN);
+            return;
+//            throw new CustomBadRequestException(ErrorType.NEED_TOKEN);
         }
         String str = event.getMessage().getHeaders().get("nativeHeaders").toString();
         log.info("웹소켓 연결시 Event에서 받아온 헤더 정보: " + str);
@@ -116,7 +117,8 @@ public class RoomChatController {
             // 1초 간격으로 작업 실행
             timer.scheduleAtFixedRate(task, 5000, 1000); //5초뒤에 task 작업 실행
         }else {
-            throw new CustomBadRequestException(ErrorType.FAIL_TO_GET_USER_DISCONNECT);
+            return;
+//            throw new CustomBadRequestException(ErrorType.FAIL_TO_GET_USER_DISCONNECT);
         }
 
         log.info("sessionId Disconnected : " + sessionId);

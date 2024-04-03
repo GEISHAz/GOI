@@ -46,6 +46,11 @@ public class RoomController {
         return rst;
     }
 
+    @GetMapping("/userlist/{id}")
+    public List<RoomPartInfo> getUserList(@PathVariable("id") Long rId){
+        return roomService.getUserList(rId);
+    }
+
     //방 나가기
     @DeleteMapping("/exit/{id}")
     public Map<String, String> exitRoom(@AuthenticationPrincipal User user, @PathVariable("id") Long rId){
