@@ -550,6 +550,7 @@ public class GameService {
         List<GameUser> gameUserList = new ArrayList<>();
         room.getParticipants().sort(Comparator.reverseOrder()); //totalCost 기준으로 내림차순 정렬
         int i = 1;
+        int rank = 1;
         for(GameUser guser : room.getParticipants()){
             Optional<User> unick = userRepository.findById(guser.getUserId());
             if(unick.isEmpty()){
@@ -562,7 +563,13 @@ public class GameService {
                     .totalCost(guser.getTotalCost())
                     .build()); //응답용
 
-            rewardByRank(unick.get(), i, guser.getTotalCost()); //순위에 따른 경험치 적립
+            //공동 순위 처리하기 위해
+            if(i > 1 && room.getParticipants().get(i-2).getTotalCost().equals(room.getParticipants().get(i-1).getTotalCost())){
+                // rank 값을 증가시키지 않음
+            }else {
+                rank = i;
+            }
+            rewardByRank(unick.get(), rank, guser.getTotalCost()); //순위에 따른 경험치 적립
 
             redisUserRepository.deleteUser(guser.getUserId());
 
