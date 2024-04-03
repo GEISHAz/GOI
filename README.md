@@ -116,9 +116,9 @@
  <tr>
     <td align="center"><a href="https://github.com/RyuTa960625"><img src="https://avatars.githubusercontent.com/RyuTa960625" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/Agwii"><img src="https://avatars.githubusercontent.com/Agwii" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/wonjunJ"><img src="https://avatars.githubusercontent.com/wonjunJ" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
-   <td align="center"><a href="https://github.com/timber3"><img src="https://avatars.githubusercontent.com/timber3" width="130px;" alt=""></a></td>
+   <td align="center"><a href="https://github.com/pyunsusie"><img src="https://avatars.githubusercontent.com/pyunsusie" width="130px;" alt=""></a></td>
    <td align="center"><a href="https://github.com/quasiwest"><img src="https://avatars.githubusercontent.com/quasiwest" width="130px;" alt=""></a></td>
   </tr>
   <tr>
