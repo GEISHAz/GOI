@@ -117,7 +117,7 @@ export default function userReadyRoom() {
               // console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
               // Redux 스토어의 userCnt 업데이트
-              console.log("유저 리스트 확인 :", receivedMessage.data.userList)
+              console.log("유저 수 확인 :", receivedMessage.data.userList)
               const newUserCnt = receivedMessage.data.userList.length;
               dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
