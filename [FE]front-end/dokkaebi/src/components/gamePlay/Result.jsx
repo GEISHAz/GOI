@@ -1,12 +1,17 @@
 import React, { useRef } from "react";
 import styles from "./Result.module.css";
 import { useNavigate } from "react-router-dom";
-import fUser from "../../images/gamePlay/1st.png"
-import sUser from "../../images/gamePlay/2nd.png"
-import tUser from "../../images/gamePlay/3rd.png"
-import luser from "../../images/gamePlay/pngegg.png"
+import fUser from "../../images/gamePlay/1st.png";
+import sUser from "../../images/gamePlay/2nd.png";
+import tUser from "../../images/gamePlay/3rd.png";
+import luser from "../../images/gamePlay/pngegg.png";
 
-export default function Result({ setResultModal, result, stompClientRef, gameStompRef }) {
+export default function Result({
+  setResultModal,
+  result,
+  stompClientRef,
+  gameStompRef,
+}) {
   const modalBackGround = useRef();
   const navigate = useNavigate();
   const channelId = sessionStorage.getItem("channelId");
@@ -18,7 +23,7 @@ export default function Result({ setResultModal, result, stompClientRef, gameSto
       return sUser;
     } else if (index === 2) {
       return tUser;
-    } else  {
+    } else {
       return luser;
     }
   };
@@ -31,8 +36,10 @@ export default function Result({ setResultModal, result, stompClientRef, gameSto
         if (e.target === modalBackGround.current) {
           setResultModal(false);
 
-
-          console.log("나갈 때 연결되어있는지 확인 :", stompClientRef.current.connected)
+          console.log(
+            "나갈 때 연결되어있는지 확인 :",
+            stompClientRef.current.connected
+          );
           if (stompClientRef.current && stompClientRef.current.connected) {
             if (gameStompRef.current) {
               console.log("게임을 나가서 구독을 끊을게요");
@@ -52,14 +59,22 @@ export default function Result({ setResultModal, result, stompClientRef, gameSto
       }}
     >
       <div className={styles.container}>
-      <h1 className={styles.title}>게임 결과</h1>
+        <h1 className={styles.title}>게임 결과</h1>
         {result.map((user, index) => (
           <div key={index} className={styles.userInfoContainer}>
-            <img className={styles.imgTag} src={getUserImage(index)} alt={index >= 3 ? "4위" : ""} />
+            <img
+              className={styles.imgTag}
+              src={getUserImage(index)}
+              alt={index >= 3 ? "4위" : ""}
+            />
             <div className={styles.myInfos}>
               <p>{`닉네임: ${user.userNick}`}</p>
-              <p>{`평가금액: ${user.totalCost}`}</p>
-              <p>{`경험치: ${user.exp}`}</p>
+              <p>{`평가금액: ${user.totalCost
+                ?.toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</p>
+              <p>{`경험치: ${user.exp
+                ?.toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}</p>
             </div>
           </div>
         ))}

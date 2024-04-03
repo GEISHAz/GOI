@@ -51,13 +51,11 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     userList.forEach((user) => {
-      userList.forEach((user) => {
-        if (user.userId === Number(userId)) {
-          setAmIManager(user.isManager);
-          sessionStorage.setItem("isManager", user.isManager);
-        }
-        // console.log("나는 방장 : ", amIManager);
-      });
+      if (user.userId === Number(userId)) {
+        setAmIManager(user.isManager);
+        sessionStorage.setItem("isManager", user.isManager);
+      }
+      // console.log("나는 방장 : ", amIManager);
     });
   }, [userList]);
 
