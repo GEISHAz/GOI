@@ -50,12 +50,6 @@
 따라서 청소년들이 접근하기 쉬운 게임이란 수단을 통해 주식 관련 경험과 지식 기르고, 
 더불어 투자에 대한 재미를 경험할 수 있는 서비스를 기획하였습니다
 
-## 목표
-
-
-## 주요 기능
-
-
 ## 주요 기술
 
 **Backend**
@@ -134,6 +128,6 @@
 - [frontend 코드 컨벤션](https://www.notion.so/c5b5da87eefd41c9b5caddf04ca0605f?pvs=21)
 - [회의록](https://evanescent-kilometer-a6e.notion.site/d0ac7f4325ce4beab9db1061d08a85df?pvs=4)
 
-## 우리 아이가 만들었어요 서비스 화면
+## ”투귀”(투자의 귀재들) 서비스 화면
 
 
