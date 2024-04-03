@@ -42,7 +42,7 @@ public class RoomService {
 
     @Transactional
     public List<RoomPartInfo> enterRoom(User user, RoomEnterRequest enterInfo) {
-        log.info("RoomService enterRoom start");
+        //log.info("RoomService enterRoom start");
         Room room;
         if(enterInfo.roomId() != null){
             Optional<Room> rtmp = roomRepository.findById(enterInfo.roomId());
@@ -80,7 +80,7 @@ public class RoomService {
             throw new CustomBadRequestException(ErrorType.IS_FULL_ROOM);
         }
         // redisUser 가 없어야함 있다면 예외
-        log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
+        //log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
         if(redisUserRepository.getOneRedisUser(user.getId()) != null) {
             log.info("IS_NOT_AVILABLE_REDISUSER");
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
@@ -153,12 +153,12 @@ public class RoomService {
 
     @Transactional
     public List<RoomPartInfo> exitRoom(User user, Long rId){
-        log.info("RoomService exitRoom start");
+        //log.info("RoomService exitRoom start");
         GameRoom room = redisGameRepository.getOneGameRoom(rId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        log.info("방 아이디 값은 " + room.getId().toString());
+        //log.info("방 아이디 값은 " + room.getId().toString());
 
         GameUser gameUser = new GameUser();
         //log.info("요청 유저 아이디: " + user.getId());
@@ -167,7 +167,7 @@ public class RoomService {
 //            log.info("참여자 " + tp.getUserId().toString());
 //        }
         int idx = room.getParticipants().indexOf(gameUser);
-        log.info("gameuser인덱스값이 " + idx);
+        //log.info("gameuser인덱스값이 " + idx);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         gameUser = room.getParticipants().get(idx); //탈퇴한 유저의 객체
 
@@ -191,7 +191,7 @@ public class RoomService {
         try {
             redisUserRepository.deleteUser(user.getId());
         }catch(Exception e){
-            log.info("역시나 적시나 존시나 딜리트RedisUser안됨");
+            //log.info("역시나 적시나 존시나 딜리트RedisUser안됨");
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
         }
 
@@ -214,7 +214,7 @@ public class RoomService {
 
     @Transactional
     public List<RoomPartInfo> kickUser(User user, Long targetId, Long rId){
-        log.info("RoomService kickUser start");
+        //log.info("RoomService kickUser start");
         GameRoom room = redisGameRepository.getOneGameRoom(rId);
         if(room == null){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
@@ -222,9 +222,9 @@ public class RoomService {
 
         GameUser gameUser = new GameUser();
         gameUser.setUserId(user.getId());
-        log.info("gameuser의 Id" + gameUser.getUserId());
+        //log.info("gameuser의 Id" + gameUser.getUserId());
         int idx = room.getParticipants().indexOf(gameUser);
-        log.info("삭제할 redis gameuser 안 idx 값 ="+idx);
+        //log.info("삭제할 redis gameuser 안 idx 값 ="+idx);
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         gameUser = room.getParticipants().get(idx); //강퇴를 요청한 유저의 객체
         if(!gameUser.isManager()){
@@ -233,7 +233,7 @@ public class RoomService {
         GameUser target = new GameUser();
         target.setUserId(targetId);
         idx = room.getParticipants().indexOf(target);
-        log.info("강퇴 요청한 유저 id"+target.getUserId()+"  포인트 =="+target.getPoint());
+        //log.info("강퇴 요청한 유저 id"+target.getUserId()+"  포인트 =="+target.getPoint());
         if(idx == -1) throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
         room.getParticipants().remove(idx); //강퇴 당할 유저를 redis 참가자 리스트에서 삭제
         redisGameRepository.updateGameRoom(room);

@@ -120,20 +120,43 @@ public class StockService {
                             .build());
                     mine.setPoint(myPoint);
                 }else {
-                    log.info("처음 정보를 구매하는 조건문으로....");
+                    //log.info("처음 정보를 구매하는 조건문으로....");
                     Long itemId = gameService.getIdForItem(item);
-                    log.info("아이템 아이디: " + itemId);
-                    log.info("방의 년도: " + room.getYear());
+                    //log.info("아이템 아이디: " + itemId);
+                    //log.info("방의 년도: " + room.getYear());
                     List<Information> infoList = informationRepository.findByAreaIdAndYear(itemId, room.getYear());
-                    for(Information t : infoList){
-                        log.info(t.getLowLv());
+                    Information ranInfo;
+                    if(isTwoSelected(item)){
+                        int tidx = room.getMarket().indexOf(mk);
+                        while (true){
+                            Random random = new Random();
+                            int randIdx = random.nextInt(infoList.size());
+                            ranInfo = infoList.get(randIdx);
+                            if(tidx == 0){
+                                GameMarket gm = room.getMarket().get(tidx+1);
+                                if(!ranInfo.getId().equals(gm.getDependencyInfo())){
+                                    break;
+                                }
+                            }else {
+                                GameMarket gm;
+                                if(tidx % 2 != 0){ //홀수(같은 종목은 -1)
+                                    gm = room.getMarket().get(tidx-1);
+                                }else {
+                                    gm = room.getMarket().get(tidx+1);
+                                }
+                                if(!ranInfo.getId().equals(gm.getDependencyInfo())){
+                                    break;
+                                }
+                            }
+                        }
+                    }else {
+                        Random random = new Random();
+                        int randIdx = random.nextInt(infoList.size());
+                        ranInfo = infoList.get(randIdx);
                     }
-                    Random random = new Random();
-                    int randIdx = random.nextInt(infoList.size());
-                    Information ranInfo = infoList.get(randIdx);
                     if(level == 1){
                         if(myPoint < 5) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
-                        log.info("1단계 정보를 구매하는 조건문");
+                        //log.info("1단계 정보를 구매하는 조건문");
                         content = ranInfo.getLowLv();
                         myPoint -= 5;
                     }else {
@@ -155,14 +178,16 @@ public class StockService {
         room.getParticipants().set(idx, mine);
         gameRepository.updateGameRoom(room);
 
-        log.info("구매한 정보: " + content);
-        log.info("구매 완료!!!");
         return BuyInfoResponse.builder()
                 .item(item)
                 .level(level)
                 .year(room.getYear())
                 .content(content)
                 .build();
+    }
+
+    public boolean isTwoSelected(String item){
+        return item.contains("바이오") || item.contains("IT") || item.contains("화학") || item.contains("자동차");
     }
 
     public List<BuyInfoResponse> getMyOwnInfoList(User user, Long grId){
