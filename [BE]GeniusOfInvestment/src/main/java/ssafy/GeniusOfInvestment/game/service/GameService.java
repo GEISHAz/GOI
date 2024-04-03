@@ -558,12 +558,6 @@ public class GameService {
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             }
 
-            parts.add(ParticipantInfo.builder()
-                    .userId(guser.getUserId())
-                    .userNick(unick.get().getNickName())
-                    .totalCost(guser.getTotalCost())
-                    .build()); //응답용
-
             //공동 순위 처리하기 위해
             if(i > 1 && room.getParticipants().get(i-2).getTotalCost().equals(room.getParticipants().get(i-1).getTotalCost())){
                 // rank 값을 증가시키지 않음
@@ -577,12 +571,19 @@ public class GameService {
             //나의 거래내역을 삭제한다.
             myTradingInfoRepository.deleteMyTradingInfo(guser.getUserId());
 
-            //GameUser(참가자)의 상태값을 초기화
-            guser.setReady(false);
-            guser.setTotalCost(0L);
-            guser.setPoint(0);
-            guser.setBuyInfos(new ArrayList<>()); //초기값을 빈 리스트로 선언
-            gameUserList.add(guser);
+            parts.add(ParticipantInfo.builder()
+                    .userId(guser.getUserId())
+                    .userNick(unick.get().getNickName())
+                    .totalCost(guser.getTotalCost())
+                    .exp(unick.get().getExp())
+                    .build()); //응답용
+
+            //GameUser(참가자)의 상태값을 초기화(바로 삭제를 시킬것이기 때문에 필요x)
+//            guser.setReady(false);
+//            guser.setTotalCost(0L);
+//            guser.setPoint(0);
+//            guser.setBuyInfos(new ArrayList<>()); //초기값을 빈 리스트로 선언
+//            gameUserList.add(guser);
             i++;
         }
         i = 1;
