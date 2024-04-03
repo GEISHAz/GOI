@@ -11,12 +11,6 @@ export default function MyStockDetail(props) {
     setStockExchangeModal(true);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      props.setMyStockModal(false);
-    }, 10);
-  }, []);
-
   return (
     <div className={styles.background}>
       <div className={styles.companyArea}>{props.item}</div>
@@ -39,6 +33,7 @@ export default function MyStockDetail(props) {
           setStockExchangeModal={setStockExchangeModal}
           item={props.item}
           transactionType={transactionType}
+          setMyStockModal={props.setMyStockModal}
         />
       )}
     </div>
