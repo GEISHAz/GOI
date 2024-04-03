@@ -4,6 +4,7 @@ import PlayerList from "../../components/roomLobby/PlayerList.jsx";
 import LobbyChat from "../../components/roomLobby/LobbyChat.jsx";
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from "react-router-dom";
+import { setUserCnt } from '../../features/square/roomSlice.js'
 import React, { useRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -115,6 +116,9 @@ export default function userReadyRoom() {
             if (receivedMessage.type === "ROOM_ENTER") {
               // console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
+              // Redux 스토어의 userCnt 업데이트
+              const newUserCnt = receivedMessage.data.length;
+              dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               // console.log(receivedMessage.type);

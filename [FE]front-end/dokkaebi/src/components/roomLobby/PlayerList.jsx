@@ -12,6 +12,7 @@ import orange from "../../images/character/orange.gif";
 
 export default function PlayerList({ userList, isStart, amIManager, handleKick, roomNum, userCnt }) {
   const [start, setStart] = useState(isStart);
+
   // 이미지 로드 실패 시 대체 이미지를 설정하는 함수
   const onErrorProfileImg = (e) => {
     e.target.src = profile;

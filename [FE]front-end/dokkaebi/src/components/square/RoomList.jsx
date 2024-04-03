@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { setRoomNum, setUserCnt } from "../../features/square/roomSlice";
+import { setRoomNum } from "../../features/square/roomSlice";
 import axios from "axios";
 import styles from "./RoomList.module.css";
 import RoomEnterModal from "./RoomEnterModal";
@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 
 export default function RoomList() {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const accessToken = sessionStorage.getItem("accessToken");
   const channelId = sessionStorage.getItem("channelId");
   const [isRoomsInfo, setIsRoomsInfo] = useState([]); // 방 정보 상태
@@ -92,8 +92,7 @@ export default function RoomList() {
         console.log("방 목록 Info 확인 :", response);
         if (response.status === 200 && response.data.data) {
           setIsRoomsInfo(response.data.data.list || []); // 받아온 방 목록으로 상태 업데이트
-          // const userCount = response.data.data.list.map(room => room.userCount);
-          // dispatch(setUserCnt(userCount)) // 방인원 리덕스 스토어에 저장
+          dispatch(setRoomNum(response.data.roomNum));
           setTotalRoomCount(response.data.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다");
