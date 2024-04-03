@@ -72,7 +72,7 @@ export default function userReadyRoom() {
         Authorization: `Bearer ${accessToken}`,
       },
       () => {
-        // console.log("구독 시도");
+        console.log("로비방 웹소켓 연결할게요!");
         console.log("roomLobby 방 번호 :", roomId);
         roomStompRef.current = stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
@@ -172,6 +172,7 @@ export default function userReadyRoom() {
     );
 
     return () => {
+      console.log("로비방 웹소켓 연결 끊을게요!")
       if (roomStompRef.current) {
         roomStompRef.current.unsubscribe(); // 구독 해제
       }

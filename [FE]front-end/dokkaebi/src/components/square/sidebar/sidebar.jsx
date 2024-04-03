@@ -127,7 +127,7 @@ const Sidebar = ({ toggleSidebar }) => {
         client.current.connect({
           Authorization: `Bearer ${accessToken}`,
         }, () => {
-          console.log("친구 채팅 연결됨!!");
+          console.log(">>친구 채팅 연결합니다!<<");
           // 사용자의 모든 친구와의 채팅 채널에 구독
           isFriendList.forEach(friend => {
             const friendListId = friend.friendListId;
@@ -160,6 +160,7 @@ const Sidebar = ({ toggleSidebar }) => {
   
     // useEffect의 clean-up 함수
     return () => {
+      console.log("친구 채팅 연결 끊을게요!")
       if (subscriptionRef.current) {
         subscriptionRef.current.unsubscribe(); // 구독 취소
       }
@@ -214,7 +215,7 @@ const Sidebar = ({ toggleSidebar }) => {
     alarmClient.current.connect({
       Authorization: `Bearer ${accessToken}`,
     }, () => {
-      console.log(">>친구 요청 알림 웹소켓 연결<<");
+      console.log(">>친구 요청 알림 웹소켓 연결할게요!<<");
       console.log("본인 유저ID 확인 :", userId)
   
       // 친구 요청 알림에 대해 구독
@@ -237,6 +238,7 @@ const Sidebar = ({ toggleSidebar }) => {
       });
   
     return () => {
+      console.log("친구 알림 웹소켓 연결 끊을게요!")
       if (subAlarmRef.current) {
         subAlarmRef.current.unsubscribe();
         console.log("친구요청알림 웹소켓 구독 해제");
