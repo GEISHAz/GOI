@@ -19,7 +19,7 @@ function App() {
 
     // 효과음 재생 함수
     const playSound = () => {
-      const sound = new Audio('/public/bgm/ddick.mp3');
+      const sound = new Audio('/bgm/ddick.mp3');
       sound.play();
     };
 

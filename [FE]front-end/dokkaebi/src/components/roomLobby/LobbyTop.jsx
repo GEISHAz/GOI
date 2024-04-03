@@ -24,7 +24,7 @@ export default function LobbyTop({ userList, isStart }) {
 
   // 효과음 재생 함수
   const playGameStartSound = () => {
-    const sound = new Audio("/public/bgm/gameStart.mp3");
+    const sound = new Audio("/bgm/gameStart.mp3");
     sound.play();
   };
 
