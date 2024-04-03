@@ -107,9 +107,20 @@ const Sidebar = ({ toggleSidebar }) => {
 
   // 친구와의 채팅 연결
   useEffect(() => {
-    // 친구와의 1대1 채팅을 위해 새로운 독립적인 웹소켓 연결
     if (isFriendList.length > 0) {
       const connectWebSocket = () => {
+        // 기존 연결이 있으면 먼저 종료
+        if (client.current && client.current.connected) {
+          client.current.disconnect(() => {
+            console.log("이전 웹소켓 연결 종료");
+            establishConnection(); // 새로운 연결을 시작하는 함수
+          });
+        } else {
+          establishConnection(); // 새로운 연결을 시작하는 함수
+        }
+      };
+  
+      const establishConnection = () => {
         const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
         client.current = Stomp.over(sock);
   
@@ -118,13 +129,10 @@ const Sidebar = ({ toggleSidebar }) => {
           // 사용자의 모든 친구와의 채팅 채널에 구독
           isFriendList.forEach(friend => {
             const friendListId = friend.friendListId;
-            // console.log("friendListId 확인 :", friendListId)
             subscriptionRef.current = client.current.subscribe(
               '/sub/friend/chat/' + `${friendListId}`,
               (message) => {
-                // 받은 메세지 처리할 곳
                 const msg = JSON.parse(message.body);
-                // console.log("메세지 확인", msg)
                 if (msg.type && msg.type === "TALK") {
                   setIsFriendChat((prevMessages) => ({
                     ...prevMessages,
@@ -133,7 +141,6 @@ const Sidebar = ({ toggleSidebar }) => {
                 }
   
                 if (msg.type === "TALK" && msg.sender !== userNickname && openMessengerId !== friendListId) {
-                  // 상대에게 받은 메시지 수 업데이트
                   setNewMessageCounts(prev => ({
                     ...prev,
                     [friendListId]: (prev[friendListId] || 0) + 1
@@ -144,21 +151,21 @@ const Sidebar = ({ toggleSidebar }) => {
           }, (error) => {
             console.error('친구 채팅 연결 에러', error);
           });
-  
-        // useEffect의 clean-up 함수
-        return () => {
-          console.log("친구 채팅 연결 끊을게요!")
-          if (subscriptionRef.current) {
-            subscriptionRef.current.unsubscribe(); // 구독 취소
-          }
-
-          if (client.current && client.current.connected) {
-            client.current.disconnect();
-          }
-        };
       };
+  
       connectWebSocket();
     }
+  
+    // useEffect의 clean-up 함수
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe(); // 구독 취소
+      }
+  
+      if (client.current && client.current.connected) {
+        client.current.disconnect(); // 웹소켓 연결 종료
+      }
+    };
   }, [isFriendList, userNickname]);
 
   // 메시지를 읽었을 때 호출되는 함수
