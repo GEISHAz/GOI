@@ -7,7 +7,7 @@ export const roomSlice = createSlice({
     roomPassword : null,
     roomYears : null,
     roomNum: null,
-    userCnt: null,
+    userCnt: 1,
   },
   reducers : {
     setRoomTitle : (state,action) => {

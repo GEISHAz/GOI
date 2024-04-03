@@ -49,9 +49,9 @@ export default function RoomSearchModal({ onClose }) {
         console.log("방검색 리스폰스 확인:", response);
         console.log("roomId 확인:", response.data[0].roomId);
         sessionStorage.setItem("roomId", response.data[0].roomId);
-        dispatch(setRoomNum(roomNum));
         setIsReceiveRoomId(response.data[0].roomId);
         console.log("입장 성공:", response);
+        console.log("입력한 방 번호 :", roomNum)
         navigate(`/room/${response.data[0].roomId}`, {
           state: JSON.parse(JSON.stringify({ response })),
         });

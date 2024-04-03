@@ -115,17 +115,19 @@ export default function userReadyRoom() {
 
             if (receivedMessage.type === "ROOM_ENTER") {
               // console.log("받는 데이터 확인", receivedMessage.data);
-              setUserList(receivedMessage.data);
+              const newUserList = receivedMessage.data.userList; // 유저 리스트 받은걸 담기
+              const newUserCnt = newUserList.length; // 새로운 유저가 들어왔다면 길이를 뽑아서 변수에 담기
+              setUserList(newUserList); // 유저 리스트 업데이트 해주고
+              dispatch(setUserCnt(newUserCnt)); // 유저수 업데이트
               // Redux 스토어의 userCnt 업데이트
               console.log("유저 수 확인 :", receivedMessage.data.userList)
-              const newUserCnt = receivedMessage.data.userList.length;
-              dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               // console.log(receivedMessage.type);
-              setUserList(receivedMessage.data);
-              const newUserCnt = receivedMessage.data.userList.length;
-              dispatch(setUserCnt(newUserCnt));
+              const newUserList = receivedMessage.data.userList; // 누군가 나갔다면 새로 리스트 받기
+              const newUserCnt = newUserList.length; // 나간 유저 빼고 길이를 측정해서 다시 변수에 담기
+              setUserList(newUserList); // 유저리스트 다시 업데이트
+              dispatch(setUserCnt(newUserCnt)); // 유저 수 업데이;트
             } else if (receivedMessage.type === "READY") {
               // console.log(receivedMessage.type);
               // console.log(receivedMessage.data.list);
