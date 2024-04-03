@@ -152,7 +152,13 @@ export default function GamePlay() {
     }
   };
 
+  const playSound = () => {
+    const sound = new Audio('/public/bgm/gameStart.mp3');
+    sound.play();
+  };
+
   const onClickReady = async () => {
+    playSound();
     console.log("레디 버튼 클릭 방 번호 : ", roomId);
     try {
       const response = await axios.put(
