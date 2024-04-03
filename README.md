@@ -122,12 +122,12 @@
    <td align="center"><a href="https://github.com/quasiwest"><img src="https://avatars.githubusercontent.com/quasiwest" width="130px;" alt=""></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/Be-kimhaechang1"><b>류태수</b></a><p><b>팀장</b><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/Be-HinD"><b>이귀현</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/Agwii"><b>정원준</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
-    <td align="center"><a href="https://github.com/wkdtpwjd19"><b>정민호</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
-    <td align="center"><a href="https://github.com/timber3"><b>편수지</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/YangGeoun"><b>이준서</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/RyuTa960625"><b>류태수</b></a><p><b>팀장</b><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/Agwii"><b>이귀현</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><b>정원준</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><b>정민호</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><b>편수지</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/quasiwest"><b>이준서</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
   </tr>
 </table>
 
