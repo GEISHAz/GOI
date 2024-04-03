@@ -21,6 +21,12 @@ export default function StockExchange(props) {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      props.setMyStockModal(false);
+    }, 10);
+  }, []);
+
+  useEffect(() => {
     axios
       .get(`https://j10d202.p.ssafy.io/api/stock/${props.item}/${roomId}`, {
         headers: {
