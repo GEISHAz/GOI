@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styles from "./ChangeTurn.module.css";
 
-export default function changeTurn({setChangeTurnModal, year}) {
+export default function ChangeTurn({setChangeTurnModal, year}) {
   const modalBackGround = useRef();
   return (
     <div
