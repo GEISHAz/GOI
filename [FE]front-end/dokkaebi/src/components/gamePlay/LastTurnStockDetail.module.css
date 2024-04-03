@@ -1,0 +1,53 @@
+p {
+  font-family: DNFBitBitv2;
+}
+
+.investmentInfo {
+  display: flex;
+  direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  margin: 6px auto;
+}
+
+.investmentInfo:hover {
+  transform: scale(1.1, 1.1);
+  transition-duration: 0.5s;
+}
+
+.bunya {
+  width: 180px;
+  height: 36px;
+  background: black;
+  color: white;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.jusu {
+  width: 160px;
+  text-align: center;
+}
+
+.upDown {
+  width: 90px;
+  text-align: center;
+}
+
+.upDownPercentColorRed {
+  color: #ff6e6e;
+}
+
+.upDownPercentColorBlue {
+  color: #4e95ff;
+}
+
+.upDownPercentColorBlack {
+  color: black;
+}

@@ -38,7 +38,12 @@ export default function InvestmentInfo({ stockInfo }) {
           <p>{stockInfo.item}</p>
         </div>
         <div className={`${styles.jusu} ${colorClass}`}>
-          <p>{stockInfo.thisCost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/주</p>
+          <p>
+            {stockInfo.thisCost
+              ?.toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            /주
+          </p>
         </div>
         <div className={`${styles.upDown} ${colorClass}`}>
           <p>{stockInfo.percent}%</p>
@@ -59,15 +64,15 @@ export default function InvestmentInfo({ stockInfo }) {
           </button>
         </div>
       </div>
-        {stockExchangeModal && (
-          <StockExchange
-            setStockExchangeModal={setStockExchangeModal}
-            item={stockInfo.item}
-            price={stockInfo.thisCost}
-            percent={stockInfo.percent}
-            transactionType={transactionType}
-          />
-        )}
+      {stockExchangeModal && (
+        <StockExchange
+          setStockExchangeModal={setStockExchangeModal}
+          item={stockInfo.item}
+          price={stockInfo.thisCost}
+          percent={stockInfo.percent}
+          transactionType={transactionType}
+        />
+      )}
     </div>
   );
 }

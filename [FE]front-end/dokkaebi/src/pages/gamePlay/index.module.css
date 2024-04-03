@@ -85,7 +85,7 @@
   height: 64px;
   font-family: DNFBitBitv2;
   font-size: 24px;
-  background-color: #FB929E;;
+  background-color: #fb929e;
   color: white;
   border-radius: 15px;
 }
@@ -100,7 +100,7 @@
   height: 64px;
   font-family: DNFBitBitv2;
   font-size: 24px;
-  background-color: #FB929E;
+  background-color: #fb929e;
   color: white;
   border-radius: 15px;
 }
@@ -171,4 +171,12 @@
 .myMenu3:hover {
   transform: scale(1.2, 1.2);
   transition-duration: 0.5s;
+}
+
+.result {
+  z-index: 15;
+}
+
+.lastTurnStockInfo {
+  z-index: 20;
 }
