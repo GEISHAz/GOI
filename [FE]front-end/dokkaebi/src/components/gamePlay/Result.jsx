@@ -1,13 +1,25 @@
 import React, { useRef } from "react";
 import styles from "./Result.module.css";
 import { useNavigate } from "react-router-dom";
+import fUser from "../../images/gamePlay/1st.png"
+import sUser from "../../images/gamePlay/2nd.png"
+import tUser from "../../images/gamePlay/3rd.png"
 
 export default function Result({ setResultModal, result, stompClientRef, gameStompRef }) {
   const modalBackGround = useRef();
   const navigate = useNavigate();
-  // const roomId = sessionStorage.getItem("roomId");
-  // const isManager = sessionStorage.getItem("isManager");
   const channelId = sessionStorage.getItem("channelId");
+
+  const getUserImage = (index) => {
+    if (index === 0) {
+      return fUser;
+    } else if (index === 1) {
+      return sUser;
+    } else if (index === 2) {
+      return tUser;
+    }
+  };
+
   return (
     <div
       className={styles.background}
@@ -37,11 +49,15 @@ export default function Result({ setResultModal, result, stompClientRef, gameSto
       }}
     >
       <div className={styles.container}>
+      <h1 className={styles.title}>게임 결과</h1>
         {result.map((user, index) => (
           <div key={index} className={styles.userInfoContainer}>
-            <p>{`User Nick: ${user.userNick}`}</p>
-            <p>{`Total Cost: ${user.totalCost}`}</p>
-            <p>{`exp: ${user.point}`}</p>
+            <img className={styles.imgTag} src={getUserImage(index)} alt={index >= 3 ? "4위" : ""} />
+            <div className={styles.myInfos}>
+              <p>{`닉네임: ${user.userNick}`}</p>
+              <p>{`평가금액: ${user.totalCost}`}</p>
+              <p>{`경험치: ${user.exp}`}</p>
+            </div>
           </div>
         ))}
       </div>

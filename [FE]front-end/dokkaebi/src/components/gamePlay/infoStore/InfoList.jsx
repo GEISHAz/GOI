@@ -59,40 +59,44 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log("2단계 정보 요청 실패");
         if (error.response.data.statusCode === 406) {
           alert("보유하신 포인트가 부족합니다")
+        } else if (error.response.data.statusCode === 424) {
+          alert("이미 구매한 정보입니다")
         }
       });
   };
 
   return (
-    <div className={styles.background}>
-      <div className={styles.companyArea}>
-        <p>{company}</p>
+    <div>
+      <div className={styles.background}>
+        <div className={styles.companyArea}>
+          <p>{company}</p>
+        </div>
+        <div className={styles.buttons}>
+          <button
+            className={styles.levelOneButtons}
+            onClick={() => {
+              getLowStockInfo();
+            }}
+          >
+            1단계
+          </button>
+          <hr />
+          <button
+            className={styles.levelTwoButtons}
+            onClick={() => {
+              getHighStockInfo();
+            }}
+          >
+            2단계
+          </button>
+        </div>
       </div>
-      <div className={styles.buttons}>
-        <button
-          className={styles.levelOneButtons}
-          onClick={() => {
-            getLowStockInfo();
-          }}
-        >
-          1단계
-        </button>
-        <hr />
-        <button
-          className={styles.levelTwoButtons}
-          onClick={() => {
-            getHighStockInfo();
-          }}
-        >
-          2단계
-        </button>
-      </div>
-      {infoStoreDetailModalOpen && (
-        <InfoStoreDetail
-          setInfoStoreDetailModalOpen={setInfoStoreDetailModalOpen}
-          info={info}
-        />
-      )}
+        {infoStoreDetailModalOpen && (
+          <InfoStoreDetail
+            setInfoStoreDetailModalOpen={setInfoStoreDetailModalOpen}
+            info={info}
+          />
+        )}
     </div>
   );
 }
