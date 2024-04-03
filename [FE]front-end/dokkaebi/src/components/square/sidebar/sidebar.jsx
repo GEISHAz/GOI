@@ -202,9 +202,7 @@ const Sidebar = ({ toggleSidebar }) => {
     const sock = new SockJS('https://j10d202.p.ssafy.io/ws-stomp');
     alarmClient.current = Stomp.over(sock);
   
-    alarmClient.current.connect({
-      Authorization: `Bearer ${accessToken}`,
-    }, () => {
+    alarmClient.current.connect({}, () => {
       console.log(">>친구 요청 알림 웹소켓 연결할게요!<<");
       console.log("본인 유저ID 확인 :", userId)
   
