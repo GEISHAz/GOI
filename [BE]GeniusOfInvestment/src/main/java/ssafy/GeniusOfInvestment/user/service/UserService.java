@@ -69,6 +69,7 @@ public class UserService implements UserDetailsService {
         validateDuplicatedNickname(nickname);
         for (ChatRecord chatRecord : ChatRecordListBySender) {
             chatRecord.updateSender(nickname);
+            chatRecordRepository.save(chatRecord);
         }
         user.updateNickName(updateNickNameRequestDto.getNickName());
     }
