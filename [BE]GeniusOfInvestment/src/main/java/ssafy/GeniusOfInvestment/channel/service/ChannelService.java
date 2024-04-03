@@ -53,11 +53,6 @@ public class ChannelService {
     //채널 들어가기
     @Transactional
     public void enterChannel(User user, Long channelId) {
-        log.info("enterChannelService in");
-//        if(user.getChannel()!=null && user.getChannel().getId().equals(channelId))
-//            user.deleteChannel();
-
-        //log.info("유저 현 채널 : "+user.getChannel());
 
         Optional<Channel> ochannel = channelRepository.findById(channelId);
         Channel channel;
@@ -66,7 +61,6 @@ public class ChannelService {
         }
         channel = ochannel.get();
 
-        log.info(String.valueOf(channel.getParticipants().size()));
         // 채널을 들어갈 수 있는지 부터 확인해야함
         if (channel.getParticipants().size() > 100)
             throw new CustomBadRequestException(ErrorType.CHANNEL_IS_FULL);
@@ -83,16 +77,10 @@ public class ChannelService {
         user.updateChannel(channel);
 
         userRepository.save(user);
-        log.info("enterChannelService in");
     }
 
     public void exitChannel(User user) {
-        log.info("exitChannelService in");
-        log.info("id : "+user.getId());
-        log.info("id : "+user.getNickName());
-        log.info("id : "+user.getExp());
-        log.info("id : "+user.getImageId());
-        log.info("id : "+user.getSocialId());
+
         Optional<User> byId = userRepository.findById(user.getId());
         if(!byId.isEmpty()) {
             byId.get().deleteChannel();
@@ -103,6 +91,5 @@ public class ChannelService {
         else{
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_CHANNEL);
         }
-        log.info("exitChannelService out");
     }
 }

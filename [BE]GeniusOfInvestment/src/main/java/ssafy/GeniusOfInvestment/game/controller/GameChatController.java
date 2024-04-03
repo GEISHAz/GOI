@@ -16,7 +16,6 @@ public class GameChatController {
 
     @MessageMapping("/game/chat/message")
     public void message(GameChatMessageDto gameChatMessageDto){
-        log.info("////////////////////////////////////////"+gameChatMessageDto.getReceiver());
         messageSendingOperations.convertAndSend("/sub/game/chat/" + gameChatMessageDto.getRoomId(),gameChatMessageDto);
     }
 }

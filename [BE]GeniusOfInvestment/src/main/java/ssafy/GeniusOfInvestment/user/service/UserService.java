@@ -57,7 +57,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUserImageId(Long userId, UpdateImageIdRequestDto updateImageIdRequestDto) {
         User user = findUser(userId);
-        log.info(updateImageIdRequestDto.getImageId()+" ///");
         user.updateImageId(updateImageIdRequestDto.getImageId());
     }
 
@@ -99,7 +98,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User getAuthenticationUser(String userId) {
-        log.info("토큰에서 뽑아온 userId: " + userId);
         return findUser(Long.parseLong(userId));
     }
 
@@ -136,10 +134,8 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Optional<User> foundUser = userRepository.findById(Long.valueOf(userId));
-        //System.out.println(foundUser.get().getName());
 
         if(foundUser.isPresent()){
-            log.info("loadUserByUsername메소드에서 유저 닉네임: " + foundUser.get().getNickName());
             return foundUser.get();
         }
         throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);

@@ -57,13 +57,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
             //SecurityContext에 저장할 User 객체 생성
-            log.info("토큰값이 " + token);
             String userId = jwtUtil.getUserId(token);
-            log.info("필터속 token에서 얻어온 유저 아디디: " + userId);
             UserDetails user = userService.loadUserByUsername(userId);
             //User user = userService.getAuthenticationUser(jwtUtil.getUserId(token));
-            log.info("jwt필터에서 유저: " + user);
-            //log.info("필터에서 유저 아이디: " + user.get);
 
 //            Authentication authentication = jwtUtil.getAuthentication(user);
 //            SecurityContextHolder.getContext().setAuthentication(authentication);
