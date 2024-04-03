@@ -8,6 +8,7 @@ import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import Result from "../../components/gamePlay/Result";
+import ChangeTurn from "../../components/gamePlay/ChangeTurn";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -24,7 +25,7 @@ export default function GamePlay() {
 
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
-  const userId = sessionStorage.getItem("userId");
+  const userId = Number(sessionStorage.getItem("userId"));
   const roomId = sessionStorage.getItem("roomId");
   const channelId = sessionStorage.getItem("channelId");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +33,7 @@ export default function GamePlay() {
   const [myStockModal, setMyStockModal] = useState(false);
   const [myInfoModal, setMyInfoModal] = useState(false);
   const [resultModal, setResultModal] = useState(false);
+  const [changeTurnModal, setChangeTurnModal] = useState(false);
 
   const stompClientRef = useRef(null); // 구독하는 사람
   const gameStompRef= useRef(null); // 구독 식별자 번호
@@ -60,6 +62,7 @@ export default function GamePlay() {
 
   useEffect(() => {
     setOhMyReady(false)
+    setChangeTurnModal(true)
   }, [year]);
 
   useEffect(() => {
@@ -124,7 +127,7 @@ export default function GamePlay() {
       // await gameStart();
       setTimeout(() => {
         gameStart();
-      }, 300);
+      }, 500);
     };
     initialize();
 
@@ -415,6 +418,8 @@ export default function GamePlay() {
       {resultModal && (
         <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef} />
       )}
+
+      {changeTurnModal && (<ChangeTurn setChangeTurnModal={setChangeTurnModal} year={year}/>)}
     </div>
   );
 }
