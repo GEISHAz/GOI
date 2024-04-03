@@ -227,13 +227,15 @@ public class StockService {
         bdtmp.setItem(item);
         idx = mine.getBreakDowns().indexOf(bdtmp); //내 거래내역에서 해당 주식 종목을 찾는다.
         if(idx == -1) { //이 종목에 대해서 거래 내역이 없다.
-            mine.getBreakDowns().add(BreakDown.builder()
-                            .item(item)
-                            .buyVal(curCost)
-                            .shares(share)
-                            .nowVal(curCost)
-                            .roi(0)
-                    .build());
+            if(share != 0){
+                mine.getBreakDowns().add(BreakDown.builder()
+                        .item(item)
+                        .buyVal(curCost)
+                        .shares(share)
+                        .nowVal(curCost)
+                        .roi(0)
+                        .build());
+            }
         }else { //이 종목에 대해서 이미 거래 내역이 있다.
             BreakDown bd = mine.getBreakDowns().get(idx);
             Long lastTotal = bd.getBuyVal() * bd.getShares();

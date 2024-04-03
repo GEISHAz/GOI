@@ -306,7 +306,7 @@ public class GameService {
 
     //redis에 대한 transactional을 걸게 되면 multi-exec가 걸리게 되므로 중간에 redis에 저장한 값을 메소드가 끝나기전에 get을 해올 수 없다.
     //redis에 저장자체가 메소드가 모두 끝난 후에 실행되므로
-    //@Transactional //게임이 끝날때에는 최종 정보를 저장시키고 오류 메시지로 리턴하기 때문에 Transactional 하면 안됨
+    @Transactional //게임이 끝날때에는 최종 정보를 저장시키고 오류 메시지로 리턴하기 때문에 Transactional 하면 안됨
     public TurnResponse getNextStockInfo(Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
