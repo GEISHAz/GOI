@@ -111,26 +111,23 @@
 | **Remove**   | 파일을 삭제하는 작업만 수행하는 경우                                             |
 
 ## 팀원 역할 분배
-|   **Name**   |                정원준                 |                정민호                |                  이준서                   |               류태수                |                 이귀현                  |               편수지                |
-| :----------: | :-----------------------------------: | :----------------------------------: | :---------------------------------------: | :---------------------------------: | :-------------------------------------: | :---------------------------------: |
-| **Position** |          Backend <br> Leader           |          Backend           |           Backend          |        Frontend <br> Leader         |            Frontend            |         Frontend          |
 
 <table>
  <tr>
-    <td align="center"><a href="https://github.com/kimhaechang1"><img src="https://avatars.githubusercontent.com/kimhaechang1" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/Be-HinD"><img src="https://avatars.githubusercontent.com/Be-HinD" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/RyuTa960625"><img src="https://avatars.githubusercontent.com/RyuTa960625" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/Agwii"><img src="https://avatars.githubusercontent.com/Agwii" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/wkdtpwjd19"><img src="https://avatars.githubusercontent.com/wkdtpwjd19" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
    <td align="center"><a href="https://github.com/timber3"><img src="https://avatars.githubusercontent.com/timber3" width="130px;" alt=""></a></td>
-   <td align="center"><a href="https://github.com/YangGeoun"><img src="https://avatars.githubusercontent.com/YangGeoun" width="130px;" alt=""></a></td>
+   <td align="center"><a href="https://github.com/quasiwest"><img src="https://avatars.githubusercontent.com/quasiwest" width="130px;" alt=""></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/Be-kimhaechang1"><b>김회창</b></a><p><b>팀장</b><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/Be-HinD"><b>김정현</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/Agwii"><b>이귀현</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
-    <td align="center"><a href="https://github.com/wkdtpwjd19"><b>장세정</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
-    <td align="center"><a href="https://github.com/timber3"><b>오승현</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/YangGeoun"><b>양건우</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/Be-kimhaechang1"><b>류태수</b></a><p><b>팀장</b><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/Be-HinD"><b>이귀현</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/Agwii"><b>정원준</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/wkdtpwjd19"><b>정민호</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/timber3"><b>편수지</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/YangGeoun"><b>이준서</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
   </tr>
 </table>
 
