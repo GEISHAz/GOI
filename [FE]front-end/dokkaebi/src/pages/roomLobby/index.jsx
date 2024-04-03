@@ -43,7 +43,7 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     if (response.userList) {
-      // console.log('유저 리스트 확인 :', response.userList)
+      console.log('유저 리스트 확인 :', response.userList)
       setUserList(response.userList);
     } else {
       setUserList(response);
@@ -117,13 +117,14 @@ export default function userReadyRoom() {
               // console.log("받는 데이터 확인", receivedMessage.data);
               setUserList(receivedMessage.data);
               // Redux 스토어의 userCnt 업데이트
-              const newUserCnt = receivedMessage.data.length;
+              console.log("유저 리스트 확인 :", receivedMessage.data.userList)
+              const newUserCnt = receivedMessage.data.userList.length;
               dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               // console.log(receivedMessage.type);
               setUserList(receivedMessage.data);
-              const newUserCnt = receivedMessage.data.length;
+              const newUserCnt = receivedMessage.data.userList.length;
               dispatch(setUserCnt(newUserCnt));
             } else if (receivedMessage.type === "READY") {
               // console.log(receivedMessage.type);

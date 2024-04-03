@@ -1,9 +1,14 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { setRoomNum } from '../../features/square/roomSlice.js';
 import axios from "axios";
 import styles from "./RoomEnterModal.module.css";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function RoomEnterModal({ onClose, roomId }) {
+  const dispatch = useDispatch();
+  const roomNums = useSelector((state) => state.room.roomNum);
+  const [isRoomNum, setIsRoomNum] = useState(roomNums);
   const [isPassword, setIsPassword] = useState(""); // 비밀번호 상태 관리
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
@@ -46,6 +51,7 @@ export default function RoomEnterModal({ onClose, roomId }) {
         console.log("입장 성공:", response);
         if (response.status === 200) {
           console.log("입장 성공:", response);
+          dispatch(setRoomNum(isRoomNum))
           sessionStorage.setItem("roomId", propsRoomId)
           navigate(`/room/${propsRoomId}`, {
             state: JSON.parse(JSON.stringify({ response })),

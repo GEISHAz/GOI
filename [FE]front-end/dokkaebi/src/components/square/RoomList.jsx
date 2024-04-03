@@ -49,6 +49,7 @@ export default function RoomList() {
       console.log("roomId 확인 111:", room.id);
       const roomId = room.id
       useRoomId(roomId)
+      dispatch(setRoomNum(response.data.roomNum));
       setEnterModal(true);
     } else {
       console.log("roomId 확인 222:", room.id);
