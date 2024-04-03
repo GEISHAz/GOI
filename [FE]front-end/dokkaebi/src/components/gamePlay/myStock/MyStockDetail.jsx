@@ -8,14 +8,9 @@ export default function MyStockDetail(props) {
 
   const stockExchangeModalOpen = (type) => {
     setTransactionType(type);
-    setStockExchangeModal(true);
+    // setStockExchangeModal(true);
+    props.setMyStocksDetailModal(true);
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      props.setMyStockModal(false);
-    }, 10);
-  }, []);
 
   return (
     <div className={styles.background}>
@@ -34,11 +29,13 @@ export default function MyStockDetail(props) {
       >
         매도
       </button>
-      {stockExchangeModal && (
+      {props.myStocksDetailModal && (
         <StockExchange
           setStockExchangeModal={setStockExchangeModal}
           item={props.item}
           transactionType={transactionType}
+          myStocksDetailModal={props.myStocksDetailModal}
+          setMyStocksDetailModal={props.setMyStocksDetailModal}
         />
       )}
     </div>

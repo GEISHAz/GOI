@@ -12,27 +12,30 @@ export default function MyStock(props) {
   const [rest, setRest] = useState(0);
   const [yoy, setYoy] = useState(0);
   const [myStocks, setMyStocks] = useState([]);
+  const [myStocksDetailModal, setMyStocksDetailModal] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("https://j10d202.p.ssafy.io/api/stock", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        console.log("내 보유 주식 정보 가져오기 성공");
-        setTotal(response.data.marketVal);
-        setRest(response.data.remainVal);
-        setYoy(response.data.yoy);
-        setMyStocks(response.data.breakDowns);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("내 보유 주식 정보 가져오기 실패");
-      });
-  }, []);
+    setTimeout(() => {
+      axios
+        .get("https://j10d202.p.ssafy.io/api/stock", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          console.log("내 보유 주식 정보 가져오기 성공");
+          setTotal(response.data.marketVal);
+          setRest(response.data.remainVal);
+          setYoy(response.data.yoy);
+          setMyStocks(response.data.breakDowns);
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("내 보유 주식 정보 가져오기 실패");
+        });
+    }, 20);
+  }, [myStocksDetailModal]);
 
   return (
     <div
@@ -84,7 +87,8 @@ export default function MyStock(props) {
               nowVal={stock.nowVal} // 현재 가격
               shares={stock.shares} // 보유 주 수
               roi={stock.roi} // 수익률
-              setMyStockModal={props.setMyStockModal}
+              myStocksDetailModal={myStocksDetailModal}
+              setMyStocksDetailModal={setMyStocksDetailModal}
             />
           ))}
         </div>
