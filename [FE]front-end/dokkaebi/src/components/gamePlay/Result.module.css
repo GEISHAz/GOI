@@ -11,7 +11,7 @@
 
 .container {
   width: 480px;
-  height: 675px;
+  height: auto;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
   display: flex;
@@ -20,10 +20,33 @@
   align-items: center;
 }
 
+.title {
+  font-size: 30px;
+  font-family: DNFBitBitv2;
+  margin: 20px;
+}
+
 .userInfoContainer {
   background-color: white;
   width: 90%;
   height: 100px;
   padding: 12px;
   border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.imgTag {
+  width: 75px;
+  height: 75px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.myInfos {
+  margin: auto 20px;
 }

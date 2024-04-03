@@ -46,20 +46,30 @@ export default function MyStock(props) {
     >
       <div className={styles.container}>
         <h1 className={styles.title}>내 보유 주식</h1>
-        <div className={styles.myInfors}>
-          <div className={styles.total}>
-            <p className={styles.totalText}>평가 금액</p>
-            <p className={styles.totalValue}>{total?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-          </div>
-          <div className={styles.yoy}>
-            <p className={styles.yoyText}>작년 대비</p>
-            <p className={styles.yoyValue}>{yoy?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-          </div>
-          <div className={styles.rest}>
-            <p className={styles.restText}>현금</p>
-            <p className={styles.restValue}>{rest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+        <hr className={styles.myInfosHr} />
+        <div className={styles.myInfosArea}>
+          <div className={styles.myInfos}>
+            <div className={styles.total}>
+              <p className={styles.totalText}>평가 금액</p>
+              <p className={styles.totalValue}>{total?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            </div>
+            <div className={styles.yoy}>
+              <p className={styles.yoyText}>작년 대비</p>
+              <p className={styles.yoyValue}>{yoy?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            </div>
+            <div className={styles.rest}>
+              <p className={styles.restText}>현금</p>
+              <p className={styles.restValue}>{rest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+            </div>
           </div>
         </div>
+        <hr className={styles.myInfosHr} />
+         <div className={styles.myInfosHeader}>
+          <p className={styles.itemHeader}>회사</p>
+          <p className={styles.averagePriceHeader}>평단가</p>
+          <p className={styles.havingHeader}>보유주</p>
+          <p className={styles.roiHeader}>수익률</p>
+         </div>
         <div className={styles.myStockDetail}>
           {myStocks.map((stock, index) => (
             <MyStockDetail 

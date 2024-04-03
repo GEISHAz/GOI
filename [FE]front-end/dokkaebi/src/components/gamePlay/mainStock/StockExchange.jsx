@@ -20,19 +20,6 @@ export default function StockExchange(props) {
     e.target.src = chart;
   };
 
-  // 효과음 재생 함수
-  const playSound = () => {
-    const sound = new Audio('/public/bgm/ddiRick.mp3');
-    sound.play();
-  };
-
-  // 입력 필드에서 화살표 키를 누를 때 효과음 재생 (추가된 부분)
-  const handleKeyPress = (e) => {
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-      playSound();
-    }
-  };
-
   useEffect(() => {
     axios
       .get(`https://j10d202.p.ssafy.io/api/stock/${props.item}`, {
@@ -102,7 +89,6 @@ export default function StockExchange(props) {
 
   // 입력란에 숫자가 변경될 때마다 상태 업데이트
   const handleQuantityChange = (e) => {
-    playSound();
     const inputQuantity = parseInt(e.target.value);
     setQuantity(inputQuantity >= 0 ? inputQuantity : 0);
     if (props.transactionType === "buy") {

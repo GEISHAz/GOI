@@ -29,6 +29,7 @@ export default function InfoStore({ setInfoStoreModalOpen, stockInfo, myPoint, s
           <InfoLIst company={stockInfo[6].item} myPoint={myPoint} setMyPoint={setMyPoint}/>
           <InfoLIst company={stockInfo[7].item} myPoint={myPoint} setMyPoint={setMyPoint}/>
           <InfoLIst company={stockInfo[8].item} myPoint={myPoint} setMyPoint={setMyPoint}/>
+          <InfoLIst company={stockInfo[9].item} myPoint={myPoint} setMyPoint={setMyPoint}/>
         </div>
       </div>
     </div>
