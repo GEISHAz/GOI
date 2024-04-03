@@ -8,7 +8,8 @@ export default function MyStockDetail(props) {
 
   const stockExchangeModalOpen = (type) => {
     setTransactionType(type);
-    setStockExchangeModal(true);
+    // setStockExchangeModal(true);
+    props.setMyStocksDetailModal(true);
   };
 
   return (
@@ -28,12 +29,13 @@ export default function MyStockDetail(props) {
       >
         매도
       </button>
-      {stockExchangeModal && (
+      {props.myStocksDetailModal && (
         <StockExchange
           setStockExchangeModal={setStockExchangeModal}
           item={props.item}
           transactionType={transactionType}
-          setMyStockModal={props.setMyStockModal}
+          myStocksDetailModal={props.myStocksDetailModal}
+          setMyStocksDetailModal={props.setMyStocksDetailModal}
         />
       )}
     </div>

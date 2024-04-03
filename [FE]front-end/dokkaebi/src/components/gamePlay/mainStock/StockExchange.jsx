@@ -21,12 +21,6 @@ export default function StockExchange(props) {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      props.setMyStockModal(false);
-    }, 10);
-  }, []);
-
-  useEffect(() => {
     axios
       .get(`https://j10d202.p.ssafy.io/api/stock/${props.item}/${roomId}`, {
         headers: {
@@ -37,6 +31,7 @@ export default function StockExchange(props) {
         console.log(response);
         console.log("내 주식 가져오기 성공");
         setMyStock(response.data.shares);
+        setMyStocks(response.data.shares);
         setMyCash(response.data.remainVal);
         setCash(response.data.remainVal);
         setCurrentCost(response.data.curCost);
@@ -95,6 +90,7 @@ export default function StockExchange(props) {
 
     // 모달 닫기
     props.setStockExchangeModal(false);
+    props.setMyStocksDetailModal(false);
     // if
   };
 
@@ -124,6 +120,7 @@ export default function StockExchange(props) {
       onClick={(e) => {
         if (e.target === stockExchangeBackground.current) {
           props.setStockExchangeModal(false);
+          props.setMyStocksDetailModal(false);
         }
       }}
       style={{
