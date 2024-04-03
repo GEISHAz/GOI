@@ -123,6 +123,8 @@ export default function userReadyRoom() {
             } else if (receivedMessage.type === "ROOM_EXIT") {
               // console.log(receivedMessage.type);
               setUserList(receivedMessage.data);
+              const newUserCnt = receivedMessage.data.length;
+              dispatch(setUserCnt(newUserCnt));
             } else if (receivedMessage.type === "READY") {
               // console.log(receivedMessage.type);
               // console.log(receivedMessage.data.list);
