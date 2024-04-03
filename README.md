@@ -13,7 +13,7 @@
 
 - [https://www.youtube.com/watch?v=xtrJIBw8ABU](https://www.youtube.com/watch?v=xtrJIBw8ABU)
 
-## 배경
+## 🪪배경
 여러 측면에서 대두되는 주식(투자)의 중요성
 
 **1) 자산 다변화와 리스크 관리**
@@ -50,9 +50,16 @@
 따라서 청소년들이 접근하기 쉬운 게임이란 수단을 통해 주식 관련 경험과 지식 기르고, 
 더불어 투자에 대한 재미를 경험할 수 있는 서비스를 기획하였습니다
 
+## 🚩 개발기간
+
+|           |     [프로젝트 일정]     |
+| :-------: | :---------------------: |
+| 진행 기간 | 2024.02.19 - 2024.04.05 |
+|   인원    |           6명           |
+
 ## 주요 기술
 
-**Backend**
+⚒️**Backend**
 
 - java17
 - springboot 3.2.2
@@ -63,18 +70,18 @@
 - intelliJ IDE
 - web socket
 
-**Frontend**
+⚒️**Frontend**
 
 - Node.js 20.11
 - react18
 - VSCode
 
-**DataBase**
+⚒️**DataBase**
 
 - mariaDB
 - Redis
 
-**Infra**
+⚒️**Infra**
 
 - aws ec2
 - docker & docker compose
