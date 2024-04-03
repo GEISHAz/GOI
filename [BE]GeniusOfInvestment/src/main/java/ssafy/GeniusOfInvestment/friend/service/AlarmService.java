@@ -67,7 +67,11 @@ public class AlarmService {
                 throw new CustomBadRequestException(ErrorType.ALREADY_EXISTS_FRIEND);
             }
             if(status == 2){
+                Alarm alarm = findAlarm.get();
                 findAlarm.get().updateStatus(0);
+                messageSendingOperations.convertAndSend("/sub/alarm/chat/" + alarm.getUser().getId(), FriendChatMessageDto.of(MessageType.SEND,
+                        String.valueOf(alarm.getUser().getId()),alarm.getUser().getNickName(),alarm.getUser().getNickName() + "이 초대를 보냈습니다"));
+                return SendFriendInvitationResponse.builder().alarmId(findAlarm.get().getId()).build();
             }
         }else{
             User tUser = toUser.get();
