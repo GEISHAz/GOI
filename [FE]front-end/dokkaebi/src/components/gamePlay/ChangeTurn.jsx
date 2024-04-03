@@ -18,7 +18,7 @@ export default function ChangeTurn({setChangeTurnModal, year}) {
       if (e.target === modalBackGround.current) {
         setChangeTurnModal(false);}}}>
       <div className={styles.container}>
-        <p className={styles.text}>{year}년 시작</p>
+        <p className={styles.text}>{year === 0 ? "게임 시작!" : `${year}년도 시작!`}</p>
       </div>
     </div>
   )

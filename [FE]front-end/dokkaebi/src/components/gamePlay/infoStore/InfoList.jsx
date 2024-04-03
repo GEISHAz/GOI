@@ -27,7 +27,7 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log(response);
         console.log("1단계 정보 가져오기 성공");
         setInfo(response.data)
-        setMyPoint(myPoint - 2);
+        setMyPoint(myPoint - 5);
         openInfoStoreDetailModal();
       })
       .catch((error) => {
@@ -35,6 +35,9 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log("1단계 정보 가져오기 실패");
         if (error.response.data.statusCode === 406) {
           alert("보유하신 포인트가 부족합니다")
+        } else if (error.response.data.statusCode === 424) {
+          console.log("이미 구매한 정보입니다")
+          alert("이미 구매한 정보입니다")
         }
       });
   };
@@ -51,7 +54,7 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         console.log(response);
         console.log("2단계 정보 요청 성공");
         setInfo(response.data);
-        setMyPoint(myPoint - 4);
+        setMyPoint(myPoint - 15);
         openInfoStoreDetailModal();
       })
       .catch((error) => {
@@ -60,6 +63,7 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
         if (error.response.data.statusCode === 406) {
           alert("보유하신 포인트가 부족합니다")
         } else if (error.response.data.statusCode === 424) {
+          console.log("이미 구매한 정보입니다")
           alert("이미 구매한 정보입니다")
         }
       });

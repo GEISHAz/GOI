@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import fUser from "../../images/gamePlay/1st.png"
 import sUser from "../../images/gamePlay/2nd.png"
 import tUser from "../../images/gamePlay/3rd.png"
+import luser from "../../images/gamePlay/pngegg.png"
 
 export default function Result({ setResultModal, result, stompClientRef, gameStompRef }) {
   const modalBackGround = useRef();
@@ -17,6 +18,8 @@ export default function Result({ setResultModal, result, stompClientRef, gameSto
       return sUser;
     } else if (index === 2) {
       return tUser;
+    } else  {
+      return luser;
     }
   };
 
