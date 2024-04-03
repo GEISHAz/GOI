@@ -124,9 +124,9 @@
   <tr>
     <td align="center"><a href="https://github.com/RyuTa960625"><b>류태수</b></a><p><b>팀장</b><p><b>Front-end</b></td>
     <td align="center"><a href="https://github.com/Agwii"><b>이귀현</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
-    <td align="center"><a href="https://github.com/GEISHAz"><b>정원준</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
+    <td align="center"><a href="https://github.com/wonjunJ"><b>정원준</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
     <td align="center"><a href="https://github.com/GEISHAz"><b>정민호</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
-    <td align="center"><a href="https://github.com/GEISHAz"><b>편수지</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
+    <td align="center"><a href="https://github.com/pyunsusie"><b>편수지</b></a><p><b>팀원</b></p><p><b>Front-end</b></td>
     <td align="center"><a href="https://github.com/quasiwest"><b>이준서</b></a><p><b>팀원</b></p><p><b>Back-end</b></td>
   </tr>
 </table>
