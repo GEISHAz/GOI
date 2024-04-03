@@ -10,7 +10,7 @@ import {
   setRoomPassword,
   setRoomYears,
 } from "../../features/square/roomSlice.js";
-import { setRoomNum, setUserCnt } from '../../features/square/roomSlice.js';
+import { setRoomNum } from '../../features/square/roomSlice.js';
 
 export default function RoomCreateModal({ onClose, userName }) {
   const dispatch = useDispatch();
@@ -111,9 +111,7 @@ export default function RoomCreateModal({ onClose, userName }) {
             console.log("방 번호 확인 :", response.data.roomnum)
             console.log("유저 리스트 확인", response.data.userList)
             const roomNum = response.data.roomnum
-            const userCnt = response.data.userList.length
             dispatch(setRoomNum(roomNum)) // 방 번호 리덕스 스토어에 저장
-            dispatch(setUserCnt(userCnt)) // 유저 리스트 길이 스토어에 저장
             // 방 생성 성공하면, 방 정보를 세션스토리지에 저장
             sessionStorage.setItem(
               "roomId",

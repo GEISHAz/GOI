@@ -7,6 +7,7 @@ import Messenger from './messenger.jsx'
 import FriendAddModal from './friendAddModal.jsx';
 import FriendAlarm from './friendAlarmModal.jsx';
 import FriendItem from './friendItem.jsx';
+import NewAlarm from '../../../images/square/new.gif';
 import styles from './sidebar.module.css';
 
 const Sidebar = ({ toggleSidebar }) => {
@@ -243,10 +244,12 @@ const Sidebar = ({ toggleSidebar }) => {
     <aside className={styles.sidebar}>
       {/* 사이드바 내용 */}
       <nav>
-        <div className={`flex flex-row p-4 ${styles.menuBox}`}>
+        <div className={`flex p-4 ${styles.menuBox}`}>
           <button className={`text-center text-white text-2xl font-bold ${styles.menu}`} onClick={openAddFriendModal}>친구 추가</button>
           <button className={`text-center text-white text-2xl font-bold ${styles.menu}`} onClick={openAlarmModal}>
-            {newFriendRequest && <span className={styles.newFriendRequest}>New</span>}
+            {newFriendRequest && <span className={`justify-center text-sm font-Bit items-center ${styles.newFriendRequest}`}>
+              <img src={NewAlarm} alt="새로운 알림" className='flex justify-center mx-auto w-50 h-5' />
+            </span>}
             알림
           </button>
         </div>

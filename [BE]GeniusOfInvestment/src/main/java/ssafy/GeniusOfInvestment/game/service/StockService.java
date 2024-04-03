@@ -82,9 +82,9 @@ public class StockService {
                         if(mine.getBuyInfos().contains(own)){
                             throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
                         }
-                        if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 5) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getLowLv();
-                        myPoint -= 2;
+                        myPoint -= 5;
                     }else {
                         MyOwnInfo own = new MyOwnInfo();
                         own.setInfoId(mk.getDependencyInfo());
@@ -92,9 +92,9 @@ public class StockService {
                         if(mine.getBuyInfos().contains(own)){
                             throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
                         }
-                        if(myPoint < 4) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 15) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getHighLv();
-                        myPoint -= 4;
+                        myPoint -= 15;
                     }
                     mine.getBuyInfos().add(MyOwnInfo.builder()
                                     .item(item)
@@ -115,14 +115,14 @@ public class StockService {
                     int randIdx = random.nextInt(infoList.size());
                     Information ranInfo = infoList.get(randIdx);
                     if(level == 1){
-                        if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 5) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         log.info("1단계 정보를 구매하는 조건문");
                         content = ranInfo.getLowLv();
-                        myPoint -= 2;
+                        myPoint -= 5;
                     }else {
-                        if(myPoint < 4) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 15) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = ranInfo.getHighLv();
-                        myPoint -= 4;
+                        myPoint -= 15;
                     }
                     mk.setDependencyInfo(ranInfo.getId());
                     mine.getBuyInfos().add(MyOwnInfo.builder()

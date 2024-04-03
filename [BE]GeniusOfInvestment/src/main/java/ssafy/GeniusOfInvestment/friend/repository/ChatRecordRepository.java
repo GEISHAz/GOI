@@ -9,4 +9,7 @@ import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
 public interface ChatRecordRepository extends JpaRepository<ChatRecord, Long> {
     @Query("SELECT cr FROM ChatRecord cr WHERE cr.chatId.id = :chatId ORDER BY cr.id DESC LIMIT 333")
     List<ChatRecord> findByChatId(@Param("chatId") Long chatId);
+
+    @Query("SELECT cr FROM ChatRecord cr WHERE cr.sender = :nickName")
+    List<ChatRecord> findBySender(@Param("nickName") String nickName);
 }

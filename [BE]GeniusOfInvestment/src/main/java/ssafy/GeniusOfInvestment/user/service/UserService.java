@@ -8,9 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssafy.GeniusOfInvestment._common.entity.ChatRecord;
 import ssafy.GeniusOfInvestment._common.exception.CustomBadRequestException;
 import ssafy.GeniusOfInvestment._common.response.ErrorType;
 import ssafy.GeniusOfInvestment._common.entity.User;
+import ssafy.GeniusOfInvestment.friend.repository.ChatRecordRepository;
 import ssafy.GeniusOfInvestment.user.dto.request.ExistNickNameRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.request.UpdateUserInfoRequestDto;
 import ssafy.GeniusOfInvestment.user.dto.response.RankInfoResponseDto;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final ChatRecordRepository chatRecordRepository;
 
     public Optional<User> findBySocialId(String socialId) {
         return userRepository.findBySocialId(socialId);
@@ -104,9 +107,14 @@ public class UserService implements UserDetailsService {
     public void checkNickName(Long userId, ExistNickNameRequestDto existNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = existNickNameRequestDto.getNickName();
+        String userNameBefore = user.getNickName();
+        List<ChatRecord> ChatRecordListBySender = chatRecordRepository.findBySender(userNameBefore);
         if(!user.getNickName().equals(nickname)){
             validateDuplicatedNickname(existNickNameRequestDto.getNickName());
             user.updateNickName(nickname);
+        }
+        for (ChatRecord chatRecord : ChatRecordListBySender) {
+            chatRecord.updateSender(nickname);
         }
     }
 
