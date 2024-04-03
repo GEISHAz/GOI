@@ -423,9 +423,9 @@ public class GameService {
         room.setMarket(gms); //새로 생성된 시장 상황을 저장
         gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
 
-        if(rm.get().getEndYear() == room.getYear()-1){ //게임이 끝났다.
-            throw new CustomBadRequestException(ErrorType.END_GAME);
-        }
+//        if(rm.get().getEndYear() == room.getYear()-1){ //게임이 끝났다.
+//            throw new CustomBadRequestException(ErrorType.END_GAME);
+//        }
 
         return TurnResponse.builder()
                 .remainTurn(turn)
