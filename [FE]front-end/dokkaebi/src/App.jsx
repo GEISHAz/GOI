@@ -5,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 
 function App() {
   const location = useLocation();
-
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       const message = '새로고침 시 문제가 발생할 수 있어요 ! 조심해주세요 !';
@@ -17,33 +18,38 @@ function App() {
       window.addEventListener('beforeunload', handleBeforeUnload);
     }
 
-    // 효과음 재생 함수
-    const playSound = () => {
-      const sound = new Audio('/public/bgm/ddick.mp3');
-      sound.play();
+    // 오디오 파일 로드 및 재생
+    const playSound = async (url) => {
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start(0);
     };
 
     // 클릭된 요소가 버튼 내부에 있는지 확인하고, 버튼 클릭 시 효과음 재생
     const handleClick = (event) => {
-      let element = event.target; // 클릭된 요소
-      while (element != null) { // 부모 요소를 따라 거슬러 올라가며 검사
-        if (element.tagName === 'BUTTON') { // 요소가 버튼이면 효과음 재생
-          playSound();
-          break; // 버튼을 찾았으므로 루프 중단
+      let element = event.target;
+      while (element != null) {
+        if (element.tagName === 'BUTTON') {
+          // 호스팅 환경의 정확한 파일 경로로 변경하세요
+          playSound('/public/bgm/ddick.mp3');
+          break;
         }
-        element = element.parentElement; // 부모 요소로 이동
+        element = element.parentElement;
       }
     };
 
-    // 문서 전체에 클릭 이벤트 리스너 추가
     document.addEventListener('click', handleClick);
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('click', handleClick);
     };
-  }, [location.pathname]);
+  }, [location.pathname, audioContext]);
+
 
   return (
     <div className='font-Galmuri11'>
