@@ -108,83 +108,85 @@ export default function StockExchange(props) {
   };
 
   return (
-    <div
-      className={styles.background}
-      ref={stockExchangeBackground}
-      onClick={(e) => {
-        if (e.target === stockExchangeBackground.current) {
-          props.setStockExchangeModal(false);
-        }
-      }}
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-    >
-      <div className={styles.container}>
-        <div className={styles.companyInfoArea}>
-          <h1 className={styles.companyName}>{props.item}</h1>
-          {/* 주식차트 예시 */}
-          <div className={styles.chartArea}>
-            <ChartComponent item={props.item}/>
-          </div>
-          {/* <img
-            src=""
-            alt="chart"
-            onError={onErrorChartImg}
-            className={styles.chartImg}
-          /> */}
-        </div>
-        <div className={styles.myStockInfo}>
-          <div className={styles.displayInfo}>
-            <p className={styles.boldText}>보유주</p>
-            <div className={styles.text}>
-              <p>{myStock}</p>
-              <span>▶</span>
-              <p>{myStocks}</p>
+    <div>
+      <div
+        className={styles.background}
+        ref={stockExchangeBackground}
+        onClick={(e) => {
+          if (e.target === stockExchangeBackground.current) {
+            props.setStockExchangeModal(false);
+          }
+        }}
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <div className={styles.container}>
+          <div className={styles.companyInfoArea}>
+            <h1 className={styles.companyName}>{props.item}</h1>
+            {/* 주식차트 예시 */}
+            <div className={styles.chartArea}>
+              <ChartComponent item={props.item}/>
             </div>
+            {/* <img
+              src=""
+              alt="chart"
+              onError={onErrorChartImg}
+              className={styles.chartImg}
+            /> */}
           </div>
-          <div className={styles.displayInfo}>
-            <p className={styles.boldText}>주당 가격</p>
-            <div className={styles.text}>
-              <p>{props.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-            </div>
-          </div>
-          <div className={styles.displayInfo}>
-            <p className={styles.boldText}>보유 현금</p>
-            <div className={styles.text}>
-              <p>{myCash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-              <span>▶</span>
-              <p>{cash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-            </div>
-          </div>
-          <div className={styles.buyAndSellButton}>
-            <div className={styles.inputSelectorArea}>
-              <input
-                type="number"
-                min="0"
-                className={styles.inputNumber}
-                placeholder={`매${props.transactionType === "buy" ? "수" : "도"}할 주 수를 입력해주세요`}
-                value={quantity}
-                onChange={handleQuantityChange}
-              />
-              <div className={styles.ju}>
-                <p>주</p>
+          <div className={styles.myStockInfo}>
+            <div className={styles.displayInfo}>
+              <p className={styles.boldText}>보유주</p>
+              <div className={styles.text}>
+                <p>{myStock}</p>
+                <span>▶</span>
+                <p>{myStocks}</p>
               </div>
             </div>
-            <button
-              className={props.transactionType === "buy" ? styles.maesuButton : styles.maedoButton}
-              onClick={handleTransaction}
-              disabled={
-                (props.transactionType === "buy" && props.price * quantity > myCash) ||
-                (props.transactionType === "sell" && (quantity > myStock || myStocks < 0))
-              }
-              style={{ opacity: (props.transactionType === "buy" && props.price * quantity > myCash) || (props.transactionType === "sell" && (quantity > myStock || myStocks < 0)) ? 0.5 : 1 }}
-            >
-              {props.transactionType === "buy" ? "매수" : "매도"}
-            </button>
+            <div className={styles.displayInfo}>
+              <p className={styles.boldText}>주당 가격</p>
+              <div className={styles.text}>
+                <p>{props.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+              </div>
+            </div>
+            <div className={styles.displayInfo}>
+              <p className={styles.boldText}>보유 현금</p>
+              <div className={styles.text}>
+                <p>{myCash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+                <span>▶</span>
+                <p>{cash?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+              </div>
+            </div>
+            <div className={styles.buyAndSellButton}>
+              <div className={styles.inputSelectorArea}>
+                <input
+                  type="number"
+                  min="0"
+                  className={styles.inputNumber}
+                  placeholder={`매${props.transactionType === "buy" ? "수" : "도"}할 주 수를 입력해주세요`}
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                />
+                <div className={styles.ju}>
+                  <p>주</p>
+                </div>
+              </div>
+              <button
+                className={props.transactionType === "buy" ? styles.maesuButton : styles.maedoButton}
+                onClick={handleTransaction}
+                disabled={
+                  (props.transactionType === "buy" && props.price * quantity > myCash) ||
+                  (props.transactionType === "sell" && (quantity > myStock || myStocks < 0))
+                }
+                style={{ opacity: (props.transactionType === "buy" && props.price * quantity > myCash) || (props.transactionType === "sell" && (quantity > myStock || myStocks < 0)) ? 0.5 : 1 }}
+              >
+                {props.transactionType === "buy" ? "매수" : "매도"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

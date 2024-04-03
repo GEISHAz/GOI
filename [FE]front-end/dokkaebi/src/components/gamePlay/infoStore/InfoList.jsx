@@ -33,6 +33,9 @@ export default function InfoLIst({company, myPoint, setMyPoint}) {
       .catch((error) => {
         console.log(error);
         console.log("1단계 정보 가져오기 실패");
+        if (error.response.data.statusCode === 406) {
+          alert("보유하신 포인트가 부족합니다")
+        }
       });
   };
 

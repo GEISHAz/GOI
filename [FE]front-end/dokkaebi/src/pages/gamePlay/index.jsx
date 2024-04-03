@@ -77,12 +77,15 @@ export default function GamePlay() {
     console.log("유저 정보1", userList);
     setCurrentUser(userList.find((user) => user.userId == userId));
     console.log("현재 유저 정보1", currentUser);
-    setMyPoint(currentUser?.point);
     // setReady(currentUser.isReady? currentUser.isReady : ready);
     // console.log("현재 유저 정보", currentUser);
     setOtherUsers(userList.filter((user) => user.userId != userId));
     // console.log("나머지 유저 정보", otherUsers);
   }, [userList]);
+
+  useEffect(() => {
+    setMyPoint(currentUser?.point);
+  }, [currentUser]);
 
   useEffect(() => {
     if (timerMSec === 0 && isManager === "true") {
