@@ -145,18 +145,18 @@ const Sidebar = ({ toggleSidebar }) => {
             console.error('친구 채팅 연결 에러', error);
           });
   
-    // useEffect의 clean-up 함수
-    return () => {
-      console.log("친구 채팅 연결 끊을게요!")
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe(); // 구독 취소
-      }
-  
-            if (client.current && client.current.connected) {
-              client.current.disconnect();
-            }
-          };
+        // useEffect의 clean-up 함수
+        return () => {
+          console.log("친구 채팅 연결 끊을게요!")
+          if (subscriptionRef.current) {
+            subscriptionRef.current.unsubscribe(); // 구독 취소
+          }
+
+          if (client.current && client.current.connected) {
+            client.current.disconnect();
+          }
         };
+      };
       connectWebSocket();
     }
   }, [isFriendList, userNickname]);
