@@ -25,7 +25,7 @@ public class StompHandler implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel){
-        log.info("========Websocket preSend start===========");
+//        log.info("========Websocket preSend start===========");
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         if(accessor.getCommand() == StompCommand.CONNECT){ //웹소켓 통신시 jwt 검사

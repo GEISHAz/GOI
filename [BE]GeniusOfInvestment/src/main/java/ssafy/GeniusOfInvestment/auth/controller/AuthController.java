@@ -25,7 +25,6 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<SuccessType> logout(@RequestHeader(value = "Authorization") final String accessToken) {
-        System.out.println("access token : " + accessToken);
         // 엑세스 토큰으로 현재 Redis 정보 삭제
         authTokenService.removeRefreshToken(accessToken);
 

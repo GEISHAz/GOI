@@ -92,8 +92,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             //로그인을 처음한 인원 -> DB에 저장해줘야 함
             if(findUser.isEmpty()){
 
-                log.info("principal.getUserInfo().getProvider() = " + principal.getUserInfo().getProvider().ordinal() +"////// principal.getUserInfo().getName() ==  "+principal.getUserInfo().getName());
-
                 User user = User.of(principal.getUserInfo().getId(),0L,1,"도깨비" + principal.getUserInfo().getId());
                 Long memberId = userService.saveSocialMember(user);
                 GeneratedToken token = jwtUtil.generateToken(memberId.toString());
@@ -119,13 +117,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else if ("unlink".equalsIgnoreCase(mode)) {
             // TODO: DB 삭제
             // TODO: 리프레시 토큰 삭제
-            log.info("unlink 확인///////////");
             String accessToken = principal.getUserInfo().getAccessToken();
             OAuth2Provider provider = principal.getUserInfo().getProvider();
             oAuth2UserUnlinkManager.unlink(provider, accessToken);
             Optional<User> findMember = userService.findBySocialId(principal.getUserInfo().getId());
             authTokenService.removeRefreshTokenById(findMember.get().getId().toString());
-            log.info("unlink 확인///////////"+findMember.get().getId()+"//////"+principal.getUserInfo().getId());
             userService.deleteMember(findMember);
 
 
