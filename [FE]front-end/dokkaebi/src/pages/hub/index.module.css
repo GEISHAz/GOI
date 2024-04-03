@@ -1,0 +1,17 @@
+.explantion {
+  width: 100px;
+  height: 100px;
+  left: 25px;
+  bottom: 25px;
+  position: absolute;
+  z-index: 20;
+}
+
+.questionMark {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  z-index: 150;
+}
