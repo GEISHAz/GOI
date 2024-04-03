@@ -15,10 +15,7 @@ import ssafy.GeniusOfInvestment.game.repository.InformationRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisGameRepository;
 import ssafy.GeniusOfInvestment.game.repository.RedisMyTradingInfoRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -72,20 +69,32 @@ public class StockService {
         String content = "";
         for(GameMarket mk : room.getMarket()){
             if(mk.getItem().equals(item)){
+                if(mine.getBuyInfos() == null){
+                    mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
+                }
                 if(mk.getDependencyInfo() != null){ //이미 다른 사용자가 이 종목에 대해서 정보를 구매했다.
                     Optional<Information> info = informationRepository.findById(mk.getDependencyInfo());
                     if(info.isEmpty()) throw new CustomBadRequestException(ErrorType.NOT_FOUND_INFO);
                     if(level == 1){
-                        if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        MyOwnInfo own = new MyOwnInfo();
+                        own.setInfoId(mk.getDependencyInfo());
+                        own.setLevel(level);
+                        if(mine.getBuyInfos().contains(own)){
+                            throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
+                        }
+                        if(myPoint < 5) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getLowLv();
-                        myPoint -= 2;
+                        myPoint -= 5;
                     }else {
-                        if(myPoint < 4) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        MyOwnInfo own = new MyOwnInfo();
+                        own.setInfoId(mk.getDependencyInfo());
+                        own.setLevel(level);
+                        if(mine.getBuyInfos().contains(own)){
+                            throw new CustomBadRequestException(ErrorType.ALREADY_BUY_INFO);
+                        }
+                        if(myPoint < 15) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = info.get().getHighLv();
-                        myPoint -= 4;
-                    }
-                    if(mine.getBuyInfos() == null){
-                        mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
+                        myPoint -= 15;
                     }
                     mine.getBuyInfos().add(MyOwnInfo.builder()
                                     .item(item)
@@ -106,19 +115,16 @@ public class StockService {
                     int randIdx = random.nextInt(infoList.size());
                     Information ranInfo = infoList.get(randIdx);
                     if(level == 1){
-                        if(myPoint < 2) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 5) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         log.info("1단계 정보를 구매하는 조건문");
                         content = ranInfo.getLowLv();
-                        myPoint -= 2;
+                        myPoint -= 5;
                     }else {
-                        if(myPoint < 4) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
+                        if(myPoint < 15) throw new CustomBadRequestException(ErrorType.INSUFFICIENT_POINT);
                         content = ranInfo.getHighLv();
-                        myPoint -= 4;
+                        myPoint -= 15;
                     }
                     mk.setDependencyInfo(ranInfo.getId());
-                    if(mine.getBuyInfos() == null){
-                        mine.setBuyInfos(new ArrayList<>()); //빈 리스트를 선언
-                    }
                     mine.getBuyInfos().add(MyOwnInfo.builder()
                                     .item(item)
                                     .infoId(ranInfo.getId())
@@ -167,6 +173,7 @@ public class StockService {
                     .build());
         }
         //log.info(result.get(0).content());
+        Collections.reverse(result);
         return result;
     }
 

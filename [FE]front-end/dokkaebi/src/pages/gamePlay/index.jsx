@@ -8,6 +8,7 @@ import InfoStore from "../../components/gamePlay/infoStore/InfoStore";
 import MyStock from "../../components/gamePlay/myStock/MyStock";
 import MyInfo from "../../components/gamePlay/myInfo/MyInfo";
 import Result from "../../components/gamePlay/Result";
+import ChangeTurn from "../../components/gamePlay/ChangeTurn"
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -24,7 +25,7 @@ export default function GamePlay() {
 
   const navigate = useNavigate();
   const accessToken = sessionStorage.getItem("accessToken");
-  const userId = sessionStorage.getItem("userId");
+  const userId = Number(sessionStorage.getItem("userId"));
   const roomId = sessionStorage.getItem("roomId");
   const channelId = sessionStorage.getItem("channelId");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +33,7 @@ export default function GamePlay() {
   const [myStockModal, setMyStockModal] = useState(false);
   const [myInfoModal, setMyInfoModal] = useState(false);
   const [resultModal, setResultModal] = useState(false);
+  const [changeTurnModal, setChangeTurnModal] = useState(false);
 
   const stompClientRef = useRef(null); // 구독하는 사람
   const gameStompRef= useRef(null); // 구독 식별자 번호
@@ -44,6 +46,7 @@ export default function GamePlay() {
   const [otherUsers, setOtherUsers] = useState([]);
   const [myReady, setMyReady] = useState(false);
   const [ohMyReady, setOhMyReady] = useState(false);
+  const [myPoint, setMyPoint] = useState(0);
   const [otherUsersReady, setOtherUsersReady] = useState([]);
 
   const [stockInfo, setStockInfo] = useState([]);
@@ -59,6 +62,7 @@ export default function GamePlay() {
 
   useEffect(() => {
     setOhMyReady(false)
+    setChangeTurnModal(true)
   }, [year]);
 
   useEffect(() => {
@@ -72,11 +76,16 @@ export default function GamePlay() {
   useEffect(() => {
     console.log("유저 정보1", userList);
     setCurrentUser(userList.find((user) => user.userId == userId));
+    console.log("현재 유저 정보1", currentUser);
     // setReady(currentUser.isReady? currentUser.isReady : ready);
     // console.log("현재 유저 정보", currentUser);
     setOtherUsers(userList.filter((user) => user.userId != userId));
     // console.log("나머지 유저 정보", otherUsers);
   }, [userList]);
+
+  useEffect(() => {
+    setMyPoint(currentUser?.point);
+  }, [currentUser]);
 
   useEffect(() => {
     if (timerMSec === 0 && isManager === "true") {
@@ -121,7 +130,7 @@ export default function GamePlay() {
       // await gameStart();
       setTimeout(() => {
         gameStart();
-      }, 300);
+      }, 500);
     };
     initialize();
 
@@ -146,7 +155,13 @@ export default function GamePlay() {
     }
   };
 
+  const playSound = () => {
+    const sound = new Audio('/public/bgm/gameStart.mp3');
+    sound.play();
+  };
+
   const onClickReady = async () => {
+    playSound();
     console.log("레디 버튼 클릭 방 번호 : ", roomId);
     try {
       const response = await axios.put(
@@ -277,6 +292,7 @@ export default function GamePlay() {
             } else if (receivedMessage.type === "GAME_RESULT") {
               console.log("결과 정보", receivedMessage.data);
               setResult(receivedMessage.data);
+              setResultModal(true);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               console.log("게임 종료 정보", receivedMessage.data);
               setUserList(receivedMessage.data);
@@ -334,6 +350,7 @@ export default function GamePlay() {
           <Players
             user={currentUser ? currentUser : null}
             userReady={myReady}
+            myPoint={myPoint}
           />
         </div>
 
@@ -396,6 +413,8 @@ export default function GamePlay() {
         <InfoStore
           setInfoStoreModalOpen={setInfoStoreModalOpen}
           stockInfo={stockInfo}
+          myPoint={myPoint}
+          setMyPoint={setMyPoint}
         />
       )}
 
@@ -406,8 +425,10 @@ export default function GamePlay() {
       )}
 
       {resultModal && (
-        <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef}/>
+        <Result setResultModal={setResultModal} result={result} stompClientRef={stompClientRef} gameStompRef={gameStompRef} />
       )}
+
+      {changeTurnModal && (<ChangeTurn setChangeTurnModal={setChangeTurnModal} year={year}/>)}
     </div>
   );
 }

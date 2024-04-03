@@ -67,11 +67,12 @@ export default function Players({ user, userReady }) {
           </p>
         </div>
         <p className={styles.playerTotalMoney}>{user.totalCost?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+        <p className={styles.plyerPoint}></p>
       </div>
     </div>
   ) : (
     <div className={styles.playerComponents}>
-      <p>유저 없으면 뭐넣지</p>
+      
     </div>
   );
 }

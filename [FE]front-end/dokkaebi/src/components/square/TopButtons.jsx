@@ -8,12 +8,14 @@ import RoomSearchModal from "./RoomSearchModal";
 import Sidebar from "./sidebar/sidebar";
 import Back from "../back/goChannel.jsx";
 // import RoomEnterModal from './RoomEnterModal';
-
+import { setRoomNum } from "../../features/square/roomSlice.js";
 import messenger from "../../images/square/icon_messenger.png";
 import refresh from "../../images/square/icon_refresh.png";
 import search from "../../images/square/icon_search.png";
+import { useDispatch } from "react-redux";
 
 export default function TopButtons() {
+  const dispatch = useDispatch();
   const channelId = sessionStorage.getItem("channelId");
   const { toggleBGMVisibility } = useBGM();
   const accessToken = sessionStorage.getItem("accessToken");

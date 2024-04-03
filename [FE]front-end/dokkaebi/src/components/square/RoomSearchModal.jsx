@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import RoomEnterModal from "./RoomEnterModal";
 import styles from "./RoomSearchModal.module.css";
+import { useDispatch } from "react-redux";
 
 export default function RoomSearchModal({ onClose }) {
+  const dispatch = useDispatch();
   const accessToken = sessionStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [isReceiveRoomId, setIsReceiveRoomId] = useState(null);
@@ -47,12 +49,9 @@ export default function RoomSearchModal({ onClose }) {
         console.log("방검색 리스폰스 확인:", response);
         console.log("roomId 확인:", response.data[0].roomId);
         sessionStorage.setItem("roomId", response.data[0].roomId);
-        // const roomId = response.data[0].roomId;
-        // const roomId = sessionStorage.setItem("roomId", response.data[0].roomId)
-
-        // const roomId = response.data.data;
         setIsReceiveRoomId(response.data[0].roomId);
         console.log("입장 성공:", response);
+        console.log("입력한 방 번호 :", roomNum)
         navigate(`/room/${response.data[0].roomId}`, {
           state: JSON.parse(JSON.stringify({ response })),
         });

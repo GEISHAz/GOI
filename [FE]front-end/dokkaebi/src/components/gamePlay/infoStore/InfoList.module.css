@@ -59,3 +59,23 @@ button {
   background: #4e95ff;
 }
 
+.background:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
+}
+
+.levelOneButtons:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.3s;
+}
+
+.levelTwoButtons:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.3s;
+}
+
+:disabled {
+  background: gray;
+  transform: scale(1.0, 1.0);
+  transition-duration: 0.3s;
+}

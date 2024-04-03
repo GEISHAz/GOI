@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { setRoomNum, setUserCnt } from "../../features/square/roomSlice";
+import { setRoomNum } from "../../features/square/roomSlice";
 import axios from "axios";
 import styles from "./RoomList.module.css";
 import RoomEnterModal from "./RoomEnterModal";
@@ -49,6 +49,7 @@ export default function RoomList() {
       console.log("roomId 확인 111:", room.id);
       const roomId = room.id
       useRoomId(roomId)
+      dispatch(setRoomNum(room.roomNum));
       setEnterModal(true);
     } else {
       console.log("roomId 확인 222:", room.id);
@@ -65,6 +66,7 @@ export default function RoomList() {
         .then((response) => {
           console.log(response);
           console.log("방 접속 성공");
+          dispatch(setRoomNum(room.roomNum));
           sessionStorage.setItem("roomId", room.id);
           navigate(`/room/${room.id}`, {
             state: JSON.parse(JSON.stringify({ response })),
@@ -92,10 +94,6 @@ export default function RoomList() {
         console.log("방 목록 Info 확인 :", response);
         if (response.status === 200 && response.data.data) {
           setIsRoomsInfo(response.data.data.list || []); // 받아온 방 목록으로 상태 업데이트
-          const roomNums = response.data.data.list.map(room => room.roomNum); // 방 번호 꺼내서 넣기
-          const userCount = response.data.data.list.map(room => room.userCount);
-          dispatch(setRoomNum(roomNums)) // 방번호 리덕스 스토어에 저장
-          dispatch(setUserCnt(userCount)) // 방인원 리덕스 스토어에 저장
           setTotalRoomCount(response.data.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
         } else {
           throw new Error("에러입니다");

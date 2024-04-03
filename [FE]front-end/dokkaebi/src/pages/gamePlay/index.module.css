@@ -85,7 +85,7 @@
   height: 64px;
   font-family: DNFBitBitv2;
   font-size: 24px;
-  background-color: black;
+  background-color: #FB929E;;
   color: white;
   border-radius: 15px;
 }
@@ -100,9 +100,14 @@
   height: 64px;
   font-family: DNFBitBitv2;
   font-size: 24px;
-  background-color: black;
+  background-color: #FB929E;
   color: white;
   border-radius: 15px;
+}
+
+.readyButton:hover {
+  transform: scale(1.2, 1.2);
+  transition-duration: 0.5s;
 }
 
 .timer {
