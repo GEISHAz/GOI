@@ -41,6 +41,22 @@ export default function userReadyRoom() {
   const [amIManager, setAmIManager] = useState(false);
 
   useEffect(() => {
+    // 새로고침시 유저 리스트 다시 받아오게하기 위한 코드
+    axios
+      .get(`https://j10d202.p.ssafy.io/api/room/userlist/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        setUserList(response.data);
+      })
+      .catch((error) =>
+        console.error("방 정보를 받아오는 중 에러 발생", error)
+      );
+  }, []);
+
+  useEffect(() => {
     if (response.userList) {
       console.log("유저 리스트 확인 :", response.userList);
       setUserList(response.userList);

@@ -42,5 +42,13 @@
   font-size: 20px;
   position: relative;
   right: 20px;
-  
+}
+
+.sellButtons {
+  background: #4e95ff;
+  width: 60px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  margin: auto 12px !important;
 }

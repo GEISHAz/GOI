@@ -75,15 +75,15 @@
 
 .averagePriceHeader {
   position: relative;
-  left: 20px;
+  right: 10px;
 }
 
 .havingHeader {
   position: relative;
-  left: 90px;
+  left: 35px;
 }
 
 .roiHeader {
   position: relative;
-  left: 70px;
+  right: 5px;
 }

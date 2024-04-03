@@ -26,7 +26,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 24px
+  padding: 24px;
 }
 
 .chartImg {
@@ -58,7 +58,7 @@
 
 .boldText {
   font-family: DNFBitBitv2;
-  font-size: 24px;
+  font-size: 20px;
   width: 100px;
 }
 
@@ -78,13 +78,13 @@
   align-items: center;
 }
 
-.inputSelectorArea{
+.inputSelectorArea {
   display: flex;
   flex-direction: row;
   padding: auto 12px;
 }
 
-.inputNumber{
+.inputNumber {
   text-align: center;
   width: 240px;
   border-top-left-radius: 10px;
@@ -104,7 +104,7 @@
 .maesuButton {
   width: 300px;
   height: 44px;
-  background: #FF6E6E;
+  background: #ff6e6e;
   font-family: DNFBitBitv2;
   font-size: 24px;
   color: white;
@@ -115,7 +115,7 @@
 .maedoButton {
   width: 300px;
   height: 44px;
-  background: #4E95FF;
+  background: #4e95ff;
   font-family: DNFBitBitv2;
   font-size: 24px;
   color: white;
