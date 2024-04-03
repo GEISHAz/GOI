@@ -14,6 +14,12 @@ export default function LastTurnStockInfo({
 
   useEffect(() => {
     setTimeout(() => {
+      setLastTurnStockModal(false);
+    }, 4990);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
       axios
         .put(
           `https://j10d202.p.ssafy.io/api/game/end/${roomId}`,
