@@ -33,7 +33,7 @@ export default function Main() {
           <img src={image} alt="Start Button" onClick={handleClick} />
         </button>
       </div>
-      <img src={Explanation} alt="설명서" />
+      {/* <img src={Explanation} alt="설명서" /> */}
     </div>
   );
 }
