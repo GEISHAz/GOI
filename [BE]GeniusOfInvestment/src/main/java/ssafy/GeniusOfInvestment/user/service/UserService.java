@@ -64,12 +64,8 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUserNickName(Long userId, UpdateNickNameRequestDto updateNickNameRequestDto) {
         User user = findUser(userId);
-        List<ChatRecord> ChatRecordListBySender = chatRecordRepository.findBySender(user.getNickName());
         String nickname = updateNickNameRequestDto.getNickName();
         validateDuplicatedNickname(nickname);
-        for (ChatRecord chatRecord : ChatRecordListBySender) {
-            chatRecord.updateSender(nickname);
-        }
         user.updateNickName(updateNickNameRequestDto.getNickName());
     }
 
@@ -111,9 +107,14 @@ public class UserService implements UserDetailsService {
     public void checkNickName(Long userId, ExistNickNameRequestDto existNickNameRequestDto) {
         User user = findUser(userId);
         String nickname = existNickNameRequestDto.getNickName();
+        String userNameBefore = user.getNickName();
+        List<ChatRecord> ChatRecordListBySender = chatRecordRepository.findBySender(userNameBefore);
         if(!user.getNickName().equals(nickname)){
             validateDuplicatedNickname(existNickNameRequestDto.getNickName());
             user.updateNickName(nickname);
+        }
+        for (ChatRecord chatRecord : ChatRecordListBySender) {
+            chatRecord.updateSender(nickname);
         }
     }
 

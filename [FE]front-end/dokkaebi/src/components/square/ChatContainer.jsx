@@ -52,6 +52,7 @@ export default function ChatContainer() {
     );
 
     return () => {
+      console.log("광장 채팅 연결 끊어요!")
       if (subscriptionRef.current) {
         subscriptionRef.current.unsubscribe(); // 구독 식별자 번호를 찾아서 구독 취소
       }

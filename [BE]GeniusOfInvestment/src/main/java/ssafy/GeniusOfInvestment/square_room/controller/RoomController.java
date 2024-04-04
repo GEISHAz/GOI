@@ -37,7 +37,7 @@ public class RoomController {
         log.info("RoomController enterRoom start");
         List<RoomPartInfo> rst = roomService.enterRoom(user, enterInfo);
         //websocket 들어감 보내주기
-        messageTemplate.convertAndSend("/sub/room/chat/" + enterInfo.roomId(),
+        messageTemplate.convertAndSend("/sub/room/chat/" + rst.get(0).roomId(),
                 MessageDto
                         .builder()
                         .type(MessageDto.MessageType.ROOM_ENTER)

@@ -139,16 +139,18 @@ public class RoomChatController {
                     }
                     gameService.rewardByRank(user, 4, 0L);
                     RedisUser ru = redisUserRepository.getOneRedisUser(user.getId());
-//                    //유저가 나가기전 상태가 게임 중이고, 나간 후에 게임방에 남은 인원이 1명일 경우(게임 종료 로직 수행)
-//                    if(ru.isStatus() && gr.getParticipants().size() == 1){
-//                        List<ParticipantInfo> rst = gameService.endGame(gr.getId());
-//                        messageTemplate.convertAndSend("/sub/room/chat/" + gr.getId(),
-//                                MessageDto.builder()
-//                                        .type(MessageDto.MessageType.GAME_RESULT)
-//                                        .data(rst)
-//                                        .build());
-//                    }
-                    redisGameRepository.updateGameRoom(gr);
+                    //유저가 나가기전 상태가 게임 중이고, 나간 후에 게임방에 남은 인원이 1명일 경우(게임 종료 로직 수행)
+                    if(ru.isStatus() && gr.getParticipants().size() == 1){
+                        List<ParticipantInfo> rst = gameService.endGame(gr.getId());
+                        messageTemplate.convertAndSend("/sub/room/chat/" + gr.getId(),
+                                MessageDto.builder()
+                                        .type(MessageDto.MessageType.GAME_RESULT)
+                                        .data(rst)
+                                        .build());
+                        //============================여기까지가 주석
+                    }else {
+                        redisGameRepository.updateGameRoom(gr);
+                    }
                 }else { //한명이 남아있었으므로 방 삭제까지 같이 수행
                     redisGameRepository.deleteGameRoom(gr.getId());
                     Optional<Room> rtmp = roomRepository.findById(gr.getId());

@@ -11,5 +11,5 @@ public interface ChatRecordRepository extends JpaRepository<ChatRecord, Long> {
     List<ChatRecord> findByChatId(@Param("chatId") Long chatId);
 
     @Query("SELECT cr FROM ChatRecord cr WHERE cr.sender = :nickName")
-    List<ChatRecord> findBySender(String nickName);
+    List<ChatRecord> findBySender(@Param("nickName") String nickName);
 }

@@ -41,8 +41,8 @@ public class ChatRecord {
                 .build();
     }
 
-    public void updateSender(String nickName) {
-        this.sender = nickName;
+    public void updateSender(String sender) {
+        this.sender = sender;
     }
 
 }

@@ -49,7 +49,7 @@ public class RoomService {
             if(rtmp.isEmpty() || rtmp.get().getStatus() == 2) throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
             room = rtmp.get(); //들어가려는 방 정보를 얻는다.
         }else {
-            room = roomRepository.findByRoomNumAndStatusBetween(enterInfo.roomNum(), 0, 1);
+            room = roomRepository.findByRoomNumAndStatusBetween(enterInfo.roomNum(), 0, 0);
             if(room == null || room.getId() == null){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
             }

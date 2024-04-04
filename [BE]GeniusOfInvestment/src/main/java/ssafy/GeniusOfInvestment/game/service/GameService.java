@@ -87,7 +87,7 @@ public class GameService {
             //GameUser(참가자)의 상태값을 변경
             guser.setReady(false);
             guser.setTotalCost(500000L);
-            guser.setPoint(3);
+            guser.setPoint(10);
             gameUserList.add(guser);
         }
 
@@ -306,7 +306,7 @@ public class GameService {
 
     //redis에 대한 transactional을 걸게 되면 multi-exec가 걸리게 되므로 중간에 redis에 저장한 값을 메소드가 끝나기전에 get을 해올 수 없다.
     //redis에 저장자체가 메소드가 모두 끝난 후에 실행되므로
-    @Transactional
+    @Transactional //게임이 끝날때에는 최종 정보를 저장시키고 오류 메시지로 리턴하기 때문에 Transactional 하면 안됨
     public TurnResponse getNextStockInfo(Long grId){
         GameRoom room = gameRepository.getOneGameRoom(grId);
         if(room == null){
@@ -400,7 +400,7 @@ public class GameService {
             if(unick.isEmpty()){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             }
-            int point = guser.getPoint() + 3;
+            int point = guser.getPoint() + 10;
             parts.add(ParticipantInfo.builder()
                     .userId(guser.getUserId())
                     .profileId(unick.get().getImageId())
@@ -423,9 +423,9 @@ public class GameService {
         room.setMarket(gms); //새로 생성된 시장 상황을 저장
         gameRepository.updateGameRoom(room); //redis에 관련 정보를 저장
 
-        if(rm.get().getEndYear() == room.getYear()-1){ //게임이 끝났다.
-            throw new CustomBadRequestException(ErrorType.END_GAME);
-        }
+//        if(rm.get().getEndYear() == room.getYear()-1){ //게임이 끝났다.
+//            throw new CustomBadRequestException(ErrorType.END_GAME);
+//        }
 
         return TurnResponse.builder()
                 .remainTurn(turn)
