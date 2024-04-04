@@ -91,6 +91,7 @@ public class GameController {
             redisTemplate.opsForValue().set("thread" + grId, "STOP");
             TurnResponse rst = gameService.getNextStockInfo(grId);
             if(rst.getRemainTurn() <= -1){
+                redisTemplate.delete("thread" + grId);
                 sendMsg(grId, rst, MessageDto.MessageType.END_GAME);
             }else {
                 sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET);

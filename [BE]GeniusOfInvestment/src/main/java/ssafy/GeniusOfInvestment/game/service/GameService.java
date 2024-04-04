@@ -214,7 +214,7 @@ public class GameService {
                     .build());
         }
 
-        log.info("start service에서 리턴하기 전");
+        //log.info("start service에서 리턴하기 전");
         return TurnResponse.builder()
                 .remainTurn(turn)
                 .year(year)
@@ -227,7 +227,7 @@ public class GameService {
         for(int i=0; i<4; i++){
             StockInfoResponse stk = new StockInfoResponse();
             StringBuilder sb = new StringBuilder();
-            System.out.println(selectedOne.get(i).toString());
+            //System.out.println(selectedOne.get(i).toString());
             sb.append("A");
             switch (selectedOne.get(i).toString()){
                 case "FOOD":
@@ -257,7 +257,7 @@ public class GameService {
 
     public void selTwoItems(List<StockInfoResponse> stockInfos, List<Items2> selectedTwo){
         for(int i=0; i<3; i++){
-            System.out.println(selectedTwo.get(i).toString());
+            //System.out.println(selectedTwo.get(i).toString());
             switch (selectedTwo.get(i).toString()){
                 case "BIO":
                     addTwoItems(stockInfos, "바이오");
@@ -437,7 +437,7 @@ public class GameService {
 
     public Long calMarketVal(Long cost, int roi){ //수익률로 평가 금액을 계산
         if(roi >= 0){
-            System.out.println((long) (cost + (cost * (roi/100d))));
+            //System.out.println((long) (cost + (cost * (roi/100d))));
             return (long) (cost + (cost * (roi/100d)));
         }else {
             //System.out.println("-수익률은 " + (long) (cost - (cost * (roi/100d))));
@@ -587,10 +587,10 @@ public class GameService {
 //            gameUserList.add(guser);
             i++;
         }
-        i = 1;
-        for(ParticipantInfo p : parts){ //log찍기(테스트) 용
-            System.out.println((i++) + " " + p.getTotalCost());
-        }
+//        i = 1;
+//        for(ParticipantInfo p : parts){ //log찍기(테스트) 용
+//            System.out.println((i++) + " " + p.getTotalCost());
+//        }
 
         Optional<Room> rinfo = roomRepository.findById(grId);
         if(rinfo.isEmpty()){

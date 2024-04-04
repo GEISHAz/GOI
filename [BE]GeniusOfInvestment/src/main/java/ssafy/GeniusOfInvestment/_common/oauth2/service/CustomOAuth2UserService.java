@@ -26,7 +26,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
         try {
-            log.info("사용자 정보 받아오기 완료 == " + oAuth2User);
+            //log.info("사용자 정보 받아오기 완료 == " + oAuth2User);
 
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {

@@ -44,6 +44,7 @@ public enum ErrorType {
     INVALID_PASSWORD(HttpStatus.LOCKED, "비밀번호가 일치하지 않습니다."),
     IS_FULL_ROOM(HttpStatus.UPGRADE_REQUIRED, "방이 가득찼다."),
     IS_NOT_AVAILABLE_REDIS_GAMEROOM(HttpStatus.FORBIDDEN, "레디스에 방 정보가 없습니다."),
+    FAIL_TO_CREATE_ROOM(HttpStatus.BAD_REQUEST, "방 생성에 실패했습니다."),
 
     //******************** CHANNEL **************************//
     CHANNEL_IS_FULL(HttpStatus.NOT_FOUND,"입장하려는 채널이 가득 찼습니다."),
