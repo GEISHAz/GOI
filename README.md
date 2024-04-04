@@ -61,18 +61,24 @@
 
 ⚒️**Backend**
 - java17
-- springboot 3.2.2
+- springboot 3.2.3
 - spring jpa
 - spring security
 - spring web
 - oauth2
 - intelliJ IDE
 - web socket
+- QueryDSL
 
 ⚒️**Frontend**
-- Node.js 20.11
-- react18
-- VSCode
+- Node.js 20.11.0
+- VS CODE
+- React 18.2.0
+- Vite 5.1.4
+- Redux 5.0.1
+- Redux Tool Kit 2.2.1
+- TailWind CSS 3.4.1
+- chartJs 4.4.2
 
 ⚒️**DataBase**
 - mariaDB
@@ -142,7 +148,7 @@
 - [요구사항명세서](https://www.notion.so/0d97404efe6440a1be555b1bb6761981)
 - [기능명세서](https://www.notion.so/e866ff1c630643aeb2d0fad8122fee56)
 - [API 명세서](https://www.notion.so/API-2e415e6c97104d90adfb6e495316ad14)
-- [와이어프레임]
+- [와이어프레임](https://www.figma.com/file/uwN6GtNOqZaofS7tAStrcs/%ED%88%AC%EA%B7%80-Figma?type=design&node-id=0-1&mode=design&t=mAGctREsmediDbIz-0)
 - [커밋 컨벤션](https://www.notion.so/5f97d1535e19418887e2594fad3b34f8)
 
 ## ”투귀”(투자의 귀재들) 서비스 화면
