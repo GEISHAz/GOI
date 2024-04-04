@@ -93,7 +93,7 @@ public class GameService {
 
         Random random = new Random();
 
-        log.info("주식 현황 저장하기 전!!!!");
+//        log.info("주식 현황 저장하기 전!!!!");
         //6개 중에서 4개 선택
         List<Items1> values1 = Arrays.asList(Items1.values());
         Collections.shuffle(values1);
@@ -327,7 +327,7 @@ public class GameService {
             Long cur; //현재(새로운) 가격
             int size = mk.getCost().size();
             Long last = mk.getCost().get(size-1); //마지막 인덱스에 있는 것이 가장 최근의 가격
-            log.info("가장 최근 가격은 " + last);
+
             int roi; //수익률
             if(mk.getDependencyInfo() != null){ //사용자들이 이 종목에 대해서 정보를 구매했다.
                 Optional<Information> usrBuy = informationRepository.findById(mk.getDependencyInfo());
@@ -517,11 +517,8 @@ public class GameService {
 
         List<RoomPartInfo> rstList = new ArrayList<>();
         for(GameUser gu : room.getParticipants()){
-            log.info("ready속 참가자 목록에서 유저아이디: " + gu.getUserId());
             Optional<User> tmp = userRepository.findById(gu.getUserId());
-            log.info("tmp의 현재 상태 비어있나?? " + tmp.isEmpty());
             if(tmp.isEmpty()){
-                log.info("왜 에러가 나지???");
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_USER);
             }
             rstList.add(RoomPartInfo.builder()

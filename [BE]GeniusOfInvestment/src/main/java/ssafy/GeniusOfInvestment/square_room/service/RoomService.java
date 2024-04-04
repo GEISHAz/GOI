@@ -124,7 +124,7 @@ public class RoomService {
                     .roomId(gameRoom.getId())
                     .build());
         }
-        log.info("RoomService enterRoom end");
+        //log.info("RoomService enterRoom end");
         return rstList;
     }
 
@@ -208,7 +208,7 @@ public class RoomService {
                     .imageId(tmp.get().getImageId())
                     .build());
         }
-        log.info("RoomService exitRoom end");
+        //log.info("RoomService exitRoom end");
         return rstList;
     }
 
@@ -253,7 +253,7 @@ public class RoomService {
                     .roomId(rId)
                     .build());
         }
-        log.info("RoomService kickUser end");
+        //log.info("RoomService kickUser end");
         return rstList;
     }
 

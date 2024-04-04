@@ -222,7 +222,7 @@ public class SquareService {
     }
 
     public RoomEnterRequest fastEnter(User user) {
-        log.info("SquareService fastEnter start");
+        //log.info("SquareService fastEnter start");
         RoomEnterRequest result = RoomEnterRequest
                 .builder()
                 .roomId(99999999L)
@@ -232,11 +232,11 @@ public class SquareService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
         int number = list.size();
-        log.info("in fastEnter list size = "+number);
+        //log.info("in fastEnter list size = "+number);
         boolean stop = false;
         Random rand = new Random();
         do {
-            log.info("in fastEnter while start");
+            //log.info("in fastEnter while start");
             int num  = rand.nextInt(number);
             if(isGameRoomFull(list.get(num).id()))
                 continue;
@@ -248,13 +248,13 @@ public class SquareService {
                     .build();
 
         } while(stop);
-        log.info("return id     = " +result.roomId());
-        log.info("in fastEnter while end");
+//        log.info("return id     = " +result.roomId());
+//        log.info("in fastEnter while end");
         return result;
     }
 
     public SavedRoomResponse makeSavedRoomResponse(Room room, Long channelId, List<RoomPartInfo> userList) {
-        log.info("SquareService makeSavedRoomResponse start");
+        //log.info("SquareService makeSavedRoomResponse start");
 
         if (room.getId() == null)
             log.info("id null");
@@ -263,7 +263,7 @@ public class SquareService {
         if (room.getChannel() == null)
             log.info("channel null");
 
-        log.info("SquareService makeSavedRoomResponse end");
+        //log.info("SquareService makeSavedRoomResponse end");
         return SavedRoomResponse
                 .builder()
                 .roomId(room.getId())

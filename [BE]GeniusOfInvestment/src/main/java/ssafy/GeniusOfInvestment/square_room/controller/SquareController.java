@@ -29,29 +29,29 @@ public class SquareController {
 
     @PostMapping("/create") //방생성
     public SavedRoomResponse createRoom(@AuthenticationPrincipal User user, @RequestBody RoomCreateRequest info){
-        log.info("SquareController createRoom start");
-        log.info("user id값"+user.getId());
+//        log.info("SquareController createRoom start");
+//        log.info("user id값"+user.getId());
         return squareService.insertRoom(user, info);
     }
 
     @PostMapping("/fast") //빠른입장
     public SuccessResponse<Long> fastEnterRoom(@AuthenticationPrincipal User user){
-        log.info("SquareController fastEnterRoom start");
+        //log.info("SquareController fastEnterRoom start");
         RoomEnterRequest res = squareService.fastEnter(user);
-        log.info("SquareController fastEnterRoom end");
+        //log.info("SquareController fastEnterRoom end");
         return SuccessResponse.of(SuccessType.ROOM_ENTER_REQUEST_SUCCESSFULLY,res.roomId());
     }
 
     @GetMapping("/list/{channelId}") //방 목록
     public SuccessResponse<RoomListResponse> listRoom(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("SquareController listRoom in");
-        log.info("user id값"+user.getId());
+//        log.info("SquareController listRoom in");
+//        log.info("user id값"+user.getId());
         return SuccessResponse.of(SuccessType.ROOM_LIST_CALLED_SUCCESSFULLY,squareService.listRoom(channelId));
     }
 
     @GetMapping("/channellist/{channelId}") //유저목록
     public SuccessResponse<List<SquareNowUser>> listUser(@AuthenticationPrincipal User user, @PathVariable("channelId") Long channelId){
-        log.info("SquareController listUser in");
+        //log.info("SquareController listUser in");
         return SuccessResponse.of(SuccessType.USER_LIST_CALLED_SUCCESSFULLY,squareService.listUser(channelId));
     }
 

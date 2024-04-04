@@ -34,7 +34,7 @@ public class RoomController {
     //방 들어가기
     @PostMapping("/enter")
     public List<RoomPartInfo> enterRoom(@AuthenticationPrincipal User user, @RequestBody RoomEnterRequest enterInfo){
-        log.info("RoomController enterRoom start");
+        //log.info("RoomController enterRoom start");
         List<RoomPartInfo> rst = roomService.enterRoom(user, enterInfo);
         //websocket 들어감 보내주기
         messageTemplate.convertAndSend("/sub/room/chat/" + rst.get(0).roomId(),
@@ -69,7 +69,7 @@ public class RoomController {
 
     @PutMapping("/kick")
     public List<RoomPartInfo> kickUser(@AuthenticationPrincipal User user, @RequestBody KickRequest kinfo){
-        log.info("RoomController kickUser start");
+        //log.info("RoomController kickUser start");
         List<RoomPartInfo> rInfo = roomService.kickUser(user, kinfo.userId(), kinfo.roomId());
         messageTemplate.convertAndSend("/sub/room/chat/" + kinfo.roomId(),
                 MessageDto

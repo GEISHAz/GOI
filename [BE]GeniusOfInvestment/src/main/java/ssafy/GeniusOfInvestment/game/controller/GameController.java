@@ -35,7 +35,6 @@ public class GameController {
     //게임 시작시 초기 주식 정보를 넘겨준다.
     @GetMapping("/start")
     public Map<String, String> getInitStockInfo(@AuthenticationPrincipal User user, @RequestParam("id") Long grId){
-        log.info("게임 start 요청 들어왔어요!!");
         TurnResponse rst = gameService.getInitStockInfo(user, grId);
         //방 채팅과 보내는 주소와 데이터 형식을 맞춰야 될듯
         sendMsg(grId, rst, MessageDto.MessageType.STOCK_MARKET); //웹소켓으로 게임에 참가한 모든 이용자들에게 초기 주식 정보를 보낸다.
