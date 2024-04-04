@@ -135,7 +135,7 @@
 <br/>
 
 ## 아키텍처 & ERD
-![아키텍처_ERD](/uploads/f158ee20c8679fa4e9755055dbc61da7/아키텍처_ERD.jpg)
+![아키텍처_ERD](/uploads/1d18f511d4e546de9ecac56118fbf561/아키텍처_ERD.jpg)
 
 ## 프로젝트 산출물
 
