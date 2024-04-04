@@ -168,9 +168,8 @@
 ## 랭킹 페이지 
 ![rank](/uploads/f3f3644c379171577b2c8067cb77f797/rank.jpg)
 
-## 게임 채널 페이지
-
-## 광장 페이지 
+## 게임 채널 페이지 & 광장 페이지 
+![channel_square](/uploads/fea88e8de3cc63713286e47e20e4d08d/channel_square.jpg)
 
 ## 빠른 입장 (gif)
 
