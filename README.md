@@ -160,6 +160,7 @@
 ![login_profile](/uploads/cff497a4c5860859a95a2bc66467ab28/login_profile.jpg)
 
 ## 허브 페이지 (gif) 
+![hub](/uploads/212df27de449f281eeb3def1442c59e0/hub.gif)
 
 ## 도움말 페이지
 ![help](/uploads/80682881067b9d560dac0ccc139e6a6a/help.jpg)
