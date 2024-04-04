@@ -25,7 +25,7 @@ export default function AAA() {
         }
       )
       .then((response) => {
-        console.log("빠른 입장 응답:", response.data.roomId);
+        // console.log("빠른 입장 응답:", response.data.roomId);
         navigate(`/room/${response.data.roomId}`, {
           state: JSON.parse(JSON.stringify({ response })),
         });

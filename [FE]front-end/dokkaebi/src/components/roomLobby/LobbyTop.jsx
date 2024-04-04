@@ -6,16 +6,12 @@ import styles from "./LobbyTop.module.css";
 import GoSqaure from "../../components/back/goSquare.jsx";
 import messenger from "../../images/square/icon_messenger.png";
 import axios from "axios";
-import { connect, useDispatch, useSelector } from "react-redux";
 
 export default function LobbyTop({ userList, isStart }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { toggleBGMVisibility } = useBGM();
   // const userNickname = useSelector((state) => state.auth.userNickname);
   const accessToken = sessionStorage.getItem("accessToken");
   const roomId = sessionStorage.getItem("roomId");
-  const channelId = sessionStorage.getItem("channelId");
   const userId = sessionStorage.getItem("userId");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 사이드바 상태 관리
   const [start, setStart] = useState(isStart);
@@ -37,7 +33,7 @@ export default function LobbyTop({ userList, isStart }) {
   }, [userList, amIManager]);
 
   useEffect(() => {
-    console.log("나는 방장 : ", amIManager);
+    // console.log("나는 방장 : ", amIManager);
   }, [amIManager]);
 
   useEffect(() => {
@@ -81,14 +77,14 @@ export default function LobbyTop({ userList, isStart }) {
       )
       .then((res) => {
         console.log(res);
-        console.log("레디 바뀜 확인");
-        console.log("레디요청 엑세스 토큰", accessToken);
+        // console.log("레디 바뀜 확인");
+        // console.log("레디요청 엑세스 토큰", accessToken);
         setIsReady(!isReady);
       })
       .catch((err) => {
         console.log(err);
-        console.log("레디 바뀜 실패");
-        console.log("레디요청 엑세스 토큰", accessToken);
+        // console.log("레디 바뀜 실패");
+        // console.log("레디요청 엑세스 토큰", accessToken);
       });
   };
 

@@ -44,15 +44,15 @@ export default function RoomList() {
   // 비밀방이라면 -> 비밀방 입장 모달 오픈
   const handleRoomClick = (room) => {
     // useRoomId(room.id);
-    console.log("비공개 상태 확인 :", room.isPrivate);
+    // console.log("비공개 상태 확인 :", room.isPrivate);
     if (room.isPrivate) {
-      console.log("roomId 확인 111:", room.id);
+      // console.log("roomId 확인 111:", room.id);
       const roomId = room.id
       useRoomId(roomId)
       dispatch(setRoomNum(room.roomNum));
       setEnterModal(true);
     } else {
-      console.log("roomId 확인 222:", room.id);
+      // console.log("roomId 확인 222:", room.id);
       axios
         .post(
           `https://j10d202.p.ssafy.io/api/room/enter`,
@@ -64,8 +64,8 @@ export default function RoomList() {
           }
         )
         .then((response) => {
-          console.log(response);
-          console.log("방 접속 성공");
+          // console.log(response);
+          // console.log("방 접속 성공");
           dispatch(setRoomNum(room.roomNum));
           sessionStorage.setItem("roomId", room.id);
           navigate(`/room/${room.id}`, {
@@ -74,7 +74,7 @@ export default function RoomList() {
         })
         .catch((err) => {
           console.log(err);
-          console.log("방 접속 실패");
+          // console.log("방 접속 실패");
         });
       // sessionStorage.setItem("roomId", room.id);
       // navigate(`/room/${room.id}`);
@@ -91,7 +91,7 @@ export default function RoomList() {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-        console.log("방 목록 Info 확인 :", response);
+        // console.log("방 목록 Info 확인 :", response);
         if (response.status === 200 && response.data.data) {
           setIsRoomsInfo(response.data.data.list || []); // 받아온 방 목록으로 상태 업데이트
           setTotalRoomCount(response.data.data.totalRoomCount || 0); // 총 방 개수로 상태 업데이트
@@ -104,7 +104,7 @@ export default function RoomList() {
     };
     // 새로고침 이벤트 리스너 추가
     const handleRefresh = () => {
-      console.log("방목록 새로고침 확인");
+      // console.log("방목록 새로고침 확인");
       fetchRoomList();
     };
 

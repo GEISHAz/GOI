@@ -20,14 +20,14 @@ export default function backButton({ roomId }) {
       })
       .then((res) => {
         console.log(res);
-        console.log("방 나가기 성공");
+        // console.log("방 나가기 성공");
         sessionStorage.removeItem("roomId");
         sessionStorage.removeItem("isManager");
         navigate(`/square/${channelId}`);
       })
       .catch((err) => {
         console.log(err);
-        console.log("방 나가기 실패");
+        // console.log("방 나가기 실패");
       });
   };
 

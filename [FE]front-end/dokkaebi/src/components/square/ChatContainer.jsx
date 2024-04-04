@@ -29,7 +29,7 @@ export default function ChatContainer() {
         Authorization: `Bearer ${accessToken}`,
       },
       () => {
-        console.log("광장에서 채널 연결됨!!");
+        // console.log("광장에서 채널 연결됨!!");
 
         // 구독하기
         subscriptionRef.current = stompClient.current.subscribe(
@@ -80,8 +80,8 @@ export default function ChatContainer() {
         message: inputMessage,
         type: "TALK",
       };
-      console.log("메시지 채팅 하나를 보냈어요.");
-      console.log("sender 확인 :", newMessage.sender);
+      // console.log("메시지 채팅 하나를 보냈어요.");
+      // console.log("sender 확인 :", newMessage.sender);
 
       stompClient.current.send(
         `/pub/square/chat/message`,
@@ -103,7 +103,7 @@ export default function ChatContainer() {
 
   // 채팅창 스크롤
   const scrollToBottom = () => {
-    console.log("최신 채팅내역 불러옴");
+    // console.log("최신 채팅내역 불러옴");
     recentMessage.current?.scrollIntoView({ behavior: "smooth" });
   };
 

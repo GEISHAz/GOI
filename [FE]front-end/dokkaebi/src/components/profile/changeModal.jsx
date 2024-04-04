@@ -40,7 +40,7 @@ export default function ChangeModal({ onClose, onSelectImage }) {
             'Authorization': `Bearer ${accessToken}`
           }
         });
-        console.log('프로필 이미지 변경 완료', response.data);
+        // console.log('프로필 이미지 변경 완료', response.data);
         onSelectImage(selectedImageObj);
       } catch (error) {
         console.error('이미지 변경 실패:', error);

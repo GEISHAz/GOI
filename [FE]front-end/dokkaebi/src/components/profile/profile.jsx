@@ -131,7 +131,7 @@ export default function Profile() {
           },
         });
 
-        console.log("어떤게날라오나요?", res.data)
+        // console.log("어떤게날라오나요?", res.data)
         // 리덕스 스토어에 닉네임과 이미지 정보 업데이트
         dispatch(setUserNickname(nickname));
         dispatch(setUserProfileImage(selectedImage));
@@ -153,7 +153,7 @@ export default function Profile() {
 
   // 회원탈퇴
   const handleUserExit = () => {
-    console.log("회원 탈퇴 클릭 확인");
+    // console.log("회원 탈퇴 클릭 확인");
     window.location.href = KAKAO_OUT_URL;
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("userId");
@@ -177,7 +177,7 @@ export default function Profile() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인", res)
+        // console.log("리스폰스 확인", res)
         if (res.data) {
           const { nickName, imageId } = res.data.data;
           // imageId에 해당하는 매칭이미지 찾아주기

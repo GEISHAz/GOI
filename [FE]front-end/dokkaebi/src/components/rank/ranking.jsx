@@ -38,7 +38,7 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인 1 :", res)
+        // console.log("리스폰스 확인 1 :", res)
         if (res.status === 200 && res.data.data) {
           // console.log("유저 id 확인", res.data.data.id);
           // console.log("유저 닉네임 확인", res.data.data.nickName);
@@ -58,10 +58,10 @@ export default function Ranking() {
         const res = await axios.get(`https://j10d202.p.ssafy.io/api/users/${userId}/rank`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
-        console.log("리스폰스 확인 2 :", res)
+        // console.log("리스폰스 확인 2 :", res)
         if (res.status === 200 && res.data.data) {
-          console.log("내 순위 확인", res.data.data.rank);
-          console.log("내 경험치 확인", res.data.data.exp);
+          // console.log("내 순위 확인", res.data.data.rank);
+          // console.log("내 경험치 확인", res.data.data.exp);
           setMyInfo({ rank: res.data.data.rank, exp: res.data.data.exp, });
         } else {
           throw new Error('에러 발생 2');
