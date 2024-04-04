@@ -143,7 +143,7 @@
 - [기능명세서](https://www.notion.so/e866ff1c630643aeb2d0fad8122fee56)
 - [API 명세서](https://www.notion.so/API-2e415e6c97104d90adfb6e495316ad14)
 - [와이어프레임]
-- [커밋 컨벤션]
+- [커밋 컨벤션](https://www.notion.so/5f97d1535e19418887e2594fad3b34f8)
 
 ## ”투귀”(투자의 귀재들) 서비스 화면
 
