@@ -7,3 +7,6 @@
 
 # 시연 시나리오
 [TestingScenario](https://www.notion.so/Testing-Scenario-2b475f9e09ab47fe8ac41fe14e9ecf7d?pvs=11)
+
+# DB 덤프 파일
+TOGUI_DOMP.sql 파일 참조
