@@ -154,18 +154,18 @@
 ## ”투귀”(투자의 귀재들) 서비스 화면
 
 ## 인트로 페이지
+![intro](/uploads/c71047878423f2f5dedd5ad098c0a77c/intro.jpg)
 
-## 로그인 페이지
-
-## 정보입력 페이지
+## 로그인 & 프로필 페이지
+![login_profile](/uploads/cff497a4c5860859a95a2bc66467ab28/login_profile.jpg)
 
 ## 허브 페이지 (gif) 
 
 ## 도움말 페이지
-
-## 프로필 페이지
+![help](/uploads/80682881067b9d560dac0ccc139e6a6a/help.jpg)
 
 ## 랭킹 페이지 
+![rank](/uploads/f3f3644c379171577b2c8067cb77f797/rank.jpg)
 
 ## 게임 채널 페이지
 
