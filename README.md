@@ -9,9 +9,6 @@
 
 - [https://www.youtube.com/watch?v=1bM2wbN2ajA](https://www.youtube.com/watch?v=1bM2wbN2ajA)
 
-## 🎥 시연 영상
-
-- [https://www.youtube.com/watch?v=xtrJIBw8ABU](https://www.youtube.com/watch?v=xtrJIBw8ABU)
 
 ## 🪪배경
 여러 측면에서 대두되는 주식(투자)의 중요성
@@ -152,7 +149,7 @@
 ![intro](/uploads/c71047878423f2f5dedd5ad098c0a77c/intro.jpg)
 
 ## 로그인 & 프로필 페이지
-![login_profile](/uploads/cff497a4c5860859a95a2bc66467ab28/login_profile.jpg)
+![login_profile](/uploads/48467cd8d99203ab16d4b6e160861f67/login_profile.jpg)
 
 ## 허브 페이지 (gif) 
 ![hub](/uploads/212df27de449f281eeb3def1442c59e0/hub.gif)
@@ -164,25 +161,36 @@
 ![rank](/uploads/f3f3644c379171577b2c8067cb77f797/rank.jpg)
 
 ## 게임 채널 페이지 & 광장 페이지 
-![channel_square](/uploads/fea88e8de3cc63713286e47e20e4d08d/channel_square.jpg)
+![channel_square](/uploads/1ceadbfc29ca39c981a6226d38f196f2/channel_square.jpg)
 
-## 빠른 입장 (gif)
+## 빠른 입장
+![빠른입장](/uploads/35eeb796216eb9ef90fda59444ccffe2/빠른입장.gif)
 
-## 방찾기  (gif) 
+## 방찾기
+![방찾기](/uploads/504d8ec1fd9d7d8837d95505ce8418a8/방찾기.gif)
 
-## 친구 요청 받음 (gif) 
+## 친구 요청 받음
+![친구알림받음](/uploads/73a8b0b55442668ed512e0472ed970f5/친구알림받음.gif)
 
 ## 친구 추가, 상대방이 친구추가 받음 (gif) 
+![친구요청보내고상대방이받음](/uploads/0359789135ccac34b86c535648fdea06/친구요청보내고상대방이받음.gif)
 
 ## 채팅 (gif) 
+![채팅](/uploads/c118e80c18fe57975b56e9cdcee62d53/채팅.gif)
 
 ## 게임 
 
 ## 정보 거래소 
 
 ## 1단계, 2단계 정보
+![1단계_2단계정보](/uploads/de425ea5d8e415836de6c6555cf6a64e/1단계_2단계정보.jpg)
 
-## 매도 매수 (gif) 
+## 구매정보내역 & 내보유주식
+![구매정보내역_내보유주식](/uploads/ff99fe564d9fdfebe433a80ccd6ff2dd/구매정보내역_내보유주식.jpg)
+
+## 매도 매수
+
+
 
 ## 게임 결과 
 
