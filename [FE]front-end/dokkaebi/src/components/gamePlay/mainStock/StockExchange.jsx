@@ -28,8 +28,8 @@ export default function StockExchange(props) {
         },
       })
       .then((response) => {
-        console.log(response);
-        console.log("내 주식 가져오기 성공");
+        // console.log(response);
+        // console.log("내 주식 가져오기 성공");
         setMyStock(response.data.shares);
         setMyStocks(response.data.shares);
         setMyCash(response.data.remainVal);
@@ -37,8 +37,8 @@ export default function StockExchange(props) {
         setCurrentCost(response.data.curCost);
       })
       .catch((error) => {
-        console.log(error);
-        console.log("내 주식 가져오기 실패");
+        // console.log(error);
+        // console.log("내 주식 가져오기 실패");
       });
   }, []);
 
@@ -46,7 +46,7 @@ export default function StockExchange(props) {
   const handleTransaction = () => {
     // dispatch(setMoney(cash))
     if (props.transactionType === "buy") {
-      console.log("매수할 주 수:", quantity);
+      // console.log("매수할 주 수:", quantity);
       axios
         .put(
           `https://j10d202.p.ssafy.io/api/stock/buy`,
@@ -58,13 +58,13 @@ export default function StockExchange(props) {
           }
         )
         .then((response) => {
-          console.log(response);
-          console.log("주식 구매 성공");
-          console.log(quantity);
+          // console.log(response);
+          // console.log("주식 구매 성공");
+          // console.log(quantity);
         })
         .catch((error) => {
-          console.log(error);
-          console.log("주식 구매 실패");
+          // console.log(error);
+          // console.log("주식 구매 실패");
         });
     } else if (props.transactionType === "sell") {
       axios
@@ -78,13 +78,13 @@ export default function StockExchange(props) {
           }
         )
         .then((response) => {
-          console.log(response);
-          console.log(quantity);
-          console.log("주식 판매 성공");
+          // console.log(response);
+          // console.log(quantity);
+          // console.log("주식 판매 성공");
         })
         .catch((error) => {
-          console.log(error);
-          console.log("주식 판매 실패");
+          // console.log(error);
+          // console.log("주식 판매 실패");
         });
     }
 

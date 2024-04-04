@@ -21,13 +21,13 @@ export default function ChartComponent(props) {
         }
       })
       .then((response) => {
-        console.log(response);
-        console.log('차트 데이터 가져오기 성공');
+        // console.log(response);
+        // console.log('차트 데이터 가져오기 성공');
         setResponseData(response.data);
       })
       .catch((error) => {
-        console.log(error);
-        console.log('차트 데이터 가져오기 실패');
+        // console.log(error);
+        // console.log('차트 데이터 가져오기 실패');
       });
   }, []);
   

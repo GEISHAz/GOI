@@ -23,16 +23,16 @@ export default function MyStock(props) {
           },
         })
         .then((response) => {
-          console.log(response);
-          console.log("내 보유 주식 정보 가져오기 성공");
+          // console.log(response);
+          // console.log("내 보유 주식 정보 가져오기 성공");
           setTotal(response.data.marketVal);
           setRest(response.data.remainVal);
           setYoy(response.data.yoy);
           setMyStocks(response.data.breakDowns);
         })
         .catch((error) => {
-          console.log(error);
-          console.log("내 보유 주식 정보 가져오기 실패");
+          // console.log(error);
+          // console.log("내 보유 주식 정보 가져오기 실패");
         });
     }, 20);
   }, [myStocksDetailModal]);

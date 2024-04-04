@@ -44,7 +44,7 @@ export default function Square() {
           navigate(`/square/${channelId}`);
         })
         .catch((err) => {
-          console.log("방 나가기 실패",err);
+          // console.log("방 나가기 실패",err);
           // console.log("방 나가기 실패");
         });
     }

@@ -36,20 +36,20 @@ export default function Result({
         if (e.target === modalBackGround.current) {
           setResultModal(false);
 
-          console.log(
-            "나갈 때 연결되어있는지 확인 :",
-            stompClientRef.current.connected
-          );
+          // console.log(
+          //   "나갈 때 연결되어있는지 확인 :",
+          //   stompClientRef.current.connected
+          // );
           if (stompClientRef.current && stompClientRef.current.connected) {
             if (gameStompRef.current) {
-              console.log("게임을 나가서 구독을 끊을게요");
+              // console.log("게임을 나가서 구독을 끊을게요");
               gameStompRef.current.unsubscribe();
               gameStompRef.current = null;
             }
 
             // WebSocket 연결 끊기
             stompClientRef.current.disconnect(() => {
-              console.log("게임을 나가서 확실하게 연결을 끊을게요");
+              // console.log("게임을 나가서 확실하게 연결을 끊을게요");
               sessionStorage.removeItem("roomId");
               sessionStorage.removeItem("isManager");
               navigate(`/square/${channelId}`);

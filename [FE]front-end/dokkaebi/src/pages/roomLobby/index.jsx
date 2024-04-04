@@ -58,7 +58,7 @@ export default function userReadyRoom() {
 
   useEffect(() => {
     if (response.userList) {
-      console.log("유저 리스트 확인 :", response.userList);
+      // console.log("유저 리스트 확인 :", response.userList);
       setUserList(response.userList);
     } else {
       setUserList(response);
@@ -88,8 +88,8 @@ export default function userReadyRoom() {
         Authorization: `Bearer ${accessToken}`,
       },
       () => {
-        console.log("로비방 웹소켓 연결할게요!");
-        console.log("roomLobby 방 번호 :", roomId);
+        // console.log("로비방 웹소켓 연결할게요!");
+        // console.log("roomLobby 방 번호 :", roomId);
         roomStompRef.current = stompClientRef.current.subscribe(
           "/sub/room/chat/" + `${roomId}`,
           (message) => {
@@ -126,7 +126,7 @@ export default function userReadyRoom() {
 
                   stompClientRef.current.disconnect(() => {
                     // WebSocket 연결 끊기
-                    console.log("강퇴 당하여 연결이 끊어집니다!");
+                    // console.log("강퇴 당하여 연결이 끊어집니다!");
                   });
                 }
 
@@ -137,16 +137,16 @@ export default function userReadyRoom() {
 
             if (receivedMessage.type === "ROOM_ENTER") {
               // console.log("받는 데이터 확인", receivedMessage.data);
-              console.log("누군가 입장했어요");
+              // console.log("누군가 입장했어요");
               setUserList(receivedMessage.data);
               // Redux 스토어의 userCnt 업데이트
-              console.log("유저 수 확인 :", receivedMessage.data.userList);
+              // console.log("유저 수 확인 :", receivedMessage.data.userList);
               const newUserCnt = receivedMessage.data.userList.length;
               dispatch(setUserCnt(newUserCnt));
               // console.log("소켓으로 받은 유저정보 확인", userList);
             } else if (receivedMessage.type === "ROOM_EXIT") {
               // console.log(receivedMessage.type);
-              console.log("누군가 퇴장했어요");
+              //console.log("누군가 퇴장했어요");
               setUserList(receivedMessage.data);
             } else if (receivedMessage.type === "READY") {
               // console.log(receivedMessage.type);
@@ -164,9 +164,9 @@ export default function userReadyRoom() {
 
                 // WebSocket 연결 끊기
                 stompClientRef.current.disconnect(() => {
-                  console.log(
-                    "게임을 시작하여 연결을 끊습니다. gamePlay 페이지에서 새로 연결합니다."
-                  );
+                  // console.log(
+                  //   "게임을 시작하여 연결을 끊습니다. gamePlay 페이지에서 새로 연결합니다."
+                  // );
 
                   // 연결이 완전히 끊긴 후 navigate 실행
                   navigate(`/game/${roomId}`);
@@ -188,13 +188,13 @@ export default function userReadyRoom() {
     );
 
     return () => {
-      console.log("로비방 웹소켓 연결 끊을게요!")
+      // console.log("로비방 웹소켓 연결 끊을게요!")
       if (roomStompRef.current) {
         roomStompRef.current.unsubscribe(); // 구독 해제
       }
       if (stompClientRef.current && stompClientRef.current.connected) {
         stompClientRef.current.disconnect(() => {
-          console.log("WebSocket 연결이 종료되었습니다.");
+          // console.log("WebSocket 연결이 종료되었습니다.");
         });
       }
 

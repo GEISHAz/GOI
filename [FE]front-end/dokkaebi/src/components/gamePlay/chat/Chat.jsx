@@ -32,8 +32,8 @@ export default function Chat({ roomId, userNicks }) {
         Authorization: `Bearer ${accessToken}`,
       },
       () => {
-        console.log(">>게임에서 채팅 연결<<");
-        console.log("현재 게임 방 번호 :", roomId);
+        // console.log(">>게임에서 채팅 연결<<");
+        // console.log("현재 게임 방 번호 :", roomId);
         subGameRef.current = client.current.subscribe(
           "/sub/game/chat/" + `${roomId}`,
           (message) => {
@@ -41,7 +41,7 @@ export default function Chat({ roomId, userNicks }) {
             const msg = JSON.parse(message.body);
             // console.log(msg);
             // 귓속말 메시지이고 현재 사용자가 발신자 또는 수신자일 경우에만 추가
-            console.log("현재 메세지 타입 :", msg.type)
+            // console.log("현재 메세지 타입 :", msg.type)
             if (msg.type === "WHISPER" && (msg.sender === sender || msg.receiver === sender)) {
               setChatList((chatList) => [...chatList, msg]);
             } else if (msg.type === "TALK") {
@@ -108,7 +108,7 @@ export default function Chat({ roomId, userNicks }) {
 
   // 채팅창 스크롤
   const scrollToBottoms = () => {
-    console.log("최신 채팅내역 불러옴");
+    // console.log("최신 채팅내역 불러옴");
     recentMessage.current?.scrollIntoView({ behavior: "smooth" });
   };
 

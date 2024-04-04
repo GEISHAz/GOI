@@ -5,7 +5,7 @@ import { useRef } from 'react';
 
 export default function InfoStoreDetail({setInfoStoreDetailModalOpen,info}) {
   const infoDetailmodalBackGround = useRef();
-  console.log(info);
+  // console.log(info);
 
   return (
     <div className={styles.background}
