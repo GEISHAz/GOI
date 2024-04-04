@@ -40,7 +40,7 @@ public class SquareService {
 
     @Transactional
     public SavedRoomResponse insertRoom(User user, RoomCreateRequest info) {
-        log.info("SquareService insertRoom start");
+        //log.info("SquareService insertRoom start");
 
         Optional<User> u = userRepository.findById(user.getId());
         //저장할 채널 객체 생성
@@ -49,11 +49,14 @@ public class SquareService {
 
         Channel ch = u.get().getChannel();
 
+        if(ch == null){
+            throw new CustomBadRequestException(ErrorType.FAIL_TO_CREATE_ROOM);
+        }
         int rmNum = createRoomNum(ch);
         if(rmNum == 0){
             throw new CustomBadRequestException(ErrorType.ERR_CREATE_ROOMNUM);
         }
-        log.info("생성된 방번호: " + rmNum);
+        //log.info("생성된 방번호: " + rmNum);
         //방 객체 생성 및 사용자가 원하는 방제,비번등으로 설정
         Room room = Room
                 .builder()
@@ -68,7 +71,7 @@ public class SquareService {
                 .build();
         //방 정보 DB 저장
         room = roomRepository.save(room);
-        log.info("save, result 이후 room" + room.getId());
+        //log.info("save, result 이후 room" + room.getId());
 
         //Redis 정보속 유저 리스트 생성
         List<GameUser> list = new ArrayList<>();
@@ -87,7 +90,7 @@ public class SquareService {
                 .build();
         redisGameRepository.saveGameRoom(gameRoom);
 
-        log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
+        //log.info("redisUser가 없어야함 있다면 문제임"+redisUserRepository.getOneRedisUser(user.getId()));
         if(redisUserRepository.getOneRedisUser(user.getId()) != null) {
             log.info("IS_NOT_AVILABLE_REDISUSER");
             throw new CustomBadRequestException(ErrorType.IS_NOT_AVAILABLE_REDISUSER);
@@ -98,7 +101,7 @@ public class SquareService {
                 .status(false) //대기중 상태로
                 .build());
 
-        log.info("SquareService insertRoom end");
+        //log.info("SquareService insertRoom end");
 
         List<RoomPartInfo> rstList = new ArrayList<>();
         rstList.add(RoomPartInfo.builder()
@@ -137,7 +140,7 @@ public class SquareService {
     }
 
     public List<SquareNowUser> listUser(Long channelnum) {
-        log.info("SquareService listRoom start");
+        //log.info("SquareService listRoom start");
         //리턴할 list
         List<SquareNowUser> list = new ArrayList<>();
 
@@ -171,13 +174,13 @@ public class SquareService {
                     .imageId(u.getImageId())
                     .build());
         }
-        log.info("SquareService insertRoom end");
+        //log.info("SquareService insertRoom end");
         return list;
     }
 
     public RoomListResponse listRoom(Long channelnum) {
 
-        log.info("SquareService listRoom start");
+        //log.info("SquareService listRoom start");
 
         //채널 잘못 받을때 예외
         if (channelnum > 8 || channelnum < 1)

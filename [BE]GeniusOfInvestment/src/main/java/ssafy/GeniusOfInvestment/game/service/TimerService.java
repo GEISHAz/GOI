@@ -26,7 +26,7 @@ public class TimerService {
         //System.out.println(message);
         Timer timer = new Timer();
         TimerInfo tinfo = new TimerInfo(3, "0", 181000, 180000);
-        log.info("새로운 타이머 생성 된거 아니냐???");
+        //log.info("새로운 타이머 생성 된거 아니냐???");
 
         TimerTask task = new TimerTask() {
             @Override
@@ -55,7 +55,7 @@ public class TimerService {
                                 .build());
                 if(remainMs == 0){
 //                    redisTemplate.delete("thread" + grId);
-                    log.info("레디를 모두 눌러 타이머 취소2");
+                    //log.info("레디를 모두 눌러 타이머 취소2");
                     timer.cancel(); //타이머 종료
                 }
             }

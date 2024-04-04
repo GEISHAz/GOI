@@ -54,7 +54,7 @@ public class RoomChatController {
     @EventListener(SessionConnectEvent.class)
     public void handleWebSocketConnectListener(SessionConnectEvent event) {
         String sessionId = event.getMessage().getHeaders().get("simpSessionId").toString();
-        log.info("웹소켓 연결시 Event에서 sessionId: " + sessionId);
+        //log.info("웹소켓 연결시 Event에서 sessionId: " + sessionId);
 //        StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
 //        String sessionId = headerAccesor.getSessionId();
         if(event.getMessage().getHeaders().get("nativeHeaders") == null){
@@ -67,7 +67,8 @@ public class RoomChatController {
         int endIdx = str.indexOf(",") - 1;
 
         //웹소켓 연결시 토큰을 제대로 못 받아왔다.
-        if(startIndex == 6 || endIdx == -2) throw new CustomBadRequestException(ErrorType.NEED_TOKEN);
+        if(startIndex == 6 || endIdx == -2) return;
+
         String token = str.substring(startIndex, endIdx);
         //log.info("웹소켓 연결시 Event에서 문자열에서 추출한 토큰: " + token);
         String userId = jwtUtil.getUserId(token);
