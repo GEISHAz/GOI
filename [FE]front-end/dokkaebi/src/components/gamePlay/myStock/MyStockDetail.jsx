@@ -23,7 +23,7 @@ export default function MyStockDetail(props) {
       </div>
       <div className={styles.havingArea}>{props?.shares}주 보유</div>
       <div className={styles.roiArea}>{props?.roi}</div>
-      <button
+      {/* <button
         className={styles.sellButtons}
         onClick={() => stockExchangeModalOpen("sell")}
       >
@@ -37,7 +37,7 @@ export default function MyStockDetail(props) {
           myStocksDetailModal={props.myStocksDetailModal}
           setMyStocksDetailModal={props.setMyStocksDetailModal}
         />
-      )}
+      )} */}
     </div>
   );
 }
