@@ -39,7 +39,7 @@ export default function Channel() {
   // 해당 채널 id 값에 맞는 그 광장 채널에 들여보내달라고 요청하는 함수
   const fetchChannelSelect = async (channelId) => {
     try {
-      console.log("보내는 토큰 확인 :", accessToken);
+      // console.log("보내는 토큰 확인 :", accessToken);
       const res = await axios.post(
         `https://j10d202.p.ssafy.io/api/channel/enterc/${channelId}`,
         {},
@@ -47,9 +47,9 @@ export default function Channel() {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      console.log("POST 리스폰스 확인 :", res);
+      // console.log("POST 리스폰스 확인 :", res);
       if (res.status === 200) {
-        console.log("200 OK 응답 확인!", res.status);
+        // console.log("200 OK 응답 확인!", res.status);
         // 해당 채널 id에 접근을 허가받으면 세션스토리지에 해당 채널 id를 저장
         sessionStorage.setItem("channelId", channelId);
         navigate(`/square/${channelId}`);
@@ -72,7 +72,7 @@ export default function Channel() {
               headers: { Authorization: `Bearer ${accessToken}` },
             }
           );
-          console.log("채널 나가기 성공");
+          // console.log("채널 나가기 성공");
         } catch (error) {
           console.error("채널 나가기 실패", error);
         }

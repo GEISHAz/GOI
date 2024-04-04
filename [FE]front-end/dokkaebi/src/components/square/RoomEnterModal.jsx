@@ -33,8 +33,8 @@ export default function RoomEnterModal({ onClose, roomId }) {
 
   // 입장
   const handleEnterClick = () => {
-    console.log("props 받은 룸ID :", propsRoomId);
-    console.log("입력한 비밀번호 :", isPassword);
+    // console.log("props 받은 룸ID :", propsRoomId);
+    // console.log("입력한 비밀번호 :", isPassword);
     const realRoomId = sessionStorage.getItem("roomId");
     axios
       .post(
@@ -48,9 +48,9 @@ export default function RoomEnterModal({ onClose, roomId }) {
         }
       )
       .then((response) => {
-        console.log("입장 성공:", response);
+        // console.log("입장 성공:", response);
         if (response.status === 200) {
-          console.log("입장 성공:", response);
+          // console.log("입장 성공:", response);
           dispatch(setRoomNum(isRoomNum))
           sessionStorage.setItem("roomId", propsRoomId)
           navigate(`/room/${propsRoomId}`, {
@@ -59,8 +59,8 @@ export default function RoomEnterModal({ onClose, roomId }) {
         }
       })
       .catch((error) => {
-        console.log("비번:", isPassword);
-        console.log("입장 실패:", error);
+        // console.log("비번:", isPassword);
+        // console.log("입장 실패:", error);
         if (!error.response) {
           alert("알 수 없는 오류가 발생했습니다.");
           onClose();

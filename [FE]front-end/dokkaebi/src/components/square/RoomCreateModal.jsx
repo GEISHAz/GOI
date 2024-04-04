@@ -87,7 +87,7 @@ export default function RoomCreateModal({ onClose, userName }) {
 
     // 시작 연도와 종료 연도가 모두 설정되었는지 확인
     if (startYear && endYear && isRoomTitle) {
-      console.log("channelId 확인", channelId);
+      // console.log("channelId 확인", channelId);
       try {
         const response = await axios.post(
           "https://j10d202.p.ssafy.io/api/square/create",
@@ -105,11 +105,11 @@ export default function RoomCreateModal({ onClose, userName }) {
         );
 
         if (response.status === 200 || response.status === 201) {
-          console.log("방 생성 요청 확인:", response);
+          // console.log("방 생성 요청 확인:", response);
           if (response.data && response.data.roomId) {
-            console.log("방 생성 성공 :", response);
-            console.log("방 번호 확인 :", response.data.roomnum)
-            console.log("유저 리스트 확인", response.data.userList)
+            // console.log("방 생성 성공 :", response);
+            // console.log("방 번호 확인 :", response.data.roomnum)
+            // console.log("유저 리스트 확인", response.data.userList)
             const roomNum = response.data.roomnum
             dispatch(setRoomNum(roomNum)) // 방 번호 리덕스 스토어에 저장
             // 방 생성 성공하면, 방 정보를 세션스토리지에 저장

@@ -10,7 +10,7 @@ import yellow from "../../images/character/yellow.gif";
 import pink from "../../images/character/pink.gif";
 import orange from "../../images/character/orange.gif";
 
-export default function PlayerList({ userList, isStart, amIManager, handleKick, roomNum }) {
+export default function PlayerList({ userList, amIManager, handleKick, roomNum }) {
   const allReady = userList.every(user => user.isReady);
   const userCount = userList.length;
   // 이미지 로드 실패 시 대체 이미지를 설정하는 함수

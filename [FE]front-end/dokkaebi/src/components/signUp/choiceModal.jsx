@@ -48,8 +48,8 @@ export default function choiceModal({ onClose }) {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      console.log("보낸 이미지 id 확인 :", selectedImageObj.id)
-      console.log('프로필 이미지 선택 완료', response.data);
+      // console.log("보낸 이미지 id 확인 :", selectedImageObj.id)
+      // console.log('프로필 이미지 선택 완료', response.data);
     } catch (error) {
       console.error('프로필 이미지 선택 실패', error);
       alert("이미지 선택에 실패했어요. 다시 시도해주세요.");

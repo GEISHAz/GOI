@@ -61,11 +61,11 @@ export default function TopButtons() {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      console.log("빠른 입장 응답:", response);
+      // console.log("빠른 입장 응답:", response);
       if (response.status === 200 && response.data.data) {
         // 성공적으로 방 정보를 받아온 경우, 해당 방의 페이지로 이동
         // navigate(`/room/${response.data.data.roomId}`);
-        console.log("빠른 입장 roomId 확인 :", response.data.data)
+        // console.log("빠른 입장 roomId 확인 :", response.data.data)
         const roomId = response.data.data;
         axios
           .post(
@@ -78,9 +78,9 @@ export default function TopButtons() {
             }
           )
           .then((response) => {
-            console.log("입장 성공:", response);
+            // console.log("입장 성공:", response);
             if (response.status === 200) {
-              console.log("입장 성공:", response);
+              // console.log("입장 성공:", response);
               sessionStorage.setItem("roomId", roomId)
               navigate(`/room/${roomId}`, {
                 state: JSON.parse(JSON.stringify({ response })),

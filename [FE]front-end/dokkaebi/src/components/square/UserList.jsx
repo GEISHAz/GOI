@@ -29,7 +29,7 @@ export default function UserList() {
   // 페이지 들어갔을 때 fetchUserInfo() 함수 실행 -> [accessToken] 토큰 발급 될 때마다 다시 함수 실행
   useEffect(() => {
     const fetchUserInfo = async () => {
-      console.log("channelId 확인", channelId);
+      // console.log("channelId 확인", channelId);
       try {
         const response = await axios.get(
           `https://j10d202.p.ssafy.io/api/square/channellist/${channelId}`,
@@ -37,7 +37,7 @@ export default function UserList() {
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
-        console.log("리스폰스 확인 :", response);
+        // console.log("리스폰스 확인 :", response);
         if (response.status === 200 && response.data.data) {
           setIsUserInfo(response.data.data);
         } else {
@@ -50,7 +50,7 @@ export default function UserList() {
 
     // 새로고침 이벤트 리스너 추가
     const handleRefresh = () => {
-      console.log("유저 정보 새로고침 확인");
+      // console.log("유저 정보 새로고침 확인");
       fetchUserInfo();
     };
   

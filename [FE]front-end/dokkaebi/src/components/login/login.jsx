@@ -18,7 +18,7 @@ export default function LoginComponent() {
   //   "https://j10d202.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/callBack&mode=login"; // 로컬용
 
   const handleKakaoLogin = () => {
-    console.log("카카오 로그인 클릭 확인");
+    // console.log("카카오 로그인 클릭 확인");
     window.location.href = KAKAO_AUTH_URL;
   };
 

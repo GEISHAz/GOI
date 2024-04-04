@@ -46,18 +46,18 @@ export default function RoomSearchModal({ onClose }) {
         }
       )
       .then((response) => {
-        console.log("방검색 리스폰스 확인:", response);
-        console.log("roomId 확인:", response.data[0].roomId);
+        // console.log("방검색 리스폰스 확인:", response);
+        // console.log("roomId 확인:", response.data[0].roomId);
         sessionStorage.setItem("roomId", response.data[0].roomId);
         setIsReceiveRoomId(response.data[0].roomId);
-        console.log("입장 성공:", response);
-        console.log("입력한 방 번호 :", roomNum)
+        // console.log("입장 성공:", response);
+        // console.log("입력한 방 번호 :", roomNum)
         navigate(`/room/${response.data[0].roomId}`, {
           state: JSON.parse(JSON.stringify({ response })),
         });
       })
       .catch((error) => {
-        console.log("입장 실패:", error);
+        // console.log("입장 실패:", error);
         // console.log("입장 실패했을 때 roomId 확인 :", roomId)
         if (!error.response) {
           alert("알 수 없는 오류가 발생했습니다.");
@@ -67,7 +67,7 @@ export default function RoomSearchModal({ onClose }) {
         // switch (error.response.data.statusCode && error.response.data.roomId) {
         switch (error.response.data.statusCode) {
           case 423: // 방 비밀번호 틀렸을 때
-            console.log('roomId @@@@@@@@@ :', error.response.data.roomId)
+            // console.log('roomId @@@@@@@@@ :', error.response.data.roomId)
             setIsErrorRoomId(error.response.data.roomId)
             sessionStorage.setItem("roomId", error.response.data.roomId)
             setShowRoomEnterModal(true)

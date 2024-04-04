@@ -55,7 +55,7 @@ export default function getUserLogin() {
     // 백엔드으로 중복검사 api 요청
     try {
       // API 요청: 닉네임 중복 검사 및 업데이트
-      console.log("설정한 닉네임 :", nickname)
+      // console.log("설정한 닉네임 :", nickname)
       const response = await axios.post(`https://j10d202.p.ssafy.io/api/users/${userId}/exist/nick-name`, {
         nickName: nickname,
       }, {
@@ -64,7 +64,7 @@ export default function getUserLogin() {
         },
       });
   
-      console.log("성공 데이터 받음 :", response.data);
+      // console.log("성공 데이터 받음 :", response.data);
       setIsNicknameChecked(true);
       setIsNicknameEmpty(false);
       setIsNicknameValid(true); // 닉네임이 유효함
@@ -133,7 +133,7 @@ export default function getUserLogin() {
         // 닉네임 스토어에 저장, 첫 도깨비 이미지는 choiceModal에서 스토어에 저장함
         dispatch(setUserNickname(nickname));
         alert("가입을 환영합니다 !");
-        console.log("가입 완료 !");
+        // console.log("가입 완료 !");
         navigate("/hub");
       } catch (error) {
         console.error("회원가입 실패", error);
