@@ -60,7 +60,6 @@
 ## 주요 기술
 
 ⚒️**Backend**
-
 - java17
 - springboot 3.2.2
 - spring jpa
@@ -71,24 +70,20 @@
 - web socket
 
 ⚒️**Frontend**
-
 - Node.js 20.11
 - react18
 - VSCode
 
 ⚒️**DataBase**
-
 - mariaDB
 - Redis
 
 ⚒️**Infra**
-
 - aws ec2
 - docker & docker compose
 - jenkins
 
 ## 협업 툴
-
 - git
 - notion
 - jira
