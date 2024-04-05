@@ -113,8 +113,8 @@
 <table>
  <tr>
     <td align="center"><a href="https://github.com/RyuTa960625"><img src="https://avatars.githubusercontent.com/RyuTa960625" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/Agwii"><img src="https://www.notion.so/1de2427923514ab8b369669ed7a2b4aa?pvs=4#44adbb1a7a5541f78f719d09fc59951d" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/wonjunJ"><img src="https://avatars.githubusercontent.com/wonjunJ" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/Agwii"><img src=https://avatars.githubusercontent.com/Agwii" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/wonjunJ"><img src="C:\Users\SSAFY\Desktop\readmeImage\profile.png" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
    <td align="center"><a href="https://github.com/pyunsusie"><img src="https://avatars.githubusercontent.com/pyunsusie" width="130px;" alt=""></a></td>
    <td align="center"><a href="https://github.com/quasiwest"><img src="https://avatars.githubusercontent.com/quasiwest" width="130px;" alt=""></a></td>
