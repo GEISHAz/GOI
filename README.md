@@ -112,12 +112,12 @@
 
 <table>
  <tr>
-    <td align="center"><a href="https://github.com/RyuTa960625"><img src="[FE]front-end/dokkaebi/public/favicon.png" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/RyuTa960625"><img src="profileImage/taesu.jpg" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/Agwii"><img src="profileImage/guihyun.jpg" width="130px;" alt=""></a></td>
     <td align="center"><a href="https://github.com/wonjunJ"><img src="profileImage/wonjun.jpg" width="130px;" alt=""></a></td>
-    <td align="center"><a href="https://github.com/GEISHAz"><img src="https://avatars.githubusercontent.com/GEISHAz" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/GEISHAz"><img src="profileImage/minho.jpg" width="130px;" alt=""></a></td>
    <td align="center"><a href="https://github.com/pyunsusie"><img src="profileImage/sugi.jpg" width="130px;" alt=""></a></td>
-   <td align="center"><a href="https://github.com/quasiwest"><img src="https://lab.ssafy.com/s10-fintech-finance-sub2/S10P22D202/[FE]front-end/dokkaebi/public/favicon.png" width="130px;" alt=""></a></td>
+   <td align="center"><a href="https://github.com/quasiwest"><img src="profileImage/junseo.jpg" width="130px;" alt=""></a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/RyuTa960625"><b>류태수</b></a><p><b>팀장</b><p><b>Front-end</b></td>
