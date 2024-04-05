@@ -56,7 +56,7 @@
 
 ## 주요 기술
 
-⚒️**Backend**
+⚒️**Backend
 - java17
 - springboot 3.2.3
 - spring jpa
