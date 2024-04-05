@@ -56,7 +56,7 @@
 
 ## 주요 기술
 
-⚒️**Backend
+⚒️**Backend**
 - java17
 - springboot 3.2.3
 - spring jpa
@@ -64,7 +64,7 @@
 - spring web
 - oauth2
 - intelliJ IDE
-- web socket
+- WebSocket
 - QueryDSL
 
 ⚒️**Frontend**
@@ -142,8 +142,6 @@
 - [API 명세서](https://www.notion.so/API-2e415e6c97104d90adfb6e495316ad14)
 - [와이어프레임](https://www.figma.com/file/uwN6GtNOqZaofS7tAStrcs/%ED%88%AC%EA%B7%80-Figma?type=design&node-id=0-1&mode=design&t=mAGctREsmediDbIz-0)
 - [커밋 컨벤션](https://www.notion.so/5f97d1535e19418887e2594fad3b34f8)
-
-## ”투귀”(투자의 귀재들) 서비스 화면
 
 ## 인트로 페이지
 ![intro](/uploads/c71047878423f2f5dedd5ad098c0a77c/intro.jpg)
