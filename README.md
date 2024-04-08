@@ -132,7 +132,7 @@
 <br/>
 
 ## 아키텍처 & ERD
-![아키텍처_ERD](/uploads/f529d6bbc5f98607f5e472a035c859d1/아키텍처_ERD.jpg)
+![아키텍처_ERD](./assets/아키텍처&ERD.jpg)
 
 ## 프로젝트 산출물
 
@@ -144,53 +144,53 @@
 - [커밋 컨벤션](https://www.notion.so/5f97d1535e19418887e2594fad3b34f8)
 
 ## 인트로 페이지
-![intro](/uploads/c71047878423f2f5dedd5ad098c0a77c/intro.jpg)
+![intro](./assets/인트로.gif)
 
 ## 로그인 & 프로필 페이지
-![login_profile](/uploads/48467cd8d99203ab16d4b6e160861f67/login_profile.jpg)
+![login_profile](./assets/login&profile.jpg)
 
 ## 허브 페이지 
-![hub](/uploads/212df27de449f281eeb3def1442c59e0/hub.gif)
+![hub](./assets/hub.gif)
 
 ## 도움말 페이지
-![help](/uploads/80682881067b9d560dac0ccc139e6a6a/help.jpg)
+![help](./assets/help.jpg)
 
 ## 랭킹 페이지 
-![rank](/uploads/f3f3644c379171577b2c8067cb77f797/rank.jpg)
+![rank](./assets/rank.jpg)
 
 ## 게임 채널 페이지 & 광장 페이지 
-![channel_square](/uploads/1ceadbfc29ca39c981a6226d38f196f2/channel_square.jpg)
+![channel_square](./assets/channel&square.jpg)
 
 ## 빠른 입장
-![빠른입장](/uploads/35eeb796216eb9ef90fda59444ccffe2/빠른입장.gif)
+![빠른입장](./assets/빠른입장.gif)
 
 ## 방찾기
-![방찾기](/uploads/504d8ec1fd9d7d8837d95505ce8418a8/방찾기.gif)
+![방찾기](./assets/방찾기.gif)
 
 ## 친구 요청 받음
-![친구알림받음](/uploads/73a8b0b55442668ed512e0472ed970f5/친구알림받음.gif)
+![친구알림받음](./assets/친구알림받음.gif)
 
 ## 친구 추가, 상대방이 친구추가 받음
-![친구요청보내고상대방이받음](/uploads/0359789135ccac34b86c535648fdea06/친구요청보내고상대방이받음.gif)
+![친구요청보내고상대방이받음](./assets/친구요청보내고상대방이받음.gif)
 
 ## 채팅 
-![채팅](/uploads/c118e80c18fe57975b56e9cdcee62d53/채팅.gif)
+![채팅](./assets/채팅.gif)
 
 ## 1단계, 2단계 정보
-![1단계_2단계정보](/uploads/de425ea5d8e415836de6c6555cf6a64e/1단계_2단계정보.jpg)
+![1단계_2단계정보](./assets/1단계&2단계정보.jpg)
 
 ## 구매정보내역 & 내보유주식
-![구매정보내역_내보유주식](/uploads/ff99fe564d9fdfebe433a80ccd6ff2dd/구매정보내역_내보유주식.jpg)
+![구매정보내역_내보유주식](./assets/구매정보내역&내보유주식.jpg)
 
 ## 매도
-![매도](/uploads/3a476b466e752dfc936ee30d7cd7c41c/매도.gif)
+![매도](./assets/매도.gif)
 
 ## 매수
-![매수](/uploads/dca09f8408f13ae16aa2581efb70890d/매수.gif)
+![매수](./assets/매수.gif)
 
 ## 다음턴
-![다음턴](/uploads/33e17aa25df0674dbea4c118bc798005/다음턴.gif)
+![다음턴](./assets/다음턴.gif)
 
 ## 게임 결과 
-![결과창](/uploads/a73491f1658dd657e65e23cf8dfa934b/결과창.gif)
+![결과창](./assets/결과창.gif)
 
